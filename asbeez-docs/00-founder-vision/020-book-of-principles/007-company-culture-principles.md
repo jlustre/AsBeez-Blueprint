@@ -1,2 +1,0 @@
-﻿# Company Culture Principles
-
