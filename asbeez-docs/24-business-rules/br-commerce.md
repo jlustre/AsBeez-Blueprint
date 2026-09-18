@@ -20,7 +20,7 @@
 
 ---
 
-# Purpose
+## Purpose
 
 The Business Model defines how AsBeez creates, delivers, and captures value.
 
@@ -30,7 +30,7 @@ Unlike the Business Overview, which explains what AsBeez is, this document expla
 
 ---
 
-# Business Model Statement
+## Business Model Statement
 
 AsBeez is a community-powered multi-vendor commerce ecosystem where genuine marketplace activity creates value for customers, members, vendors, partners, investors, and the company itself.
 
@@ -40,7 +40,7 @@ Every stakeholder benefits from helping the Hive become stronger.
 
 ---
 
-# Business Objectives
+## Business Objectives
 
 The primary objectives of the AsBeez Business Model are:
 
@@ -55,7 +55,7 @@ The primary objectives of the AsBeez Business Model are:
 
 ---
 
-# The Five Pillars of the AsBeez Business Model
+## The Five Pillars of the AsBeez Business Model
 
 ## Pillar 1 â€“ Marketplace
 
@@ -149,7 +149,7 @@ The Hive becomes stronger through genuine marketplace activity.
 
 ---
 
-# Stakeholders
+## Stakeholders
 
 The Business Model serves six primary stakeholder groups.
 
@@ -189,7 +189,7 @@ Support long-term expansion while benefiting from sustainable company growth.
 
 ---
 
-# Revenue Streams
+## Revenue Streams
 
 The initial revenue streams include:
 
@@ -212,7 +212,7 @@ Revenue diversification reduces long-term business risk.
 
 ---
 
-# Cost Structure
+## Cost Structure
 
 Major operating costs include:
 
@@ -229,7 +229,7 @@ Major operating costs include:
 
 ---
 
-# The AsBeez Growth Flywheel
+## The AsBeez Growth Flywheel
 
 ```
 More Vendors
@@ -273,7 +273,7 @@ Every successful cycle strengthens the Hive.
 
 ---
 
-# Network Effects
+## Network Effects
 
 AsBeez benefits from positive network effects.
 
@@ -289,7 +289,7 @@ This creates a self-reinforcing ecosystem.
 
 ---
 
-# Scalability
+## Scalability
 
 The business model is designed to scale through:
 
@@ -305,7 +305,7 @@ The platform should support millions of users without requiring major architectu
 
 ---
 
-# Competitive Advantages
+## Competitive Advantages
 
 AsBeez differentiates itself by combining:
 
@@ -320,7 +320,7 @@ Rather than competing on price alone, AsBeez competes through ecosystem value.
 
 ---
 
-# Success Metrics
+## Success Metrics
 
 The Business Model will be evaluated using:
 
@@ -339,7 +339,7 @@ The Business Model will be evaluated using:
 
 ---
 
-# Future Evolution
+## Future Evolution
 
 The Business Model is expected to evolve over time.
 
@@ -357,7 +357,7 @@ Every future enhancement must remain aligned with the AsBeez Constitution and Ph
 
 ---
 
-# Related Documents
+## Related Documents
 
 - B02-001 Executive Summary
 - B02-002 Business Overview
@@ -366,7 +366,7 @@ Every future enhancement must remain aligned with the AsBeez Constitution and Ph
 
 ---
 
-# Revision History
+## Revision History
 
 | Version | Date | Description |
 |----------|------|-------------|
@@ -375,4 +375,48 @@ Every future enhancement must remain aligned with the AsBeez Constitution and Ph
 ---
 
 > **Every Purchase Builds the Hive.**
+
+## Commerce Rule Catalog
+
+### BR-COM-001 Genuine Commerce
+
+Rewards, referrals, vendor value, and ecosystem metrics must originate from genuine, documented marketplace activity rather than fictitious orders or recruitment alone.
+
+### BR-COM-002 Server Authority
+
+The server determines price, tax, fees, currency, availability, eligibility, allocation, and order totals. Client values are requests or display data, not authoritative financial inputs.
+
+### BR-COM-003 Order Integrity
+
+An order preserves customer, vendor, product, price, discount, tax, currency, country/entity, policy, and source snapshots. Status transitions are authorized, idempotent, observable, and auditable.
+
+### BR-COM-004 Multi-Vendor Allocation
+
+One checkout may contain multiple approved vendors only when country, currency, tax, payment, fulfillment, allocation, refund, settlement, and support rules are compatible. Vendor entitlement and AsBeez revenue remain distinct.
+
+### BR-COM-005 Customer Protection
+
+Customers receive clear product, seller, price, tax/fee, delivery, refund/return, privacy, terms, support, and complaint information before commitment. Consumer and country law controls where more protective.
+
+### BR-COM-006 Financial Separation
+
+GMV, payment, recognized revenue, vendor/partner obligations, tax, fees, commissions, reserves, rewards, and cash are separate concepts and records. Commerce rules do not create ledger effects without approved mappings.
+
+### BR-COM-007 Corrections
+
+Cancellation, refund, dispute, fraud, provider failure, and policy breach create explicit compensating business/financial facts; original history is not deleted or silently rewritten.
+
+### BR-COM-008 Expansion
+
+New products, vendors, countries, providers, financial capabilities, and AI features require legal, tax, privacy, risk, security, operations, testing, reconciliation, and recovery readiness.
+
+## Authority and Related Documents
+
+This document describes business intent and rules; detailed accounting, legal, API, data, and operational authorities control implementation.
+
+- [index.md](index.md)
+- [br-financial.md](br-financial.md)
+- [br-rewards.md](br-rewards.md)
+- [../23-architecture-decisions/adr-004-server-side-pricing.md](../23-architecture-decisions/adr-004-server-side-pricing.md)
+- [../15-product-requirements/004-functional-requirements.md](../15-product-requirements/004-functional-requirements.md)
 

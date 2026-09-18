@@ -5,6 +5,8 @@
 
 This roadmap defines the order in which the AsBeez documentation should become authoritative. The numbered folders are the source structure for the documentation; [`MASTER_INDEX.md`](MASTER_INDEX.md) is the navigation map, and this file records sequencing, dependencies, and unresolved decisions.
 
+For the implementation sequence from approved documentation into product delivery, use [`DEVELOPMENT_WORKFLOW.md`](../DEVELOPMENT_WORKFLOW.md).
+
 ## Documentation Domains
 
 | Order | Domain | Purpose | Current priority |
@@ -23,19 +25,19 @@ This roadmap defines the order in which the AsBeez documentation should become a
 | 11 | [Beehive Matrix](11-beehive-matrix/000-foundation/000-index.md) | Matrix placement, genealogy, cycles, and distribution | Resolve policy and compliance |
 | 12 | [Financial System](12-financial-system/001-overview/000-index.md) | Ledgers, wallets, settlement, payout, tax, and reconciliation | Control plane |
 | 13 | [Platform Services](13-platform-services/ai-services/000-index.md) | Notifications, search, reporting, audit, and shared services | Support core domains |
-| 14 | [Legal and Compliance](14-legal-compliance/index.md) | Jurisdiction, consumer, privacy, tax, and compensation controls | Blocking gate |
-| 15 | [Product Requirements](15-product-requirements/index.md) | Testable functional and non-functional requirements | Derive from decisions |
-| 16 | [System Architecture](16-system-architecture/index.md) | Runtime boundaries and deployment architecture | Derive from ownership |
-| 17 | [Database](17-database/index.md) | Persistent data model and constraints | Derive from invariants |
-| 18 | [API](18-api/index.md) | External and internal contracts | Derive from workflows |
-| 19 | [UI and UX](19-ui-ux/index.md) | User-facing experiences | Derive from roles |
-| 20 | [Operations](20-operations/index.md) | Support, incidents, compliance operations, and recovery | Operational readiness |
-| 21 | [Marketing](21-marketing/index.md) | Positioning, acquisition, and launch | After offer is defined |
-| 22 | [Investor Relations](22-investor-relations/index.md) | Investor narrative, model, and diligence | Use verified assumptions |
-| 23 | [Architecture Decisions](23-architecture-decisions/index.md) | Durable technical decisions and trade-offs | Record decisions |
-| 24 | [Business Rules](24-business-rules/index.md) | Cross-domain policies and invariants | Single source of truth |
-| 25 | [Standards](25-standards/index.md) | Naming, API, database, security, and documentation standards | Apply consistently |
-| 26 | [Research](26-research/index.md) | Evidence supporting product and business assumptions | Cite and date evidence |
+| 14 | [Legal and Compliance](14-legal-compliance/000-index.md) | Jurisdiction, consumer, privacy, tax, and compensation controls | Blocking gate |
+| 15 | [Product Requirements](15-product-requirements/000-index.md) | Testable functional and non-functional requirements | Derive from decisions |
+| 16 | [System Architecture](16-system-architecture/000-index.md) | Runtime boundaries and deployment architecture | Derive from ownership |
+| 17 | [Database](17-database/000-index.md) | Persistent data model and constraints | Derive from invariants |
+| 18 | [API](18-api/000-index.md) | External and internal contracts | Derive from workflows |
+| 19 | [UI and UX](19-ui-ux/000-index.md) | User-facing experiences | Derive from roles |
+| 20 | [Operations](20-operations/000-index.md) | Support, incidents, compliance operations, and recovery | Operational readiness |
+| 21 | [Marketing](21-marketing/000-index.md) | Positioning, acquisition, and launch | After offer is defined |
+| 22 | [Investor Relations](22-investor-relations/000-index.md) | Investor narrative, model, and diligence | Use verified assumptions |
+| 23 | [Architecture Decisions](23-architecture-decisions/000-index.md) | Durable technical decisions and trade-offs | Record decisions |
+| 24 | [Business Rules](24-business-rules/000-index.md) | Cross-domain policies and invariants | Single source of truth |
+| 25 | [Standards](25-standards/000-index.md) | Naming, API, database, security, and documentation standards | Apply consistently |
+| 26 | [Research](26-research/000-index.md) | Evidence supporting product and business assumptions | Cite and date evidence |
 | 27 | Assets | Diagrams, mockups, financial models, and media | Keep linked to decisions |
 | 28 | Templates | Reusable document and operating templates | Keep aligned with standards |
 
@@ -67,4 +69,4 @@ When documents conflict, resolve them in this order:
 4. Domain documents and implementation specifications.
 5. Marketing, investor, and presentation materials.
 
-Every resolved conflict should be recorded in [Architecture Decisions](23-architecture-decisions/index.md) or [Business Rules](24-business-rules/index.md), with links from affected documents.
+Every resolved conflict should be recorded in [Architecture Decisions](23-architecture-decisions/000-index.md) or [Business Rules](24-business-rules/000-index.md), with links from affected documents.

@@ -20,7 +20,7 @@
 
 ---
 
-# Purpose
+## Purpose
 
 This document provides a comprehensive overview of the AsBeez business model.
 
@@ -30,7 +30,7 @@ This document serves as the foundation for every business, legal, operational, t
 
 ---
 
-# What is AsBeez?
+## What is AsBeez?
 
 AsBeez is a community-powered digital commerce ecosystem designed to connect customers, members, vendors, partners, and investors through one integrated online marketplace.
 
@@ -51,7 +51,7 @@ It is a digital economy built upon genuine commerce.
 
 ---
 
-# Our Purpose
+## Our Purpose
 
 Our purpose is to transform ordinary purchasing into meaningful participation.
 
@@ -67,7 +67,7 @@ Every participant benefits from helping the marketplace become stronger.
 
 ---
 
-# Business Classification
+## Business Classification
 
 AsBeez operates as multiple businesses within one ecosystem.
 
@@ -107,7 +107,7 @@ Future versions may include additional financial services such as wallets, merch
 
 ---
 
-# The AsBeez Ecosystem
+## The AsBeez Ecosystem
 
 The ecosystem consists of six primary participants.
 
@@ -180,7 +180,7 @@ Investors provide capital, strategic guidance, and governance that support the l
 
 ---
 
-# Our Business Philosophy
+## Our Business Philosophy
 
 Everything begins with commerce.
 
@@ -200,7 +200,7 @@ This philosophy guides every business decision.
 
 ---
 
-# Our Competitive Advantage
+## Our Competitive Advantage
 
 AsBeez combines several business models into one ecosystem.
 
@@ -230,7 +230,7 @@ Instead of competing in only one category, AsBeez creates value across multiple 
 
 ---
 
-# The AsBeez Flywheel
+## The AsBeez Flywheel
 
 The long-term growth of AsBeez is driven by a self-reinforcing cycle.
 
@@ -258,7 +258,7 @@ As this cycle repeats, the Hive becomes stronger.
 
 ---
 
-# Revenue Sources
+## Revenue Sources
 
 AsBeez is intentionally designed with diversified revenue streams.
 
@@ -285,7 +285,7 @@ Diversification improves long-term sustainability.
 
 ---
 
-# Marketplace Evolution
+## Marketplace Evolution
 
 ## Phase 1
 
@@ -340,7 +340,7 @@ Examples:
 
 ---
 
-# Guiding Principles
+## Guiding Principles
 
 Every business decision should satisfy the following principles:
 
@@ -362,7 +362,7 @@ If a decision fails any of these principles, it should be reconsidered.
 
 ---
 
-# Success Metrics
+## Success Metrics
 
 AsBeez measures success using more than revenue.
 
@@ -392,7 +392,7 @@ Long-Term Sustainability
 
 ---
 
-# Looking Ahead
+## Looking Ahead
 
 This document provides the high-level description of the AsBeez business.
 
@@ -418,6 +418,23 @@ These include:
 - B02-001 Executive Summary
 - B02-003 The AsBeez Ecosystem
 - B03 Marketplace
+
+## Technical Architecture Position
+
+AsBeez should begin as a modular monolith with explicit bounded contexts, private ownership, versioned contracts, durable events, and extraction-ready boundaries. Commerce, membership, vendor, partner, rewards, marketplace, platform, and financial contexts collaborate through APIs, commands, queries, and events rather than direct cross-context table writes.
+
+The General Ledger is authoritative for posted monetary effects. Country, legal entity, currency, policy version, period, source, actor, correlation, and idempotency are first-class dimensions. External providers are evidence until mapped and reconciled; projections and analytics are not authoritative.
+
+Architecture decisions must preserve security, privacy, compliance, observability, testing, operations, recovery, and legal release gates. AI may assist and recommend but cannot independently create or approve financial effects.
+
+## Related Technical Documents
+
+- [index.md](index.md)
+- [002-domain-driven-design.md](002-domain-driven-design.md)
+- [004-bounded-contexts.md](004-bounded-contexts.md)
+- [005-event-driven-architecture.md](005-event-driven-architecture.md)
+- [006-ledger-first-architecture.md](006-ledger-first-architecture.md)
+- [../12-financial-system/290-architecture/001-system-architecture.md](../12-financial-system/290-architecture/001-system-architecture.md)
 - B04 Compensation System
 - B05 Technology
 

@@ -1,0 +1,38 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: asbeez-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: asbeez
+      MYSQL_USER: asbeez
+      MYSQL_PASSWORD: asbeez_local_dev
+      MYSQL_ROOT_PASSWORD: asbeez_root_local
+    ports:
+      - "3306:3306"
+    volumes:
+      - asbeez-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u$${MYSQL_USER} -p$${MYSQL_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: asbeez-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - asbeez-redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  asbeez-mysql-data:
+  asbeez-redis-data:

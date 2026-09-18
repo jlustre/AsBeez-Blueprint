@@ -18,7 +18,7 @@
 
 ---
 
-# Purpose
+## Purpose
 
 This Executive Summary provides a high-level overview of the AsBeez business model.
 
@@ -26,7 +26,7 @@ It is intended for investors, strategic partners, advisors, executives, financia
 
 ---
 
-# Executive Summary
+## Executive Summary
 
 AsBeez is a next-generation community-powered digital marketplace designed to transform traditional online shopping into a long-term value ecosystem.
 
@@ -40,7 +40,7 @@ Every qualifying purchase contributes not only to the success of the vendor but 
 
 ---
 
-# The Problem
+## The Problem
 
 Today's online marketplaces have transformed commerce by making it easier than ever to buy products.
 
@@ -58,7 +58,7 @@ Most marketplaces focus on transactions rather than long-term relationships.
 
 ---
 
-# Our Solution
+## Our Solution
 
 AsBeez introduces a new model called **Community Commerce**.
 
@@ -77,7 +77,7 @@ Rather than treating every purchase as an isolated event, AsBeez enables qualify
 
 ---
 
-# The Marketplace
+## The Marketplace
 
 Initially AsBeez will launch as a marketplace specializing in digital products.
 
@@ -100,7 +100,7 @@ Future expansion includes:
 
 ---
 
-# Our Marketplace Participants
+## Our Marketplace Participants
 
 The ecosystem consists of several participant groups.
 
@@ -120,7 +120,7 @@ Each participant strengthens the overall ecosystem.
 
 ---
 
-# Vendor Growth
+## Vendor Growth
 
 AsBeez is designed to help vendors build long-term customer relationships.
 
@@ -138,7 +138,7 @@ Rather than competing solely on advertising, vendors benefit from increased cust
 
 ---
 
-# Customer Loyalty
+## Customer Loyalty
 
 Traditional loyalty programs often reward only the most recent purchase.
 
@@ -154,7 +154,7 @@ This creates a loyalty ecosystem intended to encourage long-term engagement rath
 
 ---
 
-# Technology Platform
+## Technology Platform
 
 AsBeez is being designed as an enterprise-grade marketplace.
 
@@ -184,7 +184,7 @@ Technology is viewed as an enabler rather than the product itself.
 
 ---
 
-# Revenue Model
+## Revenue Model
 
 AsBeez generates revenue through multiple channels.
 
@@ -208,7 +208,7 @@ This diversified approach reduces dependence on any single revenue stream.
 
 ---
 
-# Global Vision
+## Global Vision
 
 The long-term vision is to establish localized AsBeez marketplaces throughout the world.
 
@@ -224,7 +224,7 @@ Future country-specific marketplaces will support local currencies, payment gate
 
 ---
 
-# Long-Term Opportunity
+## Long-Term Opportunity
 
 AsBeez is more than an online marketplace.
 
@@ -236,7 +236,7 @@ Our goal is to create an ecosystem where commerce generates lasting value for ev
 
 ---
 
-# Executive Statement
+## Executive Statement
 
 AsBeez exists to redefine online commerce by combining trusted marketplaces, vendor success, customer loyalty, and community participation into one sustainable ecosystem.
 
