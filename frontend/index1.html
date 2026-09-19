@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AsBeez - Find it. Book it. Get it done.</title>
+  <meta name="description" content="AsBeez is your community marketplace for products, services, professionals, jobs, real estate, and local opportunities.">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Tailwind Configuration for AsBeez Palette -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            honey: {
+              DEFAULT: '#F7B928',
+              hover: '#e5aa20',
+              light: '#FFF8E7',
+              soft: '#FFF1B8',
+              amber: '#E89B0C',
+            },
+            charcoal: {
+              DEFAULT: '#242424',
+              light: '#333333',
+              dark: '#1a1a1a',
+            },
+            success: '#2E8B57',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Styling for Honeycomb Subtle SVG Pattern */
+    .bg-honeycomb {
+      background-color: #FFF8E7;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill='%23f7b928' fill-opacity='0.08'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v13.2l10.99 6.35L24.99 31.1V17.9l-11-6.35L3 17.9zM0 0h28v2H0V0zm0 47h28v2H0v-2z'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    .bg-honeycomb-dark {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill='%23f7b928' fill-opacity='0.05'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v13.2l10.99 6.35L24.99 31.1V17.9l-11-6.35L3 17.9zM0 0h28v2H0V0zm0 47h28v2H0v-2z'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    /* Hide scrollbar for clean horizontal scrolling */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .transition-all, .transition, .duration-500 {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="font-sans bg-gray-100 text-charcoal flex flex-col min-h-screen antialiased">
+
+  <!-- ========================================== -->
+  <!-- 1. ANNOUNCEMENT BAR                        -->
+  <!-- ========================================== -->
+  <aside id="announcement-bar" class="bg-honey text-charcoal-dark px-4 py-2 text-sm font-medium transition-all duration-300 relative z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 mx-auto sm:mx-0 text-center sm:text-left">
+        <i data-lucide="sparkles" class="w-4 h-4 flex-shrink-0 hidden sm:inline"></i>
+        <span>Welcome to AsBeez—your community marketplace for products, services, and local opportunities.</span>
+        <a href="#marketplace-features" class="underline hover:text-black font-semibold ml-1">Learn More</a>
+      </div>
+      <button id="close-announcement" aria-label="Close Announcement Bar" class="p-1 hover:bg-black/10 rounded-full transition-colors">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========================================== -->
+  <!-- 2. PRIMARY HEADER                          -->
+  <!-- ========================================== -->
+  <header id="main-header" class="bg-charcoal text-white sticky top-0 z-40 transition-all duration-200 border-b border-charcoal-light">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3 lg:gap-6">
+      
+      <!-- Mobile Hamburger & Logo Group -->
+      <div class="flex items-center gap-3">
+        <button id="mobile-menu-btn" aria-label="Open Navigation Menu" aria-expanded="false" class="lg:hidden p-1.5 hover:bg-charcoal-light rounded-lg text-gray-300 hover:text-white">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+
+        <!-- AsBeez Logo -->
+        <a href="#" class="flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-honey rounded-md p-1">
+          <div class="w-9 h-9 bg-honey text-charcoal flex items-center justify-center rounded-xl shadow-md font-bold group-hover:bg-honey-amber transition-colors">
+            <i data-lucide="bee" class="w-6 h-6"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-0.5">
+              As<span class="text-honey">Beez</span>
+            </span>
+            <span class="text-[9px] uppercase tracking-wider text-gray-400 font-semibold leading-none hidden sm:inline">Marketplace</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Location Selector (Desktop) -->
+      <button class="hidden lg:flex items-center gap-2 text-xs text-left p-2 hover:border hover:border-gray-500 rounded-md transition-all focus:outline-none focus:ring-1 focus:ring-honey">
+        <i data-lucide="map-pin" class="w-5 h-5 text-honey flex-shrink-0"></i>
+        <div class="leading-tight">
+          <span class="text-gray-400 block text-[10px]">Delivering to</span>
+          <span class="font-bold text-white text-xs block truncate max-w-[110px]">San Francisco, CA</span>
+        </div>
+      </button>
+
+      <!-- Primary Search Component -->
+      <form role="search" aria-label="Site Search" class="flex-1 max-w-2xl hidden md:flex items-center h-10 rounded-lg overflow-hidden border-2 border-transparent focus-within:border-honey transition-all shadow-sm">
+        <label for="header-category" class="sr-only">Category</label>
+        <select id="header-category" class="bg-gray-100 text-charcoal text-xs font-semibold h-full px-3 border-r border-gray-300 focus:outline-none cursor-pointer hover:bg-gray-200">
+          <option value="all">All Categories</option>
+          <option value="products">Products</option>
+          <option value="services">Services</option>
+          <option value="professionals">Pros</option>
+          <option value="jobs">Jobs</option>
+          <option value="real-estate">Real Estate</option>
+        </select>
+        <label for="header-search-input" class="sr-only">Search query</label>
+        <input id="header-search-input" type="text" placeholder="Search products, services, local pros, jobs..." class="w-full h-full px-4 text-sm text-charcoal focus:outline-none placeholder-gray-500">
+        <button type="submit" aria-label="Submit Search" class="bg-honey hover:bg-honey-amber text-charcoal px-5 h-full flex items-center justify-center transition-colors font-bold">
+          <i data-lucide="search" class="w-5 h-5"></i>
+        </button>
+      </form>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center gap-1 sm:gap-3">
+        
+        <!-- Language Selector -->
+        <button aria-label="Select Language" class="hidden xl:flex items-center gap-1 p-2 text-xs text-gray-300 hover:text-white hover:border hover:border-gray-500 rounded-md">
+          <span class="font-bold">EN</span>
+          <i data-lucide="chevron-down" class="w-3 h-3"></i>
+        </button>
+
+        <!-- Account / Sign In -->
+        <a href="#account" class="p-2 text-xs text-gray-300 hover:text-white hover:border hover:border-gray-500 rounded-md leading-tight focus:outline-none">
+          <span class="block text-[10px] text-gray-400">Hello, Sign In</span>
+          <span class="font-bold text-white text-xs block">Account &amp; Lists</span>
+        </a>
+
+        <!-- Returns & Orders -->
+        <a href="#orders" class="hidden sm:block p-2 text-xs text-gray-300 hover:text-white hover:border hover:border-gray-500 rounded-md leading-tight">
+          <span class="block text-[10px] text-gray-400">Returns</span>
+          <span class="font-bold text-white text-xs block">&amp; Orders</span>
+        </a>
+
+        <!-- Shopping Cart -->
+        <a href="#cart" aria-label="Shopping Cart with 0 items" class="p-2 flex items-center gap-1.5 hover:border hover:border-gray-500 rounded-md text-white relative group">
+          <div class="relative">
+            <i data-lucide="shopping-cart" class="w-7 h-7 text-honey group-hover:scale-105 transition-transform"></i>
+            <span id="cart-badge" class="absolute -top-1.5 -right-2 bg-honey text-charcoal font-black text-xs w-5 h-5 rounded-full flex items-center justify-center border-2 border-charcoal">0</span>
+          </div>
+          <span class="font-bold text-xs hidden lg:inline self-end mb-1">Cart</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Search Bar Row (Visible on Small Screens) -->
+    <div class="px-3 pb-2.5 md:hidden">
+      <form role="search" aria-label="Mobile Search" class="flex items-center h-10 rounded-lg overflow-hidden border border-gray-600 focus-within:border-honey bg-white">
+        <input type="text" placeholder="Search AsBeez marketplace..." class="w-full h-full px-3 text-sm text-charcoal focus:outline-none">
+        <button type="submit" aria-label="Submit Search" class="bg-honey text-charcoal px-4 h-full flex items-center justify-center">
+          <i data-lucide="search" class="w-5 h-5"></i>
+        </button>
+      </form>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- 3. SECONDARY NAVIGATION & MEGA-MENU        -->
+  <!-- ========================================== -->
+  <nav aria-label="Secondary Navigation" class="bg-charcoal-light text-white text-xs font-medium border-b border-gray-700 relative z-30">
+    <div class="max-w-7xl mx-auto px-4 flex items-center overflow-x-auto no-scrollbar space-x-1 sm:space-x-2 py-1">
+      
+      <!-- All Categories Mega Menu Button -->
+      <div class="relative">
+        <button id="mega-menu-trigger" aria-expanded="false" aria-controls="mega-menu-dropdown" class="flex items-center gap-1.5 px-3 py-1.5 rounded hover:bg-gray-700 bg-gray-800 text-honey font-bold transition-colors">
+          <i data-lucide="grid" class="w-4 h-4"></i>
+          <span>All Categories</span>
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+        </button>
+
+        <!-- Mega Menu Dropdown -->
+        <div id="mega-menu-dropdown" class="hidden absolute left-0 top-full mt-1 w-80 sm:w-[540px] bg-white text-charcoal rounded-b-lg shadow-2xl border border-gray-200 p-6 z-50">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <h3 class="font-bold text-sm text-charcoal border-b pb-2 mb-3 flex items-center gap-2">
+                <i data-lucide="shopping-bag" class="w-4 h-4 text-honey-amber"></i> Physical Products
+              </h3>
+              <ul class="space-y-2 text-gray-600">
+                <li><a href="#" class="hover:text-honey-amber flex items-center justify-between">Electronics &amp; Tech <span class="text-xs text-gray-400">12k+</span></a></li>
+                <li><a href="#" class="hover:text-honey-amber flex items-center justify-between">Home &amp; Kitchen <span class="text-xs text-gray-400">8k+</span></a></li>
+                <li><a href="#" class="hover:text-honey-amber flex items-center justify-between">Fashion &amp; Apparel <span class="text-xs text-gray-400">15k+</span></a></li>
+                <li><a href="#" class="hover:text-honey-amber flex items-center justify-between">Crafts &amp; Handmade <span class="text-xs text-gray-400">4k+</span></a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-bold text-sm text-charcoal border-b pb-2 mb-3 flex items-center gap-2">
+                <i data-lucide="wrench" class="w-4 h-4 text-honey-amber"></i> Services &amp; Local
+              </h3>
+              <ul class="space-y-2 text-gray-600">
+                <li><a href="#" class="hover:text-honey-amber flex items-center justify-between">Home Improvement <span class="text-xs text-gray-400">3k+</span></a></li>
+                <li><a href="#" class="hover:text-honey-amber flex items-center justify-between">Professional Services <span class="text-xs text-gray-400">5k+</span></a></li>
+                <li><a href="#" class="hover:text-honey-amber flex items-center justify-between">Jobs &amp; Hiring <span class="text-xs text-gray-400">1k+</span></a></li>
+                <li><a href="#" class="hover:text-honey-amber flex items-center justify-between">Real Estate &amp; Rentals <span class="text-xs text-gray-400">900+</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t bg-honey-light -mx-6 -mb-6 p-4 rounded-b-lg flex justify-between items-center">
+            <span class="font-medium text-xs text-charcoal">Want to grow your business?</span>
+            <a href="#sell" class="bg-honey text-charcoal font-bold px-3 py-1.5 rounded hover:bg-honey-amber transition-colors">Start Selling</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Nav Links -->
+      <a href="#deals" class="whitespace-nowrap px-3 py-1.5 rounded hover:bg-gray-700 hover:text-honey transition-colors">Today's Deals</a>
+      <a href="#products" class="whitespace-nowrap px-3 py-1.5 rounded hover:bg-gray-700 hover:text-honey transition-colors">Products</a>
+      <a href="#services" class="whitespace-nowrap px-3 py-1.5 rounded hover:bg-gray-700 hover:text-honey transition-colors">Local Services</a>
+      <a href="#professionals" class="whitespace-nowrap px-3 py-1.5 rounded hover:bg-gray-700 hover:text-honey transition-colors">Professionals</a>
+      <a href="#jobs" class="whitespace-nowrap px-3 py-1.5 rounded hover:bg-gray-700 hover:text-honey transition-colors">Jobs</a>
+      <a href="#real-estate" class="whitespace-nowrap px-3 py-1.5 rounded hover:bg-gray-700 hover:text-honey transition-colors">Real Estate</a>
+      <a href="#vehicles" class="whitespace-nowrap px-3 py-1.5 rounded hover:bg-gray-700 hover:text-honey transition-colors">Vehicles</a>
+      <a href="#community" class="whitespace-nowrap px-3 py-1.5 rounded hover:bg-gray-700 hover:text-honey transition-colors">Community</a>
+      <a href="#sell" class="whitespace-nowrap px-3 py-1.5 rounded hover:bg-gray-700 text-honey font-semibold transition-colors">Sell on AsBeez</a>
+      <a href="#help" class="whitespace-nowrap px-3 py-1.5 rounded hover:bg-gray-700 transition-colors">Help</a>
+    </div>
+  </nav>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="mobile-drawer-overlay" class="hidden fixed inset-0 bg-black/60 z-50 backdrop-blur-sm transition-opacity"></div>
+  <aside id="mobile-drawer" class="fixed top-0 left-0 bottom-0 w-80 bg-white z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+    <div class="bg-charcoal text-white p-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 bg-honey text-charcoal flex items-center justify-center rounded-lg font-bold">
+          <i data-lucide="bee" class="w-5 h-5"></i>
+        </div>
+        <span class="font-bold text-lg">AsBeez Menu</span>
+      </div>
+      <button id="close-mobile-drawer" aria-label="Close Menu" class="p-1 hover:bg-charcoal-light rounded">
+        <i data-lucide="x" class="w-6 h-6 text-gray-300"></i>
+      </button>
+    </div>
+    <div class="p-4 border-b bg-honey-light flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-honey flex items-center justify-center font-bold text-charcoal">
+        <i data-lucide="user" class="w-5 h-5"></i>
+      </div>
+      <div>
+        <p class="font-bold text-sm text-charcoal">Welcome Guest</p>
+        <a href="#signin" class="text-xs text-honey-amber font-semibold hover:underline">Sign In or Register</a>
+      </div>
+    </div>
+    <div class="flex-1 overflow-y-auto p-4 space-y-4">
+      <div>
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Explore Categories</p>
+        <ul class="space-y-2 text-sm font-medium text-charcoal">
+          <li><a href="#products" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md"><i data-lucide="shopping-bag" class="w-4 h-4 text-honey-amber"></i> Products Marketplace</a></li>
+          <li><a href="#services" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md"><i data-lucide="wrench" class="w-4 h-4 text-honey-amber"></i> Local Services</a></li>
+          <li><a href="#professionals" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md"><i data-lucide="users" class="w-4 h-4 text-honey-amber"></i> Hire Professionals</a></li>
+          <li><a href="#jobs" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md"><i data-lucide="briefcase" class="w-4 h-4 text-honey-amber"></i> Jobs &amp; Opportunities</a></li>
+          <li><a href="#real-estate" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md"><i data-lucide="home" class="w-4 h-4 text-honey-amber"></i> Real Estate &amp; Housing</a></li>
+        </ul>
+      </div>
+      <hr>
+      <div>
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Programs &amp; Features</p>
+        <ul class="space-y-2 text-sm font-medium text-charcoal">
+          <li><a href="#sell" class="p-2 hover:bg-gray-100 rounded-md block">Sell on AsBeez</a></li>
+          <li><a href="#community" class="p-2 hover:bg-gray-100 rounded-md block">Community Hub</a></li>
+          <li><a href="#help" class="p-2 hover:bg-gray-100 rounded-md block">Customer Service</a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================== -->
+  <!-- MAIN CONTENT CONTAINER                     -->
+  <!-- ========================================== -->
+  <main class="flex-1">
+
+    <!-- ========================================== -->
+    <!-- 4. HERO SECTION CAROUSEL                   -->
+    <!-- ========================================== -->
+    <section aria-label="Featured Promotions" class="relative bg-charcoal text-white overflow-hidden">
+      <div id="hero-carousel" class="relative h-[380px] sm:h-[440px] lg:h-[480px]">
+        
+        <!-- Slide 1 -->
+        <div class="hero-slide absolute inset-0 transition-opacity duration-700 opacity-100 z-10">
+          <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=80" alt="Local marketplace assortment" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-r from-charcoal/95 via-charcoal/80 to-transparent flex items-center">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 w-full">
+              <div class="max-w-xl space-y-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-honey/20 text-honey text-xs font-bold uppercase tracking-wider border border-honey/30">
+                  <i data-lucide="bee" class="w-3.5 h-3.5"></i> One-Stop Marketplace
+                </span>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+                  Everything You Need, <span class="text-honey">All in One Hive</span>
+                </h1>
+                <p class="text-gray-300 text-sm sm:text-base">
+                  Discover quality products, hire verified local professionals, and find community opportunities seamlessly.
+                </p>
+                <div class="flex flex-wrap gap-3 pt-2">
+                  <a href="#products" class="bg-honey hover:bg-honey-amber text-charcoal font-bold px-6 py-3 rounded-lg shadow-lg transition-transform active:scale-95">Start Exploring</a>
+                  <a href="#sell" class="bg-charcoal-light hover:bg-gray-700 text-white font-semibold px-6 py-3 rounded-lg border border-gray-600 transition-all">Become a Seller</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="hero-slide absolute inset-0 transition-opacity duration-700 opacity-0 z-0">
+          <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80" alt="Professional home service" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-r from-charcoal/95 via-charcoal/80 to-transparent flex items-center">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 w-full">
+              <div class="max-w-xl space-y-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-honey/20 text-honey text-xs font-bold uppercase tracking-wider border border-honey/30">
+                  <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Verified Experts
+                </span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+                  Trusted Local <span class="text-honey">Professionals</span>
+                </h2>
+                <p class="text-gray-300 text-sm sm:text-base">
+                  Book top-rated home cleaning, plumbing, electrical, and freelance services in your immediate neighborhood.
+                </p>
+                <div class="flex flex-wrap gap-3 pt-2">
+                  <a href="#services" class="bg-honey hover:bg-honey-amber text-charcoal font-bold px-6 py-3 rounded-lg shadow-lg transition-transform active:scale-95">Browse Services</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="hero-slide absolute inset-0 transition-opacity duration-700 opacity-0 z-0">
+          <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80" alt="Business growth and commerce" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-r from-charcoal/95 via-charcoal/80 to-transparent flex items-center">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 w-full">
+              <div class="max-w-xl space-y-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-honey/20 text-honey text-xs font-bold uppercase tracking-wider border border-honey/30">
+                  <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Empowering Businesses
+                </span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+                  Grow Your Business <span class="text-honey">With AsBeez</span>
+                </h2>
+                <p class="text-gray-300 text-sm sm:text-base">
+                  Reach thousands of nearby active buyers and clients. Low seller fees and powerful management tools.
+                </p>
+                <div class="flex flex-wrap gap-3 pt-2">
+                  <a href="#sell" class="bg-honey hover:bg-honey-amber text-charcoal font-bold px-6 py-3 rounded-lg shadow-lg transition-transform active:scale-95">Join AsBeez Today</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Controls & Dots -->
+      <button id="hero-prev" aria-label="Previous Slide" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 text-white hover:bg-honey hover:text-charcoal flex items-center justify-center transition-all focus:outline-none">
+        <i data-lucide="chevron-left" class="w-6 h-6"></i>
+      </button>
+      <button id="hero-next" aria-label="Next Slide" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 text-white hover:bg-honey hover:text-charcoal flex items-center justify-center transition-all focus:outline-none">
+        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+      </button>
+
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        <button class="hero-dot w-3 h-3 rounded-full bg-honey transition-all" aria-label="Go to slide 1"></button>
+        <button class="hero-dot w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all" aria-label="Go to slide 2"></button>
+        <button class="hero-dot w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all" aria-label="Go to slide 3"></button>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 5. QUICK-ACCESS CATEGORY CARDS             -->
+    <!-- ========================================== -->
+    <section aria-label="Quick Navigation Categories" class="max-w-7xl mx-auto px-4 -mt-12 sm:-mt-16 relative z-30">
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+        
+        <a href="#products" class="bg-white rounded-xl p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border border-gray-100 hover:border-honey flex flex-col items-center text-center group">
+          <div class="w-10 h-10 rounded-full bg-honey-light text-honey-amber flex items-center justify-center mb-2 group-hover:bg-honey group-hover:text-charcoal transition-colors">
+            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+          </div>
+          <span class="font-bold text-xs text-charcoal">Shop Products</span>
+          <span class="text-[10px] text-gray-400">100k+ Items</span>
+        </a>
+
+        <a href="#professionals" class="bg-white rounded-xl p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border border-gray-100 hover:border-honey flex flex-col items-center text-center group">
+          <div class="w-10 h-10 rounded-full bg-honey-light text-honey-amber flex items-center justify-center mb-2 group-hover:bg-honey group-hover:text-charcoal transition-colors">
+            <i data-lucide="user-check" class="w-5 h-5"></i>
+          </div>
+          <span class="font-bold text-xs text-charcoal">Hire Pros</span>
+          <span class="text-[10px] text-gray-400">Verified Local</span>
+        </a>
+
+        <a href="#services" class="bg-white rounded-xl p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border border-gray-100 hover:border-honey flex flex-col items-center text-center group">
+          <div class="w-10 h-10 rounded-full bg-honey-light text-honey-amber flex items-center justify-center mb-2 group-hover:bg-honey group-hover:text-charcoal transition-colors">
+            <i data-lucide="wrench" class="w-5 h-5"></i>
+          </div>
+          <span class="font-bold text-xs text-charcoal">Book Service</span>
+          <span class="text-[10px] text-gray-400">Instant Quotes</span>
+        </a>
+
+        <a href="#jobs" class="bg-white rounded-xl p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border border-gray-100 hover:border-honey flex flex-col items-center text-center group">
+          <div class="w-10 h-10 rounded-full bg-honey-light text-honey-amber flex items-center justify-center mb-2 group-hover:bg-honey group-hover:text-charcoal transition-colors">
+            <i data-lucide="briefcase" class="w-5 h-5"></i>
+          </div>
+          <span class="font-bold text-xs text-charcoal">Find Jobs</span>
+          <span class="text-[10px] text-gray-400">Local Hiring</span>
+        </a>
+
+        <a href="#real-estate" class="bg-white rounded-xl p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border border-gray-100 hover:border-honey flex flex-col items-center text-center group">
+          <div class="w-10 h-10 rounded-full bg-honey-light text-honey-amber flex items-center justify-center mb-2 group-hover:bg-honey group-hover:text-charcoal transition-colors">
+            <i data-lucide="home" class="w-5 h-5"></i>
+          </div>
+          <span class="font-bold text-xs text-charcoal">Properties</span>
+          <span class="text-[10px] text-gray-400">Rent &amp; Buy</span>
+        </a>
+
+        <a href="#vehicles" class="bg-white rounded-xl p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border border-gray-100 hover:border-honey flex flex-col items-center text-center group">
+          <div class="w-10 h-10 rounded-full bg-honey-light text-honey-amber flex items-center justify-center mb-2 group-hover:bg-honey group-hover:text-charcoal transition-colors">
+            <i data-lucide="car" class="w-5 h-5"></i>
+          </div>
+          <span class="font-bold text-xs text-charcoal">Vehicles</span>
+          <span class="text-[10px] text-gray-400">New &amp; Used</span>
+        </a>
+
+        <a href="#community" class="bg-white rounded-xl p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border border-gray-100 hover:border-honey flex flex-col items-center text-center group">
+          <div class="w-10 h-10 rounded-full bg-honey-light text-honey-amber flex items-center justify-center mb-2 group-hover:bg-honey group-hover:text-charcoal transition-colors">
+            <i data-lucide="store" class="w-5 h-5"></i>
+          </div>
+          <span class="font-bold text-xs text-charcoal">Businesses</span>
+          <span class="text-[10px] text-gray-400">Support Local</span>
+        </a>
+
+        <a href="#community" class="bg-white rounded-xl p-3 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border border-gray-100 hover:border-honey flex flex-col items-center text-center group">
+          <div class="w-10 h-10 rounded-full bg-honey-light text-honey-amber flex items-center justify-center mb-2 group-hover:bg-honey group-hover:text-charcoal transition-colors">
+            <i data-lucide="users" class="w-5 h-5"></i>
+          </div>
+          <span class="font-bold text-xs text-charcoal">Community</span>
+          <span class="text-[10px] text-gray-400">Hub &amp; Events</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 6. MARKETPLACE FEATURE PANELS              -->
+    <!-- ========================================== -->
+    <section id="marketplace-features" aria-label="Marketplace Feature Panels" class="max-w-7xl mx-auto px-4 py-10">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Panel 1: Deals of the Day -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div>
+            <h2 class="font-black text-lg text-charcoal mb-3">Deals of the Day</h2>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <a href="#deals" class="group block">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80" alt="Headphones" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Wireless Audio</span>
+                <span class="text-[10px] text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded">Up to 40% Off</span>
+              </a>
+              <a href="#deals" class="group block">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=300&q=80" alt="Smartwatch" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Smart Devices</span>
+                <span class="text-[10px] text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded">Save $50</span>
+              </a>
+              <a href="#deals" class="group block">
+                <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=300&q=80" alt="Care products" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Wellness &amp; Care</span>
+                <span class="text-[10px] text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded">Buy 1 Get 1</span>
+              </a>
+              <a href="#deals" class="group block">
+                <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=300&q=80" alt="Camera" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Photography</span>
+                <span class="text-[10px] text-red-600 font-bold bg-red-50 px-1.5 py-0.5 rounded">Limited Deal</span>
+              </a>
+            </div>
+          </div>
+          <a href="#deals" class="text-xs font-bold text-honey-amber hover:underline inline-flex items-center gap-1">See More Deals <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+        </div>
+
+        <!-- Panel 2: Services Near You -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div>
+            <h2 class="font-black text-lg text-charcoal mb-3">Services Near You</h2>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <a href="#services" class="group block">
+                <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=300&q=80" alt="Electrician" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Electrical Repair</span>
+                <span class="text-[10px] text-gray-500">From $45/hr</span>
+              </a>
+              <a href="#services" class="group block">
+                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=300&q=80" alt="Cleaning" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Deep Cleaning</span>
+                <span class="text-[10px] text-gray-500">Top Rated</span>
+              </a>
+              <a href="#services" class="group block">
+                <img src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=300&q=80" alt="Plumbing" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Plumbing Pros</span>
+                <span class="text-[10px] text-gray-500">24/7 Available</span>
+              </a>
+              <a href="#services" class="group block">
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=300&q=80" alt="Moving" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Local Moving</span>
+                <span class="text-[10px] text-gray-500">Instant Quote</span>
+              </a>
+            </div>
+          </div>
+          <a href="#services" class="text-xs font-bold text-honey-amber hover:underline inline-flex items-center gap-1">Explore All Services <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+        </div>
+
+        <!-- Panel 3: Popular Local Businesses -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div>
+            <h2 class="font-black text-lg text-charcoal mb-3">Popular Local Spots</h2>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <a href="#community" class="group block">
+                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=300&q=80" alt="Bakery" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Artisan Bakeries</span>
+                <span class="text-[10px] text-gray-500">Local Favorites</span>
+              </a>
+              <a href="#community" class="group block">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=300&q=80" alt="Dining" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Family Dining</span>
+                <span class="text-[10px] text-gray-500">4.8 ★ Stars</span>
+              </a>
+              <a href="#community" class="group block">
+                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=300&q=80" alt="Salon" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Salons &amp; Spas</span>
+                <span class="text-[10px] text-gray-500">Book Online</span>
+              </a>
+              <a href="#community" class="group block">
+                <img src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=300&q=80" alt="Boutique" class="w-full h-24 object-cover rounded-lg mb-1 group-hover:opacity-90">
+                <span class="text-xs font-semibold text-charcoal line-clamp-1">Craft Boutiques</span>
+                <span class="text-[10px] text-gray-500">Unique Goods</span>
+              </a>
+            </div>
+          </div>
+          <a href="#community" class="text-xs font-bold text-honey-amber hover:underline inline-flex items-center gap-1">View Local Directory <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+        </div>
+
+        <!-- Panel 4: Start Selling on AsBeez -->
+        <div class="bg-honey-light rounded-2xl p-5 shadow-sm border border-honey/40 flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-8 h-8 rounded-lg bg-honey text-charcoal flex items-center justify-center font-bold">
+                <i data-lucide="bee" class="w-5 h-5"></i>
+              </div>
+              <h2 class="font-black text-lg text-charcoal">Sell on AsBeez</h2>
+            </div>
+            <p class="text-xs text-gray-600 mb-4">Join millions of sellers and service professionals growing their income today.</p>
+            <ul class="space-y-2 text-xs font-medium text-charcoal mb-6">
+              <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-success"></i> Zero upfront store setup fees</li>
+              <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-success"></i> Reach local &amp; national buyers</li>
+              <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-success"></i> Integrated booking &amp; payments</li>
+            </ul>
+          </div>
+          <a href="#sell" class="w-full bg-honey hover:bg-honey-amber text-charcoal font-bold py-2.5 rounded-lg text-xs text-center shadow transition-all">Create Seller Account</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 7. TODAY'S DEALS CAROUSEL                  -->
+    <!-- ========================================== -->
+    <section id="deals" aria-label="Today's Deals" class="bg-white py-10 border-y border-gray-200">
+      <div class="max-w-7xl mx-auto px-4">
+        
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-3">
+            <h2 class="text-xl sm:text-2xl font-black text-charcoal">Today's Hot Deals</h2>
+            <span class="bg-red-100 text-red-600 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+              <i data-lucide="flame" class="w-3.5 h-3.5"></i> Limited Time
+            </span>
+          </div>
+          <div class="flex gap-2">
+            <button id="deals-prev" aria-label="Scroll Deals Left" class="p-2 rounded-full border border-gray-300 hover:bg-honey hover:border-honey text-charcoal transition-colors">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </button>
+            <button id="deals-next" aria-label="Scroll Deals Right" class="p-2 rounded-full border border-gray-300 hover:bg-honey hover:border-honey text-charcoal transition-colors">
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="deals-container" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth pb-4">
+          
+          <!-- Card 1 -->
+          <div class="min-w-[240px] max-w-[240px] bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+            <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+            </button>
+            <div>
+              <div class="relative overflow-hidden rounded-lg mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">25% OFF</span>
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80" alt="Noise-Canceling Headphones" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Wireless Noise-Canceling Headphones</h3>
+              <div class="flex items-center gap-1 mb-1">
+                <div class="flex text-honey-amber">
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                </div>
+                <span class="text-[10px] text-gray-500">(428)</span>
+              </div>
+              <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-base font-black text-charcoal">$149.99</span>
+                <span class="text-xs text-gray-400 line-through">$199.99</span>
+              </div>
+              <p class="text-[10px] text-success font-semibold mb-3">FREE Delivery Tomorrow</p>
+            </div>
+            <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+            </button>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="min-w-[240px] max-w-[240px] bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+            <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+            </button>
+            <div>
+              <div class="relative overflow-hidden rounded-lg mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">18% OFF</span>
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80" alt="Fitness Smartwatch" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Fitness Tracker Smartwatch with Heart Monitor</h3>
+              <div class="flex items-center gap-1 mb-1">
+                <div class="flex text-honey-amber">
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star-half" class="w-3 h-3 fill-current"></i>
+                </div>
+                <span class="text-[10px] text-gray-500">(1,204)</span>
+              </div>
+              <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-base font-black text-charcoal">$89.50</span>
+                <span class="text-xs text-gray-400 line-through">$109.00</span>
+              </div>
+              <p class="text-[10px] text-success font-semibold mb-3">In Stock - Fast Shipping</p>
+            </div>
+            <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+            </button>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="min-w-[240px] max-w-[240px] bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+            <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+            </button>
+            <div>
+              <div class="relative overflow-hidden rounded-lg mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">30% OFF</span>
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80" alt="Athletic Running Shoes" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Lightweight Athletic Running Sneakers</h3>
+              <div class="flex items-center gap-1 mb-1">
+                <div class="flex text-honey-amber">
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                </div>
+                <span class="text-[10px] text-gray-500">(890)</span>
+              </div>
+              <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-base font-black text-charcoal">$69.99</span>
+                <span class="text-xs text-gray-400 line-through">$99.99</span>
+              </div>
+              <p class="text-[10px] text-success font-semibold mb-3">FREE Delivery</p>
+            </div>
+            <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+            </button>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="min-w-[240px] max-w-[240px] bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+            <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+            </button>
+            <div>
+              <div class="relative overflow-hidden rounded-lg mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">15% OFF</span>
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80" alt="Ultra-Slim Laptop" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Ultra-Slim 14" Work &amp; Travel Laptop</h3>
+              <div class="flex items-center gap-1 mb-1">
+                <div class="flex text-honey-amber">
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                </div>
+                <span class="text-[10px] text-gray-500">(312)</span>
+              </div>
+              <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-base font-black text-charcoal">$749.00</span>
+                <span class="text-xs text-gray-400 line-through">$879.00</span>
+              </div>
+              <p class="text-[10px] text-success font-semibold mb-3">Only 3 Left in Stock</p>
+            </div>
+            <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+            </button>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="min-w-[240px] max-w-[240px] bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+            <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+            </button>
+            <div>
+              <div class="relative overflow-hidden rounded-lg mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">40% OFF</span>
+                <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80" alt="Essential Skincare Kit" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Organic Hydrating Skincare Bundle</h3>
+              <div class="flex items-center gap-1 mb-1">
+                <div class="flex text-honey-amber">
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                </div>
+                <span class="text-[10px] text-gray-500">(156)</span>
+              </div>
+              <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-base font-black text-charcoal">$34.99</span>
+                <span class="text-xs text-gray-400 line-through">$59.99</span>
+              </div>
+              <p class="text-[10px] text-success font-semibold mb-3">FREE Shipping</p>
+            </div>
+            <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+            </button>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="min-w-[240px] max-w-[240px] bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+            <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+            </button>
+            <div>
+              <div class="relative overflow-hidden rounded-lg mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">20% OFF</span>
+                <img src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=400&q=80" alt="Leather Backpack" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Handcrafted Vintage Leather Backpack</h3>
+              <div class="flex items-center gap-1 mb-1">
+                <div class="flex text-honey-amber">
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star-half" class="w-3 h-3 fill-current"></i>
+                </div>
+                <span class="text-[10px] text-gray-500">(73)</span>
+              </div>
+              <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-base font-black text-charcoal">$79.00</span>
+                <span class="text-xs text-gray-400 line-through">$99.00</span>
+              </div>
+              <p class="text-[10px] text-success font-semibold mb-3">Handmade Local Artisan</p>
+            </div>
+            <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+            </button>
+          </div>
+
+          <!-- Card 7 -->
+          <div class="min-w-[240px] max-w-[240px] bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+            <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+            </button>
+            <div>
+              <div class="relative overflow-hidden rounded-lg mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">35% OFF</span>
+                <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&q=80" alt="Instant Camera" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Retro Instant Film Camera</h3>
+              <div class="flex items-center gap-1 mb-1">
+                <div class="flex text-honey-amber">
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                </div>
+                <span class="text-[10px] text-gray-500">(512)</span>
+              </div>
+              <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-base font-black text-charcoal">$59.99</span>
+                <span class="text-xs text-gray-400 line-through">$89.99</span>
+              </div>
+              <p class="text-[10px] text-success font-semibold mb-3">FREE Delivery</p>
+            </div>
+            <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+            </button>
+          </div>
+
+          <!-- Card 8 -->
+          <div class="min-w-[240px] max-w-[240px] bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+            <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+            </button>
+            <div>
+              <div class="relative overflow-hidden rounded-lg mb-3">
+                <span class="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">10% OFF</span>
+                <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=400&q=80" alt="Gaming Headset" class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
+              </div>
+              <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Surround Sound Gaming Headset</h3>
+              <div class="flex items-center gap-1 mb-1">
+                <div class="flex text-honey-amber">
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                </div>
+                <span class="text-[10px] text-gray-500">(940)</span>
+              </div>
+              <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-base font-black text-charcoal">$45.00</span>
+                <span class="text-xs text-gray-400 line-through">$50.00</span>
+              </div>
+              <p class="text-[10px] text-success font-semibold mb-3">In Stock</p>
+            </div>
+            <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+              <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 8. POPULAR SERVICES MARKETPLACE            -->
+    <!-- ========================================== -->
+    <section id="services" aria-label="Popular Local Services" class="max-w-7xl mx-auto px-4 py-12">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-2">
+        <div>
+          <span class="text-honey-amber font-bold text-xs uppercase tracking-wider">Book Verified Local Talent</span>
+          <h2 class="text-2xl sm:text-3xl font-black text-charcoal">Popular Services On-Demand</h2>
+        </div>
+        <a href="#all-services" class="text-xs font-bold text-honey-amber hover:underline flex items-center gap-1">
+          Explore 500+ Local Services <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Service Card 1 -->
+        <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+          <div>
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80" alt="Home Cleaning" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <span class="absolute top-3 left-3 bg-charcoal/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3 h-3 text-honey"></i> San Francisco Bay
+              </span>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-honey-amber uppercase tracking-wider">Home Maintenance</span>
+                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-success bg-emerald-50 px-2 py-0.5 rounded-full">
+                  <i data-lucide="check-circle" class="w-3 h-3"></i> Verified
+                </span>
+              </div>
+              <h3 class="text-lg font-extrabold text-charcoal mb-1">Eco-Friendly Deep Home Cleaning</h3>
+              <p class="text-xs text-gray-500 mb-4">By Sparkling Clean Solutions Co.</p>
+              
+              <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div class="flex items-center gap-1 text-xs font-bold text-charcoal">
+                  <i data-lucide="star" class="w-4 h-4 text-honey-amber fill-current"></i> 4.9 <span class="text-gray-400 font-normal">(184 reviews)</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-gray-400 block text-right">Starting at</span>
+                  <span class="text-base font-black text-charcoal">$35<span class="text-xs font-normal text-gray-500">/hr</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <button class="w-full bg-charcoal hover:bg-charcoal-light text-white text-xs font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+              <i data-lucide="calendar" class="w-4 h-4 text-honey"></i> Book Service Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Service Card 2 -->
+        <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+          <div>
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=600&q=80" alt="Plumbing Service" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <span class="absolute top-3 left-3 bg-charcoal/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3 h-3 text-honey"></i> Within 15 Miles
+              </span>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-honey-amber uppercase tracking-wider">Plumbing</span>
+                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-success bg-emerald-50 px-2 py-0.5 rounded-full">
+                  <i data-lucide="check-circle" class="w-3 h-3"></i> Verified
+                </span>
+              </div>
+              <h3 class="text-lg font-extrabold text-charcoal mb-1">Emergency Plumbing &amp; Pipe Repair</h3>
+              <p class="text-xs text-gray-500 mb-4">By Master Flow Plumbing Inc.</p>
+              
+              <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div class="flex items-center gap-1 text-xs font-bold text-charcoal">
+                  <i data-lucide="star" class="w-4 h-4 text-honey-amber fill-current"></i> 5.0 <span class="text-gray-400 font-normal">(92 reviews)</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-gray-400 block text-right">Starting at</span>
+                  <span class="text-base font-black text-charcoal">$65<span class="text-xs font-normal text-gray-500">/job</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <button class="w-full bg-charcoal hover:bg-charcoal-light text-white text-xs font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+              <i data-lucide="calendar" class="w-4 h-4 text-honey"></i> Book Service Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Service Card 3 -->
+        <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+          <div>
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80" alt="Electrical Services" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <span class="absolute top-3 left-3 bg-charcoal/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3 h-3 text-honey"></i> Metro Area
+              </span>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-honey-amber uppercase tracking-wider">Electrical</span>
+                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-success bg-emerald-50 px-2 py-0.5 rounded-full">
+                  <i data-lucide="check-circle" class="w-3 h-3"></i> Verified
+                </span>
+              </div>
+              <h3 class="text-lg font-extrabold text-charcoal mb-1">Residential Electrical Repairs</h3>
+              <p class="text-xs text-gray-500 mb-4">By Apex Electricians Ltd.</p>
+              
+              <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div class="flex items-center gap-1 text-xs font-bold text-charcoal">
+                  <i data-lucide="star" class="w-4 h-4 text-honey-amber fill-current"></i> 4.8 <span class="text-gray-400 font-normal">(310 reviews)</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-gray-400 block text-right">Starting at</span>
+                  <span class="text-base font-black text-charcoal">$55<span class="text-xs font-normal text-gray-500">/hr</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <button class="w-full bg-charcoal hover:bg-charcoal-light text-white text-xs font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+              <i data-lucide="calendar" class="w-4 h-4 text-honey"></i> Book Service Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Service Card 4 -->
+        <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+          <div>
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="Web Development" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <span class="absolute top-3 left-3 bg-charcoal/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm flex items-center gap-1">
+                <i data-lucide="globe" class="w-3 h-3 text-honey"></i> Remote / Online
+              </span>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-honey-amber uppercase tracking-wider">Digital &amp; Tech</span>
+                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-success bg-emerald-50 px-2 py-0.5 rounded-full">
+                  <i data-lucide="check-circle" class="w-3 h-3"></i> Verified
+                </span>
+              </div>
+              <h3 class="text-lg font-extrabold text-charcoal mb-1">Custom Web Development &amp; SEO</h3>
+              <p class="text-xs text-gray-500 mb-4">By HiveMind Digital Studio</p>
+              
+              <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div class="flex items-center gap-1 text-xs font-bold text-charcoal">
+                  <i data-lucide="star" class="w-4 h-4 text-honey-amber fill-current"></i> 5.0 <span class="text-gray-400 font-normal">(64 reviews)</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-gray-400 block text-right">Starting at</span>
+                  <span class="text-base font-black text-charcoal">$250<span class="text-xs font-normal text-gray-500">/proj</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <button class="w-full bg-charcoal hover:bg-charcoal-light text-white text-xs font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+              <i data-lucide="message-square" class="w-4 h-4 text-honey"></i> Contact Specialist
+            </button>
+          </div>
+        </div>
+
+        <!-- Service Card 5 -->
+        <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+          <div>
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=80" alt="Accounting & Tax" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <span class="absolute top-3 left-3 bg-charcoal/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3 h-3 text-honey"></i> Downtown
+              </span>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-honey-amber uppercase tracking-wider">Financial Services</span>
+                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-success bg-emerald-50 px-2 py-0.5 rounded-full">
+                  <i data-lucide="check-circle" class="w-3 h-3"></i> Verified
+                </span>
+              </div>
+              <h3 class="text-lg font-extrabold text-charcoal mb-1">Small Business Accounting &amp; Tax</h3>
+              <p class="text-xs text-gray-500 mb-4">By Heritage Tax &amp; Advisory</p>
+              
+              <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div class="flex items-center gap-1 text-xs font-bold text-charcoal">
+                  <i data-lucide="star" class="w-4 h-4 text-honey-amber fill-current"></i> 4.9 <span class="text-gray-400 font-normal">(120 reviews)</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-gray-400 block text-right">Starting at</span>
+                  <span class="text-base font-black text-charcoal">$80<span class="text-xs font-normal text-gray-500">/hr</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <button class="w-full bg-charcoal hover:bg-charcoal-light text-white text-xs font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+              <i data-lucide="calendar" class="w-4 h-4 text-honey"></i> Schedule Consultation
+            </button>
+          </div>
+        </div>
+
+        <!-- Service Card 6 -->
+        <div class="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+          <div>
+            <div class="relative h-48 overflow-hidden">
+              <img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=600&q=80" alt="Senior Care" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <span class="absolute top-3 left-3 bg-charcoal/80 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm flex items-center gap-1">
+                <i data-lucide="map-pin" class="w-3 h-3 text-honey"></i> Local Area
+              </span>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-honey-amber uppercase tracking-wider">Health &amp; Care</span>
+                <span class="inline-flex items-center gap-1 text-[11px] font-bold text-success bg-emerald-50 px-2 py-0.5 rounded-full">
+                  <i data-lucide="check-circle" class="w-3 h-3"></i> Verified
+                </span>
+              </div>
+              <h3 class="text-lg font-extrabold text-charcoal mb-1">Compassionate In-Home Senior Care</h3>
+              <p class="text-xs text-gray-500 mb-4">By Golden Years Assistance</p>
+              
+              <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div class="flex items-center gap-1 text-xs font-bold text-charcoal">
+                  <i data-lucide="star" class="w-4 h-4 text-honey-amber fill-current"></i> 5.0 <span class="text-gray-400 font-normal">(78 reviews)</span>
+                </div>
+                <div>
+                  <span class="text-[10px] text-gray-400 block text-right">Starting at</span>
+                  <span class="text-base font-black text-charcoal">$30<span class="text-xs font-normal text-gray-500">/hr</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0">
+            <button class="w-full bg-charcoal hover:bg-charcoal-light text-white text-xs font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+              <i data-lucide="phone" class="w-4 h-4 text-honey"></i> Request Info
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 9. PROMOTIONAL BANNER                      -->
+    <!-- ========================================== -->
+    <section aria-label="Seller Promotion" class="bg-honeycomb py-14 border-y border-honey/30 my-8">
+      <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
+        <div class="max-w-2xl mx-auto space-y-4">
+          <div class="w-12 h-12 bg-honey text-charcoal rounded-2xl flex items-center justify-center mx-auto shadow-md">
+            <i data-lucide="bee" class="w-7 h-7"></i>
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-black text-charcoal">Have Something to Offer?</h2>
+          <p class="text-gray-700 text-sm sm:text-base leading-relaxed">
+            Whether you want to sell products, list local services, post open job roles, or promote your business, AsBeez gives you the tools and local audience to thrive.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4 pt-4">
+            <a href="#sell" class="bg-charcoal hover:bg-charcoal-light text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition-all hover:-translate-y-0.5">
+              Create Your Listing
+            </a>
+            <a href="#how-it-works" class="bg-white hover:bg-gray-50 text-charcoal font-bold px-8 py-3.5 rounded-xl border border-gray-300 shadow-sm transition-all">
+              Learn How It Works
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 10. RECOMMENDED PRODUCTS                   -->
+    <!-- ========================================== -->
+    <section id="products" aria-label="Recommended Products" class="max-w-7xl mx-auto px-4 py-10">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <span class="text-honey-amber font-bold text-xs uppercase tracking-wider">Curated Marketplace Selection</span>
+          <h2 class="text-2xl font-black text-charcoal">Recommended For You</h2>
+        </div>
+        <a href="#all-products" class="text-xs font-bold text-honey-amber hover:underline flex items-center gap-1">
+          View All Products <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        
+        <!-- Grid Product 1 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+          <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+            <i data-lucide="heart" class="w-4 h-4"></i>
+          </button>
+          <div>
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=400&q=80" alt="Smart Home Hub" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+            </div>
+            <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Smart Home Voice Display Controller</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey-amber">
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+              </div>
+              <span class="text-[10px] text-gray-500">(340)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-base font-black text-charcoal">$119.00</span>
+            </div>
+            <p class="text-[10px] text-success font-semibold mb-3">FREE Delivery</p>
+          </div>
+          <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+          </button>
+        </div>
+
+        <!-- Grid Product 2 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+          <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+            <i data-lucide="heart" class="w-4 h-4"></i>
+          </button>
+          <div>
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=400&q=80" alt="Ergonomic Mouse" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+            </div>
+            <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Ergonomic Wireless Precision Mouse</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey-amber">
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star-half" class="w-3 h-3 fill-current"></i>
+              </div>
+              <span class="text-[10px] text-gray-500">(1,820)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-base font-black text-charcoal">$49.99</span>
+              <span class="text-xs text-gray-400 line-through">$65.00</span>
+            </div>
+            <p class="text-[10px] text-success font-semibold mb-3">In Stock</p>
+          </div>
+          <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+          </button>
+        </div>
+
+        <!-- Grid Product 3 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+          <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+            <i data-lucide="heart" class="w-4 h-4"></i>
+          </button>
+          <div>
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img src="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=400&q=80" alt="Smartphone" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+            </div>
+            <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">5G Unlocked Smartphone 256GB</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey-amber">
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+              </div>
+              <span class="text-[10px] text-gray-500">(92)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-base font-black text-charcoal">$699.00</span>
+            </div>
+            <p class="text-[10px] text-success font-semibold mb-3">FREE Delivery</p>
+          </div>
+          <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+          </button>
+        </div>
+
+        <!-- Grid Product 4 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+          <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+            <i data-lucide="heart" class="w-4 h-4"></i>
+          </button>
+          <div>
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&q=80" alt="Instant Print Camera" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+            </div>
+            <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Compact Travel Mirrorless Camera</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey-amber">
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+              </div>
+              <span class="text-[10px] text-gray-500">(410)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-base font-black text-charcoal">$549.99</span>
+            </div>
+            <p class="text-[10px] text-success font-semibold mb-3">In Stock</p>
+          </div>
+          <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+          </button>
+        </div>
+
+        <!-- Grid Product 5 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+          <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+            <i data-lucide="heart" class="w-4 h-4"></i>
+          </button>
+          <div>
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=400&q=80" alt="Notebook" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+            </div>
+            <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Handmade Honeycomb Hardcover Journal</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey-amber">
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+              </div>
+              <span class="text-[10px] text-gray-500">(88)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-base font-black text-charcoal">$18.50</span>
+            </div>
+            <p class="text-[10px] text-success font-semibold mb-3">Made Locally</p>
+          </div>
+          <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+          </button>
+        </div>
+
+        <!-- Grid Product 6 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+          <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+            <i data-lucide="heart" class="w-4 h-4"></i>
+          </button>
+          <div>
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80" alt="Mobile Phone Stand" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+            </div>
+            <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Adjustable Aluminum Desk Phone Stand</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey-amber">
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star-half" class="w-3 h-3 fill-current"></i>
+              </div>
+              <span class="text-[10px] text-gray-500">(2,100)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-base font-black text-charcoal">$14.99</span>
+            </div>
+            <p class="text-[10px] text-success font-semibold mb-3">In Stock</p>
+          </div>
+          <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+          </button>
+        </div>
+
+        <!-- Grid Product 7 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+          <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+            <i data-lucide="heart" class="w-4 h-4"></i>
+          </button>
+          <div>
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img src="https://images.unsplash.com/photo-1507764923504-cd90bf7da772?auto=format&fit=crop&w=400&q=80" alt="Mechanical Keyboard" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+            </div>
+            <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">RGB Wireless Mechanical Keyboard</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey-amber">
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+              </div>
+              <span class="text-[10px] text-gray-500">(612)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-base font-black text-charcoal">$89.99</span>
+            </div>
+            <p class="text-[10px] text-success font-semibold mb-3">FREE Shipping</p>
+          </div>
+          <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+          </button>
+        </div>
+
+        <!-- Grid Product 8 -->
+        <div class="bg-white border border-gray-200 rounded-xl p-3 flex flex-col justify-between hover:shadow-lg transition-all relative group">
+          <button class="wishlist-btn absolute top-5 right-5 z-10 p-1.5 bg-white/80 rounded-full text-gray-400 hover:text-red-500 transition-colors" aria-label="Add to Wishlist">
+            <i data-lucide="heart" class="w-4 h-4"></i>
+          </button>
+          <div>
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80" alt="Running Shoes Red" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+            </div>
+            <h3 class="text-xs font-bold text-charcoal line-clamp-2 mb-1">Pro Performance Cushion Sneakers</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey-amber">
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+                <i data-lucide="star" class="w-3 h-3 fill-current"></i>
+              </div>
+              <span class="text-[10px] text-gray-500">(1,040)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-2">
+              <span class="text-base font-black text-charcoal">$120.00</span>
+            </div>
+            <p class="text-[10px] text-success font-semibold mb-3">In Stock</p>
+          </div>
+          <button class="add-to-cart-btn w-full bg-honey hover:bg-honey-amber text-charcoal text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Add to Cart
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 11. HOW ASBEEZ WORKS                       -->
+    <!-- ========================================== -->
+    <section id="how-it-works" aria-label="How AsBeez Works" class="bg-white py-14 border-t border-gray-200">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <span class="text-honey-amber font-bold text-xs uppercase tracking-wider">Simple &amp; Transparent</span>
+          <h2 class="text-2xl sm:text-3xl font-black text-charcoal mt-1">How AsBeez Works</h2>
+          <p class="text-gray-600 text-xs sm:text-sm mt-2">Connecting buyers, service seekers, sellers, and local professionals in three easy steps.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          
+          <!-- Desktop Connector Line -->
+          <div class="hidden md:block absolute top-12 left-1/6 right-1/6 h-0.5 bg-honey/40 z-0"></div>
+
+          <!-- Step 1 -->
+          <div class="bg-honey-light/50 rounded-2xl p-6 border border-honey/20 text-center relative z-10 hover:-translate-y-1 transition-transform">
+            <div class="w-16 h-16 bg-honey text-charcoal rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md font-black text-xl">
+              1
+            </div>
+            <h3 class="text-lg font-bold text-charcoal mb-2">Search or Browse</h3>
+            <p class="text-xs text-gray-600 leading-relaxed">
+              Explore thousands of products, local service providers, job vacancies, or real estate listings from verified community members.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="bg-honey-light/50 rounded-2xl p-6 border border-honey/20 text-center relative z-10 hover:-translate-y-1 transition-transform">
+            <div class="w-16 h-16 bg-honey text-charcoal rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md font-black text-xl">
+              2
+            </div>
+            <h3 class="text-lg font-bold text-charcoal mb-2">Compare and Connect</h3>
+            <p class="text-xs text-gray-600 leading-relaxed">
+              Review upfront prices, rating scores, seller credentials, and client feedback. Chat directly with sellers or service pros.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="bg-honey-light/50 rounded-2xl p-6 border border-honey/20 text-center relative z-10 hover:-translate-y-1 transition-transform">
+            <div class="w-16 h-16 bg-honey text-charcoal rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md font-black text-xl">
+              3
+            </div>
+            <h3 class="text-lg font-bold text-charcoal mb-2">Buy, Book, or Hire</h3>
+            <p class="text-xs text-gray-600 leading-relaxed">
+              Complete secure checkout for physical products or instant service bookings backed by our AsBeez Buyer &amp; Service Guarantee.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 12. TRUST AND BENEFITS                     -->
+    <!-- ========================================== -->
+    <section aria-label="Trust and Benefits" class="max-w-7xl mx-auto px-4 py-12">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-start gap-4">
+          <div class="p-3 bg-honey-light text-honey-amber rounded-xl flex-shrink-0">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-charcoal mb-1">Verified Sellers &amp; Pros</h3>
+            <p class="text-xs text-gray-500">Identity and background checks ensure a trustworthy ecosystem.</p>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-start gap-4">
+          <div class="p-3 bg-honey-light text-honey-amber rounded-xl flex-shrink-0">
+            <i data-lucide="lock" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-charcoal mb-1">Secure Transactions</h3>
+            <p class="text-xs text-gray-500">Encrypted payment gateway with full purchase protection.</p>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-start gap-4">
+          <div class="p-3 bg-honey-light text-honey-amber rounded-xl flex-shrink-0">
+            <i data-lucide="users" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-charcoal mb-1">Local Community Focus</h3>
+            <p class="text-xs text-gray-500">Support neighborhood businesses and keep commerce local.</p>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-start gap-4">
+          <div class="p-3 bg-honey-light text-honey-amber rounded-xl flex-shrink-0">
+            <i data-lucide="headphones" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-charcoal mb-1">Responsive Support</h3>
+            <p class="text-xs text-gray-500">Dedicated 24/7 customer care team ready to assist your team.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 13. NEWSLETTER SIGNUP                      -->
+    <!-- ========================================== -->
+    <section aria-label="Newsletter Subscription" class="bg-charcoal text-white py-12 border-t border-charcoal-light relative">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <div class="max-w-xl mx-auto space-y-4">
+          <div class="inline-flex p-3 rounded-full bg-charcoal-light text-honey mb-1">
+            <i data-lucide="mail" class="w-6 h-6"></i>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black">Get the Latest Buzz</h2>
+          <p class="text-gray-300 text-xs sm:text-sm">
+            Subscribe to receive exclusive local discounts, new service alerts, and marketplace updates.
+          </p>
+          
+          <form id="newsletter-form" class="mt-4 flex flex-col sm:flex-row gap-2 max-w-md mx-auto" novalidate>
+            <div class="flex-1 relative">
+              <label for="newsletter-email" class="sr-only">Email Address</label>
+              <input id="newsletter-email" type="email" placeholder="Enter your email address" required class="w-full h-11 px-4 rounded-lg bg-charcoal-light border border-gray-600 text-white placeholder-gray-400 text-xs focus:outline-none focus:border-honey">
+            </div>
+            <button type="submit" class="bg-honey hover:bg-honey-amber text-charcoal font-bold px-6 h-11 rounded-lg text-xs transition-colors flex items-center justify-center gap-1">
+              Join the Hive
+            </button>
+          </form>
+
+          <!-- Dynamic Feedback Message -->
+          <div id="newsletter-feedback" class="hidden text-xs font-semibold pt-1"></div>
+
+          <p class="text-[10px] text-gray-400 flex items-center justify-center gap-1">
+            <i data-lucide="shield" class="w-3 h-3 text-honey"></i> We respect your privacy. Unsubscribe anytime with one click.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- BACK TO TOP BUTTON                         -->
+  <!-- ========================================== -->
+  <button id="back-to-top" aria-label="Back to Top" class="bg-charcoal-light hover:bg-honey hover:text-charcoal text-white text-xs py-3 w-full text-center font-bold transition-colors border-b border-gray-700 flex items-center justify-center gap-1">
+    <i data-lucide="chevron-up" class="w-4 h-4"></i> Back to Top
+  </button>
+
+  <!-- ========================================== -->
+  <!-- 14. COMPREHENSIVE FOOTER                  -->
+  <!-- ========================================== -->
+  <footer class="bg-charcoal text-gray-300 text-xs pt-12 pb-8 border-t border-gray-800">
+    <div class="max-w-7xl mx-auto px-4">
+      
+      <!-- Footer Columns -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 mb-12">
+        
+        <div>
+          <h3 class="font-bold text-white text-sm mb-3">Get to Know AsBeez</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-honey transition-colors">About AsBeez</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Careers at Hive</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Press &amp; News</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">AsBeez Cares</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Investor Relations</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-white text-sm mb-3">Shop &amp; Explore</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-honey transition-colors">Product Directory</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Local Service Hub</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Job Openings</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Real Estate Listings</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Vehicles &amp; Parts</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-white text-sm mb-3">Sell &amp; Grow</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-honey transition-colors">Sell Products</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Register as Service Pro</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Post Job Vacancies</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Advertise Your Business</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Affiliate Program</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-white text-sm mb-3">Customer Support</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-honey transition-colors">Help &amp; FAQs</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Your Account</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Shipping Rates &amp; Policies</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Returns &amp; Replacements</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">AsBeez Protection Guarantee</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-white text-sm mb-3">Legal &amp; Policies</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-honey transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Accessibility Statement</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Cookie Preferences</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Trust &amp; Safety</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <hr class="border-gray-800 my-8">
+
+      <!-- Bottom Branding, Selectors & Social -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        
+        <!-- Logo & Tagline -->
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-honey text-charcoal flex items-center justify-center rounded-lg font-bold">
+            <i data-lucide="bee" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <span class="font-extrabold text-white text-lg tracking-tight">As<span class="text-honey">Beez</span></span>
+            <span class="text-[11px] text-gray-400 block leading-none">Find it. Book it. Get it done.</span>
+          </div>
+        </div>
+
+        <!-- Language / Country Selectors -->
+        <div class="flex flex-wrap items-center gap-3">
+          <button class="border border-gray-700 hover:border-gray-500 rounded px-3 py-1.5 flex items-center gap-2 text-xs">
+            <i data-lucide="globe" class="w-4 h-4 text-honey"></i> English
+          </button>
+          <button class="border border-gray-700 hover:border-gray-500 rounded px-3 py-1.5 flex items-center gap-2 text-xs">
+            <span class="font-bold text-honey">$ USD</span> - US Dollar
+          </button>
+          <button class="border border-gray-700 hover:border-gray-500 rounded px-3 py-1.5 flex items-center gap-2 text-xs">
+            🇺🇸 United States
+          </button>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="flex items-center gap-4">
+          <a href="#" aria-label="Facebook" class="p-2 bg-charcoal-light hover:text-honey rounded-full transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+          <a href="#" aria-label="Twitter" class="p-2 bg-charcoal-light hover:text-honey rounded-full transition-colors"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+          <a href="#" aria-label="Instagram" class="p-2 bg-charcoal-light hover:text-honey rounded-full transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+          <a href="#" aria-label="LinkedIn" class="p-2 bg-charcoal-light hover:text-honey rounded-full transition-colors"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+        </div>
+
+      </div>
+
+      <!-- Copyright & Payment Icons Placeholder -->
+      <div class="mt-8 text-center text-[11px] text-gray-500 space-y-2">
+        <div class="flex justify-center gap-3 text-gray-400">
+          <span class="hover:underline">Visa</span> • <span class="hover:underline">Mastercard</span> • <span class="hover:underline">Amex</span> • <span class="hover:underline">PayPal</span> • <span class="hover:underline">Apple Pay</span>
+        </div>
+        <p>&copy; 2026 AsBeez Inc. or its affiliates. All rights reserved. Designed with honeycomb passion.</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- INTERACTIVE JAVASCRIPT LOGIC               -->
+  <!-- ========================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // Initialize Lucide Icons
+      lucide.createIcons();
+
+      // 1. Dismissible Announcement Bar
+      const announcementBar = document.getElementById('announcement-bar');
+      const closeAnnouncementBtn = document.getElementById('close-announcement');
+      if (closeAnnouncementBtn && announcementBar) {
+        closeAnnouncementBtn.addEventListener('click', () => {
+          announcementBar.style.display = 'none';
+        });
+      }
+
+      // 2. Mobile Drawer Navigation Toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const closeMobileDrawerBtn = document.getElementById('close-mobile-drawer');
+      const mobileDrawer = document.getElementById('mobile-drawer');
+      const mobileDrawerOverlay = document.getElementById('mobile-drawer-overlay');
+
+      function toggleMobileDrawer(open) {
+        if (open) {
+          mobileDrawer.classList.remove('-translate-x-full');
+          mobileDrawerOverlay.classList.remove('hidden');
+          mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        } else {
+          mobileDrawer.classList.add('-translate-x-full');
+          mobileDrawerOverlay.classList.add('hidden');
+          mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', () => toggleMobileDrawer(true));
+      if (closeMobileDrawerBtn) closeMobileDrawerBtn.addEventListener('click', () => toggleMobileDrawer(false));
+      if (mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', () => toggleMobileDrawer(false));
+
+      // 3. Category Mega-Menu Toggle
+      const megaMenuTrigger = document.getElementById('mega-menu-trigger');
+      const megaMenuDropdown = document.getElementById('mega-menu-dropdown');
+
+      if (megaMenuTrigger && megaMenuDropdown) {
+        megaMenuTrigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isExpanded = megaMenuTrigger.getAttribute('aria-expanded') === 'true';
+          megaMenuTrigger.setAttribute('aria-expanded', !isExpanded);
+          megaMenuDropdown.classList.toggle('hidden');
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!megaMenuDropdown.contains(e.target) && !megaMenuTrigger.contains(e.target)) {
+            megaMenuDropdown.classList.add('hidden');
+            megaMenuTrigger.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      // 4. Hero Carousel Auto-Rotation & Controls
+      const slides = document.querySelectorAll('.hero-slide');
+      const dots = document.querySelectorAll('.hero-dot');
+      const heroPrev = document.getElementById('hero-prev');
+      const heroNext = document.getElementById('hero-next');
+      const heroSection = document.getElementById('hero-carousel');
+      
+      let currentSlide = 0;
+      let slideInterval;
+
+      function goToSlide(index) {
+        slides[currentSlide].classList.remove('opacity-100', 'z-10');
+        slides[currentSlide].classList.add('opacity-0', 'z-0');
+        dots[currentSlide].classList.remove('bg-honey');
+        dots[currentSlide].classList.add('bg-white/50');
+
+        currentSlide = (index + slides.length) % slides.length;
+
+        slides[currentSlide].classList.remove('opacity-0', 'z-0');
+        slides[currentSlide].classList.add('opacity-100', 'z-10');
+        dots[currentSlide].classList.remove('bg-white/50');
+        dots[currentSlide].classList.add('bg-honey');
+      }
+
+      function nextSlide() {
+        goToSlide(currentSlide + 1);
+      }
+
+      function startSlideShow() {
+        slideInterval = setInterval(nextSlide, 6000);
+      }
+
+      function stopSlideShow() {
+        clearInterval(slideInterval);
+      }
+
+      if (slides.length > 0) {
+        startSlideShow();
+
+        if (heroPrev) heroPrev.addEventListener('click', () => goToSlide(currentSlide - 1));
+        if (heroNext) heroNext.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+        dots.forEach((dot, idx) => {
+          dot.addEventListener('click', () => goToSlide(idx));
+        });
+
+        if (heroSection) {
+          heroSection.addEventListener('mouseenter', stopSlideShow);
+          heroSection.addEventListener('mouseleave', startSlideShow);
+        }
+      }
+
+      // 5. Today's Deals Carousel Scroll Controls
+      const dealsContainer = document.getElementById('deals-container');
+      const dealsPrev = document.getElementById('deals-prev');
+      const dealsNext = document.getElementById('deals-next');
+
+      if (dealsContainer && dealsPrev && dealsNext) {
+        dealsPrev.addEventListener('click', () => {
+          dealsContainer.scrollBy({ left: -260, behavior: 'smooth' });
+        });
+        dealsNext.addEventListener('click', () => {
+          dealsContainer.scrollBy({ left: 260, behavior: 'smooth' });
+        });
+      }
+
+      // 6. Interactive Shopping Cart Badge Updates
+      let cartCount = 0;
+      const cartBadge = document.getElementById('cart-badge');
+      const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+
+      addToCartButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          cartCount++;
+          if (cartBadge) {
+            cartBadge.textContent = cartCount;
+            // Pulse animation feedback
+            cartBadge.classList.add('scale-125');
+            setTimeout(() => cartBadge.classList.remove('scale-125'), 200);
+          }
+          
+          // Button feedback state
+          const originalHTML = btn.innerHTML;
+          btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Added`;
+          btn.classList.replace('bg-honey', 'bg-success');
+          btn.classList.add('text-white');
+          lucide.createIcons();
+
+          setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.classList.replace('bg-success', 'bg-honey');
+            btn.classList.remove('text-white');
+            lucide.createIcons();
+          }, 1500);
+        });
+      });
+
+      // 7. Interactive Wishlist Toggle
+      const wishlistBtns = document.querySelectorAll('.wishlist-btn');
+      wishlistBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const icon = btn.querySelector('i');
+          if (btn.classList.contains('text-red-500')) {
+            btn.classList.remove('text-red-500');
+            btn.classList.add('text-gray-400');
+          } else {
+            btn.classList.remove('text-gray-400');
+            btn.classList.add('text-red-500');
+          }
+        });
+      });
+
+      // 8. Newsletter Client-Side Form Validation
+      const newsletterForm = document.getElementById('newsletter-form');
+      const newsletterEmail = document.getElementById('newsletter-email');
+      const newsletterFeedback = document.getElementById('newsletter-feedback');
+
+      if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const emailVal = newsletterEmail.value.trim();
+          const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+
+          if (isValidEmail) {
+            newsletterFeedback.textContent = "Welcome to the Hive! Check your inbox for your welcome discount.";
+            newsletterFeedback.className = "text-xs font-semibold pt-1 text-honey";
+            newsletterEmail.value = "";
+          } else {
+            newsletterFeedback.textContent = "Please enter a valid email address.";
+            newsletterFeedback.className = "text-xs font-semibold pt-1 text-red-400";
+          }
+          newsletterFeedback.classList.remove('hidden');
+        });
+      }
+
+      // 9. Back to Top Scroll Behavior
+      const backToTopBtn = document.getElementById('back-to-top');
+      if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // 10. Header Elevation Shadow on Scroll
+      const header = document.getElementById('main-header');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 20) {
+          header.classList.add('shadow-xl');
+        } else {
+          header.classList.remove('shadow-xl');
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>

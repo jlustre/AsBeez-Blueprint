@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#F5F6F8]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AsBeez Vendor Center - Business & Marketplace Dashboard</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            honey: {
+              DEFAULT: '#F7B928',
+              hover: '#e0a31b',
+              amber: '#E89B0C',
+              cream: '#FFF8E7',
+              soft: '#FFF1B8'
+            },
+            charcoal: {
+              DEFAULT: '#242424',
+              light: '#2d2d2d',
+              dark: '#1a1a1a'
+            },
+            brandSuccess: '#2E8B57',
+            brandError: '#DC2626',
+            brandInfo: '#2563EB',
+            brandMuted: '#6B7280',
+            bgLight: '#F5F6F8'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    
+    /* Honeycomb Subtle Background Pattern */
+    .bg-honeycomb {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23f7b928' fill-opacity='0.04' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34L24.98 30.6V17.9l-10.99-6.34L3 17.9zM0 15l12.99-7.5L26 15v15l-13 7.5L0 30V15zm28 0l-1.01-.58V15.6l1.01.58V15z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F5F6F8; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Focus ring styles */
+    .focus-ring {
+      @apply focus:outline-none focus:ring-2 focus:ring-honey focus:ring-offset-2;
+    }
+  </style>
+</head>
+<body class="h-full font-sans text-charcoal antialiased selection:bg-honey selection:text-charcoal bg-bgLight">
+
+  <!-- Skip to main content link for accessibility -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50 bg-honey text-charcoal px-4 py-2 rounded-xl font-bold border border-charcoal">
+    Skip to main content
+  </a>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Main Container -->
+  <div class="min-h-full flex flex-col lg:flex-row">
+
+    <!-- Mobile Drawer Backdrop -->
+    <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-charcoal/60 z-40 lg:hidden hidden transition-opacity duration-300 backdrop-blur-sm" aria-hidden="true"></div>
+
+    <!-- ========================================== -->
+    <!-- 1. VENDOR SIDEBAR                          -->
+    <!-- ========================================== -->
+    <aside id="vendor-sidebar" class="fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-charcoal text-white flex flex-col justify-between transition-all duration-300 ease-in-out -translate-x-full lg:translate-x-0 shrink-0 select-none overflow-hidden group/sidebar">
+      
+      <!-- Brand & Collapse Toggle -->
+      <div class="flex items-center justify-between px-4 py-4 border-b border-charcoal-light">
+        <a href="#" class="flex items-center gap-3 rounded-xl p-1 focus:outline-none focus:ring-2 focus:ring-honey">
+          <div class="w-10 h-10 rounded-xl bg-honey flex items-center justify-center text-charcoal shadow-md shadow-honey/20 shrink-0">
+            <i data-lucide="hexagons" class="w-6 h-6 stroke-[2.2]"></i>
+          </div>
+          <div class="sidebar-text transition-opacity duration-200 min-w-0">
+            <span class="text-xl font-extrabold tracking-tight text-white block leading-none truncate">As<span class="text-honey">Beez</span></span>
+            <span class="text-[10px] uppercase tracking-wider text-honey font-bold">Vendor Center</span>
+          </div>
+        </a>
+        <button onclick="toggleSidebarCollapse()" aria-label="Toggle Sidebar Navigation" class="hidden lg:flex p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-charcoal-light transition-colors focus:outline-none focus:ring-2 focus:ring-honey">
+          <i data-lucide="chevron-left" id="collapse-icon" class="w-5 h-5 transition-transform duration-300"></i>
+        </button>
+      </div>
+
+      <!-- Scrollable Navigation -->
+      <div class="flex-1 overflow-y-auto px-3 py-4 space-y-6 hide-scrollbar">
+
+        <!-- Business Identity Card -->
+        <div class="sidebar-text p-3 bg-charcoal-light/80 rounded-2xl border border-white/5 space-y-2.5">
+          <div class="flex items-center gap-3">
+            <div class="relative shrink-0">
+              <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&q=80&w=150" alt="Golden Hive Market Logo" class="w-10 h-10 rounded-xl object-cover ring-2 ring-honey" onError="this.src='https://via.placeholder.com/150?text=GH';">
+              <span class="absolute bottom-0 right-0 w-3 h-3 bg-brandSuccess border-2 border-charcoal rounded-full" title="Store Active"></span>
+            </div>
+            <div class="overflow-hidden min-w-0 flex-1">
+              <div class="flex items-center gap-1">
+                <h4 class="text-xs font-bold text-white truncate">Golden Hive Market</h4>
+                <i data-lucide="badge-check" class="w-3.5 h-3.5 text-honey fill-honey/20 shrink-0" title="Verified Vendor"></i>
+              </div>
+              <span class="text-[11px] text-gray-400 block truncate">Products & Services</span>
+            </div>
+          </div>
+          <div class="pt-1 border-t border-white/5 flex items-center justify-between text-[11px]">
+            <span class="text-brandSuccess font-semibold flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-brandSuccess"></span> Store Active
+            </span>
+            <a href="#" class="text-honey hover:underline font-semibold flex items-center gap-0.5">
+              View Store <i data-lucide="external-link" class="w-3 h-3"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Navigation Section -->
+        <nav class="space-y-6" aria-label="Vendor Portal Navigation">
+          
+          <!-- Main Menu -->
+          <div>
+            <h5 class="sidebar-text px-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Vendor Menu</h5>
+            <ul class="space-y-1">
+              <li>
+                <a href="#overview" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl bg-honey text-charcoal font-bold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Dashboard">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs">Dashboard</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#products" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Products">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="package" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Products</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#services" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Services">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="briefcase" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Services</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#orders" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Orders">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Orders</span>
+                  </div>
+                  <span class="sidebar-text px-2 py-0.5 text-[10px] font-bold bg-honey/20 text-honey rounded-full">8</span>
+                </a>
+              </li>
+              <li>
+                <a href="#bookings" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Bookings">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="calendar" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Bookings</span>
+                  </div>
+                  <span class="sidebar-text px-2 py-0.5 text-[10px] font-bold bg-brandInfo text-white rounded-full">3</span>
+                </a>
+              </li>
+              <li>
+                <a href="#customers" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Customers">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="users" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Customers</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#messages" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Messages">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="message-square" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Messages</span>
+                  </div>
+                  <span class="sidebar-text px-2 py-0.5 text-[10px] font-bold bg-honey text-charcoal rounded-full">5</span>
+                </a>
+              </li>
+              <li>
+                <a href="#reviews" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Reviews">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="star" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Reviews</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#promotions" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Promotions">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="tag" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Promotions</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#finances" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Finances">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="wallet" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Finances</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Business Management -->
+          <div>
+            <h5 class="sidebar-text px-3 text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Management</h5>
+            <ul class="space-y-1">
+              <li>
+                <a href="#store-profile" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Store Profile">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="store" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Store Profile</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#team" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Team Members">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="user-plus" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Team Members</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#subscription" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Subscription">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="crown" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Subscription</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#settings" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Settings">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="settings" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-xs font-medium">Settings</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Sidebar Plan Footer -->
+        <div class="sidebar-text p-4 rounded-2xl bg-gradient-to-br from-charcoal-light to-charcoal border border-white/10 space-y-3">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-gray-300 font-medium">Current Plan</span>
+            <span class="px-2 py-0.5 bg-honey/20 text-honey font-bold rounded-md text-[10px]">Growth</span>
+          </div>
+          <div class="space-y-1">
+            <div class="flex justify-between text-[11px] text-gray-400">
+              <span>Listings used</span>
+              <span class="text-white font-semibold">24 / 50</span>
+            </div>
+            <div class="w-full h-1.5 bg-charcoal rounded-full overflow-hidden">
+              <div class="h-full bg-honey rounded-full" style="width: 48%"></div>
+            </div>
+          </div>
+          <button onclick="showToast('Redirecting to plan upgrade...', 'info')" class="w-full py-1.5 bg-honey hover:bg-honey-hover text-charcoal font-bold text-xs rounded-xl transition-colors">
+            Upgrade Plan
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Logout Button -->
+      <div class="p-3 border-t border-charcoal-light">
+        <button onclick="showToast('Signing out of Vendor Center...', 'warning')" class="w-full sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors focus:outline-none focus:ring-2 focus:ring-red-400">
+          <i data-lucide="log-out" class="w-5 h-5 shrink-0"></i>
+          <span class="sidebar-text text-xs font-bold">Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ========================================== -->
+    <!-- RIGHT MAIN WRAPPER                         -->
+    <!-- ========================================== -->
+    <div class="flex-1 flex flex-col min-w-0">
+
+      <!-- ========================================== -->
+      <!-- 2. TOP NAVIGATION BAR                      -->
+      <!-- ========================================== -->
+      <header class="sticky top-0 z-30 bg-white border-b border-gray-200/80 shadow-sm">
+        <div class="px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+          
+          <!-- Mobile Drawer Toggle & Title -->
+          <div class="flex items-center gap-3 min-w-0">
+            <button onclick="toggleMobileSidebar()" aria-label="Open Mobile Drawer" class="lg:hidden p-2 text-gray-600 hover:text-charcoal hover:bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-honey">
+              <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+            <div>
+              <h1 class="text-base sm:text-lg font-bold text-charcoal leading-tight truncate">Vendor Dashboard</h1>
+              <p class="text-[11px] text-brandMuted hidden sm:block">Find it. Book it. Get it done.</p>
+            </div>
+          </div>
+
+          <!-- Top Search Field -->
+          <div class="flex-1 max-w-xl mx-2 hidden md:block">
+            <div class="relative">
+              <i data-lucide="search" class="w-4 h-4 text-brandMuted absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+              <input type="text" placeholder="Search orders, customers, products, services, or SKUs..." class="w-full bg-gray-100 text-xs py-2.5 pl-10 pr-4 rounded-xl text-charcoal border border-transparent focus:border-honey focus:bg-white focus:outline-none focus:ring-2 focus:ring-honey/30 transition-all">
+            </div>
+          </div>
+
+          <!-- Right Action Controls -->
+          <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+
+            <!-- Quick Action "Create New" Dropdown Trigger -->
+            <div class="relative">
+              <button onclick="toggleDropdown('quick-action-dropdown')" aria-expanded="false" aria-label="Create New Item Menu" class="bg-honey hover:bg-honey-hover text-charcoal font-bold text-xs px-3.5 py-2 rounded-xl transition-all shadow-sm flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-honey">
+                <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+                <span class="hidden sm:inline">Create New</span>
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+              </button>
+
+              <!-- Quick Action Dropdown Modal/Menu -->
+              <div id="quick-action-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                <div class="px-3 py-1.5 border-b border-gray-100 text-[11px] font-bold text-brandMuted uppercase tracking-wider">Quick Actions</div>
+                <a href="#add-product" onclick="showToast('Opening Product Builder...', 'info'); toggleDropdown('quick-action-dropdown')" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-charcoal hover:bg-honey-cream transition-colors">
+                  <i data-lucide="package-plus" class="w-4 h-4 text-honey-amber"></i>
+                  <div>
+                    <span class="font-bold block">Add Product</span>
+                    <span class="text-[10px] text-brandMuted">Physical items & inventory</span>
+                  </div>
+                </a>
+                <a href="#add-service" onclick="showToast('Opening Service Setup...', 'info'); toggleDropdown('quick-action-dropdown')" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-charcoal hover:bg-honey-cream transition-colors">
+                  <i data-lucide="briefcase" class="w-4 h-4 text-brandInfo"></i>
+                  <div>
+                    <span class="font-bold block">Add Service</span>
+                    <span class="text-[10px] text-brandMuted">Bookings & consultations</span>
+                  </div>
+                </a>
+                <a href="#create-promo" onclick="showToast('Opening Campaign Builder...', 'info'); toggleDropdown('quick-action-dropdown')" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-charcoal hover:bg-honey-cream transition-colors">
+                  <i data-lucide="tag" class="w-4 h-4 text-brandSuccess"></i>
+                  <div>
+                    <span class="font-bold block">Create Promotion</span>
+                    <span class="text-[10px] text-brandMuted">Discounts & store coupons</span>
+                  </div>
+                </a>
+                <a href="#community" onclick="showToast('Opening Community Post...', 'info'); toggleDropdown('quick-action-dropdown')" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-charcoal hover:bg-honey-cream transition-colors">
+                  <i data-lucide="sparkles" class="w-4 h-4 text-purple-600"></i>
+                  <div>
+                    <span class="font-bold block">Post Update</span>
+                    <span class="text-[10px] text-brandMuted">Share with store followers</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Messages Dropdown -->
+            <div class="relative">
+              <button onclick="toggleDropdown('vendor-messages-dropdown')" aria-label="Messages" class="relative p-2 text-gray-600 hover:text-charcoal hover:bg-gray-100 rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-honey">
+                <i data-lucide="message-square" class="w-5 h-5"></i>
+                <span class="absolute top-1 right-1 w-4 h-4 bg-honey text-charcoal font-extrabold text-[10px] rounded-full flex items-center justify-center ring-2 ring-white">5</span>
+              </button>
+            </div>
+
+            <!-- Notifications Bell Dropdown -->
+            <div class="relative">
+              <button onclick="toggleDropdown('vendor-notif-dropdown')" aria-label="Notifications" class="relative p-2 text-gray-600 hover:text-charcoal hover:bg-gray-100 rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-honey">
+                <i data-lucide="bell" class="w-5 h-5"></i>
+                <span id="notif-badge-count" class="absolute top-1 right-1 w-4 h-4 bg-brandInfo text-white font-extrabold text-[10px] rounded-full flex items-center justify-center ring-2 ring-white">5</span>
+              </button>
+
+              <!-- Notifications Menu -->
+              <div id="vendor-notif-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                <div class="px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+                  <h3 class="font-bold text-xs text-charcoal">Vendor Notifications</h3>
+                  <button onclick="clearNotifBadges()" class="text-[11px] text-honey-amber hover:underline font-semibold">Mark all read</button>
+                </div>
+                <div class="max-h-80 overflow-y-auto divide-y divide-gray-50 text-xs">
+                  <div class="p-3 flex gap-3 hover:bg-gray-50 transition-colors bg-honey-cream/20">
+                    <div class="w-8 h-8 rounded-xl bg-green-100 text-brandSuccess flex items-center justify-center shrink-0"><i data-lucide="shopping-cart" class="w-4 h-4"></i></div>
+                    <div class="flex-1 min-w-0">
+                      <p class="font-semibold text-charcoal">New Order Received (#ASB-9490)</p>
+                      <span class="text-[10px] text-brandMuted">2 mins ago</span>
+                    </div>
+                  </div>
+                  <div class="p-3 flex gap-3 hover:bg-gray-50 transition-colors">
+                    <div class="w-8 h-8 rounded-xl bg-blue-100 text-brandInfo flex items-center justify-center shrink-0"><i data-lucide="calendar" class="w-4 h-4"></i></div>
+                    <div class="flex-1 min-w-0">
+                      <p class="font-semibold text-charcoal">Service Booking Confirmed with Sarah</p>
+                      <span class="text-[10px] text-brandMuted">1 hour ago</span>
+                    </div>
+                  </div>
+                  <div class="p-3 flex gap-3 hover:bg-gray-50 transition-colors">
+                    <div class="w-8 h-8 rounded-xl bg-amber-100 text-honey-amber flex items-center justify-center shrink-0"><i data-lucide="alert-triangle" class="w-4 h-4"></i></div>
+                    <div class="flex-1 min-w-0">
+                      <p class="font-semibold text-charcoal">Low Stock Warning: Raw Comb Honey</p>
+                      <span class="text-[10px] text-brandMuted">3 hours ago</span>
+                    </div>
+                  </div>
+                  <div class="p-3 flex gap-3 hover:bg-gray-50 transition-colors">
+                    <div class="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center shrink-0"><i data-lucide="star" class="w-4 h-4"></i></div>
+                    <div class="flex-1 min-w-0">
+                      <p class="font-semibold text-charcoal">New 5-star review from David L.</p>
+                      <span class="text-[10px] text-brandMuted">Yesterday</span>
+                    </div>
+                  </div>
+                  <div class="p-3 flex gap-3 hover:bg-gray-50 transition-colors">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-100 text-brandSuccess flex items-center justify-center shrink-0"><i data-lucide="dollar-sign" class="w-4 h-4"></i></div>
+                    <div class="flex-1 min-w-0">
+                      <p class="font-semibold text-charcoal">Weekly payout of $1,840.00 processed</p>
+                      <span class="text-[10px] text-brandMuted">2 days ago</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="h-6 w-px bg-gray-200 mx-0.5"></div>
+
+            <!-- Vendor Profile Dropdown -->
+            <div class="relative">
+              <button onclick="toggleDropdown('vendor-profile-dropdown')" aria-label="Vendor Profile Menu" class="flex items-center gap-2 p-1 rounded-xl hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-honey">
+                <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&q=80&w=150" alt="Vendor Store Avatar" class="w-8 h-8 rounded-xl object-cover ring-2 ring-honey" onError="this.src='https://via.placeholder.com/150';">
+                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 hidden sm:block"></i>
+              </button>
+
+              <div id="vendor-profile-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                <div class="px-4 py-2 border-b border-gray-100">
+                  <p class="text-xs font-bold text-charcoal truncate">Golden Hive Market</p>
+                  <p class="text-[11px] text-brandMuted truncate">Owner: Joey Lustre</p>
+                </div>
+                <div class="py-1 text-xs">
+                  <a href="#" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-honey-cream hover:text-charcoal transition-colors">
+                    <i data-lucide="store" class="w-4 h-4 text-brandMuted"></i>
+                    <span>View Storefront</span>
+                  </a>
+                  <a href="#" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-honey-cream hover:text-charcoal transition-colors">
+                    <i data-lucide="edit-3" class="w-4 h-4 text-brandMuted"></i>
+                    <span>Edit Store Profile</span>
+                  </a>
+                  <a href="#" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-honey-cream hover:text-charcoal transition-colors">
+                    <i data-lucide="credit-card" class="w-4 h-4 text-brandMuted"></i>
+                    <span>Payout & Billing</span>
+                  </a>
+                  <a href="#" class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-honey-cream hover:text-charcoal transition-colors">
+                    <i data-lucide="help-circle" class="w-4 h-4 text-brandMuted"></i>
+                    <span>Vendor Support</span>
+                  </a>
+                </div>
+                <div class="border-t border-gray-100 pt-1">
+                  <button onclick="showToast('Signed out.', 'warning')" class="w-full flex items-center gap-2 px-4 py-2 text-xs text-brandError hover:bg-red-50 transition-colors">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </header>
+
+      <!-- ========================================== -->
+      <!-- MAIN VENDOR CONTENT                        -->
+      <!-- ========================================== -->
+      <main id="main-content" class="flex-1 p-4 sm:p-6 lg:p-8 space-y-8 bg-honeycomb">
+
+        <!-- ========================================== -->
+        <!-- 3. WELCOME & STORE COMPLETION PANEL        -->
+        <!-- ========================================== -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6" aria-label="Welcome Banner">
+          
+          <!-- Welcome Hero Card -->
+          <div class="lg:col-span-2 rounded-3xl bg-gradient-to-r from-charcoal via-charcoal-light to-charcoal text-white p-6 sm:p-8 shadow-xl border border-charcoal-light relative overflow-hidden flex flex-col justify-between space-y-6">
+            <div class="absolute right-0 top-0 bottom-0 w-1/3 bg-honey/10 blur-2xl pointer-events-none"></div>
+            <div class="space-y-2 relative z-10">
+              <div class="flex items-center gap-2 text-honey text-xs font-bold uppercase tracking-wider">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <span>Vendor Operations Center</span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-black tracking-tight">
+                Good morning, <span class="text-honey">Joey!</span> 👋
+              </h2>
+              <p class="text-xs sm:text-sm text-gray-300 max-w-xl">
+                Here’s what’s happening with <span class="font-semibold text-white">Golden Hive Market</span> today. You have 8 pending product orders and 3 upcoming service consultations.
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3 relative z-10">
+              <button onclick="showToast('Opening Storefront...', 'info')" class="bg-honey hover:bg-honey-hover text-charcoal font-extrabold text-xs px-5 py-3 rounded-xl transition-all shadow-md flex items-center gap-2">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>Add Product or Service</span>
+              </button>
+              <a href="#" class="bg-white/10 hover:bg-white/20 text-white font-semibold text-xs px-5 py-3 rounded-xl transition-all border border-white/10 backdrop-blur-md flex items-center gap-2">
+                <i data-lucide="external-link" class="w-4 h-4 text-honey"></i>
+                <span>View Storefront</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Store Setup Completion Widget -->
+          <div id="setup-card" class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm flex flex-col justify-between space-y-4 relative">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-charcoal">Store Setup Progress</h3>
+                <p class="text-xs text-brandMuted">Complete your profile to boost buyer trust</p>
+              </div>
+              <span class="px-2.5 py-1 bg-honey-cream text-honey-amber font-extrabold text-xs rounded-full border border-honey/30">82%</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="space-y-1.5">
+              <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-honey rounded-full transition-all duration-500" style="width: 82%"></div>
+              </div>
+              <span class="text-[11px] text-brandMuted block text-right font-medium">2 tasks remaining</span>
+            </div>
+
+            <ul class="space-y-2 text-xs">
+              <li class="flex items-center gap-2 text-gray-700">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-brandSuccess shrink-0"></i>
+                <span>Add payment & payout method</span>
+              </li>
+              <li class="flex items-center gap-2 text-gray-700">
+                <i data-lucide="circle" class="w-4 h-4 text-honey-amber shrink-0"></i>
+                <span class="font-semibold">Complete store return policy</span>
+              </li>
+              <li class="flex items-center gap-2 text-gray-700">
+                <i data-lucide="circle" class="w-4 h-4 text-honey-amber shrink-0"></i>
+                <span class="font-semibold">Upload storefront hero banner</span>
+              </li>
+            </ul>
+
+            <button onclick="showToast('Opening Store Setup Wizard...', 'info')" class="w-full py-2 bg-charcoal hover:bg-charcoal-light text-white font-bold text-xs rounded-xl transition-colors">
+              Complete Setup
+            </button>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 4. KEY PERFORMANCE CARDS                   -->
+        <!-- ========================================== -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4" aria-label="Key Performance Indicators">
+          
+          <!-- Metric Card 1 -->
+          <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-brandMuted uppercase tracking-wider">Total Revenue</span>
+              <div class="p-2 bg-honey/15 text-honey-amber rounded-xl group-hover:scale-110 transition-transform">
+                <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-black text-charcoal">$24,860.40</h3>
+              <p class="text-[11px] font-bold text-brandSuccess flex items-center gap-0.5 mt-0.5">
+                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> +12.5% <span class="text-brandMuted font-normal">vs last mo</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Metric Card 2 -->
+          <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-brandMuted uppercase tracking-wider">Total Orders</span>
+              <div class="p-2 bg-blue-50 text-brandInfo rounded-xl group-hover:scale-110 transition-transform">
+                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-black text-charcoal">386</h3>
+              <p class="text-[11px] font-bold text-brandSuccess flex items-center gap-0.5 mt-0.5">
+                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> +8.2% <span class="text-brandMuted font-normal">vs last mo</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Metric Card 3 -->
+          <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-brandMuted uppercase tracking-wider">Bookings</span>
+              <div class="p-2 bg-purple-50 text-purple-600 rounded-xl group-hover:scale-110 transition-transform">
+                <i data-lucide="calendar" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-black text-charcoal">94</h3>
+              <p class="text-[11px] font-bold text-brandSuccess flex items-center gap-0.5 mt-0.5">
+                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> +15.3% <span class="text-brandMuted font-normal">vs last mo</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Metric Card 4 -->
+          <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-brandMuted uppercase tracking-wider">Visitors</span>
+              <div class="p-2 bg-amber-50 text-honey-amber rounded-xl group-hover:scale-110 transition-transform">
+                <i data-lucide="users" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-black text-charcoal">8,429</h3>
+              <p class="text-[11px] font-bold text-brandSuccess flex items-center gap-0.5 mt-0.5">
+                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> +6.7% <span class="text-brandMuted font-normal">vs last mo</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Metric Card 5 -->
+          <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-brandMuted uppercase tracking-wider">Conversion</span>
+              <div class="p-2 bg-emerald-50 text-brandSuccess rounded-xl group-hover:scale-110 transition-transform">
+                <i data-lucide="target" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-black text-charcoal">4.8%</h3>
+              <p class="text-[11px] font-bold text-brandSuccess flex items-center gap-0.5 mt-0.5">
+                <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> +0.6% <span class="text-brandMuted font-normal">vs last mo</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Metric Card 6 -->
+          <div class="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-sm hover:shadow-md transition-all space-y-3 group">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-brandMuted uppercase tracking-wider">Avg Rating</span>
+              <div class="p-2 bg-honey-cream text-honey-amber rounded-xl group-hover:scale-110 transition-transform">
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-xl font-black text-charcoal">4.9</h3>
+              <p class="text-[11px] text-brandMuted mt-0.5 font-medium">327 total reviews</p>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 5 & 6. CHARTS SECTION (SALES & REVENUE)    -->
+        <!-- ========================================== -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8" aria-label="Analytics & Charts">
+          
+          <!-- Sales Overview Area Chart (2 Cols) -->
+          <div class="lg:col-span-2 bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-6 flex flex-col justify-between">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 class="text-base font-bold text-charcoal">Sales Overview</h3>
+                <p class="text-xs text-brandMuted">Revenue and total orders over time</p>
+              </div>
+              <div class="flex items-center gap-3 flex-wrap">
+                <!-- Date Filter Buttons -->
+                <div class="bg-gray-100 p-1 rounded-xl flex items-center text-xs font-semibold">
+                  <button onclick="updateChartData('7days')" class="chart-filter-btn px-3 py-1 rounded-lg transition-colors text-gray-600 hover:text-charcoal">7D</button>
+                  <button onclick="updateChartData('30days')" class="chart-filter-btn px-3 py-1 rounded-lg bg-white text-charcoal shadow-sm">30D</button>
+                  <button onclick="updateChartData('90days')" class="chart-filter-btn px-3 py-1 rounded-lg transition-colors text-gray-600 hover:text-charcoal">90D</button>
+                  <button onclick="updateChartData('year')" class="chart-filter-btn px-3 py-1 rounded-lg transition-colors text-gray-600 hover:text-charcoal">This Year</button>
+                </div>
+                <button onclick="showToast('Downloading CSV Sales Report...', 'success')" class="p-2 border border-gray-200 hover:bg-gray-50 text-charcoal rounded-xl text-xs font-bold transition-colors" title="Download Sales Report">
+                  <i data-lucide="download" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="relative w-full h-72">
+              <canvas id="salesChart"></canvas>
+            </div>
+
+            <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-brandMuted">
+              <span class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-honey inline-block"></span> Total Revenue Selected: <strong class="text-charcoal" id="selected-rev-sum">$24,860.40</strong>
+              </span>
+              <span class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-charcoal inline-block"></span> Total Orders: <strong class="text-charcoal" id="selected-order-sum">386</strong>
+              </span>
+            </div>
+          </div>
+
+          <!-- Revenue Breakdown Doughnut Chart (1 Col) -->
+          <div class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-6 flex flex-col justify-between">
+            <div>
+              <h3 class="text-base font-bold text-charcoal">Revenue Breakdown</h3>
+              <p class="text-xs text-brandMuted">Product vs Service Income distribution</p>
+            </div>
+
+            <div class="relative h-56 flex items-center justify-center">
+              <canvas id="revenueDoughnutChart"></canvas>
+            </div>
+
+            <div class="space-y-2 pt-4 border-t border-gray-100 text-xs">
+              <div class="flex justify-between items-center">
+                <span class="text-brandMuted">Gross Sales Revenue</span>
+                <span class="font-bold text-charcoal">$28,400.00</span>
+              </div>
+              <div class="flex justify-between items-center text-red-600">
+                <span>AsBeez Marketplace Fees (8%)</span>
+                <span class="font-bold">-$2,272.00</span>
+              </div>
+              <div class="flex justify-between items-center text-red-600">
+                <span>Refunds & Adjustments</span>
+                <span class="font-bold">-$1,267.60</span>
+              </div>
+              <div class="flex justify-between items-center pt-2 border-t border-gray-100 text-sm font-black text-charcoal">
+                <span>Net Earnings</span>
+                <span class="text-brandSuccess">$24,860.40</span>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 7. RECENT ORDERS TABLE & FILTERS           -->
+        <!-- ========================================== -->
+        <section class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4" aria-labelledby="orders-heading">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 id="orders-heading" class="text-base font-bold text-charcoal">Recent Marketplace Orders</h3>
+              <p class="text-xs text-brandMuted">Manage customer purchases and order fulfillments</p>
+            </div>
+            
+            <!-- Filters -->
+            <div class="flex items-center gap-2 flex-wrap">
+              <input type="text" id="order-search" oninput="filterOrdersTable()" placeholder="Search order or customer..." class="text-xs bg-gray-100 border border-transparent focus:border-honey rounded-xl px-3 py-2 text-charcoal focus:outline-none focus:bg-white">
+              <select id="order-status-filter" onchange="filterOrdersTable()" class="text-xs bg-gray-100 border border-transparent focus:border-honey rounded-xl px-3 py-2 text-charcoal focus:outline-none cursor-pointer">
+                <option value="ALL">All Statuses</option>
+                <option value="Paid">Paid</option>
+                <option value="Processing">Processing</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Desktop Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-charcoal">
+              <thead class="bg-gray-50 border-y border-gray-100 text-brandMuted font-semibold uppercase tracking-wider">
+                <tr>
+                  <th class="py-3 px-3">Order ID</th>
+                  <th class="py-3 px-3">Customer</th>
+                  <th class="py-3 px-3">Item / Service</th>
+                  <th class="py-3 px-3">Date</th>
+                  <th class="py-3 px-3">Amount</th>
+                  <th class="py-3 px-3">Status</th>
+                  <th class="py-3 px-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body" class="divide-y divide-gray-100">
+                <!-- Javascript will populate orders here -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 8. UPCOMING SERVICE BOOKINGS              -->
+        <!-- ========================================== -->
+        <section class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4" aria-labelledby="bookings-heading">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <h3 id="bookings-heading" class="text-base font-bold text-charcoal">Upcoming Service Bookings</h3>
+              <p class="text-xs text-brandMuted">Client appointments and service consultations</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="showToast('Calendar view active', 'info')" class="px-3 py-1.5 bg-honey text-charcoal font-bold text-xs rounded-xl flex items-center gap-1">
+                <i data-lucide="calendar" class="w-3.5 h-3.5"></i> List View
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            <!-- Booking Card 1 -->
+            <div class="border border-gray-200/80 rounded-2xl p-4 space-y-3 hover:border-honey transition-colors bg-white flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="flex justify-between items-start">
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-50 text-brandSuccess">Confirmed</span>
+                  <span class="text-xs font-bold text-charcoal">$120.00</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Customer" class="w-10 h-10 rounded-full object-cover shrink-0" onError="this.src='https://via.placeholder.com/150';">
+                  <div class="min-w-0">
+                    <h4 class="text-xs font-bold text-charcoal truncate">Sarah Jenkins</h4>
+                    <p class="text-[11px] text-brandMuted truncate">Web Dev Consultation</p>
+                  </div>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-2.5 space-y-1 text-[11px] text-charcoal">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-honey-amber"></i>
+                    <span>Tomorrow, 10:00 AM</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-brandMuted">
+                    <i data-lucide="video" class="w-3.5 h-3.5"></i>
+                    <span>Virtual (AsBeez Meet)</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pt-2 flex items-center gap-2">
+                <button onclick="showToast('Opening Booking #302 Details...', 'info')" class="flex-1 py-1.5 bg-gray-100 hover:bg-gray-200 text-charcoal text-xs font-semibold rounded-lg transition-colors">Details</button>
+                <button onclick="showToast('Messaging Sarah...', 'info')" class="p-1.5 border border-gray-200 hover:bg-honey-cream rounded-lg text-charcoal transition-colors" title="Message Client"><i data-lucide="message-square" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+
+            <!-- Booking Card 2 -->
+            <div class="border border-gray-200/80 rounded-2xl p-4 space-y-3 hover:border-honey transition-colors bg-white flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="flex justify-between items-start">
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-50 text-brandSuccess">Confirmed</span>
+                  <span class="text-xs font-bold text-charcoal">$85.00</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150" alt="Customer" class="w-10 h-10 rounded-full object-cover shrink-0" onError="this.src='https://via.placeholder.com/150';">
+                  <div class="min-w-0">
+                    <h4 class="text-xs font-bold text-charcoal truncate">David Miller</h4>
+                    <p class="text-[11px] text-brandMuted truncate">Eco Home Cleaning</p>
+                  </div>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-2.5 space-y-1 text-[11px] text-charcoal">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-honey-amber"></i>
+                    <span>Sep 20, 2:00 PM</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-brandMuted">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                    <span>San Francisco, CA</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pt-2 flex items-center gap-2">
+                <button onclick="showToast('Opening Booking #305 Details...', 'info')" class="flex-1 py-1.5 bg-gray-100 hover:bg-gray-200 text-charcoal text-xs font-semibold rounded-lg transition-colors">Details</button>
+                <button onclick="showToast('Messaging David...', 'info')" class="p-1.5 border border-gray-200 hover:bg-honey-cream rounded-lg text-charcoal transition-colors" title="Message Client"><i data-lucide="message-square" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+
+            <!-- Booking Card 3 -->
+            <div class="border border-gray-200/80 rounded-2xl p-4 space-y-3 hover:border-honey transition-colors bg-white flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="flex justify-between items-start">
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-honey-amber">Pending</span>
+                  <span class="text-xs font-bold text-charcoal">$95.00</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&q=80&w=150" alt="Customer" class="w-10 h-10 rounded-full object-cover shrink-0" onError="this.src='https://via.placeholder.com/150';">
+                  <div class="min-w-0">
+                    <h4 class="text-xs font-bold text-charcoal truncate">Alex Morgan</h4>
+                    <p class="text-[11px] text-brandMuted truncate">Accounting Audit</p>
+                  </div>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-2.5 space-y-1 text-[11px] text-charcoal">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-honey-amber"></i>
+                    <span>Sep 22, 11:00 AM</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-brandMuted">
+                    <i data-lucide="video" class="w-3.5 h-3.5"></i>
+                    <span>Virtual Session</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pt-2 flex items-center gap-2">
+                <button onclick="showToast('Booking Accepted!', 'success')" class="flex-1 py-1.5 bg-honey hover:bg-honey-hover text-charcoal text-xs font-bold rounded-lg transition-colors">Accept</button>
+                <button onclick="showToast('Messaging Alex...', 'info')" class="p-1.5 border border-gray-200 hover:bg-honey-cream rounded-lg text-charcoal transition-colors"><i data-lucide="message-square" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+
+            <!-- Booking Card 4 -->
+            <div class="border border-gray-200/80 rounded-2xl p-4 space-y-3 hover:border-honey transition-colors bg-white flex flex-col justify-between">
+              <div class="space-y-2">
+                <div class="flex justify-between items-start">
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-50 text-brandSuccess">Confirmed</span>
+                  <span class="text-xs font-bold text-charcoal">$150.00</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150" alt="Customer" class="w-10 h-10 rounded-full object-cover shrink-0" onError="this.src='https://via.placeholder.com/150';">
+                  <div class="min-w-0">
+                    <h4 class="text-xs font-bold text-charcoal truncate">Elena Rostova</h4>
+                    <p class="text-[11px] text-brandMuted truncate">Senior Care Assessment</p>
+                  </div>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-2.5 space-y-1 text-[11px] text-charcoal">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-honey-amber"></i>
+                    <span>Sep 25, 9:30 AM</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-brandMuted">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                    <span>Oakland, CA</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pt-2 flex items-center gap-2">
+                <button onclick="showToast('Opening Booking Details...', 'info')" class="flex-1 py-1.5 bg-gray-100 hover:bg-gray-200 text-charcoal text-xs font-semibold rounded-lg transition-colors">Details</button>
+                <button onclick="showToast('Messaging Elena...', 'info')" class="p-1.5 border border-gray-200 hover:bg-honey-cream rounded-lg text-charcoal transition-colors"><i data-lucide="message-square" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 9 & 10. INVENTORY & TOP PERFORMERS GRID    -->
+        <!-- ========================================== -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <!-- Product Inventory Overview Card -->
+          <div class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-bold text-charcoal">Inventory Overview</h3>
+                <p class="text-xs text-brandMuted">Stock levels & catalog status</p>
+              </div>
+              <button onclick="showToast('Opening Inventory Manager...', 'info')" class="text-xs font-bold text-honey-amber hover:underline">Manage All</button>
+            </div>
+
+            <!-- Low stock alert banner -->
+            <div class="p-3 bg-red-50 border border-red-200 rounded-2xl flex items-center justify-between text-xs text-brandError">
+              <div class="flex items-center gap-2">
+                <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0"></i>
+                <span><strong>2 items</strong> are running low on stock.</span>
+              </div>
+              <button onclick="showToast('Restock alert sent to team', 'info')" class="font-bold hover:underline">Restock</button>
+            </div>
+
+            <!-- Inventory List -->
+            <div class="divide-y divide-gray-100 text-xs">
+              <div class="py-2.5 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                  <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-xl object-cover shrink-0" onError="this.src='https://via.placeholder.com/100';" alt="Item">
+                  <div class="min-w-0">
+                    <h4 class="font-bold text-charcoal truncate">Raw Organic Comb Honey</h4>
+                    <span class="text-[10px] text-brandMuted">SKU: HNY-001</span>
+                  </div>
+                </div>
+                <div class="text-right shrink-0">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-brandError block">3 left</span>
+                  <span class="font-bold text-charcoal mt-1 block">$24.50</span>
+                </div>
+              </div>
+
+              <div class="py-2.5 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                  <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-xl object-cover shrink-0" onError="this.src='https://via.placeholder.com/100';" alt="Item">
+                  <div class="min-w-0">
+                    <h4 class="font-bold text-charcoal truncate">Beeswax Pillar Candles</h4>
+                    <span class="text-[10px] text-brandMuted">SKU: CND-004</span>
+                  </div>
+                </div>
+                <div class="text-right shrink-0">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-brandSuccess block">42 in stock</span>
+                  <span class="font-bold text-charcoal mt-1 block">$18.00</span>
+                </div>
+              </div>
+
+              <div class="py-2.5 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                  <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-xl object-cover shrink-0" onError="this.src='https://via.placeholder.com/100';" alt="Item">
+                  <div class="min-w-0">
+                    <h4 class="font-bold text-charcoal truncate">Propolis Honey Lip Balm</h4>
+                    <span class="text-[10px] text-brandMuted">SKU: BLM-002</span>
+                  </div>
+                </div>
+                <div class="text-right shrink-0">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-honey-amber block">5 left</span>
+                  <span class="font-bold text-charcoal mt-1 block">$8.50</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Performing Listings -->
+          <div class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-bold text-charcoal">Top Performing Listings</h3>
+                <p class="text-xs text-brandMuted">Highest converting products & services</p>
+              </div>
+              <div class="bg-gray-100 p-1 rounded-xl text-[11px] font-semibold">
+                <button onclick="switchPerformerTab('all', this)" class="px-2.5 py-1 rounded-lg bg-white shadow-sm text-charcoal">All</button>
+                <button onclick="switchPerformerTab('products', this)" class="px-2.5 py-1 rounded-lg text-gray-600 hover:text-charcoal">Products</button>
+                <button onclick="switchPerformerTab('services', this)" class="px-2.5 py-1 rounded-lg text-gray-600 hover:text-charcoal">Services</button>
+              </div>
+            </div>
+
+            <div id="performers-list" class="space-y-3">
+              <!-- Populated by Javascript -->
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 12 & 13. REVIEWS & CUSTOMER MESSAGES       -->
+        <!-- ========================================== -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          <!-- Reputation & Recent Reviews (2 Cols) -->
+          <div class="lg:col-span-2 bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 class="text-base font-bold text-charcoal">Customer Reviews & Reputation</h3>
+                <p class="text-xs text-brandMuted">96% response rate | Avg response time: 42 mins</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-2xl font-black text-charcoal">4.9</span>
+                <div>
+                  <div class="flex text-honey"><i data-lucide="star" class="w-4 h-4 fill-honey"></i><i data-lucide="star" class="w-4 h-4 fill-honey"></i><i data-lucide="star" class="w-4 h-4 fill-honey"></i><i data-lucide="star" class="w-4 h-4 fill-honey"></i><i data-lucide="star" class="w-4 h-4 fill-honey"></i></div>
+                  <span class="text-[10px] text-brandMuted">327 ratings</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div class="space-y-4">
+              <div class="p-4 bg-gray-50 rounded-2xl space-y-2 border border-gray-100">
+                <div class="flex justify-between items-start">
+                  <div class="flex items-center gap-2.5">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" class="w-8 h-8 rounded-full object-cover" onError="this.src='https://via.placeholder.com/100';" alt="Reviewer">
+                    <div>
+                      <h4 class="text-xs font-bold text-charcoal">Emily Thorne</h4>
+                      <span class="text-[10px] text-brandMuted">Reviewed Raw Wildflower Honey</span>
+                    </div>
+                  </div>
+                  <div class="flex text-honey"><i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i></div>
+                </div>
+                <p class="text-xs text-gray-700">"Absolute best honey I have purchased online! Shipped super fast and came beautifully packaged."</p>
+                <div class="pt-1 flex justify-end">
+                  <button onclick="openReviewReplyModal('Emily Thorne')" class="text-xs font-bold text-honey-amber hover:underline flex items-center gap-1">
+                    <i data-lucide="reply" class="w-3.5 h-3.5"></i> Reply to Review
+                  </button>
+                </div>
+              </div>
+
+              <div class="p-4 bg-gray-50 rounded-2xl space-y-2 border border-gray-100">
+                <div class="flex justify-between items-start">
+                  <div class="flex items-center gap-2.5">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" class="w-8 h-8 rounded-full object-cover" onError="this.src='https://via.placeholder.com/100';" alt="Reviewer">
+                    <div>
+                      <h4 class="text-xs font-bold text-charcoal">Michael Chang</h4>
+                      <span class="text-[10px] text-brandMuted">Reviewed Web Dev Consultation</span>
+                    </div>
+                  </div>
+                  <div class="flex text-honey"><i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i><i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i></div>
+                </div>
+                <p class="text-xs text-gray-700">"Joey was extremely knowledgeable and gave clear actionable steps for our store redesign."</p>
+                <div class="pt-1 flex justify-end">
+                  <button onclick="openReviewReplyModal('Michael Chang')" class="text-xs font-bold text-honey-amber hover:underline flex items-center gap-1">
+                    <i data-lucide="reply" class="w-3.5 h-3.5"></i> Reply to Review
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer Messages Panel (1 Col) -->
+          <div class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-base font-bold text-charcoal">Recent Messages</h3>
+              <a href="#messages" class="text-xs font-bold text-honey-amber hover:underline">Inbox (5)</a>
+            </div>
+
+            <div class="divide-y divide-gray-100 text-xs">
+              <div onclick="showToast('Opening chat with Alex...', 'info')" class="py-3 flex items-center gap-3 hover:bg-honey-cream/30 rounded-xl px-2 cursor-pointer transition-colors">
+                <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&q=80&w=100" class="w-9 h-9 rounded-full object-cover shrink-0" onError="this.src='https://via.placeholder.com/100';" alt="Customer">
+                <div class="min-w-0 flex-1">
+                  <div class="flex justify-between items-baseline">
+                    <h4 class="font-bold text-charcoal truncate">Alex Morgan</h4>
+                    <span class="text-[10px] text-brandMuted">10m ago</span>
+                  </div>
+                  <p class="text-gray-600 truncate mt-0.5">Is bulk custom ordering available for the beeswax candles?</p>
+                </div>
+              </div>
+
+              <div onclick="showToast('Opening chat with Sarah...', 'info')" class="py-3 flex items-center gap-3 hover:bg-honey-cream/30 rounded-xl px-2 cursor-pointer transition-colors">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=100" class="w-9 h-9 rounded-full object-cover shrink-0" onError="this.src='https://via.placeholder.com/100';" alt="Customer">
+                <div class="min-w-0 flex-1">
+                  <div class="flex justify-between items-baseline">
+                    <h4 class="font-bold text-charcoal truncate">Sarah Jenkins</h4>
+                    <span class="text-[10px] text-brandMuted">1h ago</span>
+                  </div>
+                  <p class="text-gray-600 truncate mt-0.5">Looking forward to our session tomorrow at 10 AM!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 14 & 15. FINANCES & ACTIVE PROMOTIONS     -->
+        <!-- ========================================== -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <!-- Financial Balance & Payout Panel -->
+          <div class="bg-gradient-to-br from-charcoal via-charcoal-light to-charcoal text-white rounded-3xl p-6 shadow-xl space-y-6 flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-xs font-bold text-honey uppercase tracking-wider">Financial Balance</span>
+                <h3 class="text-3xl font-black text-white mt-1">$4,280.50</h3>
+                <p class="text-xs text-gray-300">Available for instant payout</p>
+              </div>
+              <div class="p-3 bg-white/10 rounded-2xl backdrop-blur-md">
+                <i data-lucide="wallet" class="w-6 h-6 text-honey"></i>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/10 text-xs">
+              <div>
+                <span class="text-gray-400 block">Pending Clearance</span>
+                <span class="font-bold text-white text-sm">$840.00</span>
+              </div>
+              <div>
+                <span class="text-gray-400 block">Next Payout Date</span>
+                <span class="font-bold text-honey text-sm">Sep 21, 2026</span>
+              </div>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+              <button onclick="showToast('Initiating balance withdrawal...', 'success')" class="flex-1 py-3 bg-honey hover:bg-honey-hover text-charcoal font-extrabold text-xs rounded-xl transition-all shadow-md">
+                Withdraw Funds
+              </button>
+              <button onclick="showToast('Opening payout settings...', 'info')" class="py-3 px-4 bg-white/10 hover:bg-white/20 text-white font-bold text-xs rounded-xl transition-all">
+                Manage Payouts
+              </button>
+            </div>
+          </div>
+
+          <!-- Active Campaigns & Promotions -->
+          <div class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-bold text-charcoal">Active Promotions</h3>
+                <p class="text-xs text-brandMuted">Store discounts & boosted listings</p>
+              </div>
+              <button onclick="showToast('Opening Campaign Creator...', 'info')" class="px-3 py-1.5 bg-honey hover:bg-honey-hover text-charcoal font-bold text-xs rounded-xl flex items-center gap-1">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> New Promo
+              </button>
+            </div>
+
+            <div class="space-y-3">
+              <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-bold text-charcoal">Spring Honey Festival Sale (15% OFF)</span>
+                  <span class="px-2 py-0.5 bg-green-100 text-brandSuccess font-bold text-[10px] rounded-full">Active</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-brandMuted">
+                  <span>Ends in 4 days</span>
+                  <span>142 Clicks | 18 Sales</span>
+                </div>
+              </div>
+
+              <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-bold text-charcoal">Featured Service Boost: Web Dev</span>
+                  <span class="px-2 py-0.5 bg-green-100 text-brandSuccess font-bold text-[10px] rounded-full">Active</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-brandMuted">
+                  <span>Ends in 12 days</span>
+                  <span>310 Views | 6 Bookings</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 16 & 17. TASKS & INSIGHTS RECOMMENDATIONS  -->
+        <!-- ========================================== -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <!-- Vendor Task Checklist -->
+          <div class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-base font-bold text-charcoal">Vendor Tasks & Reminders</h3>
+                <p class="text-xs text-brandMuted">Keep your daily store operations on track</p>
+              </div>
+              <span id="task-completed-count" class="text-xs font-bold text-honey-amber">1 / 4 Completed</span>
+            </div>
+
+            <!-- Add Task Form -->
+            <form onsubmit="addNewTask(event)" class="flex gap-2">
+              <input type="text" id="new-task-input" placeholder="Add a new store task..." class="flex-1 bg-gray-100 border border-transparent focus:border-honey rounded-xl px-3 py-2 text-xs text-charcoal focus:outline-none focus:bg-white" required>
+              <button type="submit" class="bg-charcoal hover:bg-charcoal-light text-white font-bold text-xs px-4 py-2 rounded-xl transition-colors">Add</button>
+            </form>
+
+            <!-- Tasks List -->
+            <ul id="tasks-container" class="space-y-2 text-xs">
+              <li class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <label class="flex items-center gap-3 cursor-pointer">
+                  <input type="checkbox" onchange="toggleTask(this)" class="w-4 h-4 rounded text-honey focus:ring-honey cursor-pointer" checked>
+                  <span class="line-through text-gray-400">Ship 3 pending honey orders</span>
+                </label>
+                <button onclick="deleteTask(this)" class="text-gray-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+              </li>
+              <li class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <label class="flex items-center gap-3 cursor-pointer">
+                  <input type="checkbox" onchange="toggleTask(this)" class="w-4 h-4 rounded text-honey focus:ring-honey cursor-pointer">
+                  <span class="text-charcoal font-medium">Confirm tomorrow's consultation with Sarah</span>
+                </label>
+                <button onclick="deleteTask(this)" class="text-gray-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+              </li>
+              <li class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <label class="flex items-center gap-3 cursor-pointer">
+                  <input type="checkbox" onchange="toggleTask(this)" class="w-4 h-4 rounded text-honey focus:ring-honey cursor-pointer">
+                  <span class="text-charcoal font-medium">Update stock inventory for beeswax candles</span>
+                </label>
+                <button onclick="deleteTask(this)" class="text-gray-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Business Recommendations Card -->
+          <div class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+            <div>
+              <h3 class="text-base font-bold text-charcoal">Insights for Your Business</h3>
+              <p class="text-xs text-brandMuted">AI-driven recommendations to boost sales</p>
+            </div>
+
+            <div class="space-y-3">
+              <div class="p-4 bg-honey-cream/40 border border-honey/30 rounded-2xl flex items-start gap-3">
+                <div class="p-2 bg-honey text-charcoal rounded-xl shrink-0"><i data-lucide="sparkles" class="w-4 h-4"></i></div>
+                <div class="flex-1 text-xs space-y-1">
+                  <span class="font-extrabold text-charcoal block">High Demand Alert</span>
+                  <p class="text-gray-700">Searches for "Beeswax Candles" increased 34% this week in your area. Consider adding a bundle pack.</p>
+                  <button onclick="showToast('Creating Candle Bundle...', 'info')" class="text-xs font-bold text-honey-amber hover:underline pt-1 inline-block">Create Bundle &rarr;</button>
+                </div>
+              </div>
+
+              <div class="p-4 bg-blue-50/60 border border-blue-100 rounded-2xl flex items-start gap-3">
+                <div class="p-2 bg-brandInfo text-white rounded-xl shrink-0"><i data-lucide="message-square" class="w-4 h-4"></i></div>
+                <div class="flex-1 text-xs space-y-1">
+                  <span class="font-extrabold text-charcoal block">Unanswered Reviews</span>
+                  <p class="text-gray-700">Responding to buyer reviews within 24 hours increases repeat purchases by 18%.</p>
+                  <button onclick="showToast('Opening Reviews...', 'info')" class="text-xs font-bold text-brandInfo hover:underline pt-1 inline-block">Reply Now &rarr;</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 19. FOOTER                                 -->
+        <!-- ========================================== -->
+        <footer class="mt-12 pt-6 border-t border-gray-200/80 text-xs text-brandMuted flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 rounded-md bg-honey flex items-center justify-center text-charcoal font-bold">
+              <i data-lucide="hexagons" class="w-4 h-4"></i>
+            </div>
+            <span>&copy; 2026 AsBeez Inc. All rights reserved. Powered by AsBeez Vendor Core v3.2</span>
+          </div>
+          <div class="flex items-center gap-4 flex-wrap">
+            <a href="#" class="hover:text-charcoal transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-charcoal transition-colors">Vendor Terms</a>
+            <a href="#" class="hover:text-charcoal transition-colors">Help Center</a>
+            <a href="#" class="hover:text-charcoal transition-colors">System Status</a>
+          </div>
+        </footer>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: REVIEW REPLY                        -->
+  <!-- ========================================== -->
+  <div id="review-modal" class="fixed inset-0 bg-charcoal/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="modal-reviewer-name">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-gray-100">
+      <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+        <h3 class="text-sm font-bold text-charcoal">Reply to <span id="modal-reviewer-name" class="text-honey-amber">Customer</span></h3>
+        <button onclick="closeReviewReplyModal()" class="text-gray-400 hover:text-charcoal"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="space-y-2">
+        <label for="review-reply-text" class="text-xs font-semibold text-charcoal block">Your Official Seller Response</label>
+        <textarea id="review-reply-text" rows="4" placeholder="Thank you for your feedback! We are thrilled you loved..." class="w-full text-xs p-3 border border-gray-200 rounded-xl focus:border-honey focus:ring-2 focus:ring-honey/30 focus:outline-none"></textarea>
+      </div>
+      <div class="flex gap-2 justify-end pt-2">
+        <button onclick="closeReviewReplyModal()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-charcoal font-bold text-xs rounded-xl">Cancel</button>
+        <button onclick="submitReviewReply()" class="px-4 py-2 bg-honey hover:bg-honey-hover text-charcoal font-extrabold text-xs rounded-xl">Submit Reply</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC                           -->
+  <!-- ========================================== -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // 1. Toast Notification System
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `p-4 rounded-2xl shadow-xl text-xs font-bold flex items-center justify-between gap-3 transform transition-all duration-300 translate-y-full opacity-0 pointer-events-auto border ${
+        type === 'success' ? 'bg-green-50 border-green-200 text-brandSuccess' :
+        type === 'warning' ? 'bg-amber-50 border-amber-200 text-honey-amber' :
+        'bg-charcoal text-white border-charcoal-light'
+      }`;
+      
+      toast.innerHTML = `
+        <div class="flex items-center gap-2">
+          <i data-lucide="${type === 'success' ? 'check-circle' : type === 'warning' ? 'alert-triangle' : 'info'}" class="w-4 h-4"></i>
+          <span>${message}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="opacity-60 hover:opacity-100"><i data-lucide="x" class="w-4 h-4"></i></button>
+      `;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-full', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // 2. Sidebar Collapse & Drawer Interactions
+    let isSidebarCollapsed = false;
+    function toggleSidebarCollapse() {
+      const sidebar = document.getElementById('vendor-sidebar');
+      const collapseIcon = document.getElementById('collapse-icon');
+      const texts = document.querySelectorAll('.sidebar-text');
+
+      isSidebarCollapsed = !isSidebarCollapsed;
+
+      if (isSidebarCollapsed) {
+        sidebar.classList.remove('w-64');
+        sidebar.classList.add('w-20');
+        texts.forEach(el => el.classList.add('hidden'));
+        collapseIcon.classList.add('rotate-180');
+      } else {
+        sidebar.classList.remove('w-20');
+        sidebar.classList.add('w-64');
+        texts.forEach(el => el.classList.remove('hidden'));
+        collapseIcon.classList.remove('rotate-180');
+      }
+    }
+
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('vendor-sidebar');
+      const backdrop = document.getElementById('sidebar-backdrop');
+      const isOpen = !sidebar.classList.contains('-translate-x-full');
+
+      if (isOpen) {
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+      } else {
+        sidebar.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+      }
+    }
+
+    // 3. Dropdowns Toggle
+    function toggleDropdown(id) {
+      const target = document.getElementById(id);
+      const allDropdowns = ['quick-action-dropdown', 'vendor-messages-dropdown', 'vendor-notif-dropdown', 'vendor-profile-dropdown'];
+      
+      allDropdowns.forEach(dId => {
+        if (dId !== id) document.getElementById(dId)?.classList.add('hidden');
+      });
+
+      target.classList.toggle('hidden');
+    }
+
+    window.addEventListener('click', function(e) {
+      if (!e.target.closest('.relative')) {
+        ['quick-action-dropdown', 'vendor-messages-dropdown', 'vendor-notif-dropdown', 'vendor-profile-dropdown'].forEach(id => {
+          document.getElementById(id)?.classList.add('hidden');
+        });
+      }
+    });
+
+    function clearNotifBadges() {
+      const badge = document.getElementById('notif-badge-count');
+      if (badge) badge.style.display = 'none';
+      showToast('Notifications marked as read.', 'success');
+    }
+
+    // 4. Sample Orders Data & Table Rendering
+    const sampleOrders = [
+      { id: '#ASB-9490', customer: 'Emma Watson', item: 'Raw Comb Honey (3-Pack)', date: '10 mins ago', amount: '$48.50', status: 'Paid' },
+      { id: '#ASB-9488', customer: 'David Miller', item: 'Eco Home Cleaning Service', date: '1 hour ago', amount: '$85.00', status: 'Processing' },
+      { id: '#ASB-9485', customer: 'Sarah Jenkins', item: 'Web Dev Consultation', date: '3 hours ago', amount: '$120.00', status: 'Delivered' },
+      { id: '#ASB-9482', customer: 'Lucas Vance', item: 'Beeswax Candle Gift Box', date: 'Yesterday', amount: '$34.00', status: 'Shipped' },
+      { id: '#ASB-9479', customer: 'Chloe Bennett', item: 'Honey Body Balm', date: 'Sep 15, 2026', amount: '$18.50', status: 'Delivered' },
+      { id: '#ASB-9475', customer: 'Oliver Queen', item: 'Custom Woodcraft Hive Box', date: 'Sep 14, 2026', amount: '$145.00', status: 'Paid' },
+    ];
+
+    function renderOrders(ordersToRender) {
+      const tbody = document.getElementById('orders-table-body');
+      tbody.innerHTML = '';
+
+      ordersToRender.forEach(order => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50/80 transition-colors';
+        
+        const statusClass = 
+          order.status === 'Paid' ? 'bg-green-50 text-brandSuccess' :
+          order.status === 'Processing' ? 'bg-amber-50 text-honey-amber' :
+          order.status === 'Shipped' ? 'bg-blue-50 text-brandInfo' : 'bg-gray-100 text-charcoal';
+
+        tr.innerHTML = `
+          <td class="py-3.5 px-3 font-bold">${order.id}</td>
+          <td class="py-3.5 px-3 font-medium">${order.customer}</td>
+          <td class="py-3.5 px-3 text-brandMuted">${order.item}</td>
+          <td class="py-3.5 px-3 text-brandMuted">${order.date}</td>
+          <td class="py-3.5 px-3 font-black">${order.amount}</td>
+          <td class="py-3.5 px-3">
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${statusClass}">${order.status}</span>
+          </td>
+          <td class="py-3.5 px-3 text-right">
+            <button onclick="showToast('Viewing Order ${order.id}', 'info')" class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 font-bold rounded-lg transition-colors">Details</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterOrdersTable() {
+      const search = document.getElementById('order-search').value.toLowerCase();
+      const status = document.getElementById('order-status-filter').value;
+
+      const filtered = sampleOrders.filter(order => {
+        const matchesSearch = order.id.toLowerCase().includes(search) || order.customer.toLowerCase().includes(search);
+        const matchesStatus = status === 'ALL' || order.status === status;
+        return matchesSearch && matchesStatus;
+      });
+
+      renderOrders(filtered);
+    }
+
+    // 5. Top Performers Tab Switcher
+    const performersData = [
+      { name: 'Raw Organic Comb Honey', type: 'Product', views: '2,480', sales: '184', rate: '7.4%', rev: '$4,508.00', img: 'https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&q=80&w=100' },
+      { name: 'Web Dev & Consultation', type: 'Service', views: '1,210', sales: '42', rate: '3.4%', rev: '$5,040.00', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100' },
+      { name: 'Handcrafted Beeswax Candles', type: 'Product', views: '1,890', sales: '112', rate: '5.9%', rev: '$2,016.00', img: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=100' },
+    ];
+
+    function renderPerformers(filter = 'all') {
+      const container = document.getElementById('performers-list');
+      container.innerHTML = '';
+
+      const items = filter === 'all' ? performersData : performersData.filter(i => i.type.toLowerCase() === filter.toLowerCase());
+
+      items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'p-3 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-between text-xs gap-3';
+        div.innerHTML = `
+          <div class="flex items-center gap-3 min-w-0">
+            <img src="${item.img}" class="w-10 h-10 rounded-xl object-cover shrink-0" onError="this.src='https://via.placeholder.com/100';" alt="Item">
+            <div class="min-w-0">
+              <h4 class="font-bold text-charcoal truncate">${item.name}</h4>
+              <span class="text-[10px] text-brandMuted">${item.type} | ${item.views} Views</span>
+            </div>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="font-black text-charcoal block">${item.rev}</span>
+            <span class="text-[10px] text-brandSuccess font-bold">${item.sales} Sales (${item.rate})</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function switchPerformerTab(tab, btn) {
+      btn.parentElement.querySelectorAll('button').forEach(b => {
+        b.className = 'px-2.5 py-1 rounded-lg text-gray-600 hover:text-charcoal';
+      });
+      btn.className = 'px-2.5 py-1 rounded-lg bg-white shadow-sm text-charcoal font-bold';
+      renderPerformers(tab);
+    }
+
+    // 6. Review Reply Modal Logic
+    function openReviewReplyModal(reviewerName) {
+      document.getElementById('modal-reviewer-name').innerText = reviewerName;
+      document.getElementById('review-modal').classList.remove('hidden');
+    }
+
+    function closeReviewReplyModal() {
+      document.getElementById('review-modal').classList.add('hidden');
+    }
+
+    function submitReviewReply() {
+      closeReviewReplyModal();
+      showToast('Official response published to review.', 'success');
+    }
+
+    // 7. Tasks Checklist Logic
+    function toggleTask(checkbox) {
+      const text = checkbox.nextElementSibling;
+      if (checkbox.checked) {
+        text.classList.add('line-through', 'text-gray-400');
+        text.classList.remove('text-charcoal', 'font-medium');
+      } else {
+        text.classList.remove('line-through', 'text-gray-400');
+        text.classList.add('text-charcoal', 'font-medium');
+      }
+      updateTaskCount();
+    }
+
+    function deleteTask(btn) {
+      btn.closest('li').remove();
+      updateTaskCount();
+      showToast('Task removed', 'info');
+    }
+
+    function addNewTask(e) {
+      e.preventDefault();
+      const input = document.getElementById('new-task-input');
+      const val = input.value.trim();
+      if (!val) return;
+
+      const ul = document.getElementById('tasks-container');
+      const li = document.createElement('li');
+      li.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100';
+      li.innerHTML = `
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input type="checkbox" onchange="toggleTask(this)" class="w-4 h-4 rounded text-honey focus:ring-honey cursor-pointer">
+          <span class="text-charcoal font-medium">${val}</span>
+        </label>
+        <button onclick="deleteTask(this)" class="text-gray-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+      `;
+
+      ul.appendChild(li);
+      lucide.createIcons();
+      input.value = '';
+      updateTaskCount();
+      showToast('New task added!', 'success');
+    }
+
+    function updateTaskCount() {
+      const total = document.querySelectorAll('#tasks-container input[type="checkbox"]').length;
+      const checked = document.querySelectorAll('#tasks-container input[type="checkbox"]:checked').length;
+      document.getElementById('task-completed-count').innerText = `${checked} / ${total} Completed`;
+    }
+
+    // 8. Chart.js Setup (Sales Line Chart & Revenue Doughnut)
+    let salesChartInstance;
+
+    function initCharts() {
+      // Sales Overview Chart
+      const salesCtx = document.getElementById('salesChart').getContext('2d');
+      
+      const gradient = salesCtx.createLinearGradient(0, 0, 0, 300);
+      gradient.addColorStop(0, 'rgba(247, 185, 40, 0.4)');
+      gradient.addColorStop(1, 'rgba(247, 185, 40, 0.0)');
+
+      salesChartInstance = new Chart(salesCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          datasets: [
+            {
+              label: 'Revenue ($)',
+              data: [1200, 1900, 3000, 2500, 2200, 3100, 4000, 3500, 4280, 0, 0, 0],
+              borderColor: '#F7B928',
+              borderWidth: 3,
+              backgroundColor: gradient,
+              fill: true,
+              tension: 0.3,
+              pointBackgroundColor: '#E89B0C',
+              pointRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false } },
+            y: { grid: { color: '#F1F5F9' }, ticks: { callback: v => '$' + v } }
+          }
+        }
+      });
+
+      // Revenue Doughnut Chart
+      const doughnutCtx = document.getElementById('revenueDoughnutChart').getContext('2d');
+      new Chart(doughnutCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Product Sales', 'Service Bookings', 'Promotions/Other'],
+          datasets: [{
+            data: [58, 27, 15],
+            backgroundColor: ['#F7B928', '#2563EB', '#242424'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom' } },
+          cutout: '70%'
+        }
+      });
+    }
+
+    function updateChartData(period) {
+      if (!salesChartInstance) return;
+
+      let labels = [];
+      let data = [];
+
+      if (period === '7days') {
+        labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        data = [420, 580, 650, 890, 720, 950, 1100];
+      } else if (period === '30days') {
+        labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+        data = [3200, 4100, 5600, 6200];
+      } else {
+        labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'];
+        data = [1200, 1900, 3000, 2500, 2200, 3100, 4000, 3500, 4280];
+      }
+
+      salesChartInstance.data.labels = labels;
+      salesChartInstance.data.datasets[0].data = data;
+      salesChartInstance.update();
+
+      showToast(`Chart updated for ${period}`, 'info');
+    }
+
+    // On Document Ready
+    document.addEventListener('DOMContentLoaded', () => {
+      renderOrders(sampleOrders);
+      renderPerformers('all');
+      initCharts();
+    });
+  </script>
+</body>
+</html>

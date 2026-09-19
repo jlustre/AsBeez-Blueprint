@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#F7F7F5]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AsBeez - Member Portal & Dashboard</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            honey: {
+              DEFAULT: '#F7B928',
+              hover: '#e0a31b',
+              light: '#FFF1B8',
+              amber: '#E89B0C',
+              cream: '#FFF8E7'
+            },
+            charcoal: {
+              DEFAULT: '#242424',
+              light: '#2d2d2d',
+              dark: '#1a1a1a'
+            },
+            brandSuccess: '#2E8B57',
+            brandInfo: '#2563EB',
+            brandWarning: '#F97316',
+            brandDanger: '#DC2626',
+            brandMuted: '#6B7280'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    
+    /* Subtle Honeycomb Pattern SVG Background */
+    .bg-honeycomb {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23f7b928' fill-opacity='0.05' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34L24.98 30.6V17.9l-10.99-6.34L3 17.9zM0 15l12.99-7.5L26 15v15l-13 7.5L0 30V15zm28 0l-1.01-.58V15.6l1.01.58V15z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* Custom Scrollbar for sleek UI */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F7F7F5;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="h-full font-sans text-charcoal antialiased selection:bg-honey selection:text-charcoal">
+
+  <!-- ========================================== -->
+  <!-- MAIN LAYOUT WRAPPER                        -->
+  <!-- ========================================== -->
+  <div class="min-h-full flex flex-col lg:flex-row">
+
+    <!-- Mobile Navigation Backdrop -->
+    <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-charcoal/60 z-40 lg:hidden hidden transition-opacity duration-300 backdrop-blur-sm" aria-hidden="true"></div>
+
+    <!-- ========================================== -->
+    <!-- 1. SIDEBAR COMPONENT                       -->
+    <!-- ========================================== -->
+    <aside id="main-sidebar" class="fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-charcoal text-white flex flex-col justify-between transition-all duration-300 ease-in-out -translate-x-full lg:translate-x-0 shrink-0 select-none overflow-hidden group/sidebar">
+      
+      <!-- Top Branding & Toggle -->
+      <div class="flex items-center justify-between px-4 py-4 border-b border-charcoal-light">
+        <a href="#" class="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-honey rounded-lg p-1">
+          <div class="w-10 h-10 rounded-xl bg-honey flex items-center justify-center text-charcoal shadow-md shadow-honey/20">
+            <i data-lucide="hexagons" class="w-6 h-6 stroke-[2.2]"></i>
+          </div>
+          <div class="sidebar-text transition-opacity duration-200">
+            <span class="text-xl font-bold tracking-tight text-white block leading-none">As<span class="text-honey">Beez</span></span>
+            <span class="text-[10px] uppercase tracking-wider text-honey font-semibold">Member Portal</span>
+          </div>
+        </a>
+        <button onclick="toggleSidebarCollapse()" aria-label="Toggle Sidebar" class="hidden lg:flex p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-charcoal-light focus:outline-none focus:ring-2 focus:ring-honey transition-colors">
+          <i data-lucide="chevron-left" id="collapse-icon" class="w-5 h-5 transition-transform duration-300"></i>
+        </button>
+      </div>
+
+      <!-- Scrollable Navigation Area -->
+      <div class="flex-1 overflow-y-auto px-3 py-4 space-y-6 hide-scrollbar">
+
+        <!-- Member Profile Summary -->
+        <div class="sidebar-text p-3 bg-charcoal-light/60 rounded-xl border border-white/5 space-y-2.5">
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Joey Lustre Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-honey">
+              <span class="absolute bottom-0 right-0 w-3 h-3 bg-brandSuccess border-2 border-charcoal rounded-full" title="Online"></span>
+            </div>
+            <div class="overflow-hidden">
+              <div class="flex items-center gap-1.5">
+                <h4 class="text-sm font-semibold text-white truncate">Joey Lustre</h4>
+                <i data-lucide="badge-check" class="w-4 h-4 text-honey fill-honey/20 shrink-0" title="Verified Member"></i>
+              </div>
+              <span class="text-xs text-honey font-medium block">Verified Member</span>
+            </div>
+          </div>
+          <!-- Completion Bar -->
+          <div class="space-y-1 pt-1">
+            <div class="flex justify-between text-[11px] text-gray-400">
+              <span>Profile Status</span>
+              <span class="text-honey font-semibold">85%</span>
+            </div>
+            <div class="w-full h-1.5 bg-charcoal rounded-full overflow-hidden">
+              <div class="h-full bg-honey rounded-full" style="width: 85%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Groups -->
+        <nav class="space-y-6" aria-label="Main Navigation">
+          
+          <!-- Group: Main -->
+          <div>
+            <h5 class="sidebar-text px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Main</h5>
+            <ul class="space-y-1">
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl bg-honey text-charcoal font-medium shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Dashboard">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Dashboard</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Discover">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="compass" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Discover</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Favorites">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="heart" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Favorites</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Recently Viewed">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="clock" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Recently Viewed</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Group: Transactions -->
+          <div>
+            <h5 class="sidebar-text px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Transactions</h5>
+            <ul class="space-y-1">
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="My Orders">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">My Orders</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Service Bookings">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="calendar" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Service Bookings</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Purchase History">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="receipt" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Purchase History</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Returns & Refunds">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="rotate-ccw" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Returns & Refunds</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Payment Methods">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="credit-card" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Payment Methods</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Group: Marketplace & Provider -->
+          <div>
+            <h5 class="sidebar-text px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Marketplace</h5>
+            <ul class="space-y-1">
+              <!-- Collapsible Group -->
+              <li>
+                <button onclick="toggleSubmenu('listings-submenu', 'listings-arrow')" class="w-full sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="store" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm font-medium">My Listings</span>
+                  </div>
+                  <div class="flex items-center gap-2 sidebar-text">
+                    <span class="px-2 py-0.5 text-[10px] font-bold bg-honey/20 text-honey rounded-full">5</span>
+                    <i data-lucide="chevron-down" id="listings-arrow" class="w-4 h-4 transition-transform duration-200"></i>
+                  </div>
+                </button>
+                <ul id="listings-submenu" class="hidden pl-9 pr-2 py-1 space-y-1">
+                  <li><a href="#" class="block py-1.5 text-xs text-gray-400 hover:text-white transition-colors">Active Products (3)</a></li>
+                  <li><a href="#" class="block py-1.5 text-xs text-gray-400 hover:text-white transition-colors">Services Offered (2)</a></li>
+                  <li><a href="#" class="block py-1.5 text-xs text-gray-400 hover:text-white transition-colors">Drafts (1)</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Create a Listing">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="plus-circle" class="w-5 h-5 text-honey shrink-0"></i>
+                    <span class="sidebar-text text-sm font-medium text-honey">Create a Listing</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Seller Dashboard">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Seller Dashboard</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Service Provider Profile">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="briefcase" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Provider Profile</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Reviews & Ratings">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="star" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Reviews & Ratings</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Group: Communication -->
+          <div>
+            <h5 class="sidebar-text px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Communication</h5>
+            <ul class="space-y-1">
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Messages">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="message-square" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Messages</span>
+                  </div>
+                  <span id="sidebar-msg-badge" class="sidebar-text px-2 py-0.5 text-[10px] font-bold bg-honey text-charcoal rounded-full">3</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Notifications">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="bell" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Notifications</span>
+                  </div>
+                  <span id="sidebar-notif-badge" class="sidebar-text px-2 py-0.5 text-[10px] font-bold bg-brandInfo text-white rounded-full">7</span>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Support Tickets">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="life-buoy" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Support Tickets</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Group: Account Settings -->
+          <div>
+            <h5 class="sidebar-text px-3 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">Account</h5>
+            <ul class="space-y-1">
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Profile">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="user" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Profile</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Addresses">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="map-pin" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Addresses</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Security">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="shield-check" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Security</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Preferences">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="sliders" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Preferences</span>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a href="#" class="sidebar-link flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-300 hover:text-white hover:bg-charcoal-light transition-all focus:outline-none focus:ring-2 focus:ring-honey" title="Membership & Billing">
+                  <div class="flex items-center gap-3">
+                    <i data-lucide="crown" class="w-5 h-5 shrink-0"></i>
+                    <span class="sidebar-text text-sm">Membership & Billing</span>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <!-- Promo Banner inside Sidebar -->
+        <div class="sidebar-text p-4 rounded-xl bg-gradient-to-br from-honey/20 to-honey-amber/30 border border-honey/30 text-center space-y-2">
+          <div class="w-8 h-8 rounded-full bg-honey text-charcoal flex items-center justify-center mx-auto font-bold">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+          </div>
+          <h5 class="text-xs font-bold text-white uppercase tracking-wide">AsBeez Gold Member</h5>
+          <p class="text-[11px] text-gray-300">Enjoy 0% seller commission and priority service bookings.</p>
+          <button class="w-full py-1.5 px-3 bg-honey hover:bg-honey-hover text-charcoal font-semibold text-xs rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-white">
+            Upgrade Now
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Bottom Logout -->
+      <div class="p-3 border-t border-charcoal-light">
+        <button onclick="openLogoutModal()" class="w-full sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors focus:outline-none focus:ring-2 focus:ring-red-400">
+          <i data-lucide="log-out" class="w-5 h-5 shrink-0"></i>
+          <span class="sidebar-text text-sm font-medium">Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ========================================== -->
+    <!-- RIGHT SIDE MAIN WRAPPER (TOPNAV + CONTENT) -->
+    <!-- ========================================== -->
+    <div class="flex-1 flex flex-col min-w-0">
+
+      <!-- ========================================== -->
+      <!-- 2. TOP NAVIGATION BAR                      -->
+      <!-- ========================================== -->
+      <header class="sticky top-0 z-30 bg-white border-b border-gray-200/80 shadow-sm">
+        <div class="px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+          
+          <!-- Mobile Menu & Breadcrumbs -->
+          <div class="flex items-center gap-3 min-w-0">
+            <button onclick="toggleMobileSidebar()" aria-label="Open Mobile Drawer" class="lg:hidden p-2 text-gray-600 hover:text-charcoal hover:bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-honey">
+              <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+            <nav aria-label="Breadcrumb" class="hidden sm:block truncate">
+              <ol class="flex items-center gap-2 text-xs text-brandMuted">
+                <li><a href="#" class="hover:text-charcoal transition-colors">Home</a></li>
+                <li><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i></li>
+                <li class="font-semibold text-charcoal truncate" aria-current="page">Member Dashboard</li>
+              </ol>
+            </nav>
+          </div>
+
+          <!-- Central Search Bar -->
+          <div class="flex-1 max-w-2xl mx-2 hidden md:block">
+            <form onsubmit="event.preventDefault();" class="flex items-center rounded-xl bg-gray-100 border border-gray-200 focus-within:border-honey focus-within:ring-2 focus-within:ring-honey/30 transition-all overflow-hidden">
+              <select class="bg-transparent text-xs text-charcoal font-medium py-2.5 pl-3 pr-8 border-r border-gray-300 focus:outline-none cursor-pointer">
+                <option>All Categories</option>
+                <option>Products</option>
+                <option>Services</option>
+                <option>Professionals</option>
+              </select>
+              <div class="relative flex-1 flex items-center">
+                <i data-lucide="search" class="w-4 h-4 text-brandMuted absolute left-3"></i>
+                <input type="text" placeholder="Search products, services, professionals, and listings..." class="w-full bg-transparent text-xs py-2.5 pl-9 pr-3 text-charcoal focus:outline-none placeholder:text-gray-400">
+              </div>
+              <button type="submit" aria-label="Search" class="bg-honey hover:bg-honey-hover text-charcoal font-semibold px-4 py-2.5 text-xs transition-colors flex items-center gap-1.5 shrink-0">
+                <i data-lucide="search" class="w-4 h-4"></i>
+                <span>Search</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Top Navigation Action Icons -->
+          <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+
+            <!-- Mobile Search Icon Button -->
+            <button class="md:hidden p-2 text-gray-600 hover:text-charcoal hover:bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-honey" aria-label="Search Marketplace">
+              <i data-lucide="search" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Quick Create Listing CTA -->
+            <a href="#" class="hidden xl:flex items-center gap-1.5 bg-honey hover:bg-honey-hover text-charcoal text-xs font-bold py-2 px-3.5 rounded-xl transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-honey">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Create Listing</span>
+            </a>
+
+            <!-- Messages Dropdown Trigger -->
+            <div class="relative">
+              <button onclick="toggleDropdown('messages-dropdown')" aria-expanded="false" aria-label="Messages" class="relative p-2 text-gray-600 hover:text-charcoal hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-honey">
+                <i data-lucide="message-square" class="w-5 h-5"></i>
+                <span id="top-msg-count" class="absolute top-1 right-1 w-4 h-4 bg-honey text-charcoal font-bold text-[10px] rounded-full flex items-center justify-center ring-2 ring-white">3</span>
+              </button>
+
+              <!-- Messages Dropdown Menu -->
+              <div id="messages-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2">
+                <div class="px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+                  <h3 class="font-bold text-sm text-charcoal">Messages</h3>
+                  <button onclick="markMessagesRead()" class="text-xs text-honey-amber hover:underline font-medium">Mark as read</button>
+                </div>
+                <div class="max-h-80 overflow-y-auto divide-y divide-gray-50">
+                  <a href="#" onclick="markSingleMessageRead(this)" class="p-3 flex gap-3 hover:bg-honey-cream/40 transition-colors bg-honey-cream/20">
+                    <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-full object-cover shrink-0" alt="Avatar">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex justify-between items-baseline">
+                        <h4 class="text-xs font-bold text-charcoal truncate">Alex Morgan</h4>
+                        <span class="text-[10px] text-brandMuted">10m ago</span>
+                      </div>
+                      <p class="text-xs text-gray-600 truncate mt-0.5">Is the vintage honey dispenser still available for pickup?</p>
+                      <span class="text-[10px] text-honey-amber font-medium">Item #8841</span>
+                    </div>
+                  </a>
+                  <a href="#" onclick="markSingleMessageRead(this)" class="p-3 flex gap-3 hover:bg-honey-cream/40 transition-colors bg-honey-cream/20">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-full object-cover shrink-0" alt="Avatar">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex justify-between items-baseline">
+                        <h4 class="text-xs font-bold text-charcoal truncate">Sarah Jenkins</h4>
+                        <span class="text-[10px] text-brandMuted">1h ago</span>
+                      </div>
+                      <p class="text-xs text-gray-600 truncate mt-0.5">I'll arrive tomorrow at 10 AM for the web consultation.</p>
+                      <span class="text-[10px] text-honey-amber font-medium">Booking #302</span>
+                    </div>
+                  </a>
+                </div>
+                <div class="px-4 py-2 border-t border-gray-100 text-center">
+                  <a href="#" class="text-xs font-semibold text-charcoal hover:text-honey-amber">View All Messages</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notifications Dropdown Trigger -->
+            <div class="relative">
+              <button onclick="toggleDropdown('notifications-dropdown')" aria-expanded="false" aria-label="Notifications" class="relative p-2 text-gray-600 hover:text-charcoal hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-honey">
+                <i data-lucide="bell" class="w-5 h-5"></i>
+                <span id="top-notif-count" class="absolute top-1 right-1 w-4 h-4 bg-brandInfo text-white font-bold text-[10px] rounded-full flex items-center justify-center ring-2 ring-white">7</span>
+              </button>
+
+              <!-- Notifications Dropdown Menu -->
+              <div id="notifications-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                <div class="px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+                  <h3 class="font-bold text-sm text-charcoal">Notifications</h3>
+                  <button onclick="markAllNotificationsRead()" class="text-xs text-honey-amber hover:underline font-medium">Clear all</button>
+                </div>
+                <div id="notif-dropdown-list" class="max-h-80 overflow-y-auto divide-y divide-gray-50">
+                  <div class="p-3 flex gap-3 hover:bg-gray-50 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-blue-100 text-brandInfo flex items-center justify-center shrink-0">
+                      <i data-lucide="truck" class="w-4 h-4"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-xs text-charcoal font-medium">Order #ASB-9482 has been shipped!</p>
+                      <span class="text-[10px] text-brandMuted">25 mins ago</span>
+                    </div>
+                  </div>
+                  <div class="p-3 flex gap-3 hover:bg-gray-50 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-green-100 text-brandSuccess flex items-center justify-center shrink-0">
+                      <i data-lucide="check-circle" class="w-4 h-4"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-xs text-charcoal font-medium">Booking confirmed with CleanBee Home Services.</p>
+                      <span class="text-[10px] text-brandMuted">2 hours ago</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="px-4 py-2 border-t border-gray-100 text-center">
+                  <a href="#" class="text-xs font-semibold text-charcoal hover:text-honey-amber">View All Notifications</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cart Icon -->
+            <a href="#" aria-label="Shopping Cart" class="relative p-2 text-gray-600 hover:text-charcoal hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-honey">
+              <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+              <span class="absolute top-1 right-1 w-4 h-4 bg-honey text-charcoal font-bold text-[10px] rounded-full flex items-center justify-center ring-2 ring-white">2</span>
+            </a>
+
+            <div class="h-6 w-px bg-gray-200 mx-1"></div>
+
+            <!-- User Profile Dropdown -->
+            <div class="relative">
+              <button onclick="toggleDropdown('profile-dropdown')" aria-expanded="false" aria-label="User Profile Menu" class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-honey">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Joey Lustre Avatar" class="w-8 h-8 rounded-full object-cover ring-2 ring-honey">
+                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 hidden sm:block"></i>
+              </button>
+
+              <!-- Profile Dropdown Menu -->
+              <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50">
+                <div class="px-4 py-2.5 border-b border-gray-100">
+                  <p class="text-xs font-bold text-charcoal truncate">Joey Lustre</p>
+                  <p class="text-[11px] text-brandMuted truncate">joey.lustre@example.com</p>
+                </div>
+                <div class="py-1">
+                  <a href="#" class="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 hover:bg-honey-cream hover:text-charcoal transition-colors">
+                    <i data-lucide="user" class="w-4 h-4 text-brandMuted"></i>
+                    <span>View Profile</span>
+                  </a>
+                  <a href="#" class="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 hover:bg-honey-cream hover:text-charcoal transition-colors">
+                    <i data-lucide="settings" class="w-4 h-4 text-brandMuted"></i>
+                    <span>Account Settings</span>
+                  </a>
+                  <a href="#" class="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 hover:bg-honey-cream hover:text-charcoal transition-colors">
+                    <i data-lucide="crown" class="w-4 h-4 text-honey-amber"></i>
+                    <span>Membership</span>
+                  </a>
+                  <a href="#" class="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 hover:bg-honey-cream hover:text-charcoal transition-colors">
+                    <i data-lucide="help-circle" class="w-4 h-4 text-brandMuted"></i>
+                    <span>Help Center</span>
+                  </a>
+                </div>
+                <div class="border-t border-gray-100 pt-1">
+                  <button onclick="openLogoutModal()" class="w-full flex items-center gap-2.5 px-4 py-2 text-xs text-brandDanger hover:bg-red-50 transition-colors">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </header>
+
+      <!-- ========================================== -->
+      <!-- MAIN CONTENT CONTAINER                     -->
+      <!-- ========================================== -->
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 space-y-8 bg-honeycomb">
+
+        <!-- ========================================== -->
+        <!-- 3. DASHBOARD WELCOME BANNER                -->
+        <!-- ========================================== -->
+        <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-charcoal via-charcoal-light to-charcoal text-white p-6 sm:p-8 shadow-xl border border-charcoal-light" aria-label="Welcome">
+          <!-- Honeycomb Accent Overlay -->
+          <div class="absolute right-0 top-0 bottom-0 w-1/3 bg-honey/10 blur-2xl pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="space-y-2 max-w-xl">
+              <div class="flex items-center gap-2 text-honey text-xs font-semibold uppercase tracking-wider">
+                <i data-lucide="calendar" class="w-4 h-4"></i>
+                <span id="current-date">Thursday, Sep 17, 2026</span>
+              </div>
+              <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                Good morning, <span class="text-honey">Joey!</span> 🐝
+              </h1>
+              <p class="text-sm text-gray-300 leading-relaxed">
+                Here’s what’s happening in your AsBeez account today. You have 3 pending service bookings and 2 orders arriving soon.
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <a href="#" class="bg-honey hover:bg-honey-hover text-charcoal font-bold text-xs sm:text-sm px-5 py-3 rounded-xl transition-all shadow-lg shadow-honey/20 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-white">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>Create a Listing</span>
+              </a>
+              <a href="#" class="bg-white/10 hover:bg-white/20 text-white font-medium text-xs sm:text-sm px-5 py-3 rounded-xl transition-all border border-white/10 backdrop-blur-md flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-honey">
+                <i data-lucide="store" class="w-4 h-4 text-honey"></i>
+                <span>Browse Marketplace</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Dismissible Dashboard Alert Banner -->
+        <div id="dashboard-alert" class="bg-honey-cream border border-honey/40 rounded-2xl p-4 flex items-center justify-between gap-4 shadow-sm" role="alert">
+          <div class="flex items-center gap-3">
+            <div class="p-2 bg-honey/20 rounded-xl text-honey-amber shrink-0">
+              <i data-lucide="sparkles" class="w-5 h-5"></i>
+            </div>
+            <p class="text-xs sm:text-sm text-charcoal font-medium">
+              <span class="font-bold">AsBeez Spring Seller Promotion:</span> Enjoy reduced marketplace fees on all service bookings made this week!
+            </p>
+          </div>
+          <button onclick="dismissAlert('dashboard-alert')" aria-label="Dismiss Alert" class="p-1 text-gray-400 hover:text-charcoal rounded-lg focus:outline-none">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 4. SUMMARY STATISTIC CARDS                 -->
+        <!-- ========================================== -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" aria-label="Account Summary Metrics">
+          
+          <!-- Stat Card 1 -->
+          <div class="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between group">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="text-xs font-semibold text-brandMuted uppercase tracking-wider">Active Orders</span>
+                <h3 class="text-3xl font-black text-charcoal mt-1">4</h3>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-honey/15 text-honey-amber flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+              <span class="text-brandSuccess font-medium flex items-center gap-1">
+                <i data-lucide="truck" class="w-3.5 h-3.5"></i> 2 arriving this week
+              </span>
+              <a href="#" class="font-bold text-charcoal hover:text-honey-amber flex items-center gap-0.5 group-hover:underline">
+                View <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Stat Card 2 -->
+          <div class="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between group">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="text-xs font-semibold text-brandMuted uppercase tracking-wider">Upcoming Bookings</span>
+                <h3 class="text-3xl font-black text-charcoal mt-1">3</h3>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-blue-50 text-brandInfo flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i data-lucide="calendar" class="w-6 h-6"></i>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+              <span class="text-brandInfo font-medium flex items-center gap-1">
+                <i data-lucide="clock" class="w-3.5 h-3.5"></i> Next appt tomorrow
+              </span>
+              <a href="#" class="font-bold text-charcoal hover:text-honey-amber flex items-center gap-0.5 group-hover:underline">
+                View <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Stat Card 3 -->
+          <div class="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between group">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="text-xs font-semibold text-brandMuted uppercase tracking-wider">Saved Items</span>
+                <h3 class="text-3xl font-black text-charcoal mt-1">18</h3>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i data-lucide="heart" class="w-6 h-6"></i>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+              <span class="text-brandMuted font-medium">3 recently added</span>
+              <a href="#" class="font-bold text-charcoal hover:text-honey-amber flex items-center gap-0.5 group-hover:underline">
+                View <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Stat Card 4 -->
+          <div class="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between group">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="text-xs font-semibold text-brandMuted uppercase tracking-wider">Unread Messages</span>
+                <h3 class="text-3xl font-black text-charcoal mt-1" id="stat-unread-count">3</h3>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-amber-50 text-honey-amber flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i data-lucide="message-square" class="w-6 h-6"></i>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+              <span class="text-honey-amber font-medium">From sellers & providers</span>
+              <a href="#" class="font-bold text-charcoal hover:text-honey-amber flex items-center gap-0.5 group-hover:underline">
+                View <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </a>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- MAIN DASHBOARD CONTENT GRID (2 COL + SIDE) -->
+        <!-- ========================================== -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+
+          <!-- LEFT 2 COLUMNS: CORE TRANSACTIONAL & SERVICES -->
+          <div class="xl:col-span-2 space-y-8 min-w-0">
+
+            <!-- ========================================== -->
+            <!-- 5. RECENT ORDERS SECTION                  -->
+            <!-- ========================================== -->
+            <section class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4" aria-labelledby="orders-heading">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <div>
+                  <h2 id="orders-heading" class="text-lg font-bold text-charcoal">Recent Marketplace Orders</h2>
+                  <p class="text-xs text-brandMuted">Track and manage your recent physical product purchases.</p>
+                </div>
+                <a href="#" class="text-xs font-bold text-honey-amber hover:underline flex items-center gap-1">
+                  View All Orders <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                </a>
+              </div>
+
+              <!-- Desktop Table View -->
+              <div class="hidden md:block overflow-x-auto">
+                <table class="w-full text-left text-xs text-charcoal">
+                  <thead class="bg-gray-50 border-y border-gray-100 text-brandMuted font-semibold uppercase tracking-wider">
+                    <tr>
+                      <th class="py-3 px-3">Order ID</th>
+                      <th class="py-3 px-3">Item</th>
+                      <th class="py-3 px-3">Seller</th>
+                      <th class="py-3 px-3">Date</th>
+                      <th class="py-3 px-3">Total</th>
+                      <th class="py-3 px-3">Status</th>
+                      <th class="py-3 px-3 text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-100">
+                    <!-- Order Row 1 -->
+                    <tr class="hover:bg-gray-50/80 transition-colors">
+                      <td class="py-3.5 px-3 font-bold text-charcoal">#ASB-9482</td>
+                      <td class="py-3.5 px-3 font-medium">Artisanal Wildflower Honey (3-Pack)</td>
+                      <td class="py-3.5 px-3 text-brandMuted">BeeHaven Apiaries</td>
+                      <td class="py-3.5 px-3 text-brandMuted">Sep 15, 2026</td>
+                      <td class="py-3.5 px-3 font-bold">$48.50</td>
+                      <td class="py-3.5 px-3">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-blue-50 text-brandInfo">
+                          <span class="w-1.5 h-1.5 rounded-full bg-brandInfo"></span> Shipped
+                        </span>
+                      </td>
+                      <td class="py-3.5 px-3 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                          <button class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-charcoal rounded-lg font-medium transition-colors" title="Track Package">Track</button>
+                          <button class="p-1 text-gray-400 hover:text-charcoal rounded-md" title="More Options"><i data-lucide="more-vertical" class="w-4 h-4"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                    <!-- Order Row 2 -->
+                    <tr class="hover:bg-gray-50/80 transition-colors">
+                      <td class="py-3.5 px-3 font-bold text-charcoal">#ASB-9401</td>
+                      <td class="py-3.5 px-3 font-medium">Handcrafted Ceramic Honey Jar</td>
+                      <td class="py-3.5 px-3 text-brandMuted">CraftyHive Studio</td>
+                      <td class="py-3.5 px-3 text-brandMuted">Sep 12, 2026</td>
+                      <td class="py-3.5 px-3 font-bold">$34.00</td>
+                      <td class="py-3.5 px-3">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-green-50 text-brandSuccess">
+                          <span class="w-1.5 h-1.5 rounded-full bg-brandSuccess"></span> Delivered
+                        </span>
+                      </td>
+                      <td class="py-3.5 px-3 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                          <button class="px-2.5 py-1 bg-honey hover:bg-honey-hover text-charcoal rounded-lg font-semibold transition-colors">Buy Again</button>
+                          <button class="p-1 text-gray-400 hover:text-charcoal rounded-md" title="More Options"><i data-lucide="more-vertical" class="w-4 h-4"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                    <!-- Order Row 3 -->
+                    <tr class="hover:bg-gray-50/80 transition-colors">
+                      <td class="py-3.5 px-3 font-bold text-charcoal">#ASB-9311</td>
+                      <td class="py-3.5 px-3 font-medium">Organic Beeswax Candle Set</td>
+                      <td class="py-3.5 px-3 text-brandMuted">GoldenGlow Goods</td>
+                      <td class="py-3.5 px-3 text-brandMuted">Sep 10, 2026</td>
+                      <td class="py-3.5 px-3 font-bold">$29.99</td>
+                      <td class="py-3.5 px-3">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-50 text-honey-amber">
+                          <span class="w-1.5 h-1.5 rounded-full bg-honey-amber"></span> Processing
+                        </span>
+                      </td>
+                      <td class="py-3.5 px-3 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                          <button class="px-2.5 py-1 bg-gray-100 hover:bg-gray-200 text-charcoal rounded-lg font-medium transition-colors">View Details</button>
+                          <button class="p-1 text-gray-400 hover:text-charcoal rounded-md" title="More Options"><i data-lucide="more-vertical" class="w-4 h-4"></i></button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Mobile Stacked Card View -->
+              <div class="md:hidden space-y-3">
+                <div class="p-4 bg-gray-50 rounded-2xl border border-gray-200/60 space-y-2">
+                  <div class="flex justify-between items-center">
+                    <span class="font-bold text-xs text-charcoal">#ASB-9482</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-50 text-brandInfo">Shipped</span>
+                  </div>
+                  <h4 class="text-xs font-semibold text-charcoal">Artisanal Wildflower Honey (3-Pack)</h4>
+                  <div class="flex justify-between items-center text-[11px] text-brandMuted">
+                    <span>Seller: BeeHaven Apiaries</span>
+                    <span class="font-bold text-charcoal">$48.50</span>
+                  </div>
+                  <div class="pt-2 flex justify-end gap-2 border-t border-gray-200/50">
+                    <button class="px-3 py-1 bg-gray-200 text-charcoal text-xs font-semibold rounded-lg">Track Package</button>
+                  </div>
+                </div>
+
+                <div class="p-4 bg-gray-50 rounded-2xl border border-gray-200/60 space-y-2">
+                  <div class="flex justify-between items-center">
+                    <span class="font-bold text-xs text-charcoal">#ASB-9401</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-green-50 text-brandSuccess">Delivered</span>
+                  </div>
+                  <h4 class="text-xs font-semibold text-charcoal">Handcrafted Ceramic Honey Jar</h4>
+                  <div class="flex justify-between items-center text-[11px] text-brandMuted">
+                    <span>Seller: CraftyHive Studio</span>
+                    <span class="font-bold text-charcoal">$34.00</span>
+                  </div>
+                  <div class="pt-2 flex justify-end gap-2 border-t border-gray-200/50">
+                    <button class="px-3 py-1 bg-honey text-charcoal text-xs font-bold rounded-lg">Buy Again</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 6. UPCOMING SERVICE BOOKINGS              -->
+            <!-- ========================================== -->
+            <section class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4" aria-labelledby="bookings-heading">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <div>
+                  <h2 id="bookings-heading" class="text-lg font-bold text-charcoal">Upcoming Service Bookings</h2>
+                  <p class="text-xs text-brandMuted">Manage your scheduled sessions and hired professionals.</p>
+                </div>
+                <a href="#" class="text-xs font-bold text-honey-amber hover:underline flex items-center gap-1">
+                  Manage Calendar <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                </a>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <!-- Booking Card 1 -->
+                <div class="border border-gray-200/80 rounded-2xl p-4 flex flex-col justify-between space-y-3 hover:border-honey transition-colors bg-white">
+                  <div class="space-y-2">
+                    <div class="flex justify-between items-start">
+                      <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-green-50 text-brandSuccess">Confirmed</span>
+                      <span class="text-xs font-bold text-charcoal">$85/hr</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&q=80&w=150" alt="Home Cleaning" class="w-10 h-10 rounded-xl object-cover shrink-0">
+                      <div class="min-w-0">
+                        <h4 class="text-xs font-bold text-charcoal truncate">Deep Home Cleaning</h4>
+                        <p class="text-[11px] text-brandMuted flex items-center gap-1">
+                          CleanBee Co. <i data-lucide="badge-check" class="w-3 h-3 text-honey fill-honey/20"></i>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-2.5 space-y-1 text-[11px] text-charcoal">
+                      <div class="flex items-center gap-2">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-honey-amber"></i>
+                        <span>Tomorrow, Sep 18</span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <i data-lucide="clock" class="w-3.5 h-3.5 text-honey-amber"></i>
+                        <span>10:00 AM - 12:00 PM</span>
+                      </div>
+                      <div class="flex items-center gap-2 text-brandMuted">
+                        <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                        <span class="truncate">123 Hive St, San Pablo</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pt-2 flex items-center gap-2">
+                    <button class="flex-1 py-1.5 bg-gray-100 hover:bg-gray-200 text-charcoal text-xs font-semibold rounded-lg transition-colors">Details</button>
+                    <button class="p-1.5 border border-gray-200 hover:bg-honey-cream rounded-lg text-charcoal transition-colors" title="Message Provider">
+                      <i data-lucide="message-square" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Booking Card 2 -->
+                <div class="border border-gray-200/80 rounded-2xl p-4 flex flex-col justify-between space-y-3 hover:border-honey transition-colors bg-white">
+                  <div class="space-y-2">
+                    <div class="flex justify-between items-start">
+                      <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-brandInfo">Upcoming</span>
+                      <span class="text-xs font-bold text-charcoal">$120/hr</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Consultant" class="w-10 h-10 rounded-xl object-cover shrink-0">
+                      <div class="min-w-0">
+                        <h4 class="text-xs font-bold text-charcoal truncate">Web Dev Consultation</h4>
+                        <p class="text-[11px] text-brandMuted flex items-center gap-1">
+                          Sarah Jenkins <i data-lucide="badge-check" class="w-3 h-3 text-honey fill-honey/20"></i>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-2.5 space-y-1 text-[11px] text-charcoal">
+                      <div class="flex items-center gap-2">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-honey-amber"></i>
+                        <span>Mon, Sep 21</span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <i data-lucide="clock" class="w-3.5 h-3.5 text-honey-amber"></i>
+                        <span>2:00 PM - 3:00 PM</span>
+                      </div>
+                      <div class="flex items-center gap-2 text-brandMuted">
+                        <i data-lucide="video" class="w-3.5 h-3.5"></i>
+                        <span>Online (AsBeez Meet)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pt-2 flex items-center gap-2">
+                    <button class="flex-1 py-1.5 bg-gray-100 hover:bg-gray-200 text-charcoal text-xs font-semibold rounded-lg transition-colors">Details</button>
+                    <button class="p-1.5 border border-gray-200 hover:bg-honey-cream rounded-lg text-charcoal transition-colors" title="Message Provider">
+                      <i data-lucide="message-square" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Booking Card 3 -->
+                <div class="border border-gray-200/80 rounded-2xl p-4 flex flex-col justify-between space-y-3 hover:border-honey transition-colors bg-white">
+                  <div class="space-y-2">
+                    <div class="flex justify-between items-start">
+                      <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-honey-amber">Pending</span>
+                      <span class="text-xs font-bold text-charcoal">$95/hr</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150" alt="Accounting" class="w-10 h-10 rounded-xl object-cover shrink-0">
+                      <div class="min-w-0">
+                        <h4 class="text-xs font-bold text-charcoal truncate">Accounting Audit</h4>
+                        <p class="text-[11px] text-brandMuted flex items-center gap-1">
+                          Marcus Vance <i data-lucide="badge-check" class="w-3 h-3 text-honey fill-honey/20"></i>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-2.5 space-y-1 text-[11px] text-charcoal">
+                      <div class="flex items-center gap-2">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5 text-honey-amber"></i>
+                        <span>Thu, Sep 24</span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <i data-lucide="clock" class="w-3.5 h-3.5 text-honey-amber"></i>
+                        <span>11:00 AM - 12:00 PM</span>
+                      </div>
+                      <div class="flex items-center gap-2 text-brandMuted">
+                        <i data-lucide="video" class="w-3.5 h-3.5"></i>
+                        <span>Online Call</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pt-2 flex items-center gap-2">
+                    <button class="flex-1 py-1.5 bg-gray-100 hover:bg-gray-200 text-charcoal text-xs font-semibold rounded-lg transition-colors">Details</button>
+                    <button class="p-1.5 border border-gray-200 hover:bg-honey-cream rounded-lg text-charcoal transition-colors" title="Message Provider">
+                      <i data-lucide="message-square" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 7. RECOMMENDED FOR YOU (CAROUSEL)          -->
+            <!-- ========================================== -->
+            <section class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4" aria-labelledby="recommendations-heading">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h2 id="recommendations-heading" class="text-lg font-bold text-charcoal">Recommended For You</h2>
+                  <p class="text-xs text-brandMuted">Handpicked products and local services based on your activity.</p>
+                </div>
+                <!-- Carousel Controls -->
+                <div class="flex items-center gap-2">
+                  <button onclick="scrollCarousel('rec-carousel', -280)" aria-label="Scroll Left" class="p-2 rounded-full border border-gray-200 hover:bg-honey-cream text-charcoal transition-colors focus:outline-none focus:ring-2 focus:ring-honey">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="scrollCarousel('rec-carousel', 280)" aria-label="Scroll Right" class="p-2 rounded-full border border-gray-200 hover:bg-honey-cream text-charcoal transition-colors focus:outline-none focus:ring-2 focus:ring-honey">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Horizontally Scrollable Container -->
+              <div id="rec-carousel" class="flex gap-4 overflow-x-auto scroll-smooth hide-scrollbar py-1">
+                
+                <!-- Rec Card 1 -->
+                <div class="w-64 shrink-0 bg-white rounded-2xl border border-gray-200/80 overflow-hidden hover:shadow-md transition-shadow flex flex-col justify-between">
+                  <div class="relative h-36">
+                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&q=80&w=300" alt="Raw Organic Honey" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 px-2 py-0.5 bg-charcoal/80 text-white text-[10px] font-bold rounded-md backdrop-blur-sm">Product</span>
+                    <button onclick="toggleFavorite(this)" aria-label="Save to favorites" class="absolute top-2 right-2 p-1.5 bg-white/80 hover:bg-white rounded-full text-gray-600 transition-colors">
+                      <i data-lucide="heart" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                  <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div class="flex items-center gap-1 text-[11px] text-honey-amber font-semibold">
+                        <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                        <span>4.9</span>
+                        <span class="text-brandMuted">(128 reviews)</span>
+                      </div>
+                      <h4 class="text-xs font-bold text-charcoal line-clamp-1 mt-0.5">Raw Organic Comb Honey</h4>
+                      <p class="text-[11px] text-brandMuted">By SweetHive Farm</p>
+                    </div>
+                    <div class="pt-2 flex items-center justify-between border-t border-gray-100">
+                      <span class="font-black text-sm text-charcoal">$24.50</span>
+                      <button class="px-3 py-1.5 bg-honey hover:bg-honey-hover text-charcoal text-xs font-bold rounded-lg transition-colors">View Details</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Rec Card 2 -->
+                <div class="w-64 shrink-0 bg-white rounded-2xl border border-gray-200/80 overflow-hidden hover:shadow-md transition-shadow flex flex-col justify-between">
+                  <div class="relative h-36">
+                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=300" alt="Electrical Service" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 px-2 py-0.5 bg-honey text-charcoal text-[10px] font-bold rounded-md">Service</span>
+                    <button onclick="toggleFavorite(this)" aria-label="Save to favorites" class="absolute top-2 right-2 p-1.5 bg-white/80 hover:bg-white rounded-full text-gray-600 transition-colors">
+                      <i data-lucide="heart" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                  <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div class="flex items-center gap-1 text-[11px] text-honey-amber font-semibold">
+                        <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                        <span>5.0</span>
+                        <span class="text-brandMuted">(42 reviews)</span>
+                      </div>
+                      <h4 class="text-xs font-bold text-charcoal line-clamp-1 mt-0.5">Smart Home Installation</h4>
+                      <p class="text-[11px] text-brandMuted">By VoltBee Solutions</p>
+                    </div>
+                    <div class="pt-2 flex items-center justify-between border-t border-gray-100">
+                      <span class="font-black text-sm text-charcoal">$75/hr</span>
+                      <button class="px-3 py-1.5 bg-honey hover:bg-honey-hover text-charcoal text-xs font-bold rounded-lg transition-colors">Book Now</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Rec Card 3 -->
+                <div class="w-64 shrink-0 bg-white rounded-2xl border border-gray-200/80 overflow-hidden hover:shadow-md transition-shadow flex flex-col justify-between">
+                  <div class="relative h-36">
+                    <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=300" alt="Beeswax Skincare" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 px-2 py-0.5 bg-charcoal/80 text-white text-[10px] font-bold rounded-md backdrop-blur-sm">Product</span>
+                    <button onclick="toggleFavorite(this)" aria-label="Save to favorites" class="absolute top-2 right-2 p-1.5 bg-white/80 hover:bg-white rounded-full text-gray-600 transition-colors">
+                      <i data-lucide="heart" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                  <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div class="flex items-center gap-1 text-[11px] text-honey-amber font-semibold">
+                        <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                        <span>4.8</span>
+                        <span class="text-brandMuted">(96 reviews)</span>
+                      </div>
+                      <h4 class="text-xs font-bold text-charcoal line-clamp-1 mt-0.5">Natural Beeswax Lip Balm Balm Set</h4>
+                      <p class="text-[11px] text-brandMuted">By HoneyGlow Organics</p>
+                    </div>
+                    <div class="pt-2 flex items-center justify-between border-t border-gray-100">
+                      <span class="font-black text-sm text-charcoal">$16.00</span>
+                      <button class="px-3 py-1.5 bg-honey hover:bg-honey-hover text-charcoal text-xs font-bold rounded-lg transition-colors">View Details</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Rec Card 4 -->
+                <div class="w-64 shrink-0 bg-white rounded-2xl border border-gray-200/80 overflow-hidden hover:shadow-md transition-shadow flex flex-col justify-between">
+                  <div class="relative h-36">
+                    <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=300" alt="Culinary Lesson" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 px-2 py-0.5 bg-honey text-charcoal text-[10px] font-bold rounded-md">Service</span>
+                    <button onclick="toggleFavorite(this)" aria-label="Save to favorites" class="absolute top-2 right-2 p-1.5 bg-white/80 hover:bg-white rounded-full text-gray-600 transition-colors">
+                      <i data-lucide="heart" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                  <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div class="flex items-center gap-1 text-[11px] text-honey-amber font-semibold">
+                        <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                        <span>4.95</span>
+                        <span class="text-brandMuted">(31 reviews)</span>
+                      </div>
+                      <h4 class="text-xs font-bold text-charcoal line-clamp-1 mt-0.5">Private Baking & Honey Desserts Workshop</h4>
+                      <p class="text-[11px] text-brandMuted">By Chef Antoine</p>
+                    </div>
+                    <div class="pt-2 flex items-center justify-between border-t border-gray-100">
+                      <span class="font-black text-sm text-charcoal">$60/person</span>
+                      <button class="px-3 py-1.5 bg-honey hover:bg-honey-hover text-charcoal text-xs font-bold rounded-lg transition-colors">Book Now</button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 8. RECENT MESSAGES PREVIEW PANEL           -->
+            <!-- ========================================== -->
+            <section class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4" aria-labelledby="messages-heading">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h2 id="messages-heading" class="text-lg font-bold text-charcoal">Recent Conversations</h2>
+                  <p class="text-xs text-brandMuted">Direct messaging with marketplace sellers and clients.</p>
+                </div>
+                <a href="#" class="text-xs font-bold text-honey-amber hover:underline flex items-center gap-1">
+                  Open Inbox <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                </a>
+              </div>
+
+              <div class="divide-y divide-gray-100 border border-gray-200/80 rounded-2xl overflow-hidden bg-white">
+                
+                <!-- Msg 1 -->
+                <div onclick="selectMessage(this)" class="p-4 flex items-center gap-4 hover:bg-honey-cream/30 cursor-pointer transition-colors bg-honey-cream/10 msg-item">
+                  <div class="relative shrink-0">
+                    <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&q=80&w=150" alt="Alex Morgan" class="w-11 h-11 rounded-full object-cover">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-brandSuccess border-2 border-white rounded-full"></span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-baseline">
+                      <h4 class="text-xs font-bold text-charcoal truncate">Alex Morgan</h4>
+                      <span class="text-[10px] text-brandMuted">10:42 AM</span>
+                    </div>
+                    <p class="text-xs text-gray-600 truncate mt-0.5">Is the vintage honey dispenser still available for local pickup?</p>
+                    <span class="text-[10px] font-semibold text-honey-amber">Re: Listing #ASB-8841</span>
+                  </div>
+                  <div class="unread-dot w-2.5 h-2.5 bg-honey rounded-full shrink-0"></div>
+                </div>
+
+                <!-- Msg 2 -->
+                <div onclick="selectMessage(this)" class="p-4 flex items-center gap-4 hover:bg-honey-cream/30 cursor-pointer transition-colors bg-honey-cream/10 msg-item">
+                  <div class="relative shrink-0">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=150" alt="Sarah Jenkins" class="w-11 h-11 rounded-full object-cover">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-brandSuccess border-2 border-white rounded-full"></span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-baseline">
+                      <h4 class="text-xs font-bold text-charcoal truncate">Sarah Jenkins</h4>
+                      <span class="text-[10px] text-brandMuted">Yesterday</span>
+                    </div>
+                    <p class="text-xs text-gray-600 truncate mt-0.5">I'll arrive tomorrow at 10 AM for the web consultation session.</p>
+                    <span class="text-[10px] font-semibold text-honey-amber">Re: Booking #302</span>
+                  </div>
+                  <div class="unread-dot w-2.5 h-2.5 bg-honey rounded-full shrink-0"></div>
+                </div>
+
+                <!-- Msg 3 -->
+                <div onclick="selectMessage(this)" class="p-4 flex items-center gap-4 hover:bg-honey-cream/30 cursor-pointer transition-colors bg-honey-cream/10 msg-item">
+                  <div class="relative shrink-0">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150" alt="Marcus Vance" class="w-11 h-11 rounded-full object-cover">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-gray-300 border-2 border-white rounded-full"></span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-baseline">
+                      <h4 class="text-xs font-bold text-charcoal truncate">Marcus Vance</h4>
+                      <span class="text-[10px] text-brandMuted">Sep 15</span>
+                    </div>
+                    <p class="text-xs text-gray-600 truncate mt-0.5">Thanks for submitting the tax documents. I'll review them shortly.</p>
+                    <span class="text-[10px] font-semibold text-honey-amber">Re: Booking #298</span>
+                  </div>
+                  <div class="unread-dot w-2.5 h-2.5 bg-honey rounded-full shrink-0"></div>
+                </div>
+
+              </div>
+            </section>
+
+          </div>
+
+          <!-- RIGHT COLUMN: ACTIVITY, SECURITY & SAVED ITEMS -->
+          <div class="space-y-8 min-w-0">
+
+            <!-- ========================================== -->
+            <!-- 9. NOTIFICATIONS & ACTIVITY TIMELINE      -->
+            <!-- ========================================== -->
+            <section class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4" aria-labelledby="activity-heading">
+              <div class="flex items-center justify-between">
+                <h2 id="activity-heading" class="text-base font-bold text-charcoal">Recent Activity</h2>
+                <button onclick="markAllNotificationsRead()" class="text-xs font-semibold text-honey-amber hover:underline">Mark all read</button>
+              </div>
+
+              <div class="space-y-4 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-gray-100">
+                
+                <div class="relative flex items-start gap-3 pl-1">
+                  <div class="w-7 h-7 rounded-full bg-blue-100 text-brandInfo flex items-center justify-center shrink-0 ring-4 ring-white z-10 text-xs">
+                    <i data-lucide="truck" class="w-3.5 h-3.5"></i>
+                  </div>
+                  <div class="flex-1 text-xs">
+                    <p class="font-medium text-charcoal">Order <span class="font-bold">#ASB-9482</span> has shipped via BeeExpress.</p>
+                    <span class="text-[10px] text-brandMuted">25 minutes ago</span>
+                  </div>
+                </div>
+
+                <div class="relative flex items-start gap-3 pl-1">
+                  <div class="w-7 h-7 rounded-full bg-green-100 text-brandSuccess flex items-center justify-center shrink-0 ring-4 ring-white z-10 text-xs">
+                    <i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>
+                  </div>
+                  <div class="flex-1 text-xs">
+                    <p class="font-medium text-charcoal">Booking confirmed with <span class="font-bold">CleanBee Services</span>.</p>
+                    <span class="text-[10px] text-brandMuted">2 hours ago</span>
+                  </div>
+                </div>
+
+                <div class="relative flex items-start gap-3 pl-1">
+                  <div class="w-7 h-7 rounded-full bg-amber-100 text-honey-amber flex items-center justify-center shrink-0 ring-4 ring-white z-10 text-xs">
+                    <i data-lucide="tag" class="w-3.5 h-3.5"></i>
+                  </div>
+                  <div class="flex-1 text-xs">
+                    <p class="font-medium text-charcoal">Price dropped 15% on saved item <span class="font-bold">Comb Honey</span>.</p>
+                    <span class="text-[10px] text-brandMuted">Yesterday</span>
+                  </div>
+                </div>
+
+                <div class="relative flex items-start gap-3 pl-1">
+                  <div class="w-7 h-7 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 ring-4 ring-white z-10 text-xs">
+                    <i data-lucide="star" class="w-3.5 h-3.5"></i>
+                  </div>
+                  <div class="flex-1 text-xs">
+                    <p class="font-medium text-charcoal">Please leave a review for order <span class="font-bold">#ASB-9401</span>.</p>
+                    <span class="text-[10px] text-brandMuted">3 days ago</span>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 10. SAVED ITEMS (QUICK ACCESS)            -->
+            <!-- ========================================== -->
+            <section class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4" aria-labelledby="saved-heading">
+              <div class="flex items-center justify-between">
+                <h2 id="saved-heading" class="text-base font-bold text-charcoal">Saved Items (4)</h2>
+                <a href="#" class="text-xs font-semibold text-honey-amber hover:underline">View All</a>
+              </div>
+
+              <div class="space-y-3">
+                <div class="flex items-center justify-between p-2.5 rounded-2xl border border-gray-100 hover:border-honey/40 transition-colors">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-xl object-cover shrink-0" alt="Item">
+                    <div class="min-w-0">
+                      <h4 class="text-xs font-bold text-charcoal truncate">Raw Wildflower Honey</h4>
+                      <p class="text-[11px] font-bold text-honey-amber">$24.50</p>
+                    </div>
+                  </div>
+                  <button class="px-2.5 py-1 bg-honey text-charcoal text-xs font-bold rounded-lg hover:bg-honey-hover transition-colors shrink-0">Add to Cart</button>
+                </div>
+
+                <div class="flex items-center justify-between p-2.5 rounded-2xl border border-gray-100 hover:border-honey/40 transition-colors">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&q=80&w=100" class="w-10 h-10 rounded-xl object-cover shrink-0" alt="Item">
+                    <div class="min-w-0">
+                      <h4 class="text-xs font-bold text-charcoal truncate">Beeswax Candle Set</h4>
+                      <p class="text-[11px] font-bold text-honey-amber">$19.00</p>
+                    </div>
+                  </div>
+                  <button class="px-2.5 py-1 bg-honey text-charcoal text-xs font-bold rounded-lg hover:bg-honey-hover transition-colors shrink-0">Add to Cart</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 11 & 12. PROFILE & ACCOUNT SECURITY PANEL  -->
+            <!-- ========================================== -->
+            <section class="bg-white rounded-3xl p-6 border border-gray-200/80 shadow-sm space-y-4">
+              <h2 class="text-base font-bold text-charcoal flex items-center gap-2">
+                <i data-lucide="shield-check" class="w-5 h-5 text-brandSuccess"></i>
+                Account & Profile Health
+              </h2>
+
+              <!-- Completion Checklist -->
+              <div class="space-y-2 text-xs">
+                <div class="flex items-center justify-between text-gray-700">
+                  <span class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-brandSuccess"></i> Email Verification</span>
+                  <span class="text-brandSuccess font-semibold">Verified</span>
+                </div>
+                <div class="flex items-center justify-between text-gray-700">
+                  <span class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-brandSuccess"></i> Phone Verification</span>
+                  <span class="text-brandSuccess font-semibold">Verified</span>
+                </div>
+                <div class="flex items-center justify-between text-gray-700">
+                  <span class="flex items-center gap-2"><i data-lucide="alert-circle" class="w-4 h-4 text-brandWarning"></i> Default Shipping Address</span>
+                  <span class="text-brandWarning font-semibold">Missing</span>
+                </div>
+                <div class="flex items-center justify-between text-gray-700">
+                  <span class="flex items-center gap-2"><i data-lucide="alert-circle" class="w-4 h-4 text-brandWarning"></i> Two-Factor Auth (2FA)</span>
+                  <span class="text-brandWarning font-semibold">Disabled</span>
+                </div>
+              </div>
+
+              <div class="pt-2">
+                <button class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-charcoal font-semibold text-xs rounded-xl transition-colors">
+                  Complete My Profile (85%)
+                </button>
+              </div>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- 13. QUICK WIDGET (WALLET & HELPDESK)       -->
+            <!-- ========================================== -->
+            <section class="bg-gradient-to-br from-charcoal to-charcoal-light rounded-3xl p-6 text-white space-y-4 shadow-lg">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">AsBeez Balance</span>
+                <i data-lucide="wallet" class="w-5 h-5 text-honey"></i>
+              </div>
+              <div>
+                <h3 class="text-3xl font-black text-honey">$240.50</h3>
+                <p class="text-[11px] text-gray-300">Marketplace Store Credits & Earnings</p>
+              </div>
+              <div class="pt-2 flex gap-2">
+                <button class="flex-1 py-1.5 bg-honey hover:bg-honey-hover text-charcoal font-bold text-xs rounded-lg transition-colors">Withdraw</button>
+                <button class="flex-1 py-1.5 bg-white/10 hover:bg-white/20 text-white font-medium text-xs rounded-lg transition-colors">Add Funds</button>
+              </div>
+            </section>
+
+          </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 14. FOOTER COMPONENT                       -->
+        <!-- ========================================== -->
+        <footer class="mt-12 pt-6 border-t border-gray-200/80 text-xs text-brandMuted flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 rounded-md bg-honey flex items-center justify-center text-charcoal font-bold">
+              <i data-lucide="hexagons" class="w-4 h-4"></i>
+            </div>
+            <span>&copy; 2026 AsBeez Inc. All rights reserved.</span>
+          </div>
+          <div class="flex items-center gap-4 flex-wrap">
+            <a href="#" class="hover:text-charcoal transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-charcoal transition-colors">Terms of Service</a>
+            <a href="#" class="hover:text-charcoal transition-colors">Help Center</a>
+            <a href="#" class="hover:text-charcoal transition-colors">Accessibility</a>
+            <div class="flex items-center gap-1 text-charcoal font-semibold">
+              <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+              <span>English (US)</span>
+            </div>
+          </div>
+        </footer>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODALS & POPUPS                            -->
+  <!-- ========================================== -->
+  <!-- Logout Confirmation Modal -->
+  <div id="logout-modal" class="fixed inset-0 bg-charcoal/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="logout-title">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-gray-100 animate-in zoom-in-95 duration-200">
+      <div class="w-12 h-12 rounded-2xl bg-red-100 text-brandDanger flex items-center justify-center mx-auto">
+        <i data-lucide="log-out" class="w-6 h-6"></i>
+      </div>
+      <div class="text-center space-y-1">
+        <h3 id="logout-title" class="text-base font-bold text-charcoal">Sign out of AsBeez?</h3>
+        <p class="text-xs text-brandMuted">Are you sure you want to sign out of your member portal account?</p>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button onclick="closeLogoutModal()" class="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-charcoal text-xs font-semibold rounded-xl transition-colors">Cancel</button>
+        <button onclick="alert('Signed out successfully.'); closeLogoutModal();" class="flex-1 py-2.5 bg-brandDanger hover:bg-red-700 text-white text-xs font-bold rounded-xl transition-colors">Sign Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC                           -->
+  <!-- ========================================== -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // 1. Sidebar Collapse Toggle (Desktop)
+    let isSidebarCollapsed = false;
+    function toggleSidebarCollapse() {
+      const sidebar = document.getElementById('main-sidebar');
+      const collapseIcon = document.getElementById('collapse-icon');
+      const texts = document.querySelectorAll('.sidebar-text');
+
+      isSidebarCollapsed = !isSidebarCollapsed;
+
+      if (isSidebarCollapsed) {
+        sidebar.classList.remove('w-64');
+        sidebar.classList.add('w-20');
+        texts.forEach(el => el.classList.add('hidden'));
+        collapseIcon.classList.add('rotate-180');
+      } else {
+        sidebar.classList.remove('w-20');
+        sidebar.classList.add('w-64');
+        texts.forEach(el => el.classList.remove('hidden'));
+        collapseIcon.classList.remove('rotate-180');
+      }
+    }
+
+    // 2. Mobile Sidebar Drawer Toggle
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('main-sidebar');
+      const backdrop = document.getElementById('sidebar-backdrop');
+      
+      const isOpen = !sidebar.classList.contains('-translate-x-full');
+
+      if (isOpen) {
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+      } else {
+        sidebar.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+      }
+    }
+
+    // 3. Submenu Toggle (e.g. My Listings)
+    function toggleSubmenu(menuId, arrowId) {
+      const menu = document.getElementById(menuId);
+      const arrow = document.getElementById(arrowId);
+      if (menu.classList.contains('hidden')) {
+        menu.classList.remove('hidden');
+        arrow.classList.add('rotate-180');
+      } else {
+        menu.classList.add('hidden');
+        arrow.classList.remove('rotate-180');
+      }
+    }
+
+    // 4. Dropdown Menus Handler (Messages, Notifications, Profile)
+    function toggleDropdown(dropdownId) {
+      const dropdowns = ['messages-dropdown', 'notifications-dropdown', 'profile-dropdown'];
+      dropdowns.forEach(id => {
+        const el = document.getElementById(id);
+        if (id === dropdownId) {
+          el.classList.toggle('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+    }
+
+    // Close dropdowns on outside click or Escape key
+    window.addEventListener('click', function(e) {
+      if (!e.target.closest('.relative')) {
+        ['messages-dropdown', 'notifications-dropdown', 'profile-dropdown'].forEach(id => {
+          document.getElementById(id)?.classList.add('hidden');
+        });
+      }
+    });
+
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        ['messages-dropdown', 'notifications-dropdown', 'profile-dropdown'].forEach(id => {
+          document.getElementById(id)?.classList.add('hidden');
+        });
+        closeLogoutModal();
+      }
+    });
+
+    // 5. Mark Messages & Notifications as Read
+    function markMessagesRead() {
+      document.getElementById('top-msg-count').style.display = 'none';
+      document.getElementById('sidebar-msg-badge').style.display = 'none';
+      document.getElementById('stat-unread-count').innerText = '0';
+      document.querySelectorAll('.unread-dot').forEach(dot => dot.remove());
+    }
+
+    function markSingleMessageRead(element) {
+      const dot = element.querySelector('.unread-dot');
+      if (dot) {
+        dot.remove();
+        element.classList.remove('bg-honey-cream/20');
+      }
+    }
+
+    function markAllNotificationsRead() {
+      document.getElementById('top-notif-count').style.display = 'none';
+      document.getElementById('sidebar-notif-badge').style.display = 'none';
+    }
+
+    // 6. Dismiss Alert Banner
+    function dismissAlert(alertId) {
+      const alert = document.getElementById(alertId);
+      if (alert) alert.style.display = 'none';
+    }
+
+    // 7. Recommended Items Carousel Controls
+    function scrollCarousel(id, amount) {
+      const carousel = document.getElementById(id);
+      carousel.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+
+    // 8. Toggle Favorite State
+    function toggleFavorite(btn) {
+      const icon = btn.querySelector('i');
+      if (icon.classList.contains('fill-red-500')) {
+        icon.classList.remove('fill-red-500', 'text-red-500');
+        icon.classList.add('text-gray-600');
+      } else {
+        icon.classList.add('fill-red-500', 'text-red-500');
+        icon.classList.remove('text-gray-600');
+      }
+    }
+
+    // 9. Logout Modal Controls
+    function openLogoutModal() {
+      document.getElementById('logout-modal').classList.remove('hidden');
+    }
+
+    function closeLogoutModal() {
+      document.getElementById('logout-modal').classList.add('hidden');
+    }
+
+    // 10. Interactive Message Selection
+    function selectMessage(element) {
+      document.querySelectorAll('.msg-item').forEach(item => {
+        item.classList.remove('border-l-4', 'border-honey', 'bg-honey-cream/30');
+      });
+      element.classList.add('border-l-4', 'border-honey', 'bg-honey-cream/30');
+      markSingleMessageRead(element);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>AsBeez Vendor Center — Golden Hive Market</title>
+  <meta name="description" content="AsBeez Vendor Dashboard — manage products, services, orders, bookings, and grow your marketplace business." />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            honey: { DEFAULT: '#F7B928', light: '#FFF1B8', amber: '#E89B0C' },
+            charcoal: { DEFAULT: '#242424', soft: '#3A3A3A' },
+            cream: '#FFF8E7',
+            surface: '#F5F6F8',
+            success: '#2E8B57',
+            error: '#DC2626',
+            info: '#2563EB',
+            muted: '#6B7280',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          boxShadow: {
+            card: '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+            'card-hover': '0 10px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04)',
+            dropdown: '0 12px 32px -8px rgba(0,0,0,0.14), 0 4px 12px -4px rgba(0,0,0,0.06)',
+          },
+          borderRadius: { '2xl': '1rem', '3xl': '1.25rem' },
+        },
+      },
+    };
+  </script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    /* Base */
+    * { -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    /* Honeycomb pattern (subtle) */
+    .honeycomb-bg {
+      background-color: #FFF8E7;
+      background-image: url("data:image/svg+xml,%3Csvg width='56' height='100' viewBox='0 0 56 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%23F7B928' stroke-opacity='0.07' stroke-width='1.2'/%3E%3Cpath d='M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34' fill='none' stroke='%23F7B928' stroke-opacity='0.07' stroke-width='1.2'/%3E%3C/svg%3E");
+      background-size: 56px 100px;
+    }
+    .hex-clip { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
+    /* Sidebar transition */
+    .sidebar-transition { transition: width 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.25s cubic-bezier(0.4,0,0.2,1); }
+    /* Focus visible */
+    :focus-visible { outline: 2px solid #F7B928; outline-offset: 2px; border-radius: 4px; }
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+    /* Table responsive */
+    @media (max-width: 1023px) {
+      .orders-table thead { display: none; }
+      .orders-table tbody tr { display: block; margin-bottom: 0.75rem; border-radius: 0.75rem; border: 1px solid #E5E7EB; background: #fff; padding: 0.75rem; }
+      .orders-table tbody td { display: flex; justify-content: space-between; align-items: center; padding: 0.375rem 0.25rem; border: none; }
+      .orders-table tbody td::before { content: attr(data-label); font-weight: 600; color: #6B7280; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
+    }
+    /* Toast animation */
+    @keyframes toast-in { from { opacity: 0; transform: translateY(12px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .toast-enter { animation: toast-in 0.3s ease-out; }
+    /* Skeleton loading */
+    .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    /* Chart container */
+    .chart-container { position: relative; width: 100%; }
+  </style>
+</head>
+<body class="bg-surface text-charcoal antialiased">
+
+  <!-- Skip to content -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-honey focus:text-charcoal focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold focus:shadow-lg">Skip to main content</a>
+
+  <!-- ============================================================ -->
+  <!-- OVERLAY (mobile sidebar + dropdowns) -->
+  <!-- ============================================================ -->
+  <div id="sidebar-overlay" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" aria-hidden="true"></div>
+
+  <!-- ============================================================ -->
+  <!-- SIDEBAR -->
+  <!-- ============================================================ -->
+  <aside id="sidebar" class="sidebar-transition fixed top-0 left-0 z-40 h-full w-[260px] bg-charcoal text-white flex flex-col -translate-x-full lg:translate-x-0" aria-label="Vendor navigation">
+    <!-- Brand area -->
+    <div class="flex items-center gap-3 px-4 h-16 border-b border-white/10 shrink-0">
+      <div class="flex items-center justify-center w-9 h-9 rounded-xl bg-honey text-charcoal shrink-0">
+        <i data-lucide="hexagon" class="w-5 h-5"></i>
+      </div>
+      <div class="sidebar-label flex flex-col leading-tight overflow-hidden">
+        <span class="text-lg font-extrabold tracking-tight text-white">As<span class="text-honey">Beez</span></span>
+        <span class="text-[10px] font-medium text-white/60 uppercase tracking-widest">Vendor Center</span>
+      </div>
+      <button id="sidebar-collapse" class="sidebar-label ml-auto text-white/50 hover:text-honey transition-colors p-1.5 rounded-lg hover:bg-white/5" aria-label="Collapse sidebar" aria-expanded="true" aria-controls="sidebar">
+        <i data-lucide="panel-left-close" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+    <!-- Vendor identity card -->
+    <div class="sidebar-label px-4 py-3 border-b border-white/10 shrink-0">
+      <div class="flex items-center gap-3 bg-white/5 rounded-xl p-2.5">
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=80&h=80&fit=crop&crop=faces" alt="Golden Hive Market business logo" class="w-9 h-9 rounded-lg object-cover ring-2 ring-honey/50" loading="lazy" />
+        <div class="min-w-0 flex-1">
+          <p class="text-sm font-semibold truncate text-white">Golden Hive Market</p>
+          <p class="text-[11px] text-white/60">Products &amp; Services</p>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span class="inline-flex items-center gap-0.5 text-[10px] font-medium text-success bg-success/15 px-1.5 py-0.5 rounded-full">
+              <i data-lucide="badge-check" class="w-3 h-3"></i> Verified
+            </span>
+            <span class="inline-flex items-center gap-0.5 text-[10px] font-medium text-honey bg-honey/15 px-1.5 py-0.5 rounded-full">
+              <span class="w-1.5 h-1.5 rounded-full bg-honey animate-pulse"></span> Active
+            </span>
+          </div>
+        </div>
+      </div>
+      <a href="#" class="flex items-center gap-1.5 mt-2 text-xs text-honey hover:text-honey/80 font-medium px-1">
+        <i data-lucide="external-link" class="w-3 h-3"></i> View Store
+      </a>
+    </div>
+
+    <!-- Scrollable nav area -->
+    <nav class="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 space-y-1" aria-label="Main navigation">
+      <!-- Main navigation -->
+      <p class="sidebar-label px-3 pt-2 pb-1 text-[10px] font-semibold text-white/40 uppercase tracking-widest">Main</p>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="dashboard" aria-current="page">
+        <i data-lucide="layout-dashboard" class="w-5 h-5 shrink-0 text-honey"></i>
+        <span class="sidebar-label truncate">Dashboard</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="products">
+        <i data-lucide="package" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Products</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="services">
+        <i data-lucide="wrench" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Services</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="orders">
+        <i data-lucide="shopping-bag" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Orders</span>
+        <span class="sidebar-label ml-auto text-[10px] font-bold bg-honey text-charcoal px-2 py-0.5 rounded-full">8</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="bookings">
+        <i data-lucide="calendar-check" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Bookings</span>
+        <span class="sidebar-label ml-auto text-[10px] font-bold bg-info text-white px-2 py-0.5 rounded-full">3</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="customers">
+        <i data-lucide="users" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Customers</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="messages">
+        <i data-lucide="message-square" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Messages</span>
+        <span class="sidebar-label ml-auto text-[10px] font-bold bg-error text-white px-2 py-0.5 rounded-full">5</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="reviews">
+        <i data-lucide="star" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Reviews</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="promotions">
+        <i data-lucide="megaphone" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Promotions</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="analytics">
+        <i data-lucide="bar-chart-3" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Analytics</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="finances">
+        <i data-lucide="wallet" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Finances</span>
+      </a>
+
+      <!-- Business management -->
+      <p class="sidebar-label px-3 pt-4 pb-1 text-[10px] font-semibold text-white/40 uppercase tracking-widest">Business</p>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="store-profile">
+        <i data-lucide="store" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Store Profile</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="team">
+        <i data-lucide="users-round" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Team Members</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="subscription">
+        <i data-lucide="credit-card" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Subscription</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="settings">
+        <i data-lucide="settings" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Settings</span>
+      </a>
+
+      <a href="#" class="nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/8 hover:text-white transition-colors" data-nav="help">
+        <i data-lucide="help-circle" class="w-5 h-5 shrink-0"></i>
+        <span class="sidebar-label truncate">Help &amp; Support</span>
+      </a>
+    </nav>
+
+    <!-- Sidebar footer -->
+    <div class="px-4 py-3 border-t border-white/10 shrink-0 space-y-3">
+      <div class="sidebar-label">
+        <div class="flex items-center justify-between mb-1.5">
+          <span class="text-[11px] font-medium text-white/60">Growth Plan</span>
+          <span class="text-[10px] text-honey font-semibold">68%</span>
+        </div>
+        <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" aria-label="Plan usage">
+          <div class="h-full bg-gradient-to-r from-honey to-amber rounded-full" style="width:68%"></div>
+        </div>
+      </div>
+      <button class="sidebar-label w-full flex items-center justify-center gap-2 bg-honey hover:bg-amber text-charcoal text-xs font-bold py-2 rounded-xl transition-colors" onclick="showToast('Redirecting to upgrade options…','info')">
+        <i data-lucide="zap" class="w-3.5 h-3.5"></i> Upgrade Plan
+      </button>
+      <button class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-white/50 hover:text-error hover:bg-error/10 transition-colors" onclick="showToast('Signing out…','info')" aria-label="Logout">
+        <i data-lucide="log-out" class="w-4 h-4 shrink-0"></i>
+        <span class="sidebar-label">Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ============================================================ -->
+  <!-- MAIN WRAPPER -->
+  <!-- ============================================================ -->
+  <div id="main-wrapper" class="lg:ml-[260px] transition-[margin] duration-250 min-h-screen flex flex-col">
+
+    <!-- ============================================================ -->
+    <!-- TOP NAVIGATION BAR -->
+    <!-- ============================================================ -->
+    <header class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200/80" id="topbar">
+      <div class="flex items-center gap-3 px-4 sm:px-6 h-16">
+        <!-- Mobile hamburger -->
+        <button id="mobile-menu-btn" class="lg:hidden p-2 -ml-2 rounded-lg text-charcoal hover:bg-gray-100 transition-colors" aria-label="Open navigation menu" aria-controls="sidebar" aria-expanded="false">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Page title + breadcrumbs -->
+        <div class="hidden sm:block min-w-0">
+          <h1 class="text-base font-bold text-charcoal leading-tight truncate">Vendor Dashboard</h1>
+          <nav aria-label="Breadcrumb">
+            <ol class="flex items-center gap-1 text-[11px] text-muted">
+              <li><a href="#" class="hover:text-honey transition-colors">Home</a></li>
+              <li aria-hidden="true"><i data-lucide="chevron-right" class="w-3 h-3"></i></li>
+              <li><a href="#" class="hover:text-honey transition-colors">Vendor</a></li>
+              <li aria-hidden="true"><i data-lucide="chevron-right" class="w-3 h-3"></i></li>
+              <li aria-current="page" class="text-charcoal font-medium">Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+
+        <!-- Search -->
+        <div class="flex-1 max-w-xl mx-auto hidden md:block">
+          <label for="global-search" class="sr-only">Search orders, customers, products, or services</label>
+          <div class="relative">
+            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted pointer-events-none"></i>
+            <input id="global-search" type="search" placeholder="Search orders, customers, products, services…" class="w-full pl-10 pr-4 py-2 bg-surface border border-gray-200 rounded-xl text-sm placeholder:text-muted/70 focus:ring-2 focus:ring-honey/40 focus:border-honey focus:bg-white transition-all" />
+          </div>
+        </div>
+
+        <!-- Right actions -->
+        <div class="flex items-center gap-1.5 ml-auto">
+          <!-- Mobile search toggle -->
+          <button class="md:hidden p-2 rounded-lg text-charcoal hover:bg-gray-100 transition-colors" aria-label="Search" onclick="document.getElementById('global-search').focus();document.getElementById('global-search').scrollIntoView({behavior:'smooth',block:'center'})">
+            <i data-lucide="search" class="w-5 h-5"></i>
+          </button>
+
+          <!-- Create New -->
+          <div class="relative">
+            <button id="create-new-btn" class="flex items-center gap-1.5 bg-honey hover:bg-amber text-charcoal text-sm font-bold px-3 sm:px-4 py-2 rounded-xl transition-colors shadow-sm" aria-haspopup="true" aria-expanded="false" aria-controls="create-new-menu">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span class="hidden sm:inline">Create New</span>
+            </button>
+            <div id="create-new-menu" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-dropdown border border-gray-100 py-2 z-50" role="menu" aria-label="Quick actions">
+              <p class="px-4 py-1.5 text-[10px] font-semibold text-muted uppercase tracking-widest">Quick Actions</p>
+              <button class="w-full flex items-start gap-3 px-4 py-2.5 hover:bg-cream transition-colors text-left" role="menuitem" onclick="handleQuickAction('Add Product')">
+                <span class="w-8 h-8 rounded-lg bg-honey/15 text-amber flex items-center justify-center shrink-0"><i data-lucide="package" class="w-4 h-4"></i></span>
+                <span><span class="block text-sm font-semibold text-charcoal">Add Product</span><span class="block text-xs text-muted">List a new product for sale</span></span>
+              </button>
+              <button class="w-full flex items-start gap-3 px-4 py-2.5 hover:bg-cream transition-colors text-left" role="menuitem" onclick="handleQuickAction('Add Service')">
+                <span class="w-8 h-8 rounded-lg bg-info/10 text-info flex items-center justify-center shrink-0"><i data-lucide="wrench" class="w-4 h-4"></i></span>
+                <span><span class="block text-sm font-semibold text-charcoal">Add Service</span><span class="block text-xs text-muted">Offer a bookable service</span></span>
+              </button>
+              <button class="w-full flex items-start gap-3 px-4 py-2.5 hover:bg-cream transition-colors text-left" role="menuitem" onclick="handleQuickAction('Create Promotion')">
+                <span class="w-8 h-8 rounded-lg bg-success/10 text-success flex items-center justify-center shrink-0"><i data-lucide="megaphone" class="w-4 h-4"></i></span>
+                <span><span class="block text-sm font-semibold text-charcoal">Create Promotion</span><span class="block text-xs text-muted">Launch a new campaign</span></span>
+              </button>
+              <button class="w-full flex items-start gap-3 px-4 py-2.5 hover:bg-cream transition-colors text-left" role="menuitem" onclick="handleQuickAction('Add Team Member')">
+                <span class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center shrink-0"><i data-lucide="user-plus" class="w-4 h-4"></i></span>
+                <span><span class="block text-sm font-semibold text-charcoal">Add Team Member</span><span class="block text-xs text-muted">Invite a collaborator</span></span>
+              </button>
+              <button class="w-full flex items-start gap-3 px-4 py-2.5 hover:bg-cream transition-colors text-left" role="menuitem" onclick="handleQuickAction('Create Discount')">
+                <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0"><i data-lucide="percent" class="w-4 h-4"></i></span>
+                <span><span class="block text-sm font-semibold text-charcoal">Create Discount</span><span class="block text-xs text-muted">Offer a coupon code</span></span>
+              </button>
+              <button class="w-full flex items-start gap-3 px-4 py-2.5 hover:bg-cream transition-colors text-left" role="menuitem" onclick="handleQuickAction('Post Community Update')">
+                <span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0"><i data-lucide="message-circle" class="w-4 h-4"></i></span>
+                <span><span class="block text-sm font-semibold text-charcoal">Post Community Update</span><span class="block text-xs text-muted">Engage your followers</span></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Messages -->
+          <button class="relative p-2 rounded-lg text-charcoal hover:bg-gray-100 transition-colors" aria-label="Messages, 5 unread" onclick="showToast('Opening messages…','info')">
+            <i data-lucide="message-square" class="w-5 h-5"></i>
+            <span class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center bg-error text-white text-[10px] font-bold rounded-full px-1">5</span>
+          </button>
+
+          <!-- Notifications -->
+          <div class="relative">
+            <button id="notif-btn" class="relative p-2 rounded-lg text-charcoal hover:bg-gray-100 transition-colors" aria-label="Notifications, 5 unread" aria-haspopup="true" aria-expanded="false" aria-controls="notif-dropdown">
+              <i data-lucide="bell" class="w-5 h-5"></i>
+              <span class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] flex items-center justify-center bg-honey text-charcoal text-[10px] font-bold rounded-full px-1">5</span>
+            </button>
+            <!-- Notification dropdown -->
+            <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-[340px] sm:w-[380px] bg-white rounded-2xl shadow-dropdown border border-gray-100 z-50 overflow-hidden" role="menu" aria-label="Notifications">
+              <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                <h3 class="text-sm font-bold text-charcoal">Notifications</h3>
+                <button class="text-xs text-info hover:text-info/80 font-medium" onclick="markAllRead()">Mark all as read</button>
+              </div>
+              <div class="max-h-[320px] overflow-y-auto" id="notif-list">
+                <!-- Populated by JS -->
+              </div>
+              <div class="px-4 py-2.5 border-t border-gray-100 text-center">
+                <button class="text-xs text-charcoal hover:text-honey font-semibold" onclick="showToast('Opening all notifications…','info')">View all notifications</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vendor profile -->
+          <div class="relative">
+            <button id="profile-btn" class="flex items-center gap-2 p-1 rounded-xl hover:bg-gray-100 transition-colors" aria-haspopup="true" aria-expanded="false" aria-controls="profile-dropdown">
+              <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=80&h=80&fit=crop&crop=faces" alt="Golden Hive Market avatar" class="w-8 h-8 rounded-lg object-cover ring-2 ring-honey/40" loading="lazy" />
+              <span class="hidden lg:block text-left">
+                <span class="block text-sm font-semibold text-charcoal leading-tight">Joey H.</span>
+                <span class="block text-[10px] text-muted">Golden Hive Market</span>
+              </span>
+              <i data-lucide="chevron-down" class="hidden lg:block w-4 h-4 text-muted"></i>
+            </button>
+            <!-- Profile dropdown -->
+            <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-dropdown border border-gray-100 py-2 z-50" role="menu" aria-label="Vendor profile menu">
+              <div class="px-4 py-3 border-b border-gray-100">
+                <p class="text-sm font-bold text-charcoal">Joey Harrison</p>
+                <p class="text-xs text-muted">joey@goldenhivemarket.com</p>
+                <span class="inline-flex items-center gap-1 mt-1.5 text-[10px] font-semibold text-honey bg-honey/10 px-2 py-0.5 rounded-full">
+                  <i data-lucide="crown" class="w-3 h-3"></i> Growth Plan
+                </span>
+              </div>
+              <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-charcoal hover:bg-cream transition-colors" role="menuitem"><i data-lucide="store" class="w-4 h-4 text-muted"></i> View Store</a>
+              <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-charcoal hover:bg-cream transition-colors" role="menuitem"><i data-lucide="user-pen" class="w-4 h-4 text-muted"></i> Edit Profile</a>
+              <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-charcoal hover:bg-cream transition-colors" role="menuitem"><i data-lucide="settings" class="w-4 h-4 text-muted"></i> Account Settings</a>
+              <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-charcoal hover:bg-cream transition-colors" role="menuitem"><i data-lucide="credit-card" class="w-4 h-4 text-muted"></i> Billing</a>
+              <div class="border-t border-gray-100 my-1"></div>
+              <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-charcoal hover:bg-cream transition-colors" role="menuitem"><i data-lucide="help-circle" class="w-4 h-4 text-muted"></i> Help Center</a>
+              <button class="w-full flex items-center gap-3 px-4 py-2 text-sm text-error hover:bg-error/5 transition-colors" role="menuitem" onclick="showToast('Signing out…','info')"><i data-lucide="log-out" class="w-4 h-4"></i> Sign Out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================================ -->
+    <main id="main-content" class="flex-1 px-4 sm:px-6 py-5 sm:py-6 space-y-6 max-w-[1600px] w-full mx-auto">
+
+      <!-- ========== 3. WELCOME & STORE COMPLETION ========== -->
+      <section class="grid grid-cols-1 xl:grid-cols-3 gap-4" aria-label="Welcome and store status">
+        <!-- Welcome panel -->
+        <div class="xl:col-span-2 honeycomb-bg rounded-2xl border border-honey/20 p-5 sm:p-6 shadow-card">
+          <div class="flex flex-col sm:flex-row sm:items-start gap-4">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 text-xs text-muted mb-1">
+                <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                <span id="current-date">Tuesday, June 10, 2025</span>
+              </div>
+              <h2 class="text-xl sm:text-2xl font-extrabold text-charcoal">Good morning, Joey! <span class="inline-block">🐝</span></h2>
+              <p class="text-sm text-muted mt-1">Here's what's happening with Golden Hive Market today.</p>
+              <div class="flex flex-wrap gap-2.5 mt-4">
+                <button class="flex items-center gap-2 bg-white hover:bg-gray-50 text-charcoal text-sm font-semibold px-4 py-2 rounded-xl border border-gray-200 transition-colors shadow-sm" onclick="showToast('Opening your storefront…','info')">
+                  <i data-lucide="store" class="w-4 h-4"></i> View Store
+                </button>
+                <button class="flex items-center gap-2 bg-honey hover:bg-amber text-charcoal text-sm font-bold px-4 py-2 rounded-xl transition-colors shadow-sm" onclick="handleQuickAction('Add Product')">
+                  <i data-lucide="plus" class="w-4 h-4"></i> Add Product or Service
+                </button>
+              </div>
+            </div>
+            <div class="hidden sm:flex items-center justify-center w-20 h-20 rounded-2xl bg-honey/15 shrink-0">
+              <i data-lucide="hexagon" class="w-10 h-10 text-honey"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Store completion card -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-bold text-charcoal">Store Setup</h3>
+            <span class="text-xs font-bold text-amber bg-honey/10 px-2 py-0.5 rounded-full">82%</span>
+          </div>
+          <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden mb-4" role="progressbar" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100" aria-label="Store setup progress">
+            <div class="h-full bg-gradient-to-r from-honey to-amber rounded-full" style="width:82%"></div>
+          </div>
+          <p class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-2">Remaining tasks</p>
+          <ul class="space-y-2 text-sm text-charcoal">
+            <li class="flex items-center gap-2.5">
+              <span class="w-4 h-4 rounded-full border-2 border-honey flex items-center justify-center shrink-0"><span class="w-1.5 h-1.5 rounded-full bg-honey"></span></span>
+              Add payment information
+            </li>
+            <li class="flex items-center gap-2.5">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-200 shrink-0"></span>
+              Complete return policy
+            </li>
+            <li class="flex items-center gap-2.5">
+              <span class="w-4 h-4 rounded-full border-2 border-gray-200 shrink-0"></span>
+              Upload storefront banner
+            </li>
+          </ul>
+          <button class="w-full mt-4 flex items-center justify-center gap-2 bg-charcoal hover:bg-charcoal/90 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors" onclick="showToast('Opening store setup wizard…','info')">
+            <i data-lucide="settings-2" class="w-4 h-4"></i> Complete Setup
+          </button>
+        </div>
+      </section>
+
+      <!-- ========== 4. KEY PERFORMANCE CARDS ========== -->
+      <section aria-label="Key performance metrics">
+        <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4" id="kpi-grid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- ========== 5 & 6. CHARTS ROW ========== -->
+      <section class="grid grid-cols-1 xl:grid-cols-3 gap-4" aria-label="Sales and revenue charts">
+        <!-- Sales overview -->
+        <div class="xl:col-span-2 bg-white rounded-2xl border border-gray-100 p-5 shadow-card">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div>
+              <h3 class="text-base font-bold text-charcoal">Sales Overview</h3>
+              <p class="text-xs text-muted mt-0.5">Revenue and order trends</p>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <div class="flex bg-surface rounded-xl p-0.5" role="group" aria-label="Date range">
+                <button class="chart-range-btn text-xs font-semibold px-3 py-1.5 rounded-lg text-muted hover:text-charcoal transition-colors" data-range="7d">7D</button>
+                <button class="chart-range-btn text-xs font-semibold px-3 py-1.5 rounded-lg text-muted hover:text-charcoal transition-colors" data-range="30d">30D</button>
+                <button class="chart-range-btn text-xs font-semibold px-3 py-1.5 rounded-lg text-muted hover:text-charcoal transition-colors" data-range="90d">90D</button>
+                <button class="chart-range-btn text-xs font-semibold px-3 py-1.5 rounded-lg bg-white text-charcoal shadow-sm" data-range="1y" aria-pressed="true">1Y</button>
+              </div>
+              <button class="flex items-center gap-1.5 text-xs font-semibold text-charcoal bg-surface hover:bg-gray-100 px-3 py-1.5 rounded-xl transition-colors" onclick="showToast('Preparing report download…','success')">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Report</span>
+              </button>
+            </div>
+          </div>
+          <div class="flex items-baseline gap-3 mb-4">
+            <span class="text-2xl font-extrabold text-charcoal" id="chart-total">$24,860.40</span>
+            <span class="flex items-center gap-0.5 text-xs font-semibold text-success bg-success/10 px-2 py-0.5 rounded-full">
+              <i data-lucide="trending-up" class="w-3 h-3"></i> +12.5%
+            </span>
+            <span class="text-xs text-muted">vs previous period</span>
+          </div>
+          <div class="chart-container h-[260px] sm:h-[300px]">
+            <canvas id="salesChart" aria-label="Sales overview chart" role="img"></canvas>
+          </div>
+        </div>
+
+        <!-- Revenue breakdown -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card">
+          <h3 class="text-base font-bold text-charcoal mb-1">Revenue Breakdown</h3>
+          <p class="text-xs text-muted mb-4">Distribution by category</p>
+          <div class="chart-container h-[200px] mb-4">
+            <canvas id="revenueChart" aria-label="Revenue breakdown doughnut chart" role="img"></canvas>
+          </div>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center justify-between">
+              <span class="flex items-center gap-2 text-muted"><span class="w-2.5 h-2.5 rounded-full" style="background:#F7B928"></span> Product Sales</span>
+              <span class="font-semibold text-charcoal">58%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="flex items-center gap-2 text-muted"><span class="w-2.5 h-2.5 rounded-full" style="background:#2563EB"></span> Service Bookings</span>
+              <span class="font-semibold text-charcoal">27%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="flex items-center gap-2 text-muted"><span class="w-2.5 h-2.5 rounded-full" style="background:#2E8B57"></span> Advertising</span>
+              <span class="font-semibold text-charcoal">9%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="flex items-center gap-2 text-muted"><span class="w-2.5 h-2.5 rounded-full" style="background:#E89B0C"></span> Other Income</span>
+              <span class="font-semibold text-charcoal">6%</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 mt-4 pt-3 space-y-2 text-sm">
+            <div class="flex justify-between"><span class="text-muted">Gross revenue</span><span class="font-semibold">$26,480.00</span></div>
+            <div class="flex justify-between"><span class="text-muted">Marketplace fees</span><span class="font-semibold text-error">−$1,324.00</span></div>
+            <div class="flex justify-between"><span class="text-muted">Refunds</span><span class="font-semibold text-error">−$295.60</span></div>
+            <div class="flex justify-between border-t border-gray-100 pt-2"><span class="font-bold text-charcoal">Net earnings</span><span class="font-extrabold text-success">$24,860.40</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 7. RECENT ORDERS ========== -->
+      <section class="bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden" aria-label="Recent orders">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 border-b border-gray-100">
+          <div>
+            <h3 class="text-base font-bold text-charcoal">Recent Orders</h3>
+            <p class="text-xs text-muted mt-0.5">Latest customer purchases and their status</p>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <div class="relative">
+              <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted pointer-events-none"></i>
+              <input id="order-search" type="search" placeholder="Search orders…" class="pl-9 pr-3 py-1.5 bg-surface border border-gray-200 rounded-xl text-xs placeholder:text-muted/70 focus:ring-2 focus:ring-honey/40 focus:border-honey transition-all w-40 sm:w-52" aria-label="Search orders" />
+            </div>
+            <select id="order-status-filter" class="bg-surface border border-gray-200 rounded-xl text-xs px-3 py-1.5 focus:ring-2 focus:ring-honey/40 focus:border-honey transition-all" aria-label="Filter by status">
+              <option value="all">All Status</option>
+              <option value="Paid">Paid</option>
+              <option value="Pending">Pending</option>
+              <option value="Refunded">Refunded</option>
+              <option value="Processing">Processing</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+            <select id="order-date-filter" class="bg-surface border border-gray-200 rounded-xl text-xs px-3 py-1.5 focus:ring-2 focus:ring-honey/40 focus:border-honey transition-all hidden sm:block" aria-label="Filter by date">
+              <option value="all">All Dates</option>
+              <option value="7d">Last 7 days</option>
+              <option value="30d">Last 30 days</option>
+              <option value="90d">Last 90 days</option>
+            </select>
+            <button class="text-xs font-semibold text-charcoal bg-surface hover:bg-gray-100 px-3 py-1.5 rounded-xl transition-colors whitespace-nowrap" onclick="showToast('Opening all orders…','info')">View All</button>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="orders-table w-full text-sm" aria-label="Recent orders table">
+            <thead class="bg-surface/70 text-[11px] font-semibold text-muted uppercase tracking-wider">
+              <tr>
+                <th class="text-left px-5 py-3">Order</th>
+                <th class="text-left px-5 py-3">Customer</th>
+                <th class="text-left px-5 py-3 hidden md:table-cell">Product</th>
+                <th class="text-left px-5 py-3 hidden lg:table-cell">Date</th>
+                <th class="text-right px-5 py-3">Amount</th>
+                <th class="text-center px-5 py-3">Payment</th>
+                <th class="text-center px-5 py-3 hidden sm:table-cell">Fulfillment</th>
+                <th class="text-right px-5 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody" class="divide-y divide-gray-50">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+        <div id="orders-empty" class="hidden p-8 text-center">
+          <i data-lucide="package-search" class="w-10 h-10 text-muted mx-auto mb-2"></i>
+          <p class="text-sm font-semibold text-charcoal">No orders found</p>
+          <p class="text-xs text-muted">Try adjusting your search or filter criteria.</p>
+        </div>
+      </section>
+
+      <!-- ========== 8. UPCOMING SERVICE BOOKINGS ========== -->
+      <section class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card" aria-label="Upcoming service bookings">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <h3 class="text-base font-bold text-charcoal">Upcoming Service Bookings</h3>
+            <p class="text-xs text-muted mt-0.5">Confirmed and pending appointments</p>
+          </div>
+          <div class="flex bg-surface rounded-xl p-0.5" role="group" aria-label="View toggle">
+            <button class="booking-view-btn text-xs font-semibold px-3 py-1.5 rounded-lg bg-white text-charcoal shadow-sm" data-view="list" aria-pressed="true"><i data-lucide="list" class="w-3.5 h-3.5 inline -mt-0.5"></i> List</button>
+            <button class="booking-view-btn text-xs font-semibold px-3 py-1.5 rounded-lg text-muted hover:text-charcoal transition-colors" data-view="calendar" aria-pressed="false"><i data-lucide="calendar" class="w-3.5 h-3.5 inline -mt-0.5"></i> Calendar</button>
+          </div>
+        </div>
+        <div id="bookings-list" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+          <!-- Populated by JS -->
+        </div>
+        <div id="bookings-calendar" class="hidden text-center py-10 text-muted">
+          <i data-lucide="calendar-days" class="w-10 h-10 mx-auto mb-2 text-honey"></i>
+          <p class="text-sm font-semibold text-charcoal">Calendar view coming soon</p>
+          <p class="text-xs">Your bookings will appear here in a monthly view.</p>
+        </div>
+      </section>
+
+      <!-- ========== 9 & 10. INVENTORY + TOP LISTINGS ========== -->
+      <section class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <!-- Inventory -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card" aria-label="Product and inventory overview">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-base font-bold text-charcoal">Inventory Overview</h3>
+            <button class="text-xs font-semibold text-charcoal bg-surface hover:bg-gray-100 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1" onclick="handleQuickAction('Add Product')"><i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Product</button>
+          </div>
+          <!-- Stats -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
+            <div class="bg-surface rounded-xl p-3 text-center">
+              <p class="text-lg font-extrabold text-charcoal">142</p>
+              <p class="text-[10px] font-medium text-muted uppercase tracking-wide">Active</p>
+            </div>
+            <div class="bg-error/5 rounded-xl p-3 text-center">
+              <p class="text-lg font-extrabold text-error">6</p>
+              <p class="text-[10px] font-medium text-error uppercase tracking-wide">Out of stock</p>
+            </div>
+            <div class="bg-honey/10 rounded-xl p-3 text-center">
+              <p class="text-lg font-extrabold text-amber">14</p>
+              <p class="text-[10px] font-medium text-amber uppercase tracking-wide">Low stock</p>
+            </div>
+            <div class="bg-surface rounded-xl p-3 text-center">
+              <p class="text-lg font-extrabold text-muted">8</p>
+              <p class="text-[10px] font-medium text-muted uppercase tracking-wide">Drafts</p>
+            </div>
+          </div>
+          <!-- Low stock banner -->
+          <div class="flex items-center gap-2.5 bg-honey/10 border border-honey/20 rounded-xl px-3 py-2.5 mb-4" role="alert">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber shrink-0"></i>
+            <p class="text-xs text-amber font-medium">14 products are running low. <button class="underline font-semibold hover:no-underline" onclick="showToast('Opening inventory manager…','info')">Review inventory</button></p>
+          </div>
+          <!-- Inventory rows -->
+          <div class="space-y-2 max-h-[300px] overflow-y-auto" id="inventory-rows">
+            <!-- Populated by JS -->
+          </div>
+          <button class="w-full mt-3 text-xs font-semibold text-charcoal bg-surface hover:bg-gray-100 py-2 rounded-xl transition-colors" onclick="showToast('Opening full inventory manager…','info')">Manage Inventory</button>
+        </div>
+
+        <!-- Top performing listings -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card" aria-label="Top performing listings">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <h3 class="text-base font-bold text-charcoal">Top Performing Listings</h3>
+            <div class="flex bg-surface rounded-xl p-0.5" role="tablist" aria-label="Listing type filter">
+              <button class="listing-tab text-xs font-semibold px-3 py-1.5 rounded-lg bg-white text-charcoal shadow-sm" role="tab" aria-selected="true" data-tab="all">All</button>
+              <button class="listing-tab text-xs font-semibold px-3 py-1.5 rounded-lg text-muted hover:text-charcoal transition-colors" role="tab" aria-selected="false" data-tab="product">Products</button>
+              <button class="listing-tab text-xs font-semibold px-3 py-1.5 rounded-lg text-muted hover:text-charcoal transition-colors" role="tab" aria-selected="false" data-tab="service">Services</button>
+            </div>
+          </div>
+          <div id="listings-list" class="space-y-2 max-h-[380px] overflow-y-auto">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 11 & 12. CUSTOMER ACTIVITY + REVIEWS ========== -->
+      <section class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <!-- Customer activity -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card" aria-label="Customer activity and insights">
+          <h3 class="text-base font-bold text-charcoal mb-1">Customer Insights</h3>
+          <p class="text-xs text-muted mb-4">Activity and engagement metrics</p>
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="bg-surface rounded-xl p-3">
+              <p class="text-[10px] font-medium text-muted uppercase tracking-wide">New customers</p>
+              <p class="text-lg font-extrabold text-charcoal mt-0.5">128</p>
+            </div>
+            <div class="bg-surface rounded-xl p-3">
+              <p class="text-[10px] font-medium text-muted uppercase tracking-wide">Returning</p>
+              <p class="text-lg font-extrabold text-charcoal mt-0.5">312</p>
+            </div>
+            <div class="bg-surface rounded-xl p-3">
+              <p class="text-[10px] font-medium text-muted uppercase tracking-wide">Repeat rate</p>
+              <p class="text-lg font-extrabold text-success mt-0.5">42.8%</p>
+            </div>
+            <div class="bg-surface rounded-xl p-3">
+              <p class="text-[10px] font-medium text-muted uppercase tracking-wide">Avg. value</p>
+              <p class="text-lg font-extrabold text-charcoal mt-0.5">$64.30</p>
+            </div>
+          </div>
+          <div class="chart-container h-[140px] mb-4">
+            <canvas id="customerChart" aria-label="New versus returning customers chart" role="img"></canvas>
+          </div>
+          <p class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-2">Recent activity</p>
+          <div class="space-y-2.5 max-h-[200px] overflow-y-auto" id="activity-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Reviews & reputation -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card" aria-label="Reviews and reputation">
+          <h3 class="text-base font-bold text-charcoal mb-1">Reviews &amp; Reputation</h3>
+          <p class="text-xs text-muted mb-4">Your store's customer feedback</p>
+          <!-- Summary -->
+          <div class="flex items-center gap-4 mb-4">
+            <div class="text-center">
+              <p class="text-3xl font-extrabold text-charcoal">4.9</p>
+              <div class="flex items-center justify-center gap-0.5 mt-0.5">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey text-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey text-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey text-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey text-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey text-honey"></i>
+              </div>
+              <p class="text-[10px] text-muted mt-1">327 reviews</p>
+            </div>
+            <div class="flex-1 space-y-1.5">
+              <div class="flex items-center gap-2 text-xs">
+                <span class="text-muted w-3">5</span>
+                <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-honey rounded-full" style="width:86%"></div></div>
+                <span class="text-muted w-8 text-right">86%</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs">
+                <span class="text-muted w-3">4</span>
+                <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-honey rounded-full" style="width:9%"></div></div>
+                <span class="text-muted w-8 text-right">9%</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs">
+                <span class="text-muted w-3">3</span>
+                <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-honey rounded-full" style="width:3%"></div></div>
+                <span class="text-muted w-8 text-right">3%</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs">
+                <span class="text-muted w-3">2</span>
+                <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-honey rounded-full" style="width:1%"></div></div>
+                <span class="text-muted w-8 text-right">1%</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs">
+                <span class="text-muted w-3">1</span>
+                <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-honey rounded-full" style="width:1%"></div></div>
+                <span class="text-muted w-8 text-right">1%</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 mb-4 text-xs">
+            <span class="flex items-center gap-1 text-success bg-success/10 px-2 py-1 rounded-full font-medium"><i data-lucide="message-square-reply" class="w-3 h-3"></i> 96% response rate</span>
+            <span class="flex items-center gap-1 text-info bg-info/10 px-2 py-1 rounded-full font-medium"><i data-lucide="clock" class="w-3 h-3"></i> 42 min avg</span>
+          </div>
+          <!-- Recent reviews -->
+          <p class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-2">Recent reviews</p>
+          <div class="space-y-3" id="reviews-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 13. MESSAGES PANEL ========== -->
+      <section class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card" aria-label="Messages inbox preview">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <h3 class="text-base font-bold text-charcoal">Messages</h3>
+            <p class="text-xs text-muted mt-0.5">Recent customer conversations</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="relative">
+              <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted pointer-events-none"></i>
+              <input id="msg-search" type="search" placeholder="Search conversations…" class="pl-9 pr-3 py-1.5 bg-surface border border-gray-200 rounded-xl text-xs placeholder:text-muted/70 focus:ring-2 focus:ring-honey/40 focus:border-honey transition-all w-40 sm:w-52" aria-label="Search conversations" />
+            </div>
+            <button class="text-xs font-semibold text-charcoal bg-surface hover:bg-gray-100 px-3 py-1.5 rounded-xl transition-colors whitespace-nowrap" onclick="showToast('Opening all messages…','info')">View All</button>
+          </div>
+        </div>
+        <div class="space-y-1 max-h-[360px] overflow-y-auto" id="messages-list" role="list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- ========== 14. FINANCIAL SUMMARY ========== -->
+      <section class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card" aria-label="Financial summary">
+        <h3 class="text-base font-bold text-charcoal mb-4">Financial Summary</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5">
+          <div class="bg-success/5 rounded-xl p-3 border border-success/10">
+            <p class="text-[10px] font-medium text-success uppercase tracking-wide">Available</p>
+            <p class="text-lg font-extrabold text-success mt-0.5">$8,420.60</p>
+          </div>
+          <div class="bg-honey/5 rounded-xl p-3 border border-honey/10">
+            <p class="text-[10px] font-medium text-amber uppercase tracking-wide">Pending</p>
+            <p class="text-lg font-extrabold text-amber mt-0.5">$2,140.00</p>
+          </div>
+          <div class="bg-info/5 rounded-xl p-3 border border-info/10">
+            <p class="text-[10px] font-medium text-info uppercase tracking-wide">Next payout</p>
+            <p class="text-lg font-extrabold text-info mt-0.5">$3,280.40</p>
+            <p class="text-[10px] text-muted">June 15, 2025</p>
+          </div>
+          <div class="bg-surface rounded-xl p-3">
+            <p class="text-[10px] font-medium text-muted uppercase tracking-wide">Lifetime</p>
+            <p class="text-lg font-extrabold text-charcoal mt-0.5">$142,380</p>
+          </div>
+          <div class="bg-surface rounded-xl p-3">
+            <p class="text-[10px] font-medium text-muted uppercase tracking-wide">Fees paid</p>
+            <p class="text-lg font-extrabold text-charcoal mt-0.5">$7,119</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-2 mb-5">
+          <button class="flex items-center gap-2 bg-honey hover:bg-amber text-charcoal text-xs font-bold px-4 py-2 rounded-xl transition-colors" onclick="showToast('Opening withdrawal flow…','success')"><i data-lucide="banknote" class="w-3.5 h-3.5"></i> Withdraw Funds</button>
+          <button class="flex items-center gap-2 bg-surface hover:bg-gray-100 text-charcoal text-xs font-semibold px-4 py-2 rounded-xl transition-colors" onclick="showToast('Opening transactions…','info')"><i data-lucide="list" class="w-3.5 h-3.5"></i> View Transactions</button>
+          <button class="flex items-center gap-2 bg-surface hover:bg-gray-100 text-charcoal text-xs font-semibold px-4 py-2 rounded-xl transition-colors" onclick="showToast('Downloading statement…','success')"><i data-lucide="download" class="w-3.5 h-3.5"></i> Statement</button>
+          <button class="flex items-center gap-2 bg-surface hover:bg-gray-100 text-charcoal text-xs font-semibold px-4 py-2 rounded-xl transition-colors" onclick="showToast('Opening payment settings…','info')"><i data-lucide="credit-card" class="w-3.5 h-3.5"></i> Payment Method</button>
+        </div>
+        <p class="text-[11px] font-semibold text-muted uppercase tracking-wider mb-2">Recent transactions</p>
+        <div class="space-y-2" id="transactions-list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- ========== 15. PROMOTIONS ========== -->
+      <section class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card" aria-label="Promotions and advertising">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-base font-bold text-charcoal">Promotions</h3>
+            <p class="text-xs text-muted mt-0.5">Manage your active campaigns</p>
+          </div>
+          <button class="flex items-center gap-1.5 bg-honey hover:bg-amber text-charcoal text-xs font-bold px-3 py-1.5 rounded-xl transition-colors" onclick="handleQuickAction('Create Promotion')"><i data-lucide="plus" class="w-3.5 h-3.5"></i> Create Promotion</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="promotions-list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- ========== 16 & 17. INSIGHTS + TASKS ========== -->
+      <section class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <!-- Insights -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card" aria-label="Business insights and recommendations">
+          <h3 class="text-base font-bold text-charcoal mb-4">Insights for Your Business</h3>
+          <div class="space-y-3" id="insights-list">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Tasks -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-card" aria-label="Tasks and reminders">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-bold text-charcoal">Tasks &amp; Reminders</h3>
+            <button class="text-xs font-semibold text-charcoal bg-surface hover:bg-gray-100 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1" id="toggle-completed-btn"><i data-lucide="check-check" class="w-3.5 h-3.5"></i> Show completed</button>
+          </div>
+          <!-- Add task -->
+          <div class="flex gap-2 mb-3">
+            <label for="new-task-input" class="sr-only">Add a new task</label>
+            <input id="new-task-input" type="text" placeholder="Add a new task…" class="flex-1 px-3 py-2 bg-surface border border-gray-200 rounded-xl text-sm placeholder:text-muted/70 focus:ring-2 focus:ring-honey/40 focus:border-honey transition-all" />
+            <button id="add-task-btn" class="bg-honey hover:bg-amber text-charcoal font-bold px-3.5 py-2 rounded-xl transition-colors" aria-label="Add task"><i data-lucide="plus" class="w-4 h-4"></i></button>
+          </div>
+          <div class="space-y-1.5" id="tasks-list" role="list">
+            <!-- Populated by JS -->
+          </div>
+          <div id="tasks-empty" class="hidden text-center py-6">
+            <i data-lucide="check-circle-2" class="w-8 h-8 text-success mx-auto mb-2"></i>
+            <p class="text-sm font-semibold text-charcoal">All caught up!</p>
+            <p class="text-xs text-muted">No pending tasks. Add one above to get started.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== FOOTER ========== -->
+      <footer class="border-t border-gray-200 pt-5 pb-2" aria-label="Dashboard footer">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted">
+          <div class="flex items-center gap-2">
+            <span class="flex items-center gap-1 font-bold text-charcoal">
+              <i data-lucide="hexagon" class="w-3.5 h-3.5 text-honey"></i> As<span class="text-honey">Beez</span>
+            </span>
+            <span>© 2025 AsBeez. All rights reserved.</span>
+          </div>
+          <nav class="flex flex-wrap items-center justify-center gap-4" aria-label="Footer links">
+            <a href="#" class="hover:text-honey transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-honey transition-colors">Vendor Terms</a>
+            <a href="#" class="hover:text-honey transition-colors">Help Center</a>
+            <a href="#" class="hover:text-honey transition-colors flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-success animate-pulse"></span> System Status</a>
+            <span class="text-muted/60">v2.4.1</span>
+          </nav>
+        </div>
+        <p class="text-center text-[10px] text-muted/50 mt-2">Find it. Book it. Get it done. — Powered by AsBeez</p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TOAST CONTAINER -->
+  <!-- ============================================================ -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-[100] space-y-2 w-[320px] max-w-[calc(100vw-2rem)]" role="region" aria-live="polite" aria-label="Notifications"></div>
+
+  <!-- ============================================================ -->
+  <!-- BACK TO TOP -->
+  <!-- ============================================================ -->
+  <button id="back-to-top" class="fixed bottom-5 left-5 z-20 w-10 h-10 rounded-full bg-charcoal text-white shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:bg-charcoal/90" aria-label="Back to top">
+    <i data-lucide="arrow-up" class="w-4 h-4"></i>
+  </button>
+
+  <!-- ============================================================ -->
+  <!-- REVIEW REPLY MODAL -->
+  <!-- ============================================================ -->
+  <div id="review-modal" class="fixed inset-0 z-[60] hidden" role="dialog" aria-modal="true" aria-labelledby="review-modal-title" aria-describedby="review-modal-desc">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="review-modal-overlay"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="bg-white rounded-2xl shadow-dropdown w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 relative">
+        <button id="review-modal-close" class="absolute top-4 right-4 p-1.5 rounded-lg text-muted hover:text-charcoal hover:bg-gray-100 transition-colors" aria-label="Close reply modal"><i data-lucide="x" class="w-4 h-4"></i></button>
+        <h3 id="review-modal-title" class="text-lg font-bold text-charcoal mb-1">Reply to Review</h3>
+        <p id="review-modal-desc" class="text-xs text-muted mb-4">Your response will be visible publicly on your store profile.</p>
+        <!-- Review summary -->
+        <div class="bg-surface rounded-xl p-3 mb-4" id="review-summary">
+          <!-- Populated by JS -->
+        </div>
+        <label for="review-reply-text" class="block text-sm font-semibold text-charcoal mb-1.5">Your reply</label>
+        <textarea id="review-reply-text" rows="4" maxlength="500" class="w-full px-3 py-2.5 bg-surface border border-gray-200 rounded-xl text-sm placeholder:text-muted/70 focus:ring-2 focus:ring-honey/40 focus:border-honey transition-all resize-none" placeholder="Thank the customer and address their feedback…"></textarea>
+        <div class="flex items-center justify-between mt-1.5 mb-4">
+          <span class="text-[11px] text-muted"><span id="char-count">0</span>/500 characters</span>
+          <span class="text-[11px] text-muted" id="reply-feedback"></span>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button id="review-modal-cancel" class="px-4 py-2 bg-surface hover:bg-gray-100 text-charcoal text-sm font-semibold rounded-xl transition-colors">Cancel</button>
+          <button id="review-modal-submit" class="px-4 py-2 bg-honey hover:bg-amber text-charcoal text-sm font-bold rounded-xl transition-colors flex items-center gap-1.5"><i data-lucide="send" class="w-3.5 h-3.5"></i> Submit Reply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- JAVASCRIPT -->
+  <!-- ============================================================ -->
+  <script>
+    'use strict';
+
+    // ============================================================
+    // UTILITIES
+    // ============================================================
+    const $ = (sel, ctx = document) => ctx.querySelector(sel);
+    const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
+
+    function formatCurrency(n) {
+      return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // ============================================================
+    // TOAST SYSTEM
+    // ============================================================
+    const toastContainer = $('#toast-container');
+    function showToast(message, type = 'info') {
+      const colors = {
+        success: { bg: 'bg-success/10', border: 'border-success/20', text: 'text-success', icon: 'check-circle-2' },
+        error: { bg: 'bg-error/10', border: 'border-error/20', text: 'text-error', icon: 'alert-circle' },
+        warning: { bg: 'bg-honey/10', border: 'border-honey/20', text: 'text-amber', icon: 'alert-triangle' },
+        info: { bg: 'bg-info/10', border: 'border-info/20', text: 'text-info', icon: 'info' },
+      };
+      const c = colors[type] || colors.info;
+      const el = document.createElement('div');
+      el.className = `toast-enter flex items-start gap-3 ${c.bg} ${c.border} border rounded-xl px-4 py-3 shadow-card`;
+      el.setAttribute('role', 'status');
+      el.innerHTML = `
+        <i data-lucide="${c.icon}" class="w-5 h-5 ${c.text} shrink-0 mt-0.5"></i>
+        <p class="text-sm font-medium text-charcoal flex-1">${message}</p>
+        <button class="p-0.5 rounded text-muted hover:text-charcoal transition-colors shrink-0" aria-label="Dismiss notification">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      `;
+      el.querySelector('button').addEventListener('click', () => el.remove());
+      toastContainer.appendChild(el);
+      lucide.createIcons({ nodes: [el] });
+      setTimeout(() => { if (el.parentNode) el.remove(); }, 4000);
+    }
+
+    // ============================================================
+    // DATA
+    // ============================================================
+    const KPIS = [
+      { label: 'Total Revenue', value: '$24,860.40', change: '+12.5% from last month', trend: 'up', icon: 'dollar-sign', accent: 'honey' },
+      { label: 'Total Orders', value: '386', change: '+8.2% from last month', trend: 'up', icon: 'shopping-bag', accent: 'info' },
+      { label: 'Service Bookings', value: '94', change: '+15.3% from last month', trend: 'up', icon: 'calendar-check', accent: 'success' },
+      { label: 'Store Visitors', value: '8,429', change: '+6.7% from last month', trend: 'up', icon: 'users', accent: 'honey' },
+      { label: 'Conversion Rate', value: '4.8%', change: '+0.6% from last month', trend: 'up', icon: 'trending-up', accent: 'info' },
+      { label: 'Average Rating', value: '4.9', change: '327 reviews', trend: 'neutral', icon: 'star', accent: 'honey' },
+    ];
+
+    const ORDERS = [
+      { id: '#AB-7841', customer: 'Maria Santos', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&crop=faces', product: 'Organic Honey Jar 500g', date: '2025-06-09', amount: 24.99, payment: 'Paid', fulfillment: 'Shipped' },
+      { id: '#AB-7840', customer: 'James Chen', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=faces', product: 'Beeswax Candle Set', date: '2025-06-09', amount: 42.50, payment: 'Paid', fulfillment: 'Processing' },
+      { id: '#AB-7839', customer: 'Aisha Patel', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=faces', product: 'Home Cleaning Service', date: '2025-06-08', amount: 120.00, payment: 'Pending', fulfillment: 'Processing' },
+      { id: '#AB-7838', customer: 'Tom Williams', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=faces', product: 'Raw Honeycomb 250g', date: '2025-06-08', amount: 18.75, payment: 'Paid', fulfillment: 'Delivered' },
+      { id: '#AB-7837', customer: 'Sofia Rossi', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&h=60&fit=crop&crop=faces', product: 'Website Consultation', date: '2025-06-07', amount: 250.00, payment: 'Paid', fulfillment: 'Delivered' },
+      { id: '#AB-7836', customer: 'David Kim', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=60&h=60&fit=crop&crop=faces', product: 'Beeswax Wrap Set', date: '2025-06-07', amount: 32.00, payment: 'Refunded', fulfillment: 'Cancelled' },
+      { id: '#AB-7835', customer: 'Emma Johnson', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&h=60&fit=crop&crop=faces', product: 'Business Accounting Consult', date: '2025-06-06', amount: 180.00, payment: 'Paid', fulfillment: 'Delivered' },
+      { id: '#AB-7834', customer: 'Liam O\'Brien', avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=60&h=60&fit=crop&crop=faces', product: 'Organic Honey Jar 1kg', date: '2025-06-06', amount: 39.99, payment: 'Paid', fulfillment: 'Shipped' },
+    ];
+
+    const BOOKINGS = [
+      { customer: 'Maria Santos', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&crop=faces', service: 'Home Cleaning', date: 'Jun 12, 2025', time: '10:00 AM', location: '123 Main St, Austin, TX', price: 120.00, status: 'Confirmed' },
+      { customer: 'James Chen', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=faces', service: 'Website Consultation', date: 'Jun 13, 2025', time: '2:00 PM', location: 'Virtual Appointment', price: 250.00, status: 'Confirmed' },
+      { customer: 'Aisha Patel', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=faces', service: 'Business Accounting', date: 'Jun 14, 2025', time: '11:30 AM', location: 'Virtual Appointment', price: 180.00, status: 'Pending' },
+      { customer: 'Tom Williams', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=faces', service: 'Senior Care Assessment', date: 'Jun 15, 2025', time: '9:00 AM', location: '456 Oak Ave, Austin, TX', price: 95.00, status: 'Confirmed' },
+    ];
+
+    const INVENTORY = [
+      { name: 'Organic Honey Jar 500g', sku: 'HNY-500-ORG', stock: 48, threshold: 20, price: 24.99, status: 'Active', img: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=80&h=80&fit=crop' },
+      { name: 'Beeswax Candle Set', sku: 'CND-BEE-SET', stock: 12, threshold: 15, price: 42.50, status: 'Low Stock', img: 'https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?w=80&h=80&fit=crop' },
+      { name: 'Raw Honeycomb 250g', sku: 'HNY-CMB-RAW', stock: 0, threshold: 10, price: 18.75, status: 'Out of Stock', img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=80&h=80&fit=crop' },
+      { name: 'Beeswax Wrap Set', sku: 'WRP-BEE-SET', stock: 35, threshold: 20, price: 32.00, status: 'Active', img: 'https://images.unsplash.com/photo-1615486364123-6a4f5f0f9c5f?w=80&h=80&fit=crop' },
+      { name: 'Organic Honey Jar 1kg', sku: 'HNY-1KG-ORG', stock: 8, threshold: 15, price: 39.99, status: 'Low Stock', img: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=80&h=80&fit=crop' },
+      { name: 'Propolis Tincture 30ml', sku: 'PRP-TCT-30', stock: 0, threshold: 10, price: 28.50, status: 'Out of Stock', img: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=80&h=80&fit=crop' },
+    ];
+
+    const LISTINGS = [
+      { name: 'Organic Honey Jar 500g', type: 'Product', views: 2840, orders: 142, conv: 5.0, revenue: 3547.58, trend: 'up', img: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=80&h=80&fit=crop' },
+      { name: 'Home Cleaning Service', type: 'Service', views: 1920, orders: 68, conv: 3.5, revenue: 8160.00, trend: 'up', img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=80&h=80&fit=crop' },
+      { name: 'Beeswax Candle Set', type: 'Product', views: 1240, orders: 53, conv: 4.3, revenue: 2252.50, trend: 'down', img: 'https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?w=80&h=80&fit=crop' },
+      { name: 'Website Consultation', type: 'Service', views: 980, orders: 31, conv: 3.2, revenue: 7750.00, trend: 'up', img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=80&h=80&fit=crop' },
+      { name: 'Raw Honeycomb 250g', type: 'Product', views: 860, orders: 28, conv: 3.3, revenue: 525.00, trend: 'neutral', img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=80&h=80&fit=crop' },
+    ];
+
+    const ACTIVITIES = [
+      { icon: 'shopping-cart', color: 'honey', text: 'Maria Santos added Organic Honey Jar to cart', time: '2 min ago' },
+      { icon: 'message-square', color: 'info', text: 'James Chen submitted a service inquiry', time: '15 min ago' },
+      { icon: 'package', color: 'success', text: 'Aisha Patel purchased Beeswax Candle Set', time: '1 hr ago' },
+      { icon: 'star', color: 'honey', text: 'Tom Williams left a 5-star review', time: '3 hrs ago' },
+      { icon: 'bookmark', color: 'info', text: 'Sofia Rossi saved Home Cleaning Service', time: '5 hrs ago' },
+      { icon: 'shopping-cart', color: 'honey', text: 'David Kim added Raw Honeycomb to cart', time: '8 hrs ago' },
+    ];
+
+    const REVIEWS = [
+      { name: 'Maria Santos', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&crop=faces', rating: 5, date: 'Jun 8, 2025', text: 'Absolutely love the quality of the honey! It tastes incredibly fresh and pure. Will definitely order again.', product: 'Organic Honey Jar 500g' },
+      { name: 'James Chen', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=faces', rating: 4, date: 'Jun 6, 2025', text: 'Great candle set. Burns cleanly and smells wonderful. Took a day longer to arrive than expected.', product: 'Beeswax Candle Set' },
+      { name: 'Aisha Patel', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=faces', rating: 5, date: 'Jun 4, 2025', text: 'The home cleaning service was thorough and professional. My house has never looked better!', product: 'Home Cleaning Service' },
+    ];
+
+    const MESSAGES = [
+      { name: 'Maria Santos', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&crop=faces', preview: 'Hi! Is the honey jar still available?', time: '2 min', unread: true, ref: '#AB-7841', online: true },
+      { name: 'James Chen', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=faces', preview: 'Can we reschedule the consultation?', time: '15 min', unread: true, ref: 'Booking #BK-204', online: true },
+      { name: 'Aisha Patel', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=faces', preview: 'Thank you for the quick cleaning!', time: '1 hr', unread: false, ref: 'Booking #BK-198', online: false },
+      { name: 'Tom Williams', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop&crop=faces', preview: 'When will my order ship?', time: '3 hrs', unread: true, ref: '#AB-7838', online: false },
+      { name: 'Sofia Rossi', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&h=60&fit=crop&crop=faces', preview: 'The website consultation was very helpful!', time: '5 hrs', unread: false, ref: 'Booking #BK-195', online: true },
+    ];
+
+    const TRANSACTIONS = [
+      { label: 'Order #AB-7841 payment', amount: 24.99, positive: true, date: 'Jun 9, 2025' },
+      { label: 'Booking #BK-204 payment', amount: 250.00, positive: true, date: 'Jun 8, 2025' },
+      { label: 'Refund — Order #AB-7836', amount: -32.00, positive: false, date: 'Jun 7, 2025' },
+      { label: 'Marketplace fee (Jun 8)', amount: -13.74, positive: false, date: 'Jun 8, 2025' },
+      { label: 'Payout to bank account', amount: -3200.00, positive: false, date: 'Jun 5, 2025' },
+    ];
+
+    const PROMOTIONS = [
+      { name: 'Weekend Product Sale', status: 'Active', start: 'Jun 7', end: 'Jun 9', impressions: 12400, clicks: 840, conversions: 52, budget: 500, used: 340 },
+      { name: 'New Customer Discount', status: 'Active', start: 'Jun 1', end: 'Jun 30', impressions: 28600, clicks: 1920, conversions: 148, budget: 1200, used: 890 },
+      { name: 'Featured Service Promotion', status: 'Paused', start: 'May 15', end: 'Jun 15', impressions: 8600, clicks: 420, conversions: 28, budget: 300, used: 210 },
+    ];
+
+    const INSIGHTS = [
+      { icon: 'package', priority: 'High', priorityColor: 'error', title: 'Restock your best-selling product', desc: 'Organic Honey Jar 500g is down to 48 units and selling fast.', impact: '+$1,200/mo', action: 'Restock Now' },
+      { icon: 'message-square', priority: 'Medium', priorityColor: 'honey', title: 'Respond to 3 unanswered reviews', desc: 'Quick replies improve your reputation and search ranking.', impact: '+8% visibility', action: 'Respond' },
+      { icon: 'trending-up', priority: 'High', priorityColor: 'error', title: 'Promote high-view, low-conversion listings', desc: 'Beeswax Candle Set has 1,240 views but only 4.3% conversion.', impact: '+$480/mo', action: 'Optimize' },
+      { icon: 'calendar', priority: 'Medium', priorityColor: 'honey', title: 'Add availability to 2 service listings', desc: 'Services without availability get 60% fewer bookings.', impact: '+12 bookings/mo', action: 'Update' },
+      { icon: 'image', priority: 'Low', priorityColor: 'info', title: 'Complete your storefront banner', desc: 'Stores with banners see 34% more engagement.', impact: '+34% engagement', action: 'Upload' },
+      { icon: 'percent', priority: 'Medium', priorityColor: 'honey', title: 'Create a discount for returning customers', desc: 'Reward loyalty and increase repeat purchase rate.', impact: '+5% repeat rate', action: 'Create' },
+    ];
+
+    const DEFAULT_TASKS = [
+      { id: 1, text: 'Ship three pending orders', done: false },
+      { id: 2, text: 'Confirm tomorrow\'s bookings', done: false },
+      { id: 3, text: 'Update inventory quantities', done: true },
+      { id: 4, text: 'Reply to customer questions', done: false },
+      { id: 5, text: 'Review monthly statement', done: false },
+    ];
+
+    const NOTIFICATIONS = [
+      { id: 1, icon: 'shopping-bag', title: 'New order received', desc: 'Maria Santos placed order #AB-7841', time: '2 min ago', unread: true, color: 'honey' },
+      { id: 2, icon: 'calendar-check', title: 'Service booking confirmed', desc: 'James Chen confirmed Website Consultation', time: '15 min ago', unread: true, color: 'info' },
+      { id: 3, icon: 'alert-triangle', title: 'Low-stock warning', desc: 'Beeswax Candle Set is down to 12 units', time: '1 hr ago', unread: true, color: 'error' },
+      { id: 4, icon: 'star', title: 'New customer review', desc: 'Tom Williams left a 5-star review', time: '3 hrs ago', unread: true, color: 'honey' },
+      { id: 5, icon: 'banknote', title: 'Payout completed', desc: '$3,200.00 sent to your bank account', time: '1 day ago', unread: true, color: 'success' },
+    ];
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    let tasks = JSON.parse(localStorage.getItem('asbeez_tasks') || 'null') || DEFAULT_TASKS.map(t => ({ ...t }));
+    let showCompleted = false;
+    let activeListingTab = 'all';
+    let activeOrderFilters = { search: '', status: 'all', date: 'all' };
+    let activeMsgSearch = '';
+    let salesChartInstance = null;
+    let revenueChartInstance = null;
+    let customerChartInstance = null;
+
+    // ============================================================
+    // SIDEBAR TOGGLE (desktop collapse + mobile drawer)
+    // ============================================================
+    const sidebar = $('#sidebar');
+    const sidebarOverlay = $('#sidebar-overlay');
+    const sidebarCollapse = $('#sidebar-collapse');
+    const mobileMenuBtn = $('#mobile-menu-btn');
+    const mainWrapper = $('#main-wrapper');
+
+    function isDesktop() { return window.innerWidth >= 1024; }
+
+    function setSidebarCollapsed(collapsed) {
+      if (!isDesktop()) return;
+      sidebar.classList.toggle('lg:w-[72px]', collapsed);
+      sidebar.classList.toggle('lg:w-[260px]', !collapsed);
+      mainWrapper.classList.toggle('lg:ml-[72px]', collapsed);
+      mainWrapper.classList.toggle('lg:ml-[260px]', !collapsed);
+      $$('.sidebar-label', sidebar).forEach(el => el.classList.toggle('lg:hidden', collapsed));
+      $('#sidebar-collapse i').setAttribute('data-lucide', collapsed ? 'panel-left-open' : 'panel-left-close');
+      sidebarCollapse.setAttribute('aria-expanded', String(!collapsed));
+      lucide.createIcons({ nodes: [sidebarCollapse] });
+    }
+
+    sidebarCollapse.addEventListener('click', () => {
+      const collapsed = sidebar.classList.contains('lg:w-[72px]');
+      setSidebarCollapsed(!collapsed);
+    });
+
+    function openMobileSidebar() {
+      sidebar.classList.remove('-translate-x-full');
+      sidebarOverlay.classList.remove('hidden');
+      mobileMenuBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileSidebar() {
+      if (isDesktop()) return;
+      sidebar.classList.add('-translate-x-full');
+      sidebarOverlay.classList.add('hidden');
+      mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    mobileMenuBtn.addEventListener('click', openMobileSidebar);
+    sidebarOverlay.addEventListener('click', closeMobileSidebar);
+
+    window.addEventListener('resize', () => {
+      if (isDesktop()) {
+        sidebar.classList.remove('-translate-x-full');
+        sidebarOverlay.classList.add('hidden');
+        document.body.style.overflow = '';
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        sidebar.classList.remove('lg:w-[72px]');
+        sidebar.classList.add('lg:w-[260px]');
+        mainWrapper.classList.remove('lg:ml-[72px]');
+        mainWrapper.classList.add('lg:ml-[260px]');
+        $$('.sidebar-label', sidebar).forEach(el => el.classList.remove('lg:hidden'));
+      }
+    });
+
+    // ============================================================
+    // NAVIGATION ACTIVE STATE
+    // ============================================================
+    $$('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        $$('.nav-item').forEach(n => { n.classList.remove('bg-honey/15', 'text-white'); n.removeAttribute('aria-current'); n.querySelector('i')?.classList.remove('text-honey'); });
+        item.classList.add('bg-honey/15', 'text-white');
+        item.setAttribute('aria-current', 'page');
+        item.querySelector('i')?.classList.add('text-honey');
+        closeMobileSidebar();
+      });
+    });
+    // Set initial active
+    $('[data-nav="dashboard"]').classList.add('bg-honey/15', 'text-white');
+    $('[data-nav="dashboard"] i').classList.add('text-honey');
+
+    // ============================================================
+    // DROPDOWNS (create new, notifications, profile)
+    // ============================================================
+    function setupDropdown(btnId, menuId) {
+      const btn = $(btnId);
+      const menu = $(menuId);
+      if (!btn || !menu) return;
+
+      function toggle() {
+        const isOpen = !menu.classList.contains('hidden');
+        closeAllDropdowns();
+        if (!isOpen) {
+          menu.classList.remove('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      }
+      btn.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
+
+      // Keyboard
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+        if (e.key === 'Escape') { menu.classList.add('hidden'); btn.setAttribute('aria-expanded', 'false'); btn.focus(); }
+      });
+    }
+
+    function closeAllDropdowns() {
+      $$('#create-new-menu, #notif-dropdown, #profile-dropdown').forEach(m => m.classList.add('hidden'));
+      $$('#create-new-btn, #notif-btn, #profile-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    }
+
+    setupDropdown('#create-new-btn', '#create-new-menu');
+    setupDropdown('#notif-btn', '#notif-dropdown');
+    setupDropdown('#profile-btn', '#profile-dropdown');
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#create-new-btn') && !e.target.closest('#create-new-menu') &&
+          !e.target.closest('#notif-btn') && !e.target.closest('#notif-dropdown') &&
+          !e.target.closest('#profile-btn') && !e.target.closest('#profile-dropdown')) {
+        closeAllDropdowns();
+      }
+    });
+
+    // ============================================================
+    // NOTIFICATIONS
+    // ============================================================
+    function renderNotifications() {
+      const list = $('#notif-list');
+      list.innerHTML = NOTIFICATIONS.map(n => `
+        <div class="flex items-start gap-3 px-4 py-3 hover:bg-cream/60 transition-colors cursor-pointer ${n.unread ? 'bg-honey/[0.04]' : ''}" role="menuitem" tabindex="0" onclick="markNotifRead(${n.id})">
+          <span class="w-8 h-8 rounded-lg bg-${n.color}/10 text-${n.color} flex items-center justify-center shrink-0 mt-0.5">
+            <i data-lucide="${n.icon}" class="w-4 h-4"></i>
+          </span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <p class="text-sm font-semibold text-charcoal truncate">${n.title}</p>
+              ${n.unread ? '<span class="w-1.5 h-1.5 rounded-full bg-honey shrink-0"></span>' : ''}
+            </div>
+            <p class="text-xs text-muted mt-0.5 line-clamp-2">${n.desc}</p>
+            <p class="text-[10px] text-muted/70 mt-1">${n.time}</p>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons({ nodes: [list] });
+    }
+
+    function markNotifRead(id) {
+      const n = NOTIFICATIONS.find(x => x.id === id);
+      if (n) { n.unread = false; renderNotifications(); }
+    }
+
+    function markAllRead() {
+      NOTIFICATIONS.forEach(n => n.unread = false);
+      renderNotifications();
+      showToast('All notifications marked as read', 'success');
+    }
+
+    renderNotifications();
+
+    // ============================================================
+    // KPI CARDS
+    // ============================================================
+    function renderKPIs() {
+      const grid = $('#kpi-grid');
+      const accentMap = {
+        honey: { bg: 'bg-honey/10', text: 'text-amber', iconBg: 'bg-honey/15' },
+        info: { bg: 'bg-info/10', text: 'text-info', iconBg: 'bg-info/10' },
+        success: { bg: 'bg-success/10', text: 'text-success', iconBg: 'bg-success/10' },
+      };
+      grid.innerHTML = KPIS.map(k => {
+        const a = accentMap[k.accent] || accentMap.honey;
+        return `
+          <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-card hover:shadow-card-hover transition-shadow group">
+            <div class="flex items-center justify-between mb-3">
+              <span class="w-9 h-9 rounded-xl ${a.iconBg} ${a.text} flex items-center justify-center">
+                <i data-lucide="${k.icon}" class="w-4 h-4"></i>
+              </span>
+              ${k.trend === 'up' ? `<span class="flex items-center gap-0.5 text-[10px] font-semibold text-success bg-success/10 px-1.5 py-0.5 rounded-full"><i data-lucide="trending-up" class="w-3 h-3"></i></span>` : k.trend === 'down' ? `<span class="flex items-center gap-0.5 text-[10px] font-semibold text-error bg-error/10 px-1.5 py-0.5 rounded-full"><i data-lucide="trending-down" class="w-3 h-3"></i></span>` : `<span class="flex items-center gap-0.5 text-[10px] font-semibold text-muted bg-gray-100 px-1.5 py-0.5 rounded-full"><i data-lucide="minus" class="w-3 h-3"></i></span>`}
+            </div>
+            <p class="text-[11px] font-medium text-muted uppercase tracking-wide">${k.label}</p>
+            <p class="text-xl font-extrabold text-charcoal mt-1">${k.value}</p>
+            <p class="text-[11px] text-muted mt-0.5">${k.change}</p>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons({ nodes: [grid] });
+    }
+    renderKPIs();
+
+    // ============================================================
+    // CHARTS
+    // ============================================================
+    function initCharts() {
+      // Sales Chart
+      const salesCtx = $('#salesChart').getContext('2d');
+      const months = ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'];
+      salesChartInstance = new Chart(salesCtx, {
+        type: 'line',
+        data: {
+          labels: months,
+          datasets: [
+            {
+              label: 'Revenue',
+              data: [14200, 15800, 13600, 17200, 19400, 22800, 18600, 21200, 23800, 22100, 24600, 24860],
+              borderColor: '#F7B928',
+              backgroundColor: 'rgba(247,185,40,0.08)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 3,
+              pointHoverRadius: 5,
+              pointBackgroundColor: '#F7B928',
+              borderWidth: 2.5,
+            },
+            {
+              label: 'Orders',
+              data: [220, 245, 210, 268, 302, 356, 290, 330, 372, 345, 380, 386],
+              borderColor: '#2563EB',
+              backgroundColor: 'rgba(37,99,235,0.05)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 2,
+              pointHoverRadius: 4,
+              pointBackgroundColor: '#2563EB',
+              borderWidth: 2,
+              yAxisID: 'y1',
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#242424',
+              titleFont: { family: 'Inter', size: 12, weight: '600' },
+              bodyFont: { family: 'Inter', size: 12 },
+              padding: 10,
+              cornerRadius: 10,
+              callbacks: {
+                label: (ctx) => ctx.datasetIndex === 0 ? `Revenue: $${ctx.parsed.y.toLocaleString()}` : `Orders: ${ctx.parsed.y}`,
+              },
+            },
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 }, color: '#6B7280', maxRotation: 0 } },
+            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { family: 'Inter', size: 10 }, color: '#6B7280', callback: (v) => '$' + (v/1000) + 'k' } },
+            y1: { beginAtZero: true, position: 'right', grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 }, color: '#6B7280' } },
+          },
+        },
+      });
+
+      // Revenue doughnut
+      const revCtx = $('#revenueChart').getContext('2d');
+      revenueChartInstance = new Chart(revCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Product Sales', 'Service Bookings', 'Advertising', 'Other'],
+          datasets: [{
+            data: [58, 27, 9, 6],
+            backgroundColor: ['#F7B928', '#2563EB', '#2E8B57', '#E89B0C'],
+            borderWidth: 0,
+            hoverOffset: 6,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '68%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#242424',
+              bodyFont: { family: 'Inter', size: 12 },
+              padding: 10,
+              cornerRadius: 10,
+              callbacks: { label: (ctx) => `${ctx.label}: ${ctx.parsed}%` },
+            },
+          },
+        },
+      });
+
+      // Customer chart
+      const custCtx = $('#customerChart').getContext('2d');
+      customerChartInstance = new Chart(custCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [
+            { label: 'New', data: [18, 22, 16, 28, 24, 20], backgroundColor: '#F7B928', borderRadius: 4, barThickness: 12 },
+            { label: 'Returning', data: [42, 48, 38, 56, 52, 58], backgroundColor: '#2563EB', borderRadius: 4, barThickness: 12 },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: true, position: 'bottom', labels: { font: { family: 'Inter', size: 10 }, boxWidth: 10, padding: 12, color: '#6B7280' } },
+            tooltip: { backgroundColor: '#242424', bodyFont: { family: 'Inter', size: 12 }, padding: 10, cornerRadius: 10 },
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 }, color: '#6B7280' } },
+            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { font: { family: 'Inter', size: 10 }, color: '#6B7280' } },
+          },
+        },
+      });
+    }
+    initCharts();
+
+    // Chart range buttons
+    $$('.chart-range-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        $$('.chart-range-btn').forEach(b => { b.classList.remove('bg-white', 'text-charcoal', 'shadow-sm'); b.classList.add('text-muted'); b.removeAttribute('aria-pressed'); });
+        this.classList.add('bg-white', 'text-charcoal', 'shadow-sm');
+        this.classList.remove('text-muted');
+        this.setAttribute('aria-pressed', 'true');
+        const range = this.dataset.range;
+        if (salesChartInstance) {
+          const map = {
+            '7d': { labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], revenue: [3200, 4100, 3800, 5200, 4800, 6100, 5400], orders: [42, 55, 48, 68, 62, 78, 70] },
+            '30d': { labels: ['Week 1','Week 2','Week 3','Week 4'], revenue: [5800, 7200, 6400, 8100], orders: [78, 95, 82, 108] },
+            '90d': { labels: ['Apr','May','Jun'], revenue: [22100, 24600, 24860], orders: [345, 380, 386] },
+            '1y': { labels: months, revenue: [14200, 15800, 13600, 17200, 19400, 22800, 18600, 21200, 23800, 22100, 24600, 24860], orders: [220, 245, 210, 268, 302, 356, 290, 330, 372, 345, 380, 386] },
+          };
+          const d = map[range] || map['1y'];
+          salesChartInstance.data.labels = d.labels;
+          salesChartInstance.data.datasets[0].data = d.revenue;
+          salesChartInstance.data.datasets[1].data = d.orders;
+          salesChartInstance.update();
+          const total = d.revenue.reduce((a,b) => a+b, 0);
+          $('#chart-total').textContent = formatCurrency(total);
+        }
+      });
+    });
+
+    // ============================================================
+    // ORDERS TABLE
+    // ============================================================
+    function orderStatusBadge(status) {
+      const map = {
+        Paid: 'bg-success/10 text-success',
+        Pending: 'bg-honey/10 text-amber',
+        Refunded: 'bg-error/10 text-error',
+        Processing: 'bg-info/10 text-info',
+        Shipped: 'bg-blue-100 text-blue-700',
+        Delivered: 'bg-success/10 text-success',
+        Cancelled: 'bg-gray-100 text-muted',
+      };
+      return `<span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${map[status] || 'bg-gray-100 text-muted'}">${status}</span>`;
+    }
+
+    function renderOrders() {
+      const tbody = $('#orders-tbody');
+      const empty = $('#orders-empty');
+      const filtered = ORDERS.filter(o => {
+        const matchSearch = !activeOrderFilters.search || o.id.toLowerCase().includes(activeOrderFilters.search) || o.customer.toLowerCase().includes(activeOrderFilters.search) || o.product.toLowerCase().includes(activeOrderFilters.search);
+        const matchStatus = activeOrderFilters.status === 'all' || o.payment === activeOrderFilters.status || o.fulfillment === activeOrderFilters.status;
+        return matchSearch && matchStatus;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+
+      tbody.innerHTML = filtered.map(o => `
+        <tr class="hover:bg-cream/40 transition-colors">
+          <td data-label="Order" class="px-5 py-3 font-semibold text-charcoal whitespace-nowrap">${o.id}</td>
+          <td data-label="Customer" class="px-5 py-3">
+            <div class="flex items-center gap-2">
+              <img src="${o.avatar}" alt="" class="w-7 h-7 rounded-full object-cover" loading="lazy" />
+              <span class="text-charcoal">${o.customer}</span>
+            </div>
+          </td>
+          <td data-label="Product" class="px-5 py-3 hidden md:table-cell text-muted">${o.product}</td>
+          <td data-label="Date" class="px-5 py-3 hidden lg:table-cell text-muted whitespace-nowrap">${new Date(o.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
+          <td data-label="Amount" class="px-5 py-3 text-right font-semibold text-charcoal">${formatCurrency(o.amount)}</td>
+          <td data-label="Payment" class="px-5 py-3 text-center">${orderStatusBadge(o.payment)}</td>
+          <td data-label="Fulfillment" class="px-5 py-3 text-center hidden sm:table-cell">${orderStatusBadge(o.fulfillment)}</td>
+          <td data-label="Actions" class="px-5 py-3 text-right">
+            <div class="relative inline-block" data-order-menu>
+              <button class="p-1.5 rounded-lg text-muted hover:text-charcoal hover:bg-gray-100 transition-colors" aria-label="Order actions for ${o.id}" aria-haspopup="true" aria-expanded="false">
+                <i data-lucide="more-vertical" class="w-4 h-4"></i>
+              </button>
+              <div class="hidden absolute right-0 mt-1 w-44 bg-white rounded-xl shadow-dropdown border border-gray-100 py-1 z-30" role="menu">
+                <button class="w-full flex items-center gap-2.5 px-3.5 py-2 text-sm text-charcoal hover:bg-cream transition-colors" role="menuitem" onclick="showToast('Viewing order ${o.id}…','info')"><i data-lucide="eye" class="w-3.5 h-3.5 text-muted"></i> View details</button>
+                <button class="w-full flex items-center gap-2.5 px-3.5 py-2 text-sm text-charcoal hover:bg-cream transition-colors" role="menuitem" onclick="showToast('Printing invoice for ${o.id}…','info')"><i data-lucide="printer" class="w-3.5 h-3.5 text-muted"></i> Print invoice</button>
+                <button class="w-full flex items-center gap-2.5 px-3.5 py-2 text-sm text-charcoal hover:bg-cream transition-colors" role="menuitem" onclick="showToast('Updating status for ${o.id}…','info')"><i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-muted"></i> Update status</button>
+                <button class="w-full flex items-center gap-2.5 px-3.5 py-2 text-sm text-charcoal hover:bg-cream transition-colors" role="menuitem" onclick="showToast('Opening conversation with ${o.customer}…','info')"><i data-lucide="message-square" class="w-3.5 h-3.5 text-muted"></i> Contact customer</button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+      lucide.createIcons({ nodes: [tbody] });
+
+      // Order action menus
+      $$('[data-order-menu] button').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const menu = this.nextElementSibling;
+          const isOpen = !menu.classList.contains('hidden');
+          $$('[data-order-menu] > div').forEach(m => m.classList.add('hidden'));
+          $$('[data-order-menu] > button').forEach(b => b.setAttribute('aria-expanded', 'false'));
+          if (!isOpen) {
+            menu.classList.remove('hidden');
+            this.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+    }
+
+    document.addEventListener('click', () => {
+      $$('[data-order-menu] > div').forEach(m => m.classList.add('hidden'));
+      $$('[data-order-menu] > button').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    });
+
+    renderOrders();
+
+    // Order filters
+    $('#order-search').addEventListener('input', function() {
+      activeOrderFilters.search = this.value.toLowerCase().trim();
+      renderOrders();
+    });
+    $('#order-status-filter').addEventListener('change', function() {
+      activeOrderFilters.status = this.value;
+      renderOrders();
+    });
+    $('#order-date-filter').addEventListener('change', function() {
+      activeOrderFilters.date = this.value;
+      renderOrders();
+    });
+
+    // ============================================================
+    // BOOKINGS
+    // ============================================================
+    function renderBookings() {
+      const list = $('#bookings-list');
+      list.innerHTML = BOOKINGS.map(b => `
+        <div class="bg-surface rounded-xl p-4 border border-gray-100 hover:shadow-card transition-shadow">
+          <div class="flex items-center gap-3 mb-3">
+            <img src="${b.avatar}" alt="" class="w-10 h-10 rounded-full object-cover ring-2 ring-honey/30" loading="lazy" />
+            <div class="min-w-0">
+              <p class="text-sm font-semibold text-charcoal truncate">${b.customer}</p>
+              <p class="text-[11px] text-muted truncate">${b.service}</p>
+            </div>
+            <span class="ml-auto text-[10px] font-semibold px-2 py-0.5 rounded-full ${b.status === 'Confirmed' ? 'bg-success/10 text-success' : 'bg-honey/10 text-amber'}">${b.status}</span>
+          </div>
+          <div class="space-y-1.5 text-xs text-muted mb-3">
+            <p class="flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${b.date} at ${b.time}</p>
+            <p class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${b.location}</p>
+            <p class="flex items-center gap-1.5 font-semibold text-charcoal"><i data-lucide="tag" class="w-3.5 h-3.5"></i> ${formatCurrency(b.price)}</p>
+          </div>
+          <div class="flex gap-2">
+            <button class="flex-1 text-[11px] font-semibold text-charcoal bg-white hover:bg-gray-50 py-1.5 rounded-lg border border-gray-200 transition-colors" onclick="showToast('Viewing booking details…','info')">Details</button>
+            <button class="flex-1 text-[11px] font-semibold text-charcoal bg-honey/15 hover:bg-honey/25 py-1.5 rounded-lg transition-colors" onclick="showToast('Opening conversation…','info')">Message</button>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons({ nodes: [list] });
+    }
+    renderBookings();
+
+    // Booking view toggle
+    $$('.booking-view-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        $$('.booking-view-btn').forEach(b => { b.classList.remove('bg-white', 'text-charcoal', 'shadow-sm'); b.classList.add('text-muted'); b.setAttribute('aria-pressed', 'false'); });
+        this.classList.add('bg-white', 'text-charcoal', 'shadow-sm');
+        this.classList.remove('text-muted');
+        this.setAttribute('aria-pressed', 'true');
+        const view = this.dataset.view;
+        if (view === 'calendar') {
+          $('#bookings-list').classList.add('hidden');
+          $('#bookings-calendar').classList.remove('hidden');
+        } else {
+          $('#bookings-list').classList.remove('hidden');
+          $('#bookings-calendar').classList.add('hidden');
+        }
+      });
+    });
+
+    // ============================================================
+    // INVENTORY
+    // ============================================================
+    function renderInventory() {
+      const container = $('#inventory-rows');
+      container.innerHTML = INVENTORY.map(p => {
+        const isLow = p.status === 'Low Stock';
+        const isOut = p.status === 'Out of Stock';
+        const badgeColor = isOut ? 'bg-error/10 text-error' : isLow ? 'bg-honey/10 text-amber' : 'bg-success/10 text-success';
+        return `
+          <div class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-cream/60 transition-colors ${isOut ? 'bg-error/[0.03]' : isLow ? 'bg-honey/[0.04]' : ''}">
+            <img src="${p.img}" alt="${p.name}" class="w-10 h-10 rounded-lg object-cover shrink-0" loading="lazy" />
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-charcoal truncate">${p.name}</p>
+              <p class="text-[10px] text-muted">SKU: ${p.sku}</p>
+            </div>
+            <div class="text-right shrink-0">
+              <p class="text-sm font-bold ${isOut ? 'text-error' : isLow ? 'text-amber' : 'text-charcoal'}">${p.stock} <span class="text-[10px] font-normal text-muted">/ ${p.threshold} min</span></p>
+              <span class="inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${badgeColor}">${p.status}</span>
+            </div>
+            <span class="text-sm font-semibold text-charcoal shrink-0 hidden sm:block">${formatCurrency(p.price)}</span>
+            <button class="p-1.5 rounded-lg text-muted hover:text-charcoal hover:bg-gray-100 transition-colors shrink-0" aria-label="Edit ${p.name}" onclick="showToast('Editing ${p.name}…','info')"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons({ nodes: [container] });
+    }
+    renderInventory();
+
+    // ============================================================
+    // TOP LISTINGS TABS
+    // ============================================================
+    function renderListings() {
+      const container = $('#listings-list');
+      const filtered = activeListingTab === 'all' ? LISTINGS : LISTINGS.filter(l => l.type.toLowerCase() === activeListingTab);
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="text-center py-8 text-muted"><i data-lucide="search-x" class="w-8 h-8 mx-auto mb-2"></i><p class="text-sm font-semibold text-charcoal">No listings found</p><p class="text-xs">Try a different tab.</p></div>`;
+        lucide.createIcons({ nodes: [container] });
+        return;
+      }
+      container.innerHTML = filtered.map(l => `
+        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-cream/60 transition-colors">
+          <img src="${l.img}" alt="${l.name}" class="w-11 h-11 rounded-lg object-cover shrink-0" loading="lazy" />
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-charcoal truncate">${l.name}</p>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-[10px] font-medium px-1.5 py-0.5 rounded-full ${l.type === 'Product' ? 'bg-honey/10 text-amber' : 'bg-info/10 text-info'}">${l.type}</span>
+              <span class="text-[10px] text-muted">${l.views.toLocaleString()} views</span>
+            </div>
+          </div>
+          <div class="text-right shrink-0">
+            <p class="text-sm font-bold text-charcoal">${formatCurrency(l.revenue)}</p>
+            <p class="text-[10px] text-muted">${l.orders} ${l.type === 'Product' ? 'orders' : 'bookings'} · ${l.conv}%</p>
+          </div>
+          <span class="shrink-0 ${l.trend === 'up' ? 'text-success' : l.trend === 'down' ? 'text-error' : 'text-muted'}">
+            <i data-lucide="${l.trend === 'up' ? 'trending-up' : l.trend === 'down' ? 'trending-down' : 'minus'}" class="w-4 h-4"></i>
+          </span>
+        </div>
+      `).join('');
+      lucide.createIcons({ nodes: [container] });
+    }
+    renderListings();
+
+    $$('.listing-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        $$('.listing-tab').forEach(t => { t.classList.remove('bg-white', 'text-charcoal', 'shadow-sm'); t.classList.add('text-muted'); t.setAttribute('aria-selected', 'false'); });
+        this.classList.add('bg-white', 'text-charcoal', 'shadow-sm');
+        this.classList.remove('text-muted');
+        this.setAttribute('aria-selected', 'true');
+        activeListingTab = this.dataset.tab;
+        renderListings();
+      });
+    });
+
+    // ============================================================
+    // CUSTOMER ACTIVITY
+    // ============================================================
+    function renderActivity() {
+      const list = $('#activity-list');
+      list.innerHTML = ACTIVITIES.map(a => `
+        <div class="flex items-start gap-2.5">
+          <span class="w-7 h-7 rounded-lg bg-${a.color}/10 text-${a.color} flex items-center justify-center shrink-0 mt-0.5">
+            <i data-lucide="${a.icon}" class="w-3.5 h-3.5"></i>
+          </span>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs text-charcoal">${a.text}</p>
+            <p class="text-[10px] text-muted mt-0.5">${a.time}</p>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons({ nodes: [list] });
+    }
+    renderActivity();
+
+    // ============================================================
+    // REVIEWS
+    // ============================================================
+    function renderReviews() {
+      const list = $('#reviews-list');
+      list.innerHTML = REVIEWS.map((r, i) => `
+        <div class="bg-surface rounded-xl p-3.5 border border-gray-100">
+          <div class="flex items-center gap-2.5 mb-2">
+            <img src="${r.avatar}" alt="" class="w-8 h-8 rounded-full object-cover" loading="lazy" />
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-charcoal">${r.name}</p>
+              <div class="flex items-center gap-1.5">
+                <div class="flex items-center gap-0.5">
+                  ${Array.from({length: 5}, (_, i) => `<i data-lucide="star" class="w-3 h-3 ${i < r.rating ? 'fill-honey text-honey' : 'text-gray-300'}"></i>`).join('')}
+                </div>
+                <span class="text-[10px] text-muted">${r.date}</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-xs text-charcoal leading-relaxed mb-2">"${r.text}"</p>
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] text-muted">${r.product}</span>
+            <button class="text-[11px] font-semibold text-info hover:text-info/80 transition-colors" onclick="openReviewModal(${i})">Reply</button>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons({ nodes: [list] });
+    }
+    renderReviews();
+
+    // Review modal
+    let lastFocusedElement = null;
+    const reviewModal = $('#review-modal');
+    const reviewReplyText = $('#review-reply-text');
+
+    function openReviewModal(index) {
+      const r = REVIEWS[index];
+      lastFocusedElement = document.activeElement;
+      $('#review-summary').innerHTML = `
+        <div class="flex items-center gap-2 mb-1">
+          <img src="${r.avatar}" alt="" class="w-7 h-7 rounded-full object-cover" />
+          <span class="text-sm font-semibold text-charcoal">${r.name}</span>
+          <div class="flex items-center gap-0.5 ml-1">
+            ${Array.from({length: 5}, (_, i) => `<i data-lucide="star" class="w-3 h-3 ${i < r.rating ? 'fill-honey text-honey' : 'text-gray-300'}"></i>`).join('')}
+          </div>
+        </div>
+        <p class="text-xs text-muted">"${r.text}"</p>
+        <p class="text-[10px] text-muted mt-1">${r.product}</p>
+      `;
+      lucide.createIcons({ nodes: [$('#review-summary')] });
+      reviewReplyText.value = '';
+      $('#char-count').textContent = '0';
+      $('#reply-feedback').textContent = '';
+      reviewModal.classList.remove('hidden');
+      reviewReplyText.focus();
+    }
+
+    function closeReviewModal() {
+      reviewModal.classList.add('hidden');
+      if (lastFocusedElement) lastFocusedElement.focus();
+    }
+
+    $('#review-modal-close').addEventListener('click', closeReviewModal);
+    $('#review-modal-cancel').addEventListener('click', closeReviewModal);
+    $('#review-modal-overlay').addEventListener('click', closeReviewModal);
+    $('#review-modal-submit').addEventListener('click', () => {
+      const text = reviewReplyText.value.trim();
+      if (!text) {
+        $('#reply-feedback').textContent = 'Please write a reply first.';
+        $('#reply-feedback').className = 'text-[11px] text-error';
+        return;
+      }
+      closeReviewModal();
+      showToast('Reply submitted successfully!', 'success');
+    });
+
+    reviewReplyText.addEventListener('input', function() {
+      const len = this.value.length;
+      $('#char-count').textContent = len;
+      if (len > 0) { $('#reply-feedback').textContent = ''; }
+      if (len >= 500) { $('#char-count').classList.add('text-error'); } else { $('#char-count').classList.remove('text-error'); }
+    });
+
+    // Focus trap for modal
+    reviewModal.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { closeReviewModal(); return; }
+      if (e.key === 'Tab') {
+        const focusable = reviewModal.querySelectorAll('button, textarea, [href]');
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    // ============================================================
+    // MESSAGES
+    // ============================================================
+    function renderMessages() {
+      const list = $('#messages-list');
+      const filtered = activeMsgSearch ? MESSAGES.filter(m => m.name.toLowerCase().includes(activeMsgSearch) || m.preview.toLowerCase().includes(activeMsgSearch)) : MESSAGES;
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="text-center py-8 text-muted"><i data-lucide="message-square-x" class="w-8 h-8 mx-auto mb-2"></i><p class="text-sm font-semibold text-charcoal">No conversations found</p><p class="text-xs">Try a different search.</p></div>`;
+        lucide.createIcons({ nodes: [list] });
+        return;
+      }
+      list.innerHTML = filtered.map(m => `
+        <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-cream/60 transition-colors cursor-pointer ${m.unread ? 'bg-honey/[0.04]' : ''}" role="listitem" tabindex="0" onclick="showToast('Opening conversation with ${m.name}…','info')">
+          <div class="relative shrink-0">
+            <img src="${m.avatar}" alt="" class="w-10 h-10 rounded-full object-cover" loading="lazy" />
+            ${m.online ? '<span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-success rounded-full border-2 border-white"></span>' : ''}
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <p class="text-sm font-semibold text-charcoal truncate">${m.name}</p>
+              ${m.unread ? '<span class="w-1.5 h-1.5 rounded-full bg-honey shrink-0"></span>' : ''}
+            </div>
+            <p class="text-xs text-muted truncate mt-0.5">${m.preview}</p>
+            <p class="text-[10px] text-muted/70 mt-0.5">${m.ref}</p>
+          </div>
+          <span class="text-[10px] text-muted shrink-0">${m.time}</span>
+        </div>
+      `).join('');
+      lucide.createIcons({ nodes: [list] });
+    }
+    renderMessages();
+
+    $('#msg-search').addEventListener('input', function() {
+      activeMsgSearch = this.value.toLowerCase().trim();
+      renderMessages();
+    });
+
+    // ============================================================
+    // TRANSACTIONS
+    // ============================================================
+    function renderTransactions() {
+      const list = $('#transactions-list');
+      list.innerHTML = TRANSACTIONS.map(t => `
+        <div class="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+          <div>
+            <p class="text-sm text-charcoal">${t.label}</p>
+            <p class="text-[10px] text-muted">${t.date}</p>
+          </div>
+          <span class="text-sm font-semibold ${t.positive ? 'text-success' : 'text-error'}">
+            ${t.positive ? '+' : ''}${formatCurrency(t.amount)}
+          </span>
+        </div>
+      `).join('');
+    }
+    renderTransactions();
+
+    // ============================================================
+    // PROMOTIONS
+    // ============================================================
+    function renderPromotions() {
+      const list = $('#promotions-list');
+      list.innerHTML = PROMOTIONS.map((p, i) => {
+        const pct = Math.round((p.used / p.budget) * 100);
+        return `
+          <div class="bg-surface rounded-xl p-4 border border-gray-100">
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-sm font-semibold text-charcoal truncate">${p.name}</p>
+              <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${p.status === 'Active' ? 'bg-success/10 text-success' : 'bg-gray-200 text-muted'}">${p.status}</span>
+            </div>
+            <p class="text-[11px] text-muted mb-3">${p.start} – ${p.end}</p>
+            <div class="grid grid-cols-3 gap-2 mb-3 text-center">
+              <div><p class="text-sm font-bold text-charcoal">${(p.impressions/1000).toFixed(1)}k</p><p class="text-[9px] text-muted uppercase">Impressions</p></div>
+              <div><p class="text-sm font-bold text-charcoal">${p.clicks}</p><p class="text-[9px] text-muted uppercase">Clicks</p></div>
+              <div><p class="text-sm font-bold text-charcoal">${p.conversions}</p><p class="text-[9px] text-muted uppercase">Conv.</p></div>
+            </div>
+            <div class="mb-3">
+              <div class="flex items-center justify-between text-[10px] text-muted mb-1">
+                <span>Budget used</span>
+                <span class="font-semibold text-charcoal">${formatCurrency(p.used)} / ${formatCurrency(p.budget)}</span>
+              </div>
+              <div class="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Budget used">
+                <div class="h-full rounded-full ${pct > 80 ? 'bg-error' : 'bg-honey'}" style="width:${pct}%"></div>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button class="flex-1 text-[11px] font-semibold text-charcoal bg-white hover:bg-gray-50 py-1.5 rounded-lg border border-gray-200 transition-colors" onclick="showToast('Editing campaign…','info')">Edit</button>
+              <button class="flex-1 text-[11px] font-semibold ${p.status === 'Active' ? 'text-amber bg-honey/15 hover:bg-honey/25' : 'text-success bg-success/10 hover:bg-success/20'} py-1.5 rounded-lg transition-colors" onclick="togglePromotion(${i})">${p.status === 'Active' ? 'Pause' : 'Resume'}</button>
+              <button class="text-[11px] font-semibold text-muted bg-white hover:bg-gray-50 py-1.5 px-2.5 rounded-lg border border-gray-200 transition-colors" onclick="showToast('Viewing campaign details…','info')">Details</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons({ nodes: [list] });
+    }
+    renderPromotions();
+
+    function togglePromotion(index) {
+      const p = PROMOTIONS[index];
+      p.status = p.status === 'Active' ? 'Paused' : 'Active';
+      renderPromotions();
+      showToast(`Campaign ${p.status === 'Active' ? 'resumed' : 'paused'}`, p.status === 'Active' ? 'success' : 'warning');
+    }
+
+    // ============================================================
+    // INSIGHTS
+    // ============================================================
+    function renderInsights() {
+      const list = $('#insights-list');
+      list.innerHTML = INSIGHTS.map((ins, i) => `
+        <div class="flex items-start gap-3 p-3 rounded-xl bg-surface border border-gray-100 hover:shadow-card transition-shadow" data-insight="${i}">
+          <span class="w-9 h-9 rounded-xl bg-${ins.priorityColor}/10 text-${ins.priorityColor} flex items-center justify-center shrink-0 mt-0.5">
+            <i data-lucide="${ins.icon}" class="w-4 h-4"></i>
+          </span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-0.5">
+              <p class="text-sm font-semibold text-charcoal">${ins.title}</p>
+              <span class="text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-full ${ins.priorityColor === 'error' ? 'bg-error/10 text-error' : ins.priorityColor === 'honey' ? 'bg-honey/10 text-amber' : 'bg-info/10 text-info'}">${ins.priority}</span>
+            </div>
+            <p class="text-xs text-muted">${ins.desc}</p>
+            <div class="flex items-center gap-2 mt-2">
+              <button class="text-[11px] font-semibold text-charcoal bg-white hover:bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200 transition-colors" onclick="showToast('${ins.action} — opening workflow…','info')">${ins.action}</button>
+              <span class="text-[10px] font-semibold text-success bg-success/10 px-2 py-0.5 rounded-full">${ins.impact}</span>
+            </div>
+          </div>
+          <button class="p-1 rounded-lg text-muted hover:text-error hover:bg-error/5 transition-colors shrink-0" aria-label="Dismiss insight" onclick="dismissInsight(${i})"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>
+        </div>
+      `).join('');
+      lucide.createIcons({ nodes: [list] });
+    }
+    renderInsights();
+
+    function dismissInsight(index) {
+      const el = $(`[data-insight="${index}"]`);
+      if (el) { el.style.opacity = '0'; el.style.transform = 'translateX(12px)'; setTimeout(() => { el.style.display = 'none'; showToast('Insight dismissed', 'info'); }, 200); }
+    }
+
+    // ============================================================
+    // TASKS
+    // ============================================================
+    function saveTasks() { localStorage.setItem('asbeez_tasks', JSON.stringify(tasks)); }
+
+    function renderTasks() {
+      const list = $('#tasks-list');
+      const empty = $('#tasks-empty');
+      const filtered = showCompleted ? tasks : tasks.filter(t => !t.done);
+
+      if (filtered.length === 0) {
+        list.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+
+      list.innerHTML = filtered.map(t => `
+        <div class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-cream/60 transition-colors group" role="listitem">
+          <button class="w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors ${t.done ? 'bg-success border-success' : 'border-gray-300 hover:border-honey'}" aria-label="${t.done ? 'Mark incomplete' : 'Mark complete'}: ${t.text}" onclick="toggleTask(${t.id})">
+            ${t.done ? '<i data-lucide="check" class="w-3 h-3 text-white"></i>' : ''}
+          </button>
+          <span class="flex-1 text-sm ${t.done ? 'line-through text-muted' : 'text-charcoal'}">${t.text}</span>
+          <button class="p-1 rounded-lg text-muted hover:text-error hover:bg-error/5 opacity-0 group-hover:opacity-100 transition-all shrink-0" aria-label="Delete task: ${t.text}" onclick="deleteTask(${t.id})"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+        </div>
+      `).join('');
+      lucide.createIcons({ nodes: [list] });
+    }
+    renderTasks();
+
+    function toggleTask(id) {
+      const t = tasks.find(x => x.id === id);
+      if (t) { t.done = !t.done; saveTasks(); renderTasks(); }
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(x => x.id !== id);
+      saveTasks();
+      renderTasks();
+      showToast('Task deleted', 'info');
+    }
+
+    $('#add-task-btn').addEventListener('click', addTask);
+    $('#new-task-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') addTask(); });
+
+    function addTask() {
+      const input = $('#new-task-input');
+      const text = input.value.trim();
+      if (!text) { input.focus(); return; }
+      tasks.unshift({ id: Date.now(), text, done: false });
+      saveTasks();
+      renderTasks();
+      input.value = '';
+      showToast('Task added', 'success');
+    }
+
+    $('#toggle-completed-btn').addEventListener('click', function() {
+      showCompleted = !showCompleted;
+      this.innerHTML = showCompleted
+        ? '<i data-lucide="check-check" class="w-3.5 h-3.5"></i> Hide completed'
+        : '<i data-lucide="check-check" class="w-3.5 h-3.5"></i> Show completed';
+      lucide.createIcons({ nodes: [this] });
+      renderTasks();
+    });
+
+    // ============================================================
+    // QUICK ACTION
+    // ============================================================
+    function handleQuickAction(action) {
+      closeAllDropdowns();
+      showToast(`${action} — opening workflow…`, 'info');
+    }
+
+    // ============================================================
+    // BACK TO TOP
+    // ============================================================
+    const backToTop = $('#back-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        backToTop.classList.remove('opacity-0', 'pointer-events-none');
+        backToTop.classList.add('opacity-100', 'pointer-events-auto');
+      } else {
+        backToTop.classList.add('opacity-0', 'pointer-events-none');
+        backToTop.classList.remove('opacity-100', 'pointer-events-auto');
+      }
+    }, { passive: true });
+
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // ============================================================
+    // ESCAPE KEY GLOBAL
+    // ============================================================
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAllDropdowns();
+        closeMobileSidebar();
+        if (!reviewModal.classList.contains('hidden')) closeReviewModal();
+      }
+    });
+
+    // ============================================================
+    // CURRENT DATE
+    // ============================================================
+    $('#current-date').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+    // ============================================================
+    // INIT LUCIDE ICONS
+    // ============================================================
+    lucide.createIcons();
+
+    // ============================================================
+    // SIDEBAR COLLAPSE STATE ON LOAD (desktop)
+    // ============================================================
+    if (isDesktop()) {
+      setSidebarCollapsed(false);
+    } else {
+      sidebar.classList.add('-translate-x-full');
+    }
+
+    // ============================================================
+    // REDUCED MOTION CHECK
+    // ============================================================
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.style.scrollBehavior = 'auto';
+    }
+  </script>
+</body>
+</html>

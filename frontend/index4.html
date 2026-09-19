@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AsBeez — Find it. Book it. Get it done.</title>
+  <meta name="description" content="AsBeez is your community marketplace for products, services, professionals, jobs, and local opportunities." />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            honey: '#F7B928',
+            amber: '#E89B0C',
+            charcoal: '#242424',
+            cream: '#FFF8E7',
+            softyellow: '#FFF1B8',
+            successgreen: '#2E8B57',
+            mutedgray: '#6B7280'
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Honeycomb pattern utility */
+    .honeycomb-bg {
+      background-color: #FFF8E7;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%23F7B928' stroke-opacity='0.15' stroke-width='2'/%3E%3Cpath d='M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34' fill='none' stroke='%23F7B928' stroke-opacity='0.1' stroke-width='2'/%3E%3C/svg%3E");
+      background-size: 56px 100px;
+    }
+
+    .hex-accent {
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    }
+
+    /* Scrollbar for carousels */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Focus states */
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 3px solid #F7B928;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Mega menu transition */
+    .mega-menu {
+      transition: opacity 0.15s ease, visibility 0.15s ease;
+    }
+
+    /* Hero carousel */
+    .hero-slide {
+      transition: opacity 0.7s ease;
+    }
+  </style>
+</head>
+
+<body class="bg-cream text-charcoal font-sans antialiased overflow-x-hidden">
+
+  <!-- ========== ANNOUNCEMENT BAR ========== -->
+  <div id="announcementBar" class="bg-amber text-charcoal text-center text-sm py-2 px-4 relative z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-3 flex-wrap">
+      <span class="font-medium">Welcome to AsBeez—your community marketplace for products, services, and local opportunities.</span>
+      <a href="#" class="underline font-semibold hover:text-white transition-colors">Learn More</a>
+      <button id="closeAnnouncement" aria-label="Dismiss announcement" class="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-white/30 transition-colors">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========== PRIMARY HEADER ========== -->
+  <header id="mainHeader" class="bg-charcoal text-white sticky top-0 z-40 shadow-lg transition-shadow duration-300">
+    <div class="max-w-7xl mx-auto px-3 sm:px-4 py-2">
+      <!-- Main header row -->
+      <div class="flex items-center gap-3 lg:gap-4">
+        <!-- Mobile hamburger -->
+        <button id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false" class="lg:hidden p-2 rounded hover:bg-white/10 transition-colors">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2 shrink-0" aria-label="AsBeez homepage">
+          <div class="relative">
+            <i data-lucide="hexagon" class="w-8 h-8 text-honey fill-honey/20"></i>
+            <i data-lucide="bug" class="w-4 h-4 text-charcoal absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></i>
+          </div>
+          <span class="text-xl sm:text-2xl font-extrabold tracking-tight">
+            <span class="text-honey">As</span><span class="text-white">Beez</span>
+          </span>
+        </a>
+
+        <!-- Location selector (desktop) -->
+        <button class="hidden lg:flex items-center gap-1 text-sm hover:text-honey transition-colors px-2 py-1 rounded" aria-label="Select delivery location">
+          <i data-lucide="map-pin" class="w-4 h-4 text-honey"></i>
+          <div class="text-left leading-tight">
+            <span class="block text-xs text-gray-400">Delivering to</span>
+            <span class="font-semibold">Your Location</span>
+          </div>
+          <i data-lucide="chevron-down" class="w-3 h-3 ml-1"></i>
+        </button>
+
+        <!-- Search bar (desktop) -->
+        <div class="hidden md:flex flex-1 max-w-2xl">
+          <div class="flex w-full rounded-lg overflow-hidden ring-2 ring-honey/60 focus-within:ring-honey">
+            <select aria-label="Search category" class="bg-gray-100 text-charcoal text-sm px-2 py-2.5 border-r border-gray-300 outline-none cursor-pointer max-w-[130px]">
+              <option>All</option>
+              <option>Products</option>
+              <option>Services</option>
+              <option>Jobs</option>
+              <option>Real Estate</option>
+              <option>Vehicles</option>
+            </select>
+            <input type="search" placeholder="Search AsBeez marketplace…" aria-label="Search AsBeez" class="flex-1 px-3 py-2.5 text-charcoal text-sm outline-none min-w-0" />
+            <button aria-label="Submit search" class="bg-honey hover:bg-amber text-charcoal px-4 flex items-center transition-colors">
+              <i data-lucide="search" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right side actions -->
+        <div class="flex items-center gap-2 sm:gap-3 ml-auto">
+          <!-- Language selector (desktop) -->
+          <button class="hidden lg:flex items-center gap-1 text-sm hover:text-honey transition-colors px-1" aria-label="Select language">
+            <i data-lucide="globe" class="w-4 h-4"></i>
+            <span class="font-medium">EN</span>
+            <i data-lucide="chevron-down" class="w-3 h-3"></i>
+          </button>
+
+          <!-- Account -->
+          <button class="hidden sm:block text-left text-sm hover:text-honey transition-colors px-1" aria-label="Account and lists">
+            <span class="block text-xs text-gray-400">Hello, Sign In</span>
+            <span class="font-semibold flex items-center gap-0.5">Account & Lists <i data-lucide="chevron-down" class="w-3 h-3"></i></span>
+          </button>
+
+          <!-- Returns & Orders -->
+          <button class="hidden lg:block text-left text-sm hover:text-honey transition-colors px-1" aria-label="Returns and orders">
+            <span class="block text-xs text-gray-400">Returns</span>
+            <span class="font-semibold">& Orders</span>
+          </button>
+
+          <!-- Cart -->
+          <button class="relative p-2 hover:text-honey transition-colors" aria-label="Shopping cart, 3 items">
+            <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+            <span id="cartCount" class="absolute -top-1 -right-1 bg-honey text-charcoal text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">3</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile search row -->
+      <div class="mt-2 md:hidden">
+        <div class="flex w-full rounded-lg overflow-hidden ring-2 ring-honey/60 focus-within:ring-honey">
+          <input type="search" placeholder="Search AsBeez…" aria-label="Search AsBeez" class="flex-1 px-3 py-2.5 text-charcoal text-sm outline-none min-w-0" />
+          <button aria-label="Submit search" class="bg-honey hover:bg-amber text-charcoal px-4 flex items-center transition-colors">
+            <i data-lucide="search" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== SECONDARY NAVIGATION ========== -->
+    <nav aria-label="Main navigation" class="bg-charcoal border-t border-white/10 hidden lg:block">
+      <div class="max-w-7xl mx-auto px-4 flex items-center gap-1 text-sm overflow-x-auto scrollbar-hide">
+        <!-- All Categories with mega menu -->
+        <div class="relative group">
+          <button id="allCategoriesBtn" aria-expanded="false" aria-haspopup="true" class="flex items-center gap-1.5 px-3 py-2.5 font-semibold hover:bg-white/10 rounded transition-colors whitespace-nowrap">
+            <i data-lucide="layout-grid" class="w-4 h-4 text-honey"></i>
+            All Categories
+            <i data-lucide="chevron-down" class="w-3 h-3"></i>
+          </button>
+          <!-- Mega menu -->
+          <div id="megaMenu" class="mega-menu absolute left-0 top-full mt-1 w-[720px] bg-white text-charcoal rounded-lg shadow-2xl border border-gray-200 p-6 opacity-0 invisible z-50" role="menu">
+            <div class="grid grid-cols-3 gap-6">
+              <div>
+                <h3 class="font-bold text-sm uppercase tracking-wide text-amber mb-3">Shop</h3>
+                <ul class="space-y-2 text-sm">
+                  <li><a href="#" class="hover:text-amber transition-colors">Electronics</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Home & Garden</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Fashion</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Health & Beauty</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Sports & Outdoors</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Toys & Games</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="font-bold text-sm uppercase tracking-wide text-amber mb-3">Services</h3>
+                <ul class="space-y-2 text-sm">
+                  <li><a href="#" class="hover:text-amber transition-colors">Home Services</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Professional Services</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Health & Wellness</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Education & Tutoring</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Events & Entertainment</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Automotive</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="font-bold text-sm uppercase tracking-wide text-amber mb-3">Opportunities</h3>
+                <ul class="space-y-2 text-sm">
+                  <li><a href="#" class="hover:text-amber transition-colors">Jobs</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Real Estate</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Vehicles</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Local Businesses</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Community Listings</a></li>
+                  <li><a href="#" class="hover:text-amber transition-colors">Sell on AsBeez</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a href="#" class="px-3 py-2.5 hover:bg-white/10 rounded transition-colors whitespace-nowrap">Today's Deals</a>
+        <a href="#" class="px-3 py-2.5 hover:bg-white/10 rounded transition-colors whitespace-nowrap">Products</a>
+        <a href="#" class="px-3 py-2.5 hover:bg-white/10 rounded transition-colors whitespace-nowrap">Local Services</a>
+        <a href="#" class="px-3 py-2.5 hover:bg-white/10 rounded transition-colors whitespace-nowrap">Professionals</a>
+        <a href="#" class="px-3 py-2.5 hover:bg-white/10 rounded transition-colors whitespace-nowrap">Jobs</a>
+        <a href="#" class="px-3 py-2.5 hover:bg-white/10 rounded transition-colors whitespace-nowrap">Real Estate</a>
+        <a href="#" class="px-3 py-2.5 hover:bg-white/10 rounded transition-colors whitespace-nowrap">Vehicles</a>
+        <a href="#" class="px-3 py-2.5 hover:bg-white/10 rounded transition-colors whitespace-nowrap">Community</a>
+        <a href="#" class="px-3 py-2.5 text-honey font-semibold hover:bg-white/10 rounded transition-colors whitespace-nowrap">Sell on AsBeez</a>
+        <a href="#" class="px-3 py-2.5 hover:bg-white/10 rounded transition-colors whitespace-nowrap">Help</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ========== MOBILE NAVIGATION DRAWER ========== -->
+  <div id="mobileDrawer" class="fixed inset-0 z-50 pointer-events-none" aria-hidden="true">
+    <!-- Overlay -->
+    <div id="drawerOverlay" class="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+    <!-- Drawer panel -->
+    <div id="drawerPanel" class="absolute left-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl -translate-x-full transition-transform duration-300 flex flex-col">
+      <div class="bg-charcoal text-white p-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="hexagon" class="w-6 h-6 text-honey fill-honey/20"></i>
+          <span class="text-lg font-extrabold"><span class="text-honey">As</span>Beez</span>
+        </div>
+        <button id="closeDrawer" aria-label="Close navigation menu" class="p-1.5 rounded hover:bg-white/10 transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <nav class="flex-1 overflow-y-auto p-4" aria-label="Mobile navigation">
+        <div class="space-y-1">
+          <p class="text-xs font-bold uppercase tracking-wider text-mutedgray px-3 pt-2 pb-1">Shop</p>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-softyellow transition-colors"><i data-lucide="shopping-bag" class="w-5 h-5 text-amber"></i> Products</a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-softyellow transition-colors"><i data-lucide="tag" class="w-5 h-5 text-amber"></i> Today's Deals</a>
+          <p class="text-xs font-bold uppercase tracking-wider text-mutedgray px-3 pt-4 pb-1">Services</p>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-softyellow transition-colors"><i data-lucide="wrench" class="w-5 h-5 text-amber"></i> Local Services</a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-softyellow transition-colors"><i data-lucide="briefcase" class="w-5 h-5 text-amber"></i> Professionals</a>
+          <p class="text-xs font-bold uppercase tracking-wider text-mutedgray px-3 pt-4 pb-1">Opportunities</p>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-softyellow transition-colors"><i data-lucide="search" class="w-5 h-5 text-amber"></i> Jobs</a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-softyellow transition-colors"><i data-lucide="home" class="w-5 h-5 text-amber"></i> Real Estate</a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-softyellow transition-colors"><i data-lucide="car" class="w-5 h-5 text-amber"></i> Vehicles</a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-softyellow transition-colors"><i data-lucide="store" class="w-5 h-5 text-amber"></i> Local Businesses</a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-softyellow transition-colors"><i data-lucide="users" class="w-5 h-5 text-amber"></i> Community</a>
+          <hr class="my-3 border-gray-200" />
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-honey font-semibold hover:bg-softyellow transition-colors"><i data-lucide="trending-up" class="w-5 h-5"></i> Sell on AsBeez</a>
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-softyellow transition-colors"><i data-lucide="help-circle" class="w-5 h-5 text-amber"></i> Help</a>
+        </div>
+      </nav>
+      <div class="border-t border-gray-200 p-4">
+        <button class="w-full bg-honey hover:bg-amber text-charcoal font-bold py-3 rounded-lg transition-colors">Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main>
+
+    <!-- ========== HERO CAROUSEL ========== -->
+    <section aria-label="Featured promotions" class="relative overflow-hidden">
+      <div id="heroCarousel" class="relative h-[320px] sm:h-[400px] lg:h-[480px]">
+        <!-- Slide 1 -->
+        <div class="hero-slide absolute inset-0 opacity-100" data-slide="0">
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600&q=80&auto=format&fit=crop" alt="People shopping and connecting in a vibrant marketplace" class="w-full h-full object-cover" loading="eager" />
+          <div class="absolute inset-0 bg-gradient-to-r from-charcoal/85 via-charcoal/60 to-transparent"></div>
+          <div class="absolute inset-0 flex items-center">
+            <div class="max-w-7xl mx-auto px-6 sm:px-10 w-full">
+              <div class="max-w-lg">
+                <span class="inline-block bg-honey text-charcoal text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">Welcome to the Hive</span>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-4">Everything You Need, All in One Hive</h1>
+                <p class="text-gray-200 text-base sm:text-lg mb-6">Discover products, services, professionals, and local opportunities—all in one trusted marketplace.</p>
+                <div class="flex flex-wrap gap-3">
+                  <a href="#" class="bg-honey hover:bg-amber text-charcoal font-bold px-6 py-3 rounded-lg transition-colors shadow-lg">Start Exploring</a>
+                  <a href="#" class="bg-white/15 hover:bg-white/25 text-white font-bold px-6 py-3 rounded-lg backdrop-blur-sm transition-colors border border-white/20">Become a Seller</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="hero-slide absolute inset-0 opacity-0" data-slide="1">
+          <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80&auto=format&fit=crop" alt="Professional service provider working with tools" class="w-full h-full object-cover" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-r from-charcoal/85 via-charcoal/60 to-transparent"></div>
+          <div class="absolute inset-0 flex items-center">
+            <div class="max-w-7xl mx-auto px-6 sm:px-10 w-full">
+              <div class="max-w-lg">
+                <span class="inline-block bg-honey text-charcoal text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">Trusted Experts</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-4">Trusted Local Professionals</h2>
+                <p class="text-gray-200 text-base sm:text-lg mb-6">Find experienced service providers in your area, verified and reviewed by your community.</p>
+                <a href="#" class="bg-honey hover:bg-amber text-charcoal font-bold px-6 py-3 rounded-lg transition-colors shadow-lg inline-block">Browse Services</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="hero-slide absolute inset-0 opacity-0" data-slide="2">
+          <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=1600&q=80&auto=format&fit=crop" alt="Business owner managing an online store" class="w-full h-full object-cover" loading="lazy" />
+          <div class="absolute inset-0 bg-gradient-to-r from-charcoal/85 via-charcoal/60 to-transparent"></div>
+          <div class="absolute inset-0 flex items-center">
+            <div class="max-w-7xl mx-auto px-6 sm:px-10 w-full">
+              <div class="max-w-lg">
+                <span class="inline-block bg-honey text-charcoal text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4">Grow With Us</span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-4">Grow Your Business with AsBeez</h2>
+                <p class="text-gray-200 text-base sm:text-lg mb-6">Reach more customers and manage your marketplace presence with powerful tools built for local sellers.</p>
+                <a href="#" class="bg-honey hover:bg-amber text-charcoal font-bold px-6 py-3 rounded-lg transition-colors shadow-lg inline-block">Join AsBeez</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel controls -->
+        <button id="heroPrev" aria-label="Previous slide" class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white p-2.5 rounded-full transition-colors z-10">
+          <i data-lucide="chevron-left" class="w-6 h-6"></i>
+        </button>
+        <button id="heroNext" aria-label="Next slide" class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 backdrop-blur-sm text-white p-2.5 rounded-full transition-colors z-10">
+          <i data-lucide="chevron-right" class="w-6 h-6"></i>
+        </button>
+
+        <!-- Dots -->
+        <div id="heroDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+          <button aria-label="Go to slide 1" class="w-3 h-3 rounded-full bg-honey transition-all" data-dot="0"></button>
+          <button aria-label="Go to slide 2" class="w-3 h-3 rounded-full bg-white/50 transition-all" data-dot="1"></button>
+          <button aria-label="Go to slide 3" class="w-3 h-3 rounded-full bg-white/50 transition-all" data-dot="2"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== QUICK-ACCESS CATEGORY CARDS ========== -->
+    <section aria-label="Quick category shortcuts" class="relative -mt-12 z-20 max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+        <a href="#" class="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-4 text-center border-2 border-transparent hover:border-honey group">
+          <div class="w-12 h-12 mx-auto mb-2 bg-softyellow rounded-lg flex items-center justify-center group-hover:bg-honey transition-colors">
+            <i data-lucide="shopping-bag" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <span class="text-xs font-semibold leading-tight block">Shop Products</span>
+          <span class="text-[10px] text-mutedgray block mt-0.5">Millions of items</span>
+        </a>
+        <a href="#" class="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-4 text-center border-2 border-transparent hover:border-honey group">
+          <div class="w-12 h-12 mx-auto mb-2 bg-softyellow rounded-lg flex items-center justify-center group-hover:bg-honey transition-colors">
+            <i data-lucide="hard-hat" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <span class="text-xs font-semibold leading-tight block">Hire a Professional</span>
+          <span class="text-[10px] text-mutedgray block mt-0.5">Verified experts</span>
+        </a>
+        <a href="#" class="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-4 text-center border-2 border-transparent hover:border-honey group">
+          <div class="w-12 h-12 mx-auto mb-2 bg-softyellow rounded-lg flex items-center justify-center group-hover:bg-honey transition-colors">
+            <i data-lucide="calendar-check" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <span class="text-xs font-semibold leading-tight block">Book a Service</span>
+          <span class="text-[10px] text-mutedgray block mt-0.5">Easy scheduling</span>
+        </a>
+        <a href="#" class="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-4 text-center border-2 border-transparent hover:border-honey group">
+          <div class="w-12 h-12 mx-auto mb-2 bg-softyellow rounded-lg flex items-center justify-center group-hover:bg-honey transition-colors">
+            <i data-lucide="briefcase" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <span class="text-xs font-semibold leading-tight block">Find Jobs</span>
+          <span class="text-[10px] text-mutedgray block mt-0.5">Local opportunities</span>
+        </a>
+        <a href="#" class="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-4 text-center border-2 border-transparent hover:border-honey group">
+          <div class="w-12 h-12 mx-auto mb-2 bg-softyellow rounded-lg flex items-center justify-center group-hover:bg-honey transition-colors">
+            <i data-lucide="home" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <span class="text-xs font-semibold leading-tight block">Browse Properties</span>
+          <span class="text-[10px] text-mutedgray block mt-0.5">Homes & rentals</span>
+        </a>
+        <a href="#" class="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-4 text-center border-2 border-transparent hover:border-honey group">
+          <div class="w-12 h-12 mx-auto mb-2 bg-softyellow rounded-lg flex items-center justify-center group-hover:bg-honey transition-colors">
+            <i data-lucide="car" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <span class="text-xs font-semibold leading-tight block">Explore Vehicles</span>
+          <span class="text-[10px] text-mutedgray block mt-0.5">Cars & more</span>
+        </a>
+        <a href="#" class="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-4 text-center border-2 border-transparent hover:border-honey group">
+          <div class="w-12 h-12 mx-auto mb-2 bg-softyellow rounded-lg flex items-center justify-center group-hover:bg-honey transition-colors">
+            <i data-lucide="store" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <span class="text-xs font-semibold leading-tight block">Local Businesses</span>
+          <span class="text-[10px] text-mutedgray block mt-0.5">Near you</span>
+        </a>
+        <a href="#" class="bg-white rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-4 text-center border-2 border-transparent hover:border-honey group">
+          <div class="w-12 h-12 mx-auto mb-2 bg-softyellow rounded-lg flex items-center justify-center group-hover:bg-honey transition-colors">
+            <i data-lucide="users" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <span class="text-xs font-semibold leading-tight block">Community Listings</span>
+          <span class="text-[10px] text-mutedgray block mt-0.5">Local finds</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ========== MARKETPLACE FEATURE PANELS ========== -->
+    <section aria-label="Marketplace highlights" class="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Panel 1: Deals of the Day -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+          <div class="p-4 pb-2">
+            <h3 class="text-lg font-bold">Deals of the Day</h3>
+            <p class="text-xs text-mutedgray">Limited-time savings</p>
+          </div>
+          <div class="grid grid-cols-2 gap-2 px-4">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&q=80&auto=format&fit=crop" alt="Wireless headphones on sale" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&q=80&auto=format&fit=crop" alt="Smart watch deal" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=80&auto=format&fit=crop" alt="Sneakers on promotion" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=200&q=80&auto=format&fit=crop" alt="Leather bag discounted" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+          </div>
+          <a href="#" class="block px-4 py-3 text-sm font-semibold text-amber hover:text-charcoal transition-colors">See More →</a>
+        </div>
+        <!-- Panel 2: Services Near You -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+          <div class="p-4 pb-2">
+            <h3 class="text-lg font-bold">Services Near You</h3>
+            <p class="text-xs text-mutedgray">Trusted local pros</p>
+          </div>
+          <div class="grid grid-cols-2 gap-2 px-4">
+            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&q=80&auto=format&fit=crop" alt="Home cleaning service" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=200&q=80&auto=format&fit=crop" alt="Electrical repair service" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=200&q=80&auto=format&fit=crop" alt="Business consulting" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?w=200&q=80&auto=format&fit=crop" alt="Plumbing service" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+          </div>
+          <a href="#" class="block px-4 py-3 text-sm font-semibold text-amber hover:text-charcoal transition-colors">See More →</a>
+        </div>
+        <!-- Panel 3: Popular Local Businesses -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+          <div class="p-4 pb-2">
+            <h3 class="text-lg font-bold">Popular Local Businesses</h3>
+            <p class="text-xs text-mutedgray">Community favorites</p>
+          </div>
+          <div class="grid grid-cols-2 gap-2 px-4">
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=200&q=80&auto=format&fit=crop" alt="Cozy local cafe" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?w=200&q=80&auto=format&fit=crop" alt="Flower shop storefront" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=200&q=80&auto=format&fit=crop" alt="Bakery display" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?w=200&q=80&auto=format&fit=crop" alt="Grocery store" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+          </div>
+          <a href="#" class="block px-4 py-3 text-sm font-semibold text-amber hover:text-charcoal transition-colors">See More →</a>
+        </div>
+        <!-- Panel 4: Start Selling -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow border-2 border-honey/30">
+          <div class="p-4 pb-2">
+            <h3 class="text-lg font-bold">Start Selling on AsBeez</h3>
+            <p class="text-xs text-mutedgray">Grow your reach</p>
+          </div>
+          <div class="grid grid-cols-2 gap-2 px-4">
+            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=200&q=80&auto=format&fit=crop" alt="Seller packing orders" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=200&q=80&auto=format&fit=crop" alt="Online business owner" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?w=200&q=80&auto=format&fit=crop" alt="Handmade products display" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1556742111-a301076d9d18?w=200&q=80&auto=format&fit=crop" alt="Small business packaging" class="w-full h-24 object-cover rounded-lg" loading="lazy" />
+          </div>
+          <a href="#" class="block px-4 py-3 text-sm font-semibold text-amber hover:text-charcoal transition-colors">See More →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TODAY'S DEALS CAROUSEL ========== -->
+    <section aria-label="Today's deals" class="max-w-7xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-extrabold">Today's Deals</h2>
+          <p class="text-sm text-mutedgray">Grab them before they're gone</p>
+        </div>
+        <div class="flex gap-2">
+          <button id="dealsPrev" aria-label="Previous deals" class="p-2 bg-white rounded-full shadow hover:bg-softyellow transition-colors border border-gray-200">
+            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+          </button>
+          <button id="dealsNext" aria-label="Next deals" class="p-2 bg-white rounded-full shadow hover:bg-softyellow transition-colors border border-gray-200">
+            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="dealsCarousel" class="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-2 -mx-1 px-1">
+        <!-- Deal card 1 -->
+        <article class="shrink-0 w-52 sm:w-56 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-30%</span>
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80&auto=format&fit=crop" alt="Wireless noise-cancelling headphones" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Wireless Noise-Cancelling Headphones</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(1,234)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$69.99</span>
+              <span class="text-sm text-mutedgray line-through">$99.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Free delivery tomorrow</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Deal card 2 -->
+        <article class="shrink-0 w-52 sm:w-56 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-25%</span>
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80&auto=format&fit=crop" alt="Smart fitness watch" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Smart Fitness Watch with Heart Rate Monitor</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(856)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$89.99</span>
+              <span class="text-sm text-mutedgray line-through">$119.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">In stock</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Deal card 3 -->
+        <article class="shrink-0 w-52 sm:w-56 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-40%</span>
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80&auto=format&fit=crop" alt="Red running sneakers" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Lightweight Running Sneakers</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(342)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$44.99</span>
+              <span class="text-sm text-mutedgray line-through">$74.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Free delivery</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Deal card 4 -->
+        <article class="shrink-0 w-52 sm:w-56 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-20%</span>
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&q=80&auto=format&fit=crop" alt="Brown leather handbag" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Genuine Leather Crossbody Bag</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(567)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$59.99</span>
+              <span class="text-sm text-mutedgray line-through">$74.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Only 5 left</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Deal card 5 -->
+        <article class="shrink-0 w-52 sm:w-56 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-35%</span>
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400&q=80&auto=format&fit=crop" alt="Compact espresso coffee maker" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Compact Espresso Coffee Maker</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(2,013)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$129.99</span>
+              <span class="text-sm text-mutedgray line-through">$199.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Free delivery tomorrow</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Deal card 6 -->
+        <article class="shrink-0 w-52 sm:w-56 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-15%</span>
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&q=80&auto=format&fit=crop" alt="Bluetooth portable speaker" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Portable Bluetooth Speaker Waterproof</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(789)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$42.49</span>
+              <span class="text-sm text-mutedgray line-through">$49.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">In stock</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Deal card 7 -->
+        <article class="shrink-0 w-52 sm:w-56 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-45%</span>
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&q=80&auto=format&fit=crop" alt="Sunglasses polarized" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Polarized UV400 Sunglasses</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(456)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$27.49</span>
+              <span class="text-sm text-mutedgray line-through">$49.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Free delivery</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Deal card 8 -->
+        <article class="shrink-0 w-52 sm:w-56 bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <span class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded z-10">-30%</span>
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80&auto=format&fit=crop" alt="Instant camera" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Instant Print Camera with Case</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(1,890)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$69.99</span>
+              <span class="text-sm text-mutedgray line-through">$99.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Only 3 left</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== POPULAR SERVICES ========== -->
+    <section aria-label="Popular services" class="max-w-7xl mx-auto px-4 sm:px-6 pb-10 sm:pb-14">
+      <div class="mb-5">
+        <h2 class="text-xl sm:text-2xl font-extrabold">Popular Services</h2>
+        <p class="text-sm text-mutedgray">Trusted providers in your community</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Service card 1 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group">
+          <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80&auto=format&fit=crop" alt="Professional home cleaning service" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-bold text-lg">Home Cleaning</h3>
+              <span class="flex items-center gap-1 text-xs bg-successgreen/10 text-successgreen font-semibold px-2 py-1 rounded-full">
+                <i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Verified
+              </span>
+            </div>
+            <p class="text-sm text-mutedgray mb-2">by SparkleHome Pro</p>
+            <div class="flex items-center gap-1 mb-2">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 text-gray-300"></i>
+              </div>
+              <span class="text-sm font-semibold">4.7</span>
+              <span class="text-xs text-mutedgray">(312 reviews)</span>
+            </div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-lg font-bold text-charcoal">From $49<span class="text-sm font-normal text-mutedgray">/hr</span></span>
+              <span class="flex items-center gap-1 text-xs text-mutedgray"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 2.3 mi away</span>
+            </div>
+            <button class="view-service w-full bg-charcoal hover:bg-honey text-white hover:text-charcoal font-bold text-sm py-2.5 rounded-lg transition-colors">View Service</button>
+          </div>
+        </article>
+
+        <!-- Service card 2 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group">
+          <img src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=600&q=80&auto=format&fit=crop" alt="Licensed plumber fixing pipes" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-bold text-lg">Plumbing</h3>
+              <span class="flex items-center gap-1 text-xs bg-successgreen/10 text-successgreen font-semibold px-2 py-1 rounded-full">
+                <i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Verified
+              </span>
+            </div>
+            <p class="text-sm text-mutedgray mb-2">by FlowFix Plumbing Co.</p>
+            <div class="flex items-center gap-1 mb-2">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+              </div>
+              <span class="text-sm font-semibold">4.9</span>
+              <span class="text-xs text-mutedgray">(198 reviews)</span>
+            </div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-lg font-bold text-charcoal">From $75<span class="text-sm font-normal text-mutedgray">/hr</span></span>
+              <span class="flex items-center gap-1 text-xs text-mutedgray"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 1.1 mi away</span>
+            </div>
+            <button class="view-service w-full bg-charcoal hover:bg-honey text-white hover:text-charcoal font-bold text-sm py-2.5 rounded-lg transition-colors">View Service</button>
+          </div>
+        </article>
+
+        <!-- Service card 3 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group">
+          <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&q=80&auto=format&fit=crop" alt="Certified electrician working on panel" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-bold text-lg">Electrical Services</h3>
+              <span class="flex items-center gap-1 text-xs bg-successgreen/10 text-successgreen font-semibold px-2 py-1 rounded-full">
+                <i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Verified
+              </span>
+            </div>
+            <p class="text-sm text-mutedgray mb-2">by BrightSpark Electric</p>
+            <div class="flex items-center gap-1 mb-2">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 text-gray-300"></i>
+              </div>
+              <span class="text-sm font-semibold">4.6</span>
+              <span class="text-xs text-mutedgray">(245 reviews)</span>
+            </div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-lg font-bold text-charcoal">From $85<span class="text-sm font-normal text-mutedgray">/hr</span></span>
+              <span class="flex items-center gap-1 text-xs text-mutedgray"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 3.7 mi away</span>
+            </div>
+            <button class="view-service w-full bg-charcoal hover:bg-honey text-white hover:text-charcoal font-bold text-sm py-2.5 rounded-lg transition-colors">View Service</button>
+          </div>
+        </article>
+
+        <!-- Service card 4 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group">
+          <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&q=80&auto=format&fit=crop" alt="Web developer coding on laptop" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-bold text-lg">Web Development</h3>
+              <span class="flex items-center gap-1 text-xs bg-successgreen/10 text-successgreen font-semibold px-2 py-1 rounded-full">
+                <i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Verified
+              </span>
+            </div>
+            <p class="text-sm text-mutedgray mb-2">by PixelCraft Studio</p>
+            <div class="flex items-center gap-1 mb-2">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+              </div>
+              <span class="text-sm font-semibold">5.0</span>
+              <span class="text-xs text-mutedgray">(87 reviews)</span>
+            </div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-lg font-bold text-charcoal">From $65<span class="text-sm font-normal text-mutedgray">/hr</span></span>
+              <span class="flex items-center gap-1 text-xs text-mutedgray"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Remote</span>
+            </div>
+            <button class="view-service w-full bg-charcoal hover:bg-honey text-white hover:text-charcoal font-bold text-sm py-2.5 rounded-lg transition-colors">View Service</button>
+          </div>
+        </article>
+
+        <!-- Service card 5 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group">
+          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&q=80&auto=format&fit=crop" alt="Accountant reviewing financial documents" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-bold text-lg">Accounting</h3>
+              <span class="flex items-center gap-1 text-xs bg-successgreen/10 text-successgreen font-semibold px-2 py-1 rounded-full">
+                <i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Verified
+              </span>
+            </div>
+            <p class="text-sm text-mutedgray mb-2">by LedgerWise CPA</p>
+            <div class="flex items-center gap-1 mb-2">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 text-gray-300"></i>
+              </div>
+              <span class="text-sm font-semibold">4.8</span>
+              <span class="text-xs text-mutedgray">(156 reviews)</span>
+            </div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-lg font-bold text-charcoal">From $95<span class="text-sm font-normal text-mutedgray">/hr</span></span>
+              <span class="flex items-center gap-1 text-xs text-mutedgray"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 4.2 mi away</span>
+            </div>
+            <button class="view-service w-full bg-charcoal hover:bg-honey text-white hover:text-charcoal font-bold text-sm py-2.5 rounded-lg transition-colors">View Service</button>
+          </div>
+        </article>
+
+        <!-- Service card 6 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group">
+          <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80&auto=format&fit=crop" alt="Caregiver assisting senior person" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-bold text-lg">Senior Care</h3>
+              <span class="flex items-center gap-1 text-xs bg-successgreen/10 text-successgreen font-semibold px-2 py-1 rounded-full">
+                <i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Verified
+              </span>
+            </div>
+            <p class="text-sm text-mutedgray mb-2">by GoldenYears Care</p>
+            <div class="flex items-center gap-1 mb-2">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-honey"></i>
+              </div>
+              <span class="text-sm font-semibold">4.9</span>
+              <span class="text-xs text-mutedgray">(203 reviews)</span>
+            </div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-lg font-bold text-charcoal">From $35<span class="text-sm font-normal text-mutedgray">/hr</span></span>
+              <span class="flex items-center gap-1 text-xs text-mutedgray"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 1.8 mi away</span>
+            </div>
+            <button class="view-service w-full bg-charcoal hover:bg-honey text-white hover:text-charcoal font-bold text-sm py-2.5 rounded-lg transition-colors">View Service</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== PROMOTIONAL BANNER ========== -->
+    <section aria-label="Sell on AsBeez" class="honeycomb-bg border-y border-honey/20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <div class="bg-charcoal rounded-2xl p-8 sm:p-12 text-center relative overflow-hidden">
+          <!-- Honeycomb decorative elements -->
+          <div class="absolute top-4 left-4 opacity-10">
+            <i data-lucide="hexagon" class="w-16 h-16 text-honey"></i>
+          </div>
+          <div class="absolute bottom-4 right-4 opacity-10">
+            <i data-lucide="hexagon" class="w-20 h-20 text-honey"></i>
+          </div>
+          <div class="relative z-10">
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-4">Have Something to Offer?</h2>
+            <p class="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto mb-8">Sell products, advertise your services, or grow your local business. Join thousands of sellers and service providers reaching customers in their community.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+              <a href="#" class="bg-honey hover:bg-amber text-charcoal font-bold px-8 py-3.5 rounded-lg transition-colors shadow-lg">Create Your Listing</a>
+              <a href="#" class="bg-white/10 hover:bg-white/20 text-white font-bold px-8 py-3.5 rounded-lg backdrop-blur-sm transition-colors border border-white/20">Learn How It Works</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== RECOMMENDED PRODUCTS ========== -->
+    <section aria-label="Recommended products" class="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+      <div class="mb-5">
+        <h2 class="text-xl sm:text-2xl font-extrabold">Recommended for You</h2>
+        <p class="text-sm text-mutedgray">Based on your browsing and community trends</p>
+      </div>
+
+      <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Recommended card 1 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400&q=80&auto=format&fit=crop" alt="Ultrabook laptop computer" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Ultrabook Laptop 14" 16GB RAM</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(432)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$799.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Free delivery</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Recommended card 2 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&auto=format&fit=crop" alt="Men's casual denim jacket" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Classic Denim Jacket Unisex</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(678)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$54.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">In stock</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Recommended card 3 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80&auto=format&fit=crop" alt="Organic coffee beans bag" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Organic Whole Bean Coffee 1kg</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(1,245)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$24.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Subscribe & save</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Recommended card 4 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&q=80&auto=format&fit=crop" alt="Bestselling novel hardcover" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">The Midnight Library — Hardcover</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(3,891)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$16.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Free delivery over $25</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Recommended card 5 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1585155770447-2f66e2a397b5?w=400&q=80&auto=format&fit=crop" alt="Indoor potted plant" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Indoor Snake Plant with Pot</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(567)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$29.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">In stock</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Recommended card 6 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&q=80&auto=format&fit=crop" alt="Mechanical gaming keyboard" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Mechanical Gaming Keyboard RGB</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(901)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$79.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Only 8 left</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Recommended card 7 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&q=80&auto=format&fit=crop" alt="Skincare product bottle" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Hydrating Vitamin C Serum 30ml</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(2,345)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$34.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Subscribe & save 15%</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+
+        <!-- Recommended card 8 -->
+        <article class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group relative">
+          <button aria-label="Add to wishlist" class="wishlist-btn absolute top-2 right-2 bg-white/90 hover:bg-white p-1.5 rounded-full shadow z-10 transition-colors">
+            <i data-lucide="heart" class="w-4 h-4 text-gray-400 hover:text-red-500 transition-colors"></i>
+          </button>
+          <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&q=80&auto=format&fit=crop" alt="Stainless steel water bottle" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          <div class="p-3">
+            <h3 class="text-sm font-semibold line-clamp-2 mb-1">Insulated Stainless Steel Water Bottle 32oz</h3>
+            <div class="flex items-center gap-1 mb-1">
+              <div class="flex text-honey">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-honey"></i>
+                <i data-lucide="star" class="w-3.5 h-3.5 text-gray-300"></i>
+              </div>
+              <span class="text-xs text-mutedgray">(1,567)</span>
+            </div>
+            <div class="flex items-baseline gap-2 mb-1">
+              <span class="text-lg font-bold text-charcoal">$27.99</span>
+            </div>
+            <p class="text-xs text-successgreen font-medium mb-2">Free delivery</p>
+            <button class="add-to-cart w-full bg-honey hover:bg-amber text-charcoal font-bold text-sm py-2 rounded-lg transition-colors">Add to Cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== HOW ASBEEZ WORKS ========== -->
+    <section aria-label="How AsBeez works" class="bg-white border-y border-gray-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <div class="text-center mb-10">
+          <h2 class="text-xl sm:text-2xl font-extrabold mb-2">How AsBeez Works</h2>
+          <p class="text-sm text-mutedgray max-w-lg mx-auto">Your community marketplace made simple—three steps to get things done.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          <!-- Connector line (desktop) -->
+          <div class="hidden md:block absolute top-16 left-[20%] right-[20%] h-0.5 bg-honey/30" aria-hidden="true"></div>
+
+          <!-- Step 1 -->
+          <div class="text-center relative">
+            <div class="w-20 h-20 mx-auto mb-4 bg-honey rounded-2xl hex-accent flex items-center justify-center shadow-lg">
+              <i data-lucide="search" class="w-9 h-9 text-charcoal"></i>
+            </div>
+            <span class="inline-block bg-honey text-charcoal text-xs font-bold px-3 py-1 rounded-full mb-3">Step 1</span>
+            <h3 class="text-lg font-bold mb-2">Search or Browse</h3>
+            <p class="text-sm text-mutedgray max-w-xs mx-auto">Explore millions of products, services, and local opportunities across categories.</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="text-center relative">
+            <div class="w-20 h-20 mx-auto mb-4 bg-honey rounded-2xl hex-accent flex items-center justify-center shadow-lg">
+              <i data-lucide="scale" class="w-9 h-9 text-charcoal"></i>
+            </div>
+            <span class="inline-block bg-honey text-charcoal text-xs font-bold px-3 py-1 rounded-full mb-3">Step 2</span>
+            <h3 class="text-lg font-bold mb-2">Compare and Connect</h3>
+            <p class="text-sm text-mutedgray max-w-xs mx-auto">Check ratings, compare prices, and connect directly with verified sellers and providers.</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="text-center relative">
+            <div class="w-20 h-20 mx-auto mb-4 bg-honey rounded-2xl hex-accent flex items-center justify-center shadow-lg">
+              <i data-lucide="check-circle" class="w-9 h-9 text-charcoal"></i>
+            </div>
+            <span class="inline-block bg-honey text-charcoal text-xs font-bold px-3 py-1 rounded-full mb-3">Step 3</span>
+            <h3 class="text-lg font-bold mb-2">Buy, Book, or Hire</h3>
+            <p class="text-sm text-mutedgray max-w-xs mx-auto">Complete your transaction securely and get things done with confidence.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TRUST AND BENEFITS ========== -->
+    <section aria-label="Trust and benefits" class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow border-t-4 border-honey">
+          <div class="w-12 h-12 bg-softyellow rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="shield-check" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <h3 class="font-bold mb-2">Verified Sellers and Providers</h3>
+          <p class="text-sm text-mutedgray">Every seller and service provider is vetted to ensure quality and trust.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow border-t-4 border-honey">
+          <div class="w-12 h-12 bg-softyellow rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="lock" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <h3 class="font-bold mb-2">Secure Transactions</h3>
+          <p class="text-sm text-mutedgray">Your payments and personal data are protected with industry-leading security.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow border-t-4 border-honey">
+          <div class="w-12 h-12 bg-softyellow rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="heart-handshake" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <h3 class="font-bold mb-2">Local Community Connections</h3>
+          <p class="text-sm text-mutedgray">Support local businesses and build meaningful connections in your neighborhood.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow border-t-4 border-honey">
+          <div class="w-12 h-12 bg-softyellow rounded-lg flex items-center justify-center mb-4">
+            <i data-lucide="headphones" class="w-6 h-6 text-charcoal"></i>
+          </div>
+          <h3 class="font-bold mb-2">Responsive Customer Support</h3>
+          <p class="text-sm text-mutedgray">Our team is here to help—before, during, and after every transaction.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== NEWSLETTER SIGNUP ========== -->
+    <section aria-label="Newsletter signup" class="honeycomb-bg border-y border-honey/20">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center">
+        <div class="w-16 h-16 mx-auto mb-4 bg-honey rounded-2xl hex-accent flex items-center justify-center shadow-lg">
+          <i data-lucide="mail" class="w-8 h-8 text-charcoal"></i>
+        </div>
+        <h2 class="text-2xl font-extrabold mb-3">Get the Latest Buzz</h2>
+        <p class="text-mutedgray text-sm mb-6 max-w-md mx-auto">Subscribe for exclusive deals, new service providers, and community updates—delivered straight to your inbox.</p>
+
+        <form id="newsletterForm" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" novalidate>
+          <label for="newsletterEmail" class="sr-only">Email address</label>
+          <input id="newsletterEmail" type="email" placeholder="Enter your email address" required class="flex-1 px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-honey outline-none text-sm transition-colors" />
+          <button type="submit" class="bg-honey hover:bg-amber text-charcoal font-bold px-6 py-3 rounded-lg transition-colors whitespace-nowrap">Join the Hive</button>
+        </form>
+        <p id="newsletterMessage" class="mt-3 text-sm font-medium hidden" role="status" aria-live="polite"></p>
+        <p class="mt-3 text-xs text-mutedgray">We respect your privacy. Unsubscribe anytime.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== BACK TO TOP ========== -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-8">
+    <button id="backToTop" class="w-full bg-charcoal/80 hover:bg-charcoal text-white text-sm font-semibold py-3.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+      <i data-lucide="arrow-up" class="w-4 h-4"></i> Back to Top
+    </button>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="bg-charcoal text-white mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 mb-10">
+        <!-- Column 1 -->
+        <div>
+          <h3 class="font-bold text-sm uppercase tracking-wider text-honey mb-4">Get to Know AsBeez</h3>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="#" class="hover:text-honey transition-colors">About Us</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Careers</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Press</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Sustainability</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Community Impact</a></li>
+          </ul>
+        </div>
+        <!-- Column 2 -->
+        <div>
+          <h3 class="font-bold text-sm uppercase tracking-wider text-honey mb-4">Shop and Explore</h3>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="#" class="hover:text-honey transition-colors">Products</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Local Services</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Professionals</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Jobs</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Real Estate</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Vehicles</a></li>
+          </ul>
+        </div>
+        <!-- Column 3 -->
+        <div>
+          <h3 class="font-bold text-sm uppercase tracking-wider text-honey mb-4">Sell and Grow</h3>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="#" class="hover:text-honey transition-colors">Sell on AsBeez</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Business Tools</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Advertising</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Seller Resources</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Success Stories</a></li>
+          </ul>
+        </div>
+        <!-- Column 4 -->
+        <div>
+          <h3 class="font-bold text-sm uppercase tracking-wider text-honey mb-4">Customer Support</h3>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="#" class="hover:text-honey transition-colors">Help Center</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Contact Us</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Returns</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Shipping Info</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Report an Issue</a></li>
+          </ul>
+        </div>
+        <!-- Column 5 -->
+        <div>
+          <h3 class="font-bold text-sm uppercase tracking-wider text-honey mb-4">Legal and Policies</h3>
+          <ul class="space-y-2 text-sm text-gray-300">
+            <li><a href="#" class="hover:text-honey transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Accessibility</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Cookie Policy</a></li>
+            <li><a href="#" class="hover:text-honey transition-colors">Trust & Safety</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer bottom -->
+      <div class="border-t border-white/10 pt-8">
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
+          <!-- Logo & social -->
+          <div class="flex flex-col sm:flex-row items-center gap-4">
+            <a href="#" class="flex items-center gap-2" aria-label="AsBeez homepage">
+              <i data-lucide="hexagon" class="w-7 h-7 text-honey fill-honey/20"></i>
+              <span class="text-xl font-extrabold"><span class="text-honey">As</span>Beez</span>
+            </a>
+            <div class="flex gap-3">
+              <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-honey transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+              <a href="#" aria-label="Twitter" class="text-gray-400 hover:text-honey transition-colors"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+              <a href="#" aria-label="Instagram" class="text-gray-400 hover:text-honey transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+              <a href="#" aria-label="YouTube" class="text-gray-400 hover:text-honey transition-colors"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+              <a href="#" aria-label="LinkedIn" class="text-gray-400 hover:text-honey transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+            </div>
+          </div>
+
+          <!-- Selectors -->
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <select aria-label="Select language" class="bg-white/10 text-white text-sm rounded-lg px-3 py-2 outline-none cursor-pointer border border-white/20">
+              <option>English</option>
+              <option>Español</option>
+              <option>Français</option>
+              <option>Deutsch</option>
+            </select>
+            <select aria-label="Select country" class="bg-white/10 text-white text-sm rounded-lg px-3 py-2 outline-none cursor-pointer border border-white/20">
+              <option>United States</option>
+              <option>Canada</option>
+              <option>United Kingdom</option>
+              <option>Australia</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Payment methods -->
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <span class="text-xs text-gray-500">Accepted payments:</span>
+          <div class="flex gap-2">
+            <span class="bg-white/10 text-gray-300 text-xs px-2 py-1 rounded border border-white/10">Visa</span>
+            <span class="bg-white/10 text-gray-300 text-xs px-2 py-1 rounded border border-white/10">Mastercard</span>
+            <span class="bg-white/10 text-gray-300 text-xs px-2 py-1 rounded border border-white/10">Amex</span>
+            <span class="bg-white/10 text-gray-300 text-xs px-2 py-1 rounded border border-white/10">PayPal</span>
+            <span class="bg-white/10 text-gray-300 text-xs px-2 py-1 rounded border border-white/10">Apple Pay</span>
+          </div>
+        </div>
+
+        <!-- Copyright and legal links -->
+        <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+          <p>© 2025 AsBeez Marketplace. All rights reserved. <span class="text-gray-600">Find it. Book it. Get it done.</span></p>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="#" class="hover:text-honey transition-colors">Privacy</a>
+            <a href="#" class="hover:text-honey transition-colors">Terms</a>
+            <a href="#" class="hover:text-honey transition-colors">Accessibility</a>
+            <a href="#" class="hover:text-honey transition-colors">Cookies</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // ---------- Announcement Bar ----------
+    const announcementBar = document.getElementById('announcementBar');
+    const closeAnnouncement = document.getElementById('closeAnnouncement');
+    closeAnnouncement.addEventListener('click', () => {
+      announcementBar.style.display = 'none';
+    });
+
+    // ---------- Mobile Drawer ----------
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const drawerPanel = document.getElementById('drawerPanel');
+    const closeDrawer = document.getElementById('closeDrawer');
+
+    function openDrawer() {
+      mobileDrawer.classList.remove('pointer-events-none');
+      mobileDrawer.setAttribute('aria-hidden', 'false');
+      drawerOverlay.classList.remove('opacity-0', 'pointer-events-none');
+      drawerPanel.classList.remove('-translate-x-full');
+      mobileMenuBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawerFn() {
+      mobileDrawer.classList.add('pointer-events-none');
+      mobileDrawer.setAttribute('aria-hidden', 'true');
+      drawerOverlay.classList.add('opacity-0', 'pointer-events-none');
+      drawerPanel.classList.add('-translate-x-full');
+      mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    mobileMenuBtn.addEventListener('click', openDrawer);
+    closeDrawer.addEventListener('click', closeDrawerFn);
+    drawerOverlay.addEventListener('click', closeDrawerFn);
+
+    // ---------- Mega Menu (All Categories) ----------
+    const allCategoriesBtn = document.getElementById('allCategoriesBtn');
+    const megaMenu = document.getElementById('megaMenu');
+
+    allCategoriesBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const expanded = allCategoriesBtn.getAttribute('aria-expanded') === 'true';
+      allCategoriesBtn.setAttribute('aria-expanded', !expanded);
+      if (!expanded) {
+        megaMenu.classList.remove('opacity-0', 'invisible');
+      } else {
+        megaMenu.classList.add('opacity-0', 'invisible');
+      }
+    });
+
+    // Close mega menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!allCategoriesBtn.contains(e.target) && !megaMenu.contains(e.target)) {
+        megaMenu.classList.add('opacity-0', 'invisible');
+        allCategoriesBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Keyboard accessibility for mega menu
+    allCategoriesBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        allCategoriesBtn.click();
+      }
+    });
+
+    // ---------- Hero Carousel ----------
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const heroDots = document.querySelectorAll('#heroDots button');
+    const heroPrev = document.getElementById('heroPrev');
+    const heroNext = document.getElementById('heroNext');
+    const heroCarousel = document.getElementById('heroCarousel');
+    let currentSlide = 0;
+    let heroInterval;
+    let isHeroPaused = false;
+
+    function goToSlide(index) {
+      heroSlides.forEach((slide, i) => {
+        slide.style.opacity = i === index ? '1' : '0';
+        slide.style.zIndex = i === index ? '1' : '0';
+      });
+      heroDots.forEach((dot, i) => {
+        dot.className = i === index
+          ? 'w-3 h-3 rounded-full bg-honey transition-all'
+          : 'w-3 h-3 rounded-full bg-white/50 transition-all';
+      });
+      currentSlide = index;
+    }
+
+    function nextSlide() {
+      goToSlide((currentSlide + 1) % heroSlides.length);
+    }
+
+    function prevSlide() {
+      goToSlide((currentSlide - 1 + heroSlides.length) % heroSlides.length);
+    }
+
+    function startHeroRotation() {
+      heroInterval = setInterval(() => {
+        if (!isHeroPaused) nextSlide();
+      }, 6000);
+    }
+
+    function stopHeroRotation() {
+      clearInterval(heroInterval);
+    }
+
+    heroPrev.addEventListener('click', () => {
+      prevSlide();
+    });
+    heroNext.addEventListener('click', () => {
+      nextSlide();
+    });
+
+    heroDots.forEach((dot, i) => {
+      dot.addEventListener('click', () => goToSlide(i));
+    });
+
+    heroCarousel.addEventListener('mouseenter', () => { isHeroPaused = true; });
+    heroCarousel.addEventListener('mouseleave', () => { isHeroPaused = false; });
+
+    // Touch support for hero carousel
+    let heroTouchStartX = 0;
+    heroCarousel.addEventListener('touchstart', (e) => {
+      heroTouchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    heroCarousel.addEventListener('touchend', (e) => {
+      const diff = heroTouchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) nextSlide();
+        else prevSlide();
+      }
+    }, { passive: true });
+
+    startHeroRotation();
+
+    // ---------- Product Carousels ----------
+    function setupCarousel(carouselId, prevBtnId, nextBtnId) {
+      const carousel = document.getElementById(carouselId);
+      const prevBtn = document.getElementById(prevBtnId);
+      const nextBtn = document.getElementById(nextBtnId);
+      if (!carousel || !prevBtn || !nextBtn) return;
+
+      const scrollAmount = 240;
+
+      prevBtn.addEventListener('click', () => {
+        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      });
+      nextBtn.addEventListener('click', () => {
+        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+    }
+
+    setupCarousel('dealsCarousel', 'dealsPrev', 'dealsNext');
+
+    // ---------- Wishlist Toggle ----------
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const icon = this.querySelector('i');
+        const isWishlisted = this.dataset.wishlisted === 'true';
+        this.dataset.wishlisted = isWishlisted ? 'false' : 'true';
+        if (!isWishlisted) {
+          icon.setAttribute('fill', '#ef4444');
+          icon.classList.remove('text-gray-400');
+          icon.classList.add('text-red-500');
+        } else {
+          icon.removeAttribute('fill');
+          icon.classList.remove('text-red-500');
+          icon.classList.add('text-gray-400');
+        }
+        // Re-render icon
+        lucide.createIcons();
+      });
+    });
+
+    // ---------- Add to Cart & Cart Count ----------
+    let cartCount = 3;
+    const cartCountEl = document.getElementById('cartCount');
+
+    document.querySelectorAll('.add-to-cart').forEach(btn => {
+      btn.addEventListener('click', function() {
+        cartCount++;
+        cartCountEl.textContent = cartCount;
+        cartCountEl.classList.add('animate-bounce');
+        setTimeout(() => cartCountEl.classList.remove('animate-bounce'), 600);
+
+        // Visual feedback
+        const originalText = this.textContent;
+        this.textContent = '✓ Added!';
+        this.classList.remove('bg-honey', 'hover:bg-amber');
+        this.classList.add('bg-successgreen', 'text-white');
+        setTimeout(() => {
+          this.textContent = originalText;
+          this.classList.add('bg-honey', 'hover:bg-amber');
+          this.classList.remove('bg-successgreen', 'text-white');
+        }, 1200);
+      });
+    });
+
+    // ---------- View Service Buttons ----------
+    document.querySelectorAll('.view-service').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const originalText = this.textContent;
+        this.textContent = 'Opening…';
+        setTimeout(() => {
+          this.textContent = originalText;
+        }, 1000);
+      });
+    });
+
+    // ---------- Newsletter Validation ----------
+    const newsletterForm = document.getElementById('newsletterForm');
+    const newsletterEmail = document.getElementById('newsletterEmail');
+    const newsletterMessage = document.getElementById('newsletterMessage');
+
+    newsletterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = newsletterEmail.value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!email) {
+        newsletterMessage.textContent = 'Please enter your email address.';
+        newsletterMessage.className = 'mt-3 text-sm font-medium text-red-500';
+        newsletterMessage.classList.remove('hidden');
+        newsletterEmail.focus();
+        return;
+      }
+
+      if (!emailRegex.test(email)) {
+        newsletterMessage.textContent = 'Please enter a valid email address.';
+        newsletterMessage.className = 'mt-3 text-sm font-medium text-red-500';
+        newsletterMessage.classList.remove('hidden');
+        newsletterEmail.focus();
+        return;
+      }
+
+      newsletterMessage.textContent = '🎉 Welcome to the hive! Check your inbox to confirm.';
+      newsletterMessage.className = 'mt-3 text-sm font-medium text-successgreen';
+      newsletterMessage.classList.remove('hidden');
+      newsletterEmail.value = '';
+
+      setTimeout(() => {
+        newsletterMessage.classList.add('hidden');
+      }, 5000);
+    });
+
+    // ---------- Back to Top ----------
+    const backToTop = document.getElementById('backToTop');
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ---------- Header Scroll Behavior ----------
+    const mainHeader = document.getElementById('mainHeader');
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > 100) {
+        mainHeader.classList.add('shadow-xl');
+      } else {
+        mainHeader.classList.remove('shadow-xl');
+      }
+      lastScrollY = currentScrollY;
+    }, { passive: true });
+
+    // ---------- Keyboard: Close drawer / mega menu on Escape ----------
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeDrawerFn();
+        megaMenu.classList.add('opacity-0', 'invisible');
+        allCategoriesBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Re-initialize Lucide icons after any dynamic changes
+    setTimeout(() => lucide.createIcons(), 100);
+  </script>
+</body>
+</html>

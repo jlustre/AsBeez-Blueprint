@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AsBeez — your community marketplace for products, services, and local opportunities. Find it. Book it. Get it done." />
+  <title>AsBeez — Find it. Book it. Get it done.</title>
+
+  <!-- ============================ TAILWIND CSS (CDN) ============================ -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            honey:   '#F7B928',
+            amber:   '#E89B0C',
+            charcoal:'#242424',
+            cream:   '#FFF8E7',
+            soft:    '#FFF1B8',
+            success: '#2E8B57',
+            muted:   '#6B7280',
+          },
+          fontFamily: {
+            sans: ['Poppins', 'system-ui', 'sans-serif'],
+            body: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            card: '0 4px 14px -4px rgba(36,36,36,0.14)',
+            lift: '0 14px 30px -10px rgba(232,155,12,0.35)',
+          },
+          keyframes: {
+            fadeIn: { '0%': { opacity: 0, transform: 'translateY(8px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+          },
+          animation: { fadeIn: 'fadeIn .4s ease both' },
+        }
+      }
+    }
+  </script>
+
+  <!-- ============================ FONTS ============================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- ============================ LUCIDE ICONS (CDN) ============================ -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- ============================ LOCAL STYLES ============================ -->
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    h1,h2,h3,h4,.font-display { font-family: 'Poppins', system-ui, sans-serif; }
+
+    /* Honeycomb decorative pattern */
+    .honeycomb {
+      background-color: #E89B0C;
+      background-image:
+        radial-gradient(circle at 50% 0, transparent 9px, rgba(255,255,255,.12) 10px, transparent 11px),
+        radial-gradient(circle at 0 50%, transparent 9px, rgba(255,255,255,.12) 10px, transparent 11px);
+      background-size: 28px 48px;
+      background-position: 0 0, 14px 24px;
+    }
+    .honeycomb-light {
+      background-image:
+        radial-gradient(circle at 50% 0, transparent 11px, rgba(232,155,12,.18) 12px, transparent 13px),
+        radial-gradient(circle at 0 50%, transparent 11px, rgba(232,155,12,.18) 12px, transparent 13px);
+      background-size: 34px 58px;
+      background-position: 0 0, 17px 29px;
+    }
+
+    /* Hide scrollbars on horizontal carousels while keeping touch scroll */
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+
+    /* Line clamp helpers */
+    .clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+    /* Visible keyboard focus for all interactive elements */
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+      outline: 3px solid #F7B928;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* Hero slide transitions */
+    .hero-slide { opacity: 0; transition: opacity .8s ease; }
+    .hero-slide.active { opacity: 1; }
+
+    /* Mega menu / drawer transitions */
+    .drawer { transition: transform .3s ease; }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+      .hero-slide { transition: none; }
+    }
+  </style>
+</head>
+
+<body class="bg-cream text-charcoal antialiased">
+
+  <!-- Skip link for keyboard users -->
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:bg-honey focus:text-charcoal focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold">Skip to main content</a>
+
+  <!-- ============================================================ -->
+  <!-- 1. ANNOUNCEMENT BAR                                           -->
+  <!-- ============================================================ -->
+  <div id="announcement" class="honeycomb text-charcoal text-sm">
+    <div class="max-w-[1400px] mx-auto px-4 py-2 flex items-center justify-center gap-3 relative">
+      <p class="text-center font-medium pr-8">
+        <span class="hidden sm:inline">🐝 </span>Welcome to AsBeez—your community marketplace for products, services, and local opportunities.
+        <a href="#" class="underline font-semibold hover:text-white transition-colors ml-1">Learn More</a>
+      </p>
+      <button id="closeAnnouncement" aria-label="Dismiss announcement" class="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded hover:bg-black/10 transition-colors">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- 2. PRIMARY HEADER                                             -->
+  <!-- ============================================================ -->
+  <header id="header" class="bg-charcoal text-white sticky top-0 z-50 transition-shadow">
+    <div class="max-w-[1400px] mx-auto px-3 sm:px-4">
+      <div class="flex items-center gap-3 py-3">
+
+        <!-- Mobile hamburger -->
+        <button id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileDrawer" class="lg:hidden p-2 rounded-md hover:bg-white/10 transition-colors">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-2 shrink-0 group" aria-label="AsBeez home">
+          <span class="grid place-items-center w-9 h-9 rounded-full bg-honey text-charcoal group-hover:bg-amber transition-colors">
+            <i data-lucide="hexagon" class="w-5 h-5" fill="currentColor"></i>
+          </span>
+          <span class="font-display font-extrabold text-2xl tracking-tight leading-none">
+            As<span class="text-honey">Beez</span>
+          </span>
+        </a>
+
+        <!-- Location selector -->
+        <button class="hidden md:flex items-center gap-1.5 px-2 py-1.5 rounded-md hover:bg-white/10 transition-colors text-left shrink-0" aria-label="Change delivery location">
+          <i data-lucide="map-pin" class="w-5 h-5 text-honey"></i>
+          <span class="leading-tight">
+            <span class="block text-[11px] text-white/70">Delivering to</span>
+            <span class="block text-sm font-semibold -mt-0.5">Your Location</span>
+          </span>
+        </button>
+
+        <!-- Search component -->
+        <form id="searchForm" role="search" class="flex flex-1 min-w-0 items-stretch rounded-lg overflow-hidden ring-1 ring-white/10 focus-within:ring-2 focus-within:ring-honey">
+          <label for="searchCat" class="sr-only">Search category</label>
+          <select id="searchCat" class="hidden sm:block bg-soft text-charcoal text-sm font-medium px-3 border-r border-black/10 focus:outline-none">
+            <option>All</option>
+            <option>Products</option>
+            <option>Services</option>
+            <option>Professionals</option>
+            <option>Jobs</option>
+            <option>Real Estate</option>
+            <option>Vehicles</option>
+          </select>
+          <label for="searchInput" class="sr-only">Search AsBeez</label>
+          <input id="searchInput" type="search" placeholder="Search products, services, and more…" class="flex-1 min-w-0 px-3 py-2.5 text-charcoal text-sm focus:outline-none" />
+          <button type="submit" aria-label="Search" class="bg-honey hover:bg-amber text-charcoal px-4 grid place-items-center transition-colors">
+            <i data-lucide="search" class="w-5 h-5"></i>
+          </button>
+        </form>
+
+        <!-- Language selector -->
+        <button class="hidden xl:flex items-center gap-1 px-2 py-1.5 rounded-md hover:bg-white/10 transition-colors shrink-0" aria-label="Change language">
+          <i data-lucide="globe" class="w-5 h-5"></i>
+          <span class="text-sm font-semibold">EN</span>
+          <i data-lucide="chevron-down" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Account -->
+        <button class="hidden lg:block text-left px-2 py-1.5 rounded-md hover:bg-white/10 transition-colors shrink-0" aria-label="Sign in and account">
+          <span class="block text-[11px] text-white/70">Hello, Sign In</span>
+          <span class="block text-sm font-semibold -mt-0.5 flex items-center gap-1">Account &amp; Lists <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i></span>
+        </button>
+
+        <!-- Returns & Orders -->
+        <button class="hidden lg:block text-left px-2 py-1.5 rounded-md hover:bg-white/10 transition-colors shrink-0" aria-label="Returns and orders">
+          <span class="block text-[11px] text-white/70">Returns</span>
+          <span class="block text-sm font-semibold -mt-0.5">&amp; Orders</span>
+        </button>
+
+        <!-- Cart -->
+        <button class="relative flex items-center gap-1.5 px-2 py-1.5 rounded-md hover:bg-white/10 transition-colors shrink-0" aria-label="Shopping cart">
+          <span class="relative">
+            <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+            <span id="cartCount" class="absolute -top-2 -right-2 bg-honey text-charcoal text-[11px] font-bold min-w-[18px] h-[18px] px-1 grid place-items-center rounded-full">0</span>
+          </span>
+          <span class="hidden lg:inline text-sm font-semibold">Cart</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- 3. SECONDARY NAVIGATION                                       -->
+    <!-- ============================================================ -->
+    <nav aria-label="Primary categories" class="bg-[#1b1b1b] border-t border-white/5">
+      <div class="max-w-[1400px] mx-auto px-3 sm:px-4">
+        <ul class="flex items-center gap-1 overflow-x-auto no-scrollbar py-1.5 text-sm font-medium">
+          <li class="relative">
+            <button id="megaBtn" aria-haspopup="true" aria-expanded="false" aria-controls="megaMenu" class="flex items-center gap-1.5 px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap">
+              <i data-lucide="menu" class="w-4 h-4"></i> All Categories
+              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+            </button>
+          </li>
+          <li><a href="#deals" class="block px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap">Today's Deals</a></li>
+          <li><a href="#recommended" class="block px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap">Products</a></li>
+          <li><a href="#services" class="block px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap">Local Services</a></li>
+          <li><a href="#" class="block px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap">Professionals</a></li>
+          <li><a href="#" class="block px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap">Jobs</a></li>
+          <li><a href="#" class="block px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap">Real Estate</a></li>
+          <li><a href="#" class="block px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap">Vehicles</a></li>
+          <li><a href="#" class="block px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap">Community</a></li>
+          <li><a href="#sell" class="block px-3 py-1.5 rounded-md hover:bg-honey hover:text-charcoal text-honey transition-colors whitespace-nowrap font-semibold">Sell on AsBeez</a></li>
+          <li><a href="#" class="block px-3 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap">Help</a></li>
+        </ul>
+      </div>
+
+      <!-- Mega menu -->
+      <div id="megaMenu" class="hidden absolute left-0 right-0 z-40 bg-white text-charcoal shadow-2xl border-t-4 border-honey">
+        <div class="max-w-[1400px] mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div>
+            <h3 class="font-display font-bold text-honey mb-2 flex items-center gap-1.5"><i data-lucide="package" class="w-4 h-4"></i> Products</h3>
+            <ul class="space-y-1.5 text-sm text-muted">
+              <li><a href="#" class="hover:text-amber hover:underline">Electronics</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Home &amp; Kitchen</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Fashion &amp; Apparel</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Beauty &amp; Health</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Sports &amp; Outdoors</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-honey mb-2 flex items-center gap-1.5"><i data-lucide="wrench" class="w-4 h-4"></i> Services</h3>
+            <ul class="space-y-1.5 text-sm text-muted">
+              <li><a href="#" class="hover:text-amber hover:underline">Home Cleaning</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Repairs &amp; Maintenance</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Moving &amp; Delivery</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Events &amp; Catering</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Tutoring &amp; Lessons</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-honey mb-2 flex items-center gap-1.5"><i data-lucide="briefcase" class="w-4 h-4"></i> Opportunities</h3>
+            <ul class="space-y-1.5 text-sm text-muted">
+              <li><a href="#" class="hover:text-amber hover:underline">Full-Time Jobs</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Freelance Gigs</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Internships</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Volunteering</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Local Partnerships</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-honey mb-2 flex items-center gap-1.5"><i data-lucide="building-2" class="w-4 h-4"></i> Marketplace</h3>
+            <ul class="space-y-1.5 text-sm text-muted">
+              <li><a href="#" class="hover:text-amber hover:underline">Real Estate</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Vehicles</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Local Businesses</a></li>
+              <li><a href="#" class="hover:text-amber hover:underline">Community Board</a></li>
+              <li><a href="#sell" class="text-amber font-semibold hover:underline">Start Selling →</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- MOBILE DRAWER                                                 -->
+  <!-- ============================================================ -->
+  <div id="drawerOverlay" class="fixed inset-0 bg-black/50 z-[70] hidden lg:hidden"></div>
+  <aside id="mobileDrawer" class="drawer fixed top-0 left-0 h-full w-[85%] max-w-sm bg-white z-[80] -translate-x-full lg:hidden overflow-y-auto" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+    <div class="honeycomb text-charcoal px-4 py-4 flex items-center justify-between">
+      <span class="font-display font-extrabold text-xl">As<span class="text-charcoal">Beez</span></span>
+      <button id="closeDrawer" aria-label="Close menu" class="p-2 rounded hover:bg-black/10 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+    </div>
+    <div class="p-4 border-b">
+      <button class="flex items-center gap-2 text-sm font-semibold"><i data-lucide="user" class="w-5 h-5 text-amber"></i> Hello, Sign In</button>
+    </div>
+    <nav aria-label="Mobile categories" class="p-2">
+      <ul class="text-charcoal font-medium">
+        <li><a href="#deals" class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-cream"><i data-lucide="badge-percent" class="w-5 h-5 text-amber"></i> Today's Deals</a></li>
+        <li><a href="#recommended" class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-cream"><i data-lucide="package" class="w-5 h-5 text-amber"></i> Products</a></li>
+        <li><a href="#services" class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-cream"><i data-lucide="wrench" class="w-5 h-5 text-amber"></i> Local Services</a></li>
+        <li><a href="#" class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-cream"><i data-lucide="user-check" class="w-5 h-5 text-amber"></i> Professionals</a></li>
+        <li><a href="#" class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-cream"><i data-lucide="briefcase" class="w-5 h-5 text-amber"></i> Jobs</a></li>
+        <li><a href="#" class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-cream"><i data-lucide="home" class="w-5 h-5 text-amber"></i> Real Estate</a></li>
+        <li><a href="#" class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-cream"><i data-lucide="car" class="w-5 h-5 text-amber"></i> Vehicles</a></li>
+        <li><a href="#" class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-cream"><i data-lucide="users" class="w-5 h-5 text-amber"></i> Community</a></li>
+        <li><a href="#sell" class="flex items-center gap-3 px-3 py-3 rounded-lg bg-soft text-charcoal font-semibold mt-2"><i data-lucide="store" class="w-5 h-5 text-amber"></i> Sell on AsBeez</a></li>
+        <li><a href="#" class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-cream"><i data-lucide="life-buoy" class="w-5 h-5 text-amber"></i> Help</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main id="main">
+
+    <!-- ============================================================ -->
+    <!-- 4. HERO CAROUSEL                                              -->
+    <!-- ============================================================ -->
+    <section aria-label="Featured promotions" class="relative">
+      <div id="hero" class="relative h-[420px] sm:h-[460px] lg:h-[520px] overflow-hidden bg-charcoal" aria-roledescription="carousel">
+
+        <!-- Slide 1 -->
+        <div class="hero-slide active absolute inset-0" role="group" aria-roledescription="slide" aria-label="1 of 3">
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=70" alt="A busy local marketplace with shoppers browsing goods" class="w-full h-full object-cover" loading="eager" data-fallback>
+          <div class="absolute inset-0 bg-gradient-to-r from-charcoal/90 via-charcoal/70 to-charcoal/20"></div>
+          <div class="absolute inset-0 flex items-center">
+            <div class="max-w-[1400px] w-full mx-auto px-6 sm:px-10">
+              <div class="max-w-xl text-white">
+                <span class="inline-block bg-honey text-charcoal text-xs font-bold px-3 py-1 rounded-full mb-4">All-in-one marketplace</span>
+                <h1 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3">Everything You Need, All in One Hive</h1>
+                <p class="text-white/85 text-base sm:text-lg mb-6 max-w-md">Discover products, services, professionals, and local opportunities—all in one buzzing place.</p>
+                <div class="flex flex-wrap gap-3">
+                  <a href="#quick" class="bg-honey hover:bg-amber text-charcoal font-semibold px-6 py-3 rounded-lg transition-colors">Start Exploring</a>
+                  <a href="#sell" class="bg-white/10 hover:bg-white/20 backdrop-blur text-white font-semibold px-6 py-3 rounded-lg ring-1 ring-white/30 transition-colors">Become a Seller</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="hero-slide absolute inset-0" role="group" aria-roledescription="slide" aria-label="2 of 3">
+          <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1600&q=70" alt="A verified professional working on a home service job" class="w-full h-full object-cover" loading="lazy" data-fallback>
+          <div class="absolute inset-0 bg-gradient-to-r from-charcoal/90 via-charcoal/70 to-charcoal/20"></div>
+          <div class="absolute inset-0 flex items-center">
+            <div class="max-w-[1400px] w-full mx-auto px-6 sm:px-10">
+              <div class="max-w-xl text-white">
+                <span class="inline-block bg-honey text-charcoal text-xs font-bold px-3 py-1 rounded-full mb-4">Vetted &amp; verified</span>
+                <h1 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3">Trusted Local Professionals</h1>
+                <p class="text-white/85 text-base sm:text-lg mb-6 max-w-md">Find experienced service providers in your area, with real ratings and verified profiles.</p>
+                <div class="flex flex-wrap gap-3">
+                  <a href="#services" class="bg-honey hover:bg-amber text-charcoal font-semibold px-6 py-3 rounded-lg transition-colors">Browse Services</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="hero-slide absolute inset-0" role="group" aria-roledescription="slide" aria-label="3 of 3">
+          <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1600&q=70" alt="A small business owner managing orders on a laptop" class="w-full h-full object-cover" loading="lazy" data-fallback>
+          <div class="absolute inset-0 bg-gradient-to-r from-charcoal/90 via-charcoal/70 to-charcoal/20"></div>
+          <div class="absolute inset-0 flex items-center">
+            <div class="max-w-[1400px] w-full mx-auto px-6 sm:px-10">
+              <div class="max-w-xl text-white">
+                <span class="inline-block bg-honey text-charcoal text-xs font-bold px-3 py-1 rounded-full mb-4">For sellers</span>
+                <h1 class="font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-3">Grow Your Business with AsBeez</h1>
+                <p class="text-white/85 text-base sm:text-lg mb-6 max-w-md">Reach more customers and manage your marketplace presence from a single dashboard.</p>
+                <div class="flex flex-wrap gap-3">
+                  <a href="#sell" class="bg-honey hover:bg-amber text-charcoal font-semibold px-6 py-3 rounded-lg transition-colors">Join AsBeez</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prev / Next -->
+        <button id="heroPrev" aria-label="Previous slide" class="absolute left-3 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-11 h-11 rounded-full bg-black/40 hover:bg-black/60 text-white transition-colors">
+          <i data-lucide="chevron-left" class="w-6 h-6"></i>
+        </button>
+        <button id="heroNext" aria-label="Next slide" class="absolute right-3 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-11 h-11 rounded-full bg-black/40 hover:bg-black/60 text-white transition-colors">
+          <i data-lucide="chevron-right" class="w-6 h-6"></i>
+        </button>
+
+        <!-- Dots -->
+        <div id="heroDots" class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2" role="tablist" aria-label="Choose slide"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5. QUICK-ACCESS CATEGORY CARDS                                -->
+    <!-- ============================================================ -->
+    <section id="quick" aria-label="Quick access categories" class="relative z-10 max-w-[1400px] mx-auto px-4 -mt-10">
+      <div class="bg-white rounded-2xl shadow-card p-4 sm:p-6">
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+          <!-- Cards generated for clarity; each is a clickable shortcut -->
+          <a href="#recommended" class="group flex flex-col items-center text-center gap-2 p-3 rounded-xl border border-transparent hover:border-honey hover:shadow-lift hover:-translate-y-1 transition-all">
+            <span class="grid place-items-center w-12 h-12 rounded-full bg-soft group-hover:bg-honey transition-colors"><i data-lucide="shopping-bag" class="w-6 h-6 text-amber group-hover:text-charcoal"></i></span>
+            <span class="text-sm font-semibold">Shop Products</span>
+          </a>
+          <a href="#services" class="group flex flex-col items-center text-center gap-2 p-3 rounded-xl border border-transparent hover:border-honey hover:shadow-lift hover:-translate-y-1 transition-all">
+            <span class="grid place-items-center w-12 h-12 rounded-full bg-soft group-hover:bg-honey transition-colors"><i data-lucide="user-check" class="w-6 h-6 text-amber group-hover:text-charcoal"></i></span>
+            <span class="text-sm font-semibold">Hire a Professional</span>
+          </a>
+          <a href="#services" class="group flex flex-col items-center text-center gap-2 p-3 rounded-xl border border-transparent hover:border-honey hover:shadow-lift hover:-translate-y-1 transition-all">
+            <span class="grid place-items-center w-12 h-12 rounded-full bg-soft group-hover:bg-honey transition-colors"><i data-lucide="calendar-check" class="w-6 h-6 text-amber group-hover:text-charcoal"></i></span>
+            <span class="text-sm font-semibold">Book a Service</span>
+          </a>
+          <a href="#" class="group flex flex-col items-center text-center gap-2 p-3 rounded-xl border border-transparent hover:border-honey hover:shadow-lift hover:-translate-y-1 transition-all">
+            <span class="grid place-items-center w-12 h-12 rounded-full bg-soft group-hover:bg-honey transition-colors"><i data-lucide="briefcase" class="w-6 h-6 text-amber group-hover:text-charcoal"></i></span>
+            <span class="text-sm font-semibold">Find Jobs</span>
+          </a>
+          <a href="#" class="group flex flex-col items-center text-center gap-2 p-3 rounded-xl border border-transparent hover:border-honey hover:shadow-lift hover:-translate-y-1 transition-all">
+            <span class="grid place-items-center w-12 h-12 rounded-full bg-soft group-hover:bg-honey transition-colors"><i data-lucide="home" class="w-6 h-6 text-amber group-hover:text-charcoal"></i></span>
+            <span class="text-sm font-semibold">Browse Properties</span>
+          </a>
+          <a href="#" class="group flex flex-col items-center text-center gap-2 p-3 rounded-xl border border-transparent hover:border-honey hover:shadow-lift hover:-translate-y-1 transition-all">
+            <span class="grid place-items-center w-12 h-12 rounded-full bg-soft group-hover:bg-honey transition-colors"><i data-lucide="car" class="w-6 h-6 text-amber group-hover:text-charcoal"></i></span>
+            <span class="text-sm font-semibold">Explore Vehicles</span>
+          </a>
+          <a href="#" class="group flex flex-col items-center text-center gap-2 p-3 rounded-xl border border-transparent hover:border-honey hover:shadow-lift hover:-translate-y-1 transition-all">
+            <span class="grid place-items-center w-12 h-12 rounded-full bg-soft group-hover:bg-honey transition-colors"><i data-lucide="store" class="w-6 h-6 text-amber group-hover:text-charcoal"></i></span>
+            <span class="text-sm font-semibold">Local Businesses</span>
+          </a>
+          <a href="#" class="group flex flex-col items-center text-center gap-2 p-3 rounded-xl border border-transparent hover:border-honey hover:shadow-lift hover:-translate-y-1 transition-all">
+            <span class="grid place-items-center w-12 h-12 rounded-full bg-soft group-hover:bg-honey transition-colors"><i data-lucide="users" class="w-6 h-6 text-amber group-hover:text-charcoal"></i></span>
+            <span class="text-sm font-semibold">Community Listings</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6. MARKETPLACE FEATURE PANELS                                 -->
+    <!-- ============================================================ -->
+    <section aria-label="Marketplace highlights" class="max-w-[1400px] mx-auto px-4 mt-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <!-- Panel: Deals of the Day -->
+        <div class="bg-white rounded-2xl shadow-card p-5 flex flex-col">
+          <h2 class="font-display font-bold text-lg mb-3">Deals of the Day</h2>
+          <div class="grid grid-cols-2 gap-3 flex-1">
+            <figure><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=60" alt="Wireless headphones on sale" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Headphones</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=300&q=60" alt="Smart watch on sale" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Smart watch</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=300&q=60" alt="Running shoes on sale" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Sneakers</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=300&q=60" alt="Skincare set on sale" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Skincare</figcaption></figure>
+          </div>
+          <a href="#deals" class="text-amber font-semibold text-sm mt-4 hover:underline">See more deals</a>
+        </div>
+
+        <!-- Panel: Services Near You -->
+        <div class="bg-white rounded-2xl shadow-card p-5 flex flex-col">
+          <h2 class="font-display font-bold text-lg mb-3">Services Near You</h2>
+          <div class="grid grid-cols-2 gap-3 flex-1">
+            <figure><img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=300&q=60" alt="Home cleaning service" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Cleaning</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=300&q=60" alt="Plumbing service" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Plumbing</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=300&q=60" alt="Electrical service" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Electrical</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=300&q=60" alt="Handyman service" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Handyman</figcaption></figure>
+          </div>
+          <a href="#services" class="text-amber font-semibold text-sm mt-4 hover:underline">See more services</a>
+        </div>
+
+        <!-- Panel: Popular Local Businesses -->
+        <div class="bg-white rounded-2xl shadow-card p-5 flex flex-col">
+          <h2 class="font-display font-bold text-lg mb-3">Popular Local Businesses</h2>
+          <div class="grid grid-cols-2 gap-3 flex-1">
+            <figure><img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=300&q=60" alt="Local coffee shop" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Cafés</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=300&q=60" alt="Local retail store" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Retail</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=300&q=60" alt="Local restaurant" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Dining</figcaption></figure>
+            <figure><img src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=300&q=60" alt="Local salon" class="rounded-lg aspect-square object-cover w-full" loading="lazy" data-fallback><figcaption class="text-xs text-muted mt-1">Salons</figcaption></figure>
+          </div>
+          <a href="#" class="text-amber font-semibold text-sm mt-4 hover:underline">See more businesses</a>
+        </div>
+
+        <!-- Panel: Start Selling -->
+        <div class="rounded-2xl shadow-card p-5 flex flex-col honeycomb-light bg-soft">
+          <h2 class="font-display font-bold text-lg mb-2">Start Selling on AsBeez</h2>
+          <p class="text-sm text-charcoal/80 mb-3">List a product, offer a service, or open your storefront in minutes.</p>
+          <ul class="space-y-2 text-sm flex-1">
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-success"></i> No listing fees to start</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-success"></i> Reach local customers</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-success"></i> Secure payouts</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-success"></i> Simple dashboard</li>
+          </ul>
+          <a href="#sell" class="inline-block text-center bg-charcoal hover:bg-black text-white font-semibold text-sm mt-4 px-4 py-2.5 rounded-lg transition-colors">See how it works</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 7. TODAY'S DEALS CAROUSEL                                     -->
+    <!-- ============================================================ -->
+    <section id="deals" aria-label="Today's deals" class="max-w-[1400px] mx-auto px-4 mt-10">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <span class="grid place-items-center w-8 h-8 rounded-lg bg-honey text-charcoal"><i data-lucide="badge-percent" class="w-5 h-5"></i></span>
+          <h2 class="font-display font-bold text-2xl">Today's Deals</h2>
+        </div>
+        <div class="hidden md:flex gap-2">
+          <button data-scroll="dealsTrack" data-dir="-1" aria-label="Scroll deals left" class="grid place-items-center w-10 h-10 rounded-full bg-white shadow-card hover:bg-soft transition-colors"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+          <button data-scroll="dealsTrack" data-dir="1" aria-label="Scroll deals right" class="grid place-items-center w-10 h-10 rounded-full bg-white shadow-card hover:bg-soft transition-colors"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+        </div>
+      </div>
+      <div id="dealsTrack" class="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2 scroll-smooth">
+        <!-- Product cards injected by JS -->
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 8. POPULAR SERVICES                                           -->
+    <!-- ============================================================ -->
+    <section id="services" aria-label="Popular services" class="max-w-[1400px] mx-auto px-4 mt-12">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="grid place-items-center w-8 h-8 rounded-lg bg-honey text-charcoal"><i data-lucide="wrench" class="w-5 h-5"></i></span>
+        <h2 class="font-display font-bold text-2xl">Popular Services</h2>
+      </div>
+      <div id="servicesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Service cards injected by JS -->
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 9. PROMOTIONAL BANNER                                         -->
+    <!-- ============================================================ -->
+    <section id="sell" aria-label="Sell on AsBeez" class="mt-14">
+      <div class="honeycomb relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-amber/90 to-honey/70"></div>
+        <div class="relative max-w-[1400px] mx-auto px-6 py-12 sm:py-16 flex flex-col md:flex-row items-center justify-between gap-6 text-charcoal">
+          <div class="max-w-2xl text-center md:text-left">
+            <h2 class="font-display font-extrabold text-3xl sm:text-4xl mb-3">Have Something to Offer?</h2>
+            <p class="text-charcoal/85 text-lg">Sell products, advertise your services, or grow a local business—AsBeez connects you with your community and gives you the tools to thrive.</p>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+            <a href="#" class="bg-charcoal hover:bg-black text-white font-semibold px-6 py-3 rounded-lg text-center transition-colors">Create Your Listing</a>
+            <a href="#how" class="bg-white hover:bg-cream text-charcoal font-semibold px-6 py-3 rounded-lg text-center ring-1 ring-charcoal/10 transition-colors">Learn How It Works</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 10. RECOMMENDED PRODUCTS                                      -->
+    <!-- ============================================================ -->
+    <section id="recommended" aria-label="Recommended products" class="max-w-[1400px] mx-auto px-4 mt-14">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="grid place-items-center w-8 h-8 rounded-lg bg-honey text-charcoal"><i data-lucide="sparkles" class="w-5 h-5"></i></span>
+        <h2 class="font-display font-bold text-2xl">Recommended For You</h2>
+      </div>
+      <div id="recommendedGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Product cards injected by JS -->
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 11. HOW ASBEEZ WORKS                                          -->
+    <!-- ============================================================ -->
+    <section id="how" aria-label="How AsBeez works" class="max-w-[1400px] mx-auto px-4 mt-16">
+      <div class="text-center mb-8">
+        <h2 class="font-display font-extrabold text-3xl mb-2">How AsBeez Works</h2>
+        <p class="text-muted">Three simple steps from search to done.</p>
+      </div>
+      <ol class="relative grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Connecting line (desktop) -->
+        <div class="hidden md:block absolute top-10 left-[16%] right-[16%] h-0.5 bg-honey/40" aria-hidden="true"></div>
+
+        <li class="relative bg-white rounded-2xl shadow-card p-6 text-center">
+          <span class="relative z-10 grid place-items-center w-16 h-16 rounded-full bg-soft mx-auto mb-4"><i data-lucide="search" class="w-8 h-8 text-amber"></i></span>
+          <h3 class="font-display font-bold text-lg mb-1">1. Search or Browse</h3>
+          <p class="text-sm text-muted">Explore products, services, and listings across your local marketplace.</p>
+        </li>
+        <li class="relative bg-white rounded-2xl shadow-card p-6 text-center">
+          <span class="relative z-10 grid place-items-center w-16 h-16 rounded-full bg-soft mx-auto mb-4"><i data-lucide="git-compare" class="w-8 h-8 text-amber"></i></span>
+          <h3 class="font-display font-bold text-lg mb-1">2. Compare and Connect</h3>
+          <p class="text-sm text-muted">Check ratings, prices, and profiles, then reach out with confidence.</p>
+        </li>
+        <li class="relative bg-white rounded-2xl shadow-card p-6 text-center">
+          <span class="relative z-10 grid place-items-center w-16 h-16 rounded-full bg-soft mx-auto mb-4"><i data-lucide="check-check" class="w-8 h-8 text-amber"></i></span>
+          <h3 class="font-display font-bold text-lg mb-1">3. Buy, Book, or Hire</h3>
+          <p class="text-sm text-muted">Complete your transaction securely and get it done—fast.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 12. TRUST AND BENEFITS                                        -->
+    <!-- ============================================================ -->
+    <section aria-label="Why choose AsBeez" class="max-w-[1400px] mx-auto px-4 mt-14">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-2xl shadow-card p-6 flex items-start gap-4">
+          <span class="grid place-items-center w-12 h-12 rounded-xl bg-soft shrink-0"><i data-lucide="shield-check" class="w-6 h-6 text-success"></i></span>
+          <div>
+            <h3 class="font-display font-bold mb-1">Verified Sellers &amp; Providers</h3>
+            <p class="text-sm text-muted">Every seller and pro is screened so you can buy and book with trust.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-card p-6 flex items-start gap-4">
+          <span class="grid place-items-center w-12 h-12 rounded-xl bg-soft shrink-0"><i data-lucide="lock" class="w-6 h-6 text-success"></i></span>
+          <div>
+            <h3 class="font-display font-bold mb-1">Secure Transactions</h3>
+            <p class="text-sm text-muted">Protected payments and buyer safeguards on every order.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-card p-6 flex items-start gap-4">
+          <span class="grid place-items-center w-12 h-12 rounded-xl bg-soft shrink-0"><i data-lucide="heart-handshake" class="w-6 h-6 text-success"></i></span>
+          <div>
+            <h3 class="font-display font-bold mb-1">Local Community Connections</h3>
+            <p class="text-sm text-muted">Support neighbors and discover the best your area has to offer.</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-card p-6 flex items-start gap-4">
+          <span class="grid place-items-center w-12 h-12 rounded-xl bg-soft shrink-0"><i data-lucide="headphones" class="w-6 h-6 text-success"></i></span>
+          <div>
+            <h3 class="font-display font-bold mb-1">Responsive Customer Support</h3>
+            <p class="text-sm text-muted">Real help when you need it, from a team that answers fast.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 13. NEWSLETTER SIGNUP                                         -->
+    <!-- ============================================================ -->
+    <section aria-label="Newsletter signup" class="max-w-[1400px] mx-auto px-4 mt-16">
+      <div class="bg-charcoal rounded-2xl overflow-hidden relative">
+        <div class="absolute right-0 top-0 bottom-0 w-1/3 honeycomb opacity-20 hidden sm:block" aria-hidden="true"></div>
+        <div class="relative px-6 py-10 sm:px-12 sm:py-12 text-white max-w-2xl">
+          <h2 class="font-display font-extrabold text-2xl sm:text-3xl mb-2">Get the Latest Buzz</h2>
+          <p class="text-white/80 mb-5">Deals, new services, and community highlights—delivered to your inbox weekly.</p>
+          <form id="newsletterForm" novalidate class="flex flex-col sm:flex-row gap-3 max-w-lg">
+            <div class="flex-1">
+              <label for="newsletterEmail" class="sr-only">Email address</label>
+              <input id="newsletterEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" aria-describedby="newsletterMsg" class="w-full px-4 py-3 rounded-lg text-charcoal focus:outline-none" />
+            </div>
+            <button type="submit" class="bg-honey hover:bg-amber text-charcoal font-semibold px-6 py-3 rounded-lg transition-colors shrink-0">Join the Hive</button>
+          </form>
+          <p id="newsletterMsg" role="status" aria-live="polite" class="text-sm mt-3 min-h-[20px]"></p>
+          <p class="text-xs text-white/60 mt-1 flex items-center gap-1.5"><i data-lucide="shield" class="w-3.5 h-3.5"></i> We respect your privacy. Unsubscribe anytime.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- BACK TO TOP                                                   -->
+  <!-- ============================================================ -->
+  <div class="max-w-[1400px] mx-auto px-4 mt-14">
+    <button id="backToTop" class="w-full bg-[#333] hover:bg-[#3d3d3d] text-white text-sm font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+      <i data-lucide="arrow-up" class="w-4 h-4"></i> Back to Top
+    </button>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- 14. FOOTER                                                    -->
+  <!-- ============================================================ -->
+  <footer class="bg-charcoal text-white/80 mt-8">
+    <div class="max-w-[1400px] mx-auto px-4 py-12">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-sm">
+        <div>
+          <h3 class="font-display font-bold text-white mb-3">Get to Know AsBeez</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-honey hover:underline">About Us</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">How It Works</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Careers</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Press &amp; News</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Community Blog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-display font-bold text-white mb-3">Shop and Explore</h3>
+          <ul class="space-y-2">
+            <li><a href="#deals" class="hover:text-honey hover:underline">Today's Deals</a></li>
+            <li><a href="#recommended" class="hover:text-honey hover:underline">Products</a></li>
+            <li><a href="#services" class="hover:text-honey hover:underline">Local Services</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Professionals</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Real Estate &amp; Vehicles</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-display font-bold text-white mb-3">Sell and Grow</h3>
+          <ul class="space-y-2">
+            <li><a href="#sell" class="hover:text-honey hover:underline">Sell on AsBeez</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Seller Dashboard</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Advertise Services</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Business Tools</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Seller Academy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-display font-bold text-white mb-3">Customer Support</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-honey hover:underline">Help Center</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Track Your Order</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Returns &amp; Refunds</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Contact Us</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Report a Problem</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-display font-bold text-white mb-3">Legal and Policies</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-honey hover:underline">Privacy Policy</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Terms of Service</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Accessibility</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Cookie Preferences</a></li>
+            <li><a href="#" class="hover:text-honey hover:underline">Seller Agreement</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Brand + selectors + socials -->
+      <div class="border-t border-white/10 mt-10 pt-8 flex flex-col lg:flex-row items-center justify-between gap-6">
+        <a href="#" class="flex items-center gap-2" aria-label="AsBeez home">
+          <span class="grid place-items-center w-8 h-8 rounded-full bg-honey text-charcoal"><i data-lucide="hexagon" class="w-4 h-4" fill="currentColor"></i></span>
+          <span class="font-display font-extrabold text-xl text-white">As<span class="text-honey">Beez</span></span>
+        </a>
+
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <label for="footerLang" class="sr-only">Language</label>
+          <select id="footerLang" class="bg-transparent ring-1 ring-white/20 rounded-md px-3 py-1.5 text-sm text-white/90 focus:outline-none">
+            <option class="text-charcoal">🌐 English</option>
+            <option class="text-charcoal">🌐 Español</option>
+            <option class="text-charcoal">🌐 Filipino</option>
+            <option class="text-charcoal">🌐 Français</option>
+          </select>
+          <label for="footerCountry" class="sr-only">Country</label>
+          <select id="footerCountry" class="bg-transparent ring-1 ring-white/20 rounded-md px-3 py-1.5 text-sm text-white/90 focus:outline-none">
+            <option class="text-charcoal">United States</option>
+            <option class="text-charcoal">Philippines</option>
+            <option class="text-charcoal">Canada</option>
+            <option class="text-charcoal">United Kingdom</option>
+          </select>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <a href="#" aria-label="AsBeez on Facebook" class="grid place-items-center w-9 h-9 rounded-full bg-white/10 hover:bg-honey hover:text-charcoal transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+          <a href="#" aria-label="AsBeez on Instagram" class="grid place-items-center w-9 h-9 rounded-full bg-white/10 hover:bg-honey hover:text-charcoal transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+          <a href="#" aria-label="AsBeez on X" class="grid place-items-center w-9 h-9 rounded-full bg-white/10 hover:bg-honey hover:text-charcoal transition-colors"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+          <a href="#" aria-label="AsBeez on YouTube" class="grid place-items-center w-9 h-9 rounded-full bg-white/10 hover:bg-honey hover:text-charcoal transition-colors"><i data-lucide="youtube" class="w-4 h-4"></i></a>
+          <a href="#" aria-label="AsBeez on LinkedIn" class="grid place-items-center w-9 h-9 rounded-full bg-white/10 hover:bg-honey hover:text-charcoal transition-colors"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+
+      <!-- Payment methods + copyright -->
+      <div class="border-t border-white/10 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/60">
+        <div class="flex items-center gap-2 flex-wrap justify-center">
+          <span>Accepted payments:</span>
+          <span class="bg-white/90 text-charcoal font-bold px-2 py-1 rounded">VISA</span>
+          <span class="bg-white/90 text-charcoal font-bold px-2 py-1 rounded">MC</span>
+          <span class="bg-white/90 text-charcoal font-bold px-2 py-1 rounded">AMEX</span>
+          <span class="bg-white/90 text-charcoal font-bold px-2 py-1 rounded">PayPal</span>
+          <span class="bg-white/90 text-charcoal font-bold px-2 py-1 rounded">GCash</span>
+        </div>
+        <div class="flex items-center gap-4 flex-wrap justify-center">
+          <a href="#" class="hover:text-honey">Privacy</a>
+          <a href="#" class="hover:text-honey">Terms</a>
+          <a href="#" class="hover:text-honey">Accessibility</a>
+          <a href="#" class="hover:text-honey">Cookies</a>
+          <span>© 2026 AsBeez. All rights reserved.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================ -->
+  <!-- JAVASCRIPT                                                    -->
+  <!-- ============================================================ -->
+  <script>
+  (function () {
+    'use strict';
+
+    // ---------- Image fallback (loading fallback for external images) ----------
+    const FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="400" height="400" fill="#FFF1B8"/><g fill="#E89B0C" opacity="0.6"><polygon points="200,120 245,146 245,198 200,224 155,198 155,146"/></g><text x="50%" y="86%" font-family="sans-serif" font-size="22" fill="#6B7280" text-anchor="middle">AsBeez</text></svg>'
+    );
+    document.querySelectorAll('img[data-fallback]').forEach(img => {
+      img.addEventListener('error', () => { img.src = FALLBACK; }, { once: true });
+    });
+
+    // ---------- Data ----------
+    const IMG = {
+      p1:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=60',
+      p2:'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=60',
+      p3:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=60',
+      p4:'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=400&q=60',
+      p5:'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=400&q=60',
+      p6:'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=400&q=60',
+      p7:'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=400&q=60',
+      p8:'https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=400&q=60',
+      p9:'https://images.unsplash.com/photo-1560343090-f0409e92791a?auto=format&fit=crop&w=400&q=60',
+      p10:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=400&q=60',
+      p11:'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=400&q=60',
+      p12:'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=400&q=60',
+      s1:'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=500&q=60',
+      s2:'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=500&q=60',
+      s3:'https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=500&q=60',
+      s4:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=500&q=60',
+      s5:'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=500&q=60',
+      s6:'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=500&q=60'
+    };
+
+    const deals = [
+      { img:IMG.p1, title:'Wireless Over-Ear Headphones with Noise Cancelling', disc:35, rating:4.6, reviews:2148, price:89.99, was:139.99, delivery:'FREE delivery tomorrow' },
+      { img:IMG.p2, title:'Smart Fitness Watch, Heart-Rate &amp; GPS', disc:28, rating:4.4, reviews:1032, price:129.00, was:179.00, delivery:'FREE delivery Fri' },
+      { img:IMG.p3, title:'Lightweight Running Shoes, Breathable Mesh', disc:40, rating:4.7, reviews:3390, price:54.00, was:89.99, delivery:'In stock' },
+      { img:IMG.p4, title:'Complete Skincare Set, 5-Piece Routine', disc:22, rating:4.5, reviews:876, price:38.50, was:49.99, delivery:'FREE delivery tomorrow' },
+      { img:IMG.p5, title:'Portable Bluetooth Speaker, Waterproof', disc:30, rating:4.3, reviews:1544, price:41.99, was:59.99, delivery:'FREE delivery Sat' },
+      { img:IMG.p6, title:'Mechanical Keyboard, RGB Backlit', disc:25, rating:4.8, reviews:2201, price:74.99, was:99.99, delivery:'In stock' },
+      { img:IMG.p7, title:'Stainless Steel Cookware, 8-Piece Set', disc:33, rating:4.6, reviews:640, price:119.00, was:179.00, delivery:'FREE delivery Fri' },
+      { img:IMG.p8, title:'4K Action Camera with Accessory Kit', disc:45, rating:4.2, reviews:410, price:98.00, was:179.00, delivery:'In stock' }
+    ];
+
+    const recommended = [
+      { img:IMG.p9, title:'Ergonomic Office Chair, Adjustable Lumbar', disc:18, rating:4.5, reviews:988, price:159.00, was:194.00, delivery:'FREE delivery Sun' },
+      { img:IMG.p10, title:'Insulated Water Bottle, 32 oz', disc:20, rating:4.7, reviews:5120, price:23.99, was:29.99, delivery:'In stock' },
+      { img:IMG.p11, title:'LED Desk Lamp with Wireless Charging', disc:26, rating:4.4, reviews:733, price:36.99, was:49.99, delivery:'FREE delivery tomorrow' },
+      { img:IMG.p12, title:'Cotton Bath Towel Set, 6-Piece', disc:15, rating:4.6, reviews:1290, price:34.00, was:39.99, delivery:'In stock' },
+      { img:IMG.p6, title:'Wireless Ergonomic Mouse, Silent Click', disc:30, rating:4.5, reviews:1870, price:27.99, was:39.99, delivery:'FREE delivery Fri' },
+      { img:IMG.p2, title:'Fast-Charge Power Bank, 20000mAh', disc:22, rating:4.6, reviews:2640, price:31.50, was:39.99, delivery:'In stock' },
+      { img:IMG.p3, title:'Yoga Mat, Non-Slip Eco Foam', disc:35, rating:4.8, reviews:940, price:25.99, was:39.99, delivery:'FREE delivery tomorrow' },
+      { img:IMG.p1, title:'Compact Air Purifier, HEPA Filter', disc:28, rating:4.3, reviews:512, price:79.00, was:109.00, delivery:'In stock' }
+    ];
+
+    const services = [
+      { img:IMG.s1, name:'Home Cleaning', provider:'SparkleNest Cleaners', rating:4.9, reviews:512, price:35, loc:'Downtown • 2.1 mi' },
+      { img:IMG.s2, name:'Plumbing', provider:'FlowFix Plumbing Co.', rating:4.8, reviews:389, price:60, loc:'Westside • 3.4 mi' },
+      { img:IMG.s3, name:'Electrical Services', provider:'BrightWire Electric', rating:4.7, reviews:274, price:75, loc:'Midtown • 1.8 mi' },
+      { img:IMG.s4, name:'Web Development', provider:'HiveByte Studio', rating:5.0, reviews:143, price:250, loc:'Remote • Anywhere' },
+      { img:IMG.s5, name:'Accounting', provider:'LedgerLeaf Advisors', rating:4.8, reviews:206, price:90, loc:'Financial District • 4.0 mi' },
+      { img:IMG.s6, name:'Senior Care', provider:'GentleHands Care', rating:4.9, reviews:318, price:28, loc:'Eastside • 2.7 mi' }
+    ];
+
+    // ---------- Renderers ----------
+    function stars(rating) {
+      const full = Math.floor(rating);
+      const half = rating - full >= 0.5;
+      let out = '';
+      for (let i = 0; i < 5; i++) {
+        if (i < full) out += '<i data-lucide="star" class="w-4 h-4 fill-honey text-honey"></i>';
+        else if (i === full && half) out += '<i data-lucide="star-half" class="w-4 h-4 fill-honey text-honey"></i>';
+        else out += '<i data-lucide="star" class="w-4 h-4 text-gray-300"></i>';
+      }
+      return out;
+    }
+
+    function productCard(p, carousel) {
+      const wrap = carousel ? 'snap-start shrink-0 w-[220px]' : '';
+      return `
+      <article class="${wrap} bg-white rounded-xl shadow-card overflow-hidden flex flex-col group hover:shadow-lift transition-shadow">
+        <div class="relative">
+          <img src="${p.img}" alt="${p.title.replace(/&amp;/g,'and')}" class="w-full aspect-square object-cover" loading="lazy" data-fallback>
+          <span class="absolute top-2 left-2 bg-honey text-charcoal text-xs font-bold px-2 py-0.5 rounded-md">-${p.disc}%</span>
+          <button class="wishlist absolute top-2 right-2 grid place-items-center w-8 h-8 rounded-full bg-white/90 hover:bg-white shadow transition-colors" aria-label="Add ${p.title.replace(/&amp;/g,'and')} to wishlist" aria-pressed="false">
+            <i data-lucide="heart" class="w-4 h-4 text-muted"></i>
+          </button>
+        </div>
+        <div class="p-3 flex flex-col flex-1">
+          <h3 class="text-sm font-medium clamp-2 mb-1 min-h-[2.5rem]">${p.title}</h3>
+          <div class="flex items-center gap-1 mb-1">
+            <span class="flex">${stars(p.rating)}</span>
+            <span class="text-xs text-muted">(${p.reviews.toLocaleString()})</span>
+          </div>
+          <div class="flex items-baseline gap-2 mb-1">
+            <span class="text-lg font-bold text-charcoal">$${p.price.toFixed(2)}</span>
+            <span class="text-xs text-muted line-through">$${p.was.toFixed(2)}</span>
+          </div>
+          <p class="text-xs text-success font-medium mb-3">${p.delivery}</p>
+          <button class="add-to-cart mt-auto w-full bg-honey hover:bg-amber text-charcoal font-semibold text-sm py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5">
+            <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
+          </button>
+        </div>
+      </article>`;
+    }
+
+    function serviceCard(s) {
+      return `
+      <article class="bg-white rounded-xl shadow-card overflow-hidden flex flex-col hover:shadow-lift transition-shadow">
+        <div class="relative">
+          <img src="${s.img}" alt="${s.name} provided by ${s.provider}" class="w-full h-40 object-cover" loading="lazy" data-fallback>
+          <span class="absolute top-2 left-2 bg-white/95 text-charcoal text-xs font-bold px-2 py-0.5 rounded-md">${s.name}</span>
+        </div>
+        <div class="p-4 flex flex-col flex-1">
+          <div class="flex items-center gap-1.5 mb-1">
+            <h3 class="font-display font-bold">${s.provider}</h3>
+            <span class="inline-flex items-center gap-0.5 text-xs text-success font-semibold" title="Verified provider"><i data-lucide="badge-check" class="w-4 h-4"></i> Verified</span>
+          </div>
+          <div class="flex items-center gap-1 mb-2">
+            <span class="flex">${stars(s.rating)}</span>
+            <span class="text-xs text-muted">${s.rating.toFixed(1)} (${s.reviews})</span>
+          </div>
+          <p class="text-sm text-muted flex items-center gap-1 mb-3"><i data-lucide="map-pin" class="w-4 h-4 text-amber"></i> ${s.loc}</p>
+          <div class="flex items-center justify-between mt-auto">
+            <span class="text-sm"><span class="text-muted">Starting at</span> <span class="font-bold text-lg">$${s.price}</span></span>
+            <button class="view-service bg-charcoal hover:bg-black text-white font-semibold text-sm px-4 py-2 rounded-lg transition-colors">View Service</button>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    document.getElementById('dealsTrack').innerHTML = deals.map(p => productCard(p, true)).join('');
+    document.getElementById('recommendedGrid').innerHTML = recommended.map(p => productCard(p, false)).join('');
+    document.getElementById('servicesGrid').innerHTML = services.map(serviceCard).join('');
+
+    // ---------- Lucide render ----------
+    function renderIcons() { if (window.lucide) lucide.createIcons(); }
+    renderIcons();
+
+    // ---------- Announcement bar ----------
+    const announcement = document.getElementById('announcement');
+    document.getElementById('closeAnnouncement').addEventListener('click', () => { announcement.style.display = 'none'; });
+
+    // ---------- Mobile drawer ----------
+    const drawer = document.getElementById('mobileDrawer');
+    const overlay = document.getElementById('drawerOverlay');
+    const hamburger = document.getElementById('hamburger');
+    function openDrawer() {
+      drawer.classList.remove('-translate-x-full');
+      overlay.classList.remove('hidden');
+      hamburger.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      drawer.classList.add('-translate-x-full');
+      overlay.classList.add('hidden');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    hamburger.addEventListener('click', openDrawer);
+    document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+    // ---------- Mega menu ----------
+    const megaBtn = document.getElementById('megaBtn');
+    const megaMenu = document.getElementById('megaMenu');
+    let megaOpen = false;
+    function toggleMega(force) {
+      megaOpen = (typeof force === 'boolean') ? force : !megaOpen;
+      megaMenu.classList.toggle('hidden', !megaOpen);
+      megaBtn.setAttribute('aria-expanded', String(megaOpen));
+    }
+    megaBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleMega(); });
+    document.addEventListener('click', (e) => {
+      if (megaOpen && !megaMenu.contains(e.target) && !megaBtn.contains(e.target)) toggleMega(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { toggleMega(false); closeDrawer(); }
+    });
+
+    // ---------- Hero carousel ----------
+    const slides = Array.from(document.querySelectorAll('.hero-slide'));
+    const dotsWrap = document.getElementById('heroDots');
+    let current = 0, timer = null;
+    const INTERVAL = 6000;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      dot.className = 'w-2.5 h-2.5 rounded-full transition-all ' + (i === 0 ? 'bg-honey w-6' : 'bg-white/50');
+      dot.addEventListener('click', () => { goTo(i); resetTimer(); });
+      dotsWrap.appendChild(dot);
+    });
+    const dots = Array.from(dotsWrap.children);
+
+    function goTo(i) {
+      slides[current].classList.remove('active');
+      dots[current].className = 'w-2.5 h-2.5 rounded-full transition-all bg-white/50';
+      current = (i + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dots[current].className = 'w-2.5 h-2.5 rounded-full transition-all bg-honey w-6';
+    }
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+    function startTimer() { if (!reduceMotion) timer = setInterval(next, INTERVAL); }
+    function resetTimer() { clearInterval(timer); startTimer(); }
+
+    document.getElementById('heroNext').addEventListener('click', () => { next(); resetTimer(); });
+    document.getElementById('heroPrev').addEventListener('click', () => { prev(); resetTimer(); });
+
+    const heroEl = document.getElementById('hero');
+    heroEl.addEventListener('mouseenter', () => clearInterval(timer));
+    heroEl.addEventListener('mouseleave', startTimer);
+    startTimer();
+
+    // ---------- Horizontal scroll controls (deals) ----------
+    document.querySelectorAll('[data-scroll]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const track = document.getElementById(btn.dataset.scroll);
+        track.scrollBy({ left: 240 * Number(btn.dataset.dir), behavior: 'smooth' });
+      });
+    });
+
+    // ---------- Wishlist toggle (delegated) ----------
+    document.body.addEventListener('click', (e) => {
+      const btn = e.target.closest('.wishlist');
+      if (!btn) return;
+      const pressed = btn.getAttribute('aria-pressed') === 'true';
+      btn.setAttribute('aria-pressed', String(!pressed));
+      const icon = btn.querySelector('i');
+      if (!pressed) {
+        icon.classList.remove('text-muted');
+        icon.classList.add('text-red-500', 'fill-red-500');
+      } else {
+        icon.classList.add('text-muted');
+        icon.classList.remove('text-red-500', 'fill-red-500');
+      }
+      renderIcons();
+    });
+
+    // ---------- Add to cart (delegated) ----------
+    const cartCount = document.getElementById('cartCount');
+    let cart = 0;
+    document.body.addEventListener('click', (e) => {
+      const btn = e.target.closest('.add-to-cart');
+      if (!btn) return;
+      cart++;
+      cartCount.textContent = cart;
+      cartCount.animate([{ transform: 'scale(1.6)' }, { transform: 'scale(1)' }], { duration: 250 });
+      const original = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Added';
+      btn.classList.add('bg-success', 'text-white');
+      btn.classList.remove('bg-honey', 'text-charcoal');
+      renderIcons();
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.classList.remove('bg-success', 'text-white');
+        btn.classList.add('bg-honey', 'text-charcoal');
+        renderIcons();
+      }, 1200);
+    });
+
+    // ---------- Newsletter validation ----------
+    const nlForm = document.getElementById('newsletterForm');
+    const nlEmail = document.getElementById('newsletterEmail');
+    const nlMsg = document.getElementById('newsletterMsg');
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    nlForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = nlEmail.value.trim();
+      if (!val) {
+        nlMsg.textContent = 'Please enter your email address.';
+        nlMsg.className = 'text-sm mt-3 min-h-[20px] text-honey';
+        nlEmail.focus();
+      } else if (!EMAIL_RE.test(val)) {
+        nlMsg.textContent = 'That email doesn\'t look right. Please check and try again.';
+        nlMsg.className = 'text-sm mt-3 min-h-[20px] text-honey';
+        nlEmail.focus();
+      } else {
+        nlMsg.textContent = '🎉 You\'re in! Welcome to the hive.';
+        nlMsg.className = 'text-sm mt-3 min-h-[20px] text-success font-semibold';
+        nlForm.reset();
+      }
+    });
+
+    // ---------- Back to top ----------
+    document.getElementById('backToTop').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+
+    // ---------- Header shadow on scroll ----------
+    const header = document.getElementById('header');
+    let lastY = 0;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      header.classList.toggle('shadow-lg', y > 10);
+      lastY = y;
+    }, { passive: true });
+
+    // ---------- Search (prevent reload) ----------
+    document.getElementById('searchForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = document.getElementById('searchInput').value.trim();
+      if (q) console.log('Search:', q);
+    });
+
+    // Final icon pass after all dynamic content
+    renderIcons();
+  })();
+  </script>
+</body>
+</html>

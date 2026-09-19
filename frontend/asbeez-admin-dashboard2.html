@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#F5F6F8] antialiased">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AsBeez Administration Dashboard</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            honey: {
+              DEFAULT: '#F7B928',
+              hover: '#E89B0C',
+              light: '#FFF1B8',
+              warm: '#FFF8E7',
+            },
+            amber: {
+              golden: '#E89B0C',
+            },
+            charcoal: {
+              DEFAULT: '#242424',
+              light: '#2E2E2E',
+              dark: '#1A1A1A',
+            },
+            status: {
+              success: '#2E8B57',
+              error: '#DC2626',
+              info: '#2563EB',
+              warning: '#D97706',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F5F6F8;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D1D5DB;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9CA3AF;
+    }
+    
+    /* Honeycomb Subtle Pattern */
+    .bg-honeycomb {
+      background-color: #242424;
+      background-image: radial-gradient(#F7B928 0.75px, transparent 0.75px), radial-gradient(#F7B928 0.75px, #242424 0.75px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      background-opacity: 0.05;
+    }
+    
+    /* Transitions */
+    .sidebar-transition {
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .toast-enter {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    .toast-enter-active {
+      transform: translateY(0);
+      opacity: 1;
+      transition: all 0.3s ease-out;
+    }
+    .toast-exit {
+      transform: translateY(-20px);
+      opacity: 0;
+      transition: all 0.2s ease-in;
+    }
+
+    /* Modal Backdrop Blur */
+    .modal-backdrop {
+      background-color: rgba(36, 36, 36, 0.6);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+<body class="h-full font-sans text-charcoal flex flex-col min-h-screen selection:bg-honey selection:text-charcoal">
+
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-honey focus:text-charcoal focus:font-bold focus:rounded-lg focus:shadow-lg">
+    Skip to main content
+  </a>
+
+  <div class="flex h-screen overflow-hidden bg-[#F5F6F8]">
+
+    <div id="sidebar-overlay" onclick="toggleMobileSidebar(false)" class="fixed inset-0 z-40 bg-charcoal/60 backdrop-blur-sm hidden transition-opacity duration-300 md:hidden" aria-hidden="true"></div>
+
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 flex flex-col bg-charcoal text-white w-64 md:static sidebar-transition -translate-x-full md:translate-x-0 shadow-xl border-r border-charcoal-light/30">
+      
+      <!-- Brand Area -->
+      <div class="flex items-center justify-between h-16 px-4 bg-charcoal border-b border-gray-800">
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-honey flex items-center justify-center text-charcoal font-bold shadow-md shadow-honey/20 group-hover:scale-105 transition-transform">
+            <i data-lucide="hexagon" class="w-6 h-6 fill-charcoal text-honey"></i>
+          </div>
+          <div class="sidebar-text flex flex-col">
+            <span class="font-bold text-lg leading-none tracking-tight text-white flex items-center gap-1">
+              AsBeez <span class="text-xs px-1.5 py-0.5 rounded bg-honey/20 text-honey font-semibold uppercase">Admin</span>
+            </span>
+            <span class="text-[10px] text-gray-400 mt-0.5">Manage the hive</span>
+          </div>
+        </a>
+        <button onclick="toggleSidebarCollapse()" class="hidden md:flex p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors" aria-label="Toggle Sidebar">
+          <i data-lucide="panel-left-close" id="sidebar-toggle-icon" class="w-5 h-5"></i>
+        </button>
+        <button onclick="toggleMobileSidebar(false)" class="md:hidden p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800" aria-label="Close mobile sidebar">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Administrator Profile Quick Card -->
+      <div class="px-4 py-3 border-b border-gray-800/80 bg-charcoal-light/30">
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Joey Lustre" class="w-9 h-9 rounded-full object-cover border-2 border-honey">
+            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-charcoal" title="Secure Session Active"></span>
+          </div>
+          <div class="sidebar-text overflow-hidden">
+            <h4 class="text-sm font-semibold text-white truncate">Joey Lustre</h4>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[11px] text-honey font-medium truncate">Super Admin</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Navigation Menu -->
+      <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-6 text-sm">
+        <div>
+          <div class="sidebar-text text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-3 mb-2">Main Menu</div>
+          <ul class="space-y-1">
+            <li>
+              <a href="#dashboard" class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-honey text-charcoal font-semibold shadow-sm transition-all" aria-current="page">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                  <span class="sidebar-text">Dashboard</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#members" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-white transition-colors">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="users" class="w-5 h-5"></i>
+                  <span class="sidebar-text">Members</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#vendors" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-white transition-colors">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="store" class="w-5 h-5"></i>
+                  <span class="sidebar-text">Vendors</span>
+                </div>
+                <span class="sidebar-text text-xs px-2 py-0.5 rounded-full bg-honey/20 text-honey font-bold">12</span>
+              </a>
+            </li>
+            <li>
+              <a href="#products" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-white transition-colors">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="package" class="w-5 h-5"></i>
+                  <span class="sidebar-text">Products</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#services" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-white transition-colors">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="briefcase" class="w-5 h-5"></i>
+                  <span class="sidebar-text">Services</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#orders" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-white transition-colors">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                  <span class="sidebar-text">Orders & Bookings</span>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a href="#disputes" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-white transition-colors">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                  <span class="sidebar-text">Disputes</span>
+                </div>
+                <span class="sidebar-text text-xs px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 font-bold">7</span>
+              </a>
+            </li>
+            <li>
+              <a href="#finances" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-300 hover:bg-gray-800/80 hover:text-white transition-colors">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="badge-dollar-sign" class="w-5 h-5"></i>
+                  <span class="sidebar-text">Financials</span>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Group: Platform Management -->
+        <div>
+          <button onclick="toggleNavGroup('platform-group')" class="w-full flex items-center justify-between px-3 mb-2 text-gray-400 hover:text-white">
+            <span class="sidebar-text text-[11px] font-semibold uppercase tracking-wider">Platform Config</span>
+            <i data-lucide="chevron-down" id="platform-group-chevron" class="w-4 h-4 sidebar-text transition-transform duration-200"></i>
+          </button>
+          <ul id="platform-group" class="space-y-1">
+            <li><a href="#categories" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"><i data-lucide="layers" class="w-4 h-4"></i><span class="sidebar-text">Categories</span></a></li>
+            <li><a href="#content" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"><i data-lucide="file-text" class="w-4 h-4"></i><span class="sidebar-text">Content & CMS</span></a></li>
+            <li><a href="#commissions" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"><i data-lucide="percent" class="w-4 h-4"></i><span class="sidebar-text">Commissions</span></a></li>
+          </ul>
+        </div>
+
+        <!-- Group: System Administration -->
+        <div>
+          <button onclick="toggleNavGroup('system-group')" class="w-full flex items-center justify-between px-3 mb-2 text-gray-400 hover:text-white">
+            <span class="sidebar-text text-[11px] font-semibold uppercase tracking-wider">System & Security</span>
+            <i data-lucide="chevron-down" id="system-group-chevron" class="w-4 h-4 sidebar-text transition-transform duration-200"></i>
+          </button>
+          <ul id="system-group" class="space-y-1">
+            <li><a href="#audit" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"><i data-lucide="history" class="w-4 h-4"></i><span class="sidebar-text">Audit Logs</span></a></li>
+            <li><a href="#security" class="flex items-center justify-between px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"><div class="flex items-center gap-3"><i data-lucide="lock" class="w-4 h-4"></i><span class="sidebar-text">Security Center</span></div><span class="sidebar-text text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 font-bold">5</span></a></li>
+            <li><a href="#settings" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800/50 transition-colors"><i data-lucide="settings" class="w-4 h-4"></i><span class="sidebar-text">System Settings</span></a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="p-4 border-t border-gray-800 bg-charcoal text-xs space-y-2">
+        <div class="sidebar-text flex items-center justify-between text-gray-400">
+          <span>Version 3.4.2</span>
+          <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold text-[10px]">PRODUCTION</span>
+        </div>
+        <div class="sidebar-text flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-gray-300">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>System Operational</span>
+          </div>
+          <button onclick="triggerToast('Logging out administrator session...', 'info')" class="text-gray-400 hover:text-rose-400 transition-colors" title="Log Out">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+      <!-- Sticky Top Header -->
+      <header class="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm flex-shrink-0">
+        <div class="flex items-center justify-between h-16 px-4 sm:px-6">
+          
+          <!-- Left: Mobile Menu Trigger & Breadcrumbs -->
+          <div class="flex items-center gap-4">
+            <button onclick="toggleMobileSidebar(true)" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100" aria-label="Open sidebar">
+              <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+            
+            <div class="hidden sm:flex flex-col">
+              <nav class="flex items-center gap-2 text-xs text-gray-500">
+                <a href="#" class="hover:text-charcoal">AsBeez Platform</a>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-gray-400"></i>
+                <span class="text-charcoal font-medium">Administration Center</span>
+              </nav>
+              <h1 class="text-lg font-bold text-charcoal leading-tight">Overview Dashboard</h1>
+            </div>
+          </div>
+
+          <!-- Center: Global Search Bar -->
+          <div class="flex-1 max-w-md mx-4 relative hidden md:block">
+            <div class="relative">
+              <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+              <input type="text" id="global-search-input" onkeyup="handleGlobalSearch(event)" placeholder="Search members, vendors, orders, listings... (Press '/' to focus)" class="w-full pl-9 pr-12 py-1.5 bg-gray-100 text-sm rounded-xl border border-transparent focus:border-honey focus:bg-white focus:outline-none focus:ring-2 focus:ring-honey/30 transition-all">
+              <kbd class="absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-semibold text-gray-400 bg-white border border-gray-300 rounded shadow-2xs">/</kbd>
+            </div>
+            
+            <!-- Global Search Dropdown Results -->
+            <div id="search-results-dropdown" class="hidden absolute left-0 right-0 top-full mt-2 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50">
+              <div class="p-2 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">Quick Matches</div>
+              <ul id="search-results-list" class="divide-y divide-gray-100 text-sm max-h-72 overflow-y-auto">
+                <!-- JS populated -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- Right: Quick Actions, Notifications & User Menu -->
+          <div class="flex items-center gap-2 sm:gap-3">
+            
+            <!-- Quick Actions Dropdown -->
+            <div class="relative">
+              <button onclick="toggleDropdown('quick-actions-menu')" class="flex items-center gap-2 px-3 py-1.5 bg-honey hover:bg-honey-hover text-charcoal font-semibold text-sm rounded-xl transition-all shadow-sm">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">Quick Action</span>
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </button>
+              
+              <div id="quick-actions-menu" class="hidden absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200 py-1 z-50">
+                <a href="#vendors" onclick="openVendorReviewModal(0)" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-honey/10 hover:text-charcoal"><i data-lucide="user-check" class="w-4 h-4 text-amber-600"></i> Review Vendor Queue</a>
+                <a href="#categories" onclick="openAddCategoryModal()" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-honey/10 hover:text-charcoal"><i data-lucide="folder-plus" class="w-4 h-4 text-emerald-600"></i> Add New Category</a>
+                <button onclick="simulateCSVExport()" class="w-full text-left flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-honey/10 hover:text-charcoal"><i data-lucide="file-spread-sheet" class="w-4 h-4 text-blue-600"></i> Export Financial Report</button>
+                <div class="border-t border-gray-100 my-1"></div>
+                <button onclick="triggerToast('System Maintenance scheduled for 2:00 AM UTC', 'warning')" class="w-full text-left flex items-center gap-2.5 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50"><i data-lucide="alert-octagon" class="w-4 h-4"></i> Schedule Maintenance</button>
+              </div>
+            </div>
+
+            <!-- Notifications Dropdown -->
+            <div class="relative">
+              <button onclick="toggleDropdown('notifications-dropdown')" class="relative p-2 rounded-xl text-gray-600 hover:bg-gray-100 transition-colors" aria-label="Notifications">
+                <i data-lucide="bell" class="w-5 h-5"></i>
+                <span id="unread-notification-count" class="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">7</span>
+              </button>
+
+              <div id="notifications-dropdown" class="hidden absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+                <div class="p-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-sm text-charcoal">Notifications</h3>
+                    <span class="px-2 py-0.5 rounded-full bg-honey/20 text-charcoal text-xs font-semibold">7 Unread</span>
+                  </div>
+                  <button onclick="markAllNotificationsRead()" class="text-xs text-blue-600 hover:text-blue-800 font-medium">Mark all as read</button>
+                </div>
+
+                <div class="divide-y divide-gray-100 max-h-80 overflow-y-auto" id="notification-list">
+                  <!-- Notifications JS rendered -->
+                </div>
+                
+                <div class="p-2 bg-gray-50 border-t border-gray-200 text-center">
+                  <a href="#notifications" class="text-xs font-semibold text-charcoal hover:text-amber-600">View All Notifications Activity</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Admin Profile Menu -->
+            <div class="relative">
+              <button onclick="toggleDropdown('profile-menu')" class="flex items-center gap-2 p-1 rounded-xl hover:bg-gray-100 transition-colors">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Joey Lustre" class="w-8 h-8 rounded-full object-cover border border-honey">
+                <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500 hidden sm:block"></i>
+              </button>
+
+              <div id="profile-menu" class="hidden absolute right-0 top-full mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200 py-1 z-50">
+                <div class="px-4 py-2.5 border-b border-gray-100">
+                  <p class="text-sm font-bold text-charcoal">Joey Lustre</p>
+                  <p class="text-xs text-gray-500">joey.lustre@asbeez.com</p>
+                </div>
+                <a href="#profile" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-lucide="user" class="w-4 h-4 text-gray-500"></i> View Profile</a>
+                <a href="#settings" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-lucide="settings" class="w-4 h-4 text-gray-500"></i> Account Settings</a>
+                <a href="#security" class="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-lucide="lock" class="w-4 h-4 text-gray-500"></i> Security Center</a>
+                <div class="border-t border-gray-100 my-1"></div>
+                <button onclick="triggerToast('Signing out of secure admin panel...', 'info')" class="w-full text-left flex items-center gap-2.5 px-4 py-2 text-sm text-rose-600 hover:bg-rose-50"><i data-lucide="log-out" class="w-4 h-4"></i> Sign Out</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </header>
+
+      <main id="main-content" class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-8">
+
+        <!-- Banner: Welcome & Platform Overview -->
+        <section class="bg-gradient-to-r from-charcoal via-charcoal-light to-charcoal text-white rounded-2xl p-6 shadow-xl relative overflow-hidden border border-gray-800">
+          <div class="absolute right-0 top-0 bottom-0 w-1/3 opacity-10 bg-honeycomb pointer-events-none"></div>
+          
+          <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-honey text-charcoal flex items-center gap-1">
+                  <i data-lucide="zap" class="w-3.5 h-3.5"></i> Hive Live Operations
+                </span>
+                <span id="live-time" class="text-xs text-gray-300 font-mono">2026-09-17 21:37:55 UTC</span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Welcome back, Joey.</h2>
+              <p class="text-gray-300 text-sm max-w-2xl">
+                Here is the real-time operational status across the AsBeez online marketplace. All services are running optimally with zero critical incidents.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <button onclick="window.open('https://asbeez.com', '_blank')" class="px-4 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-medium text-sm border border-gray-700 flex items-center gap-2 transition-all">
+                <i data-lucide="external-link" class="w-4 h-4"></i> View Live Marketplace
+              </button>
+              <button onclick="simulateCSVExport()" class="px-4 py-2.5 rounded-xl bg-honey hover:bg-honey-hover text-charcoal font-bold text-sm shadow-lg shadow-honey/20 flex items-center gap-2 transition-all">
+                <i data-lucide="download" class="w-4 h-4"></i> Generate Executive Report
+              </button>
+            </div>
+          </div>
+
+          <!-- System Health Bar Cards -->
+          <div class="mt-6 pt-6 border-t border-gray-800 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+            <div class="bg-white/5 p-2.5 rounded-xl border border-white/10 flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+              <div>
+                <p class="text-[10px] text-gray-400 uppercase font-semibold">Marketplace</p>
+                <p class="text-xs font-bold text-white">Operational</p>
+              </div>
+            </div>
+            <div class="bg-white/5 p-2.5 rounded-xl border border-white/10 flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+              <div>
+                <p class="text-[10px] text-gray-400 uppercase font-semibold">Payments</p>
+                <p class="text-xs font-bold text-white">Stripe & PayPal Active</p>
+              </div>
+            </div>
+            <div class="bg-white/5 p-2.5 rounded-xl border border-white/10 flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+              <div>
+                <p class="text-[10px] text-gray-400 uppercase font-semibold">Search Engine</p>
+                <p class="text-xs font-bold text-white">99.98% Latency OK</p>
+              </div>
+            </div>
+            <div class="bg-white/5 p-2.5 rounded-xl border border-white/10 flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+              <div>
+                <p class="text-[10px] text-gray-400 uppercase font-semibold">Email Delivery</p>
+                <p class="text-xs font-bold text-white">Queue Clear</p>
+              </div>
+            </div>
+            <div class="bg-white/5 p-2.5 rounded-xl border border-white/10 flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+              <div>
+                <p class="text-[10px] text-gray-400 uppercase font-semibold">Storage Usage</p>
+                <p class="text-xs font-bold text-white">68% (1.4 TB)</p>
+              </div>
+            </div>
+            <div class="bg-white/5 p-2.5 rounded-xl border border-white/10 flex items-center gap-2.5">
+              <i data-lucide="database" class="w-4 h-4 text-blue-400"></i>
+              <div>
+                <p class="text-[10px] text-gray-400 uppercase font-semibold">Last Backup</p>
+                <p class="text-xs font-bold text-white">2 hrs ago</p>
+              </div>
+            </div>
+            <div class="bg-white/5 p-2.5 rounded-xl border border-white/10 flex items-center gap-2.5">
+              <i data-lucide="clock" class="w-4 h-4 text-purple-400"></i>
+              <div>
+                <p class="text-[10px] text-gray-400 uppercase font-semibold">Maintenance</p>
+                <p class="text-xs font-bold text-white">Sep 24, 02:00 UTC</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          <!-- KPI 1 -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase text-gray-500">Total Revenue</span>
+              <div class="p-2.5 rounded-xl bg-amber-50 text-amber-600 group-hover:bg-honey group-hover:text-charcoal transition-colors">
+                <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-2xl font-extrabold text-charcoal">$1,284,650</h3>
+              <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                <span>+14.2%</span>
+                <span class="text-gray-400 font-normal">vs last month</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 2 -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase text-gray-500">Active Members</span>
+              <div class="p-2.5 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <i data-lucide="users" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-2xl font-extrabold text-charcoal">48,392</h3>
+              <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                <span>+8.7%</span>
+                <span class="text-gray-400 font-normal">vs last month</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 3 -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase text-gray-500">Active Vendors</span>
+              <div class="p-2.5 rounded-xl bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                <i data-lucide="store" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-2xl font-extrabold text-charcoal">3,284</h3>
+              <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                <span>+6.4%</span>
+                <span class="text-gray-400 font-normal">vs last month</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 4 -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase text-gray-500">Total Orders</span>
+              <div class="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-2xl font-extrabold text-charcoal">28,946</h3>
+              <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                <span>+11.8%</span>
+                <span class="text-gray-400 font-normal">vs last month</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 5 -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase text-gray-500">Service Bookings</span>
+              <div class="p-2.5 rounded-xl bg-teal-50 text-teal-600 group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                <i data-lucide="calendar" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-2xl font-extrabold text-charcoal">12,487</h3>
+              <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                <span>+9.6%</span>
+                <span class="text-gray-400 font-normal">vs last month</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 6 -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase text-gray-500">Platform Commission</span>
+              <div class="p-2.5 rounded-xl bg-honey/20 text-amber-700 group-hover:bg-honey group-hover:text-charcoal transition-colors">
+                <i data-lucide="percent" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-2xl font-extrabold text-charcoal">$128,465</h3>
+              <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-emerald-600">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                <span>+12.1%</span>
+                <span class="text-gray-400 font-normal">vs last month</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 7 -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase text-gray-500">Open Disputes</span>
+              <div class="p-2.5 rounded-xl bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white transition-colors">
+                <i data-lucide="shield-alert" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-2xl font-extrabold text-charcoal">37</h3>
+              <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-rose-600">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                <span>8 Require Action</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 8 -->
+          <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold uppercase text-gray-500">Pending Approvals</span>
+              <div class="p-2.5 rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                <i data-lucide="user-plus" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div class="mt-3">
+              <h3 class="text-2xl font-extrabold text-charcoal">64</h3>
+              <div class="flex items-center gap-1.5 mt-1 text-xs font-semibold text-amber-600">
+                <i data-lucide="clock" class="w-4 h-4"></i>
+                <span>12 Vendor Queue</span>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Large Main Line Chart Section -->
+          <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-gray-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                  <h3 class="text-lg font-bold text-charcoal">Marketplace Performance Analytics</h3>
+                  <p class="text-xs text-gray-500">Track key administrative growth vectors across the entire ecosystem</p>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-2">
+                  <select id="chart-metric-select" onchange="updateMainChart()" class="bg-gray-100 border border-gray-300 rounded-xl px-3 py-1.5 text-xs font-semibold text-charcoal focus:outline-none focus:ring-2 focus:ring-honey">
+                    <option value="revenue">Gross Revenue ($)</option>
+                    <option value="orders">Product Orders</option>
+                    <option value="bookings">Service Bookings</option>
+                    <option value="commissions">Platform Commissions ($)</option>
+                    <option value="refunds">Refund Totals ($)</option>
+                  </select>
+
+                  <select id="chart-range-select" onchange="updateMainChart()" class="bg-gray-100 border border-gray-300 rounded-xl px-3 py-1.5 text-xs font-semibold text-charcoal focus:outline-none focus:ring-2 focus:ring-honey">
+                    <option value="7d">Last 7 Days</option>
+                    <option value="30d" selected>Last 30 Days</option>
+                    <option value="90d">Last 90 Days</option>
+                    <option value="year">This Year (2026)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Main Chart Canvas -->
+              <div class="h-72 relative w-full">
+                <canvas id="performanceChart"></canvas>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-4 text-xs text-gray-600">
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-honey"></span> <span>Current Period</span></div>
+                <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-gray-300"></span> <span>Previous Period</span></div>
+              </div>
+              <button onclick="simulateCSVExport()" class="text-amber-600 font-semibold hover:underline flex items-center gap-1">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Detailed Dataset
+              </button>
+            </div>
+          </div>
+
+          <!-- Doughnut Revenue Composition Chart Section -->
+          <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm flex flex-col justify-between">
+            <div>
+              <h3 class="text-lg font-bold text-charcoal">Marketplace Mix</h3>
+              <p class="text-xs text-gray-500">Revenue contribution across all platform channels</p>
+
+              <div class="h-56 relative w-full my-4 flex items-center justify-center">
+                <canvas id="compositionChart"></canvas>
+              </div>
+            </div>
+
+            <div class="space-y-2 text-xs border-t border-gray-100 pt-3">
+              <div class="flex justify-between items-center"><span class="text-gray-600">Gross Marketplace Volume (GMV):</span> <span class="font-bold text-charcoal">$2,790,400</span></div>
+              <div class="flex justify-between items-center"><span class="text-gray-600">Vendor Payouts:</span> <span class="font-bold text-emerald-600">$2,410,200</span></div>
+              <div class="flex justify-between items-center"><span class="text-gray-600">Platform Commission (Avg 10%):</span> <span class="font-bold text-amber-600">$128,465</span></div>
+              <div class="flex justify-between items-center"><span class="text-gray-600">Net Platform Revenue:</span> <span class="font-bold text-charcoal">$380,230</span></div>
+            </div>
+          </div>
+
+        </section>
+
+        <section id="vendors" class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div class="p-6 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-lg font-bold text-charcoal">Vendor Approval Queue</h3>
+                <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold text-xs">12 Pending Review</span>
+              </div>
+              <p class="text-xs text-gray-500">Applications requiring administrator identity & business verification</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <input type="text" placeholder="Filter vendor queue..." class="px-3 py-1.5 bg-gray-100 text-xs rounded-xl border border-transparent focus:border-honey focus:bg-white focus:outline-none">
+              <button onclick="triggerToast('Approved 3 bulk vendor applications', 'success')" class="px-3 py-1.5 bg-charcoal text-white hover:bg-gray-800 text-xs font-semibold rounded-xl transition-colors">Bulk Approve</button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="bg-gray-50 text-xs font-semibold uppercase text-gray-500 border-b border-gray-200">
+                  <th class="py-3 px-4">Vendor & Business</th>
+                  <th class="py-3 px-4">Category</th>
+                  <th class="py-3 px-4">Location</th>
+                  <th class="py-3 px-4">Application Date</th>
+                  <th class="py-3 px-4">Risk Score</th>
+                  <th class="py-3 px-4">Verification Status</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100 text-gray-700" id="vendor-queue-tbody">
+                <!-- JS Populated -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="members" class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div class="p-6 border-b border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <h3 class="text-lg font-bold text-charcoal">Member & User Management</h3>
+              <div class="flex bg-gray-100 p-1 rounded-xl text-xs font-semibold">
+                <button onclick="switchTab('members-tab-btn', 'members-view')" id="members-tab-btn" class="px-3 py-1 rounded-lg bg-white shadow-xs text-charcoal">All Members (48,392)</button>
+                <button onclick="switchTab('suspended-tab-btn', 'suspended-view')" id="suspended-tab-btn" class="px-3 py-1 rounded-lg text-gray-500 hover:text-charcoal">Suspended (142)</button>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <input type="text" id="member-search-input" onkeyup="filterMemberTable()" placeholder="Search members by name/email..." class="px-3 py-1.5 bg-gray-100 text-xs rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-honey">
+              <button onclick="triggerToast('Member database synced successfully', 'info')" class="p-2 rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200"><i data-lucide="refresh-cw" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm" id="members-table">
+              <thead>
+                <tr class="bg-gray-50 text-xs font-semibold uppercase text-gray-500 border-b border-gray-200">
+                  <th class="py-3 px-4">Member Name</th>
+                  <th class="py-3 px-4">Email Address</th>
+                  <th class="py-3 px-4">Location</th>
+                  <th class="py-3 px-4">Join Date</th>
+                  <th class="py-3 px-4">Account Type</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100" id="members-tbody">
+                <!-- JS Populated -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="orders" class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div class="p-6 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 class="text-lg font-bold text-charcoal">Orders & Service Bookings Monitor</h3>
+              <p class="text-xs text-gray-500">Live feed of product checkout orders and local service appointments</p>
+            </div>
+            
+            <div class="flex bg-gray-100 p-1 rounded-xl text-xs font-semibold">
+              <button onclick="toggleOrdersTab('orders')" id="tab-btn-orders" class="px-4 py-1.5 rounded-lg bg-white shadow-xs text-charcoal">Product Orders (28,946)</button>
+              <button onclick="toggleOrdersTab('bookings')" id="tab-btn-bookings" class="px-4 py-1.5 rounded-lg text-gray-500 hover:text-charcoal">Service Bookings (12,487)</button>
+            </div>
+          </div>
+
+          <!-- Orders Table Container -->
+          <div id="orders-table-container" class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="bg-gray-50 text-xs font-semibold uppercase text-gray-500 border-b border-gray-200">
+                  <th class="py-3 px-4">Order ID</th>
+                  <th class="py-3 px-4">Customer</th>
+                  <th class="py-3 px-4">Vendor</th>
+                  <th class="py-3 px-4">Amount</th>
+                  <th class="py-3 px-4">Payment</th>
+                  <th class="py-3 px-4">Fulfillment</th>
+                  <th class="py-3 px-4">Date</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100" id="orders-tbody">
+                <!-- JS Populated -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Service Bookings Table Container -->
+          <div id="bookings-table-container" class="overflow-x-auto hidden">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="bg-gray-50 text-xs font-semibold uppercase text-gray-500 border-b border-gray-200">
+                  <th class="py-3 px-4">Booking ID</th>
+                  <th class="py-3 px-4">Customer</th>
+                  <th class="py-3 px-4">Service Provider</th>
+                  <th class="py-3 px-4">Service Name</th>
+                  <th class="py-3 px-4">Appointment Date</th>
+                  <th class="py-3 px-4">Amount</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100" id="bookings-tbody">
+                <!-- JS Populated -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="disputes" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Open Disputes Panel (2 cols) -->
+          <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-200 pb-4">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-lg font-bold text-charcoal">High-Priority Disputes</h3>
+                  <span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 font-bold text-xs">7 Active</span>
+                </div>
+                <p class="text-xs text-gray-500">Escalated payment, non-delivery, and service quality disputes</p>
+              </div>
+              <button onclick="triggerToast('Dispute queue assigned to active admins', 'info')" class="text-xs text-blue-600 font-semibold hover:underline">Auto-Assign Cases</button>
+            </div>
+
+            <div class="space-y-3" id="disputes-list">
+              <!-- JS Populated -->
+            </div>
+          </div>
+
+          <!-- Customer Support Overview (1 col) -->
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-4">
+                <h3 class="text-lg font-bold text-charcoal">Support Queue</h3>
+                <span class="text-xs font-bold text-emerald-600 flex items-center gap-1"><i data-lucide="check-circle" class="w-4 h-4"></i> SLA 98.4%</span>
+              </div>
+
+              <div class="space-y-3" id="support-tickets-list">
+                <!-- JS Populated -->
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-gray-100 mt-4 text-center">
+              <button onclick="triggerToast('Opening Support Resolution Portal...', 'info')" class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-charcoal font-semibold text-xs rounded-xl transition-colors">Open Full Desk</button>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Financial Summary Card -->
+          <div id="finances" class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+              <h3 class="text-lg font-bold text-charcoal flex items-center gap-2">
+                <i data-lucide="wallet" class="w-5 h-5 text-honey-hover"></i> Marketplace Balance
+              </h3>
+              <span class="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">Reconciled</span>
+            </div>
+
+            <div class="space-y-3">
+              <div class="bg-gray-50 p-3 rounded-xl">
+                <p class="text-xs text-gray-500">Available Escrow Vault</p>
+                <p class="text-xl font-black text-charcoal">$482,910.00</p>
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="border border-gray-100 p-2.5 rounded-xl">
+                  <p class="text-gray-400">Pending Vendor Payouts</p>
+                  <p class="font-bold text-amber-600 mt-0.5">$118,240</p>
+                </div>
+                <div class="border border-gray-100 p-2.5 rounded-xl">
+                  <p class="text-gray-400">Tax Reserve (Q3)</p>
+                  <p class="font-bold text-charcoal mt-0.5">$34,800</p>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="triggerToast('Initiating scheduled vendor payout batch...', 'success')" class="w-full py-2.5 bg-honey hover:bg-honey-hover text-charcoal font-bold text-xs rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i> Process Vendor Payout Batch
+            </button>
+          </div>
+
+          <!-- Category Management -->
+          <div id="categories" class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+              <h3 class="text-lg font-bold text-charcoal">Categories</h3>
+              <button onclick="openAddCategoryModal()" class="text-xs px-3 py-1 bg-charcoal text-white rounded-lg hover:bg-gray-800 transition-colors">+ Add New</button>
+            </div>
+
+            <div class="space-y-2 max-h-56 overflow-y-auto pr-1" id="category-list-container">
+              <!-- JS Populated -->
+            </div>
+          </div>
+
+          <!-- Administrative Task Manager (Local Storage persistent) -->
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between border-b border-gray-200 pb-3 mb-3">
+                <h3 class="text-lg font-bold text-charcoal">Admin Checklist</h3>
+                <span id="task-completion-badge" class="text-xs font-semibold px-2 py-0.5 rounded-full bg-honey/20 text-charcoal">3/5 Done</span>
+              </div>
+
+              <!-- Task Add Input -->
+              <form onsubmit="handleAddTask(event)" class="flex gap-2 mb-3">
+                <input type="text" id="new-task-input" placeholder="Add administrative task..." class="flex-1 px-3 py-1.5 text-xs bg-gray-100 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-honey" required>
+                <button type="submit" class="px-3 py-1.5 bg-honey text-charcoal font-bold text-xs rounded-xl hover:bg-honey-hover">Add</button>
+              </form>
+
+              <!-- Task List Container -->
+              <div class="space-y-2 max-h-44 overflow-y-auto" id="tasks-container">
+                <!-- JS Populated -->
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section id="audit" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Security Audit Logs (2 cols) -->
+          <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-200 pb-4">
+              <div>
+                <h3 class="text-lg font-bold text-charcoal">Recent Audit & Security Logs</h3>
+                <p class="text-xs text-gray-500">Track administrator actions, security modifications, and authentication logs</p>
+              </div>
+              <button onclick="triggerToast('Security Log exported to CSV', 'success')" class="text-xs text-gray-600 hover:text-charcoal font-semibold border border-gray-200 px-3 py-1.5 rounded-xl">Export Logs</button>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-200">
+                    <th class="py-2.5 px-3">Administrator</th>
+                    <th class="py-2.5 px-3">Action Event</th>
+                    <th class="py-2.5 px-3">Target / Entity</th>
+                    <th class="py-2.5 px-3">IP Address</th>
+                    <th class="py-2.5 px-3">Timestamp</th>
+                    <th class="py-2.5 px-3 text-right">Result</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-gray-700" id="audit-tbody">
+                  <!-- JS Populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Regional Geographic Activity -->
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+            <div class="border-b border-gray-200 pb-3">
+              <h3 class="text-lg font-bold text-charcoal">Geographic Activity</h3>
+              <p class="text-xs text-gray-500">Top regional marketplace activity by GMV</p>
+            </div>
+
+            <div class="space-y-3" id="geo-list-container">
+              <!-- JS Populated -->
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+
+      <footer class="bg-white border-t border-gray-200 py-4 px-6 text-xs text-gray-500 flex flex-col sm:flex-row items-center justify-between gap-4 flex-shrink-0">
+        <div class="flex items-center gap-2">
+          <div class="w-5 h-5 rounded bg-honey flex items-center justify-center text-charcoal font-bold text-[10px]">🐝</div>
+          <span class="font-bold text-charcoal">AsBeez Administration</span>
+          <span>&copy; 2026 AsBeez Marketplace Inc. All rights reserved.</span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-4">
+          <a href="#privacy" class="hover:text-charcoal">Privacy Policy</a>
+          <a href="#terms" class="hover:text-charcoal">Admin Terms</a>
+          <a href="#security" class="hover:text-charcoal">Security Center</a>
+          <a href="#docs" class="hover:text-charcoal">Documentation</a>
+          <span class="px-2 py-0.5 rounded bg-gray-100 text-gray-600 font-mono text-[10px]">Env: Production</span>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+
+  <!-- Vendor Review Modal -->
+  <div id="vendor-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden modal-backdrop p-4" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl shadow-2xl border border-gray-200 max-w-2xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div class="p-6 bg-charcoal text-white flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img id="modal-vendor-logo" src="" class="w-10 h-10 rounded-xl object-cover border-2 border-honey">
+          <div>
+            <h3 id="modal-vendor-name" class="text-lg font-bold text-white">Vendor Details</h3>
+            <p id="modal-vendor-applicant" class="text-xs text-gray-300"></p>
+          </div>
+        </div>
+        <button onclick="closeModal('vendor-modal')" class="text-gray-400 hover:text-white p-1"><i data-lucide="x" class="w-6 h-6"></i></button>
+      </div>
+
+      <div class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+        <div class="grid grid-cols-2 gap-4 text-xs">
+          <div class="p-3 bg-gray-50 rounded-xl">
+            <span class="text-gray-400 font-semibold block uppercase">Vendor Type</span>
+            <span id="modal-vendor-type" class="font-bold text-charcoal text-sm"></span>
+          </div>
+          <div class="p-3 bg-gray-50 rounded-xl">
+            <span class="text-gray-400 font-semibold block uppercase">Risk Assessment</span>
+            <span id="modal-vendor-risk" class="font-bold text-sm"></span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-bold uppercase text-gray-400 mb-2">Submitted Identity & Business Documents</h4>
+          <ul class="space-y-2 text-xs">
+            <li class="p-3 bg-gray-50 rounded-xl flex items-center justify-between border border-gray-200">
+              <span class="flex items-center gap-2 font-medium text-charcoal"><i data-lucide="file-check" class="w-4 h-4 text-emerald-600"></i> Government Issued ID / Passport</span>
+              <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 font-bold">Verified</span>
+            </li>
+            <li class="p-3 bg-gray-50 rounded-xl flex items-center justify-between border border-gray-200">
+              <span class="flex items-center gap-2 font-medium text-charcoal"><i data-lucide="file-check" class="w-4 h-4 text-emerald-600"></i> Business Tax Registration Document</span>
+              <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 font-bold">Verified</span>
+            </li>
+            <li class="p-3 bg-gray-50 rounded-xl flex items-center justify-between border border-gray-200">
+              <span class="flex items-center gap-2 font-medium text-charcoal"><i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i> Proof of Physical Business Address</span>
+              <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-700 font-bold">Reviewing</span>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Administrator Review Notes</label>
+          <textarea placeholder="Enter internal notes regarding this vendor verification..." class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:ring-2 focus:ring-honey focus:outline-none" rows="3">Applicant meets standard platform requirements. Business license matches state registries.</textarea>
+        </div>
+      </div>
+
+      <div class="p-4 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-3">
+        <button onclick="rejectVendorApplication()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition-colors">Reject Application</button>
+        <button onclick="approveVendorApplication()" class="px-5 py-2 rounded-xl bg-honey hover:bg-honey-hover text-charcoal font-bold text-xs transition-colors shadow-sm">Approve & Issue Store</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Category Modal -->
+  <div id="category-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden modal-backdrop p-4" aria-modal="true" role="dialog">
+    <div class="bg-white rounded-2xl shadow-2xl border border-gray-200 max-w-md w-full overflow-hidden">
+      <div class="p-5 bg-charcoal text-white flex items-center justify-between">
+        <h3 class="font-bold text-base">Add New Marketplace Category</h3>
+        <button onclick="closeModal('category-modal')" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <form onsubmit="handleAddCategoryForm(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Category Title</label>
+          <input type="text" id="cat-title-input" required placeholder="e.g. Home Improvement" class="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-honey">
+        </div>
+        
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Lucide Icon Name</label>
+          <input type="text" id="cat-icon-input" required placeholder="e.g. home, Wrench, camera" value="folder" class="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-honey">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">Category Group</label>
+          <select id="cat-group-input" class="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-honey">
+            <option value="Products">Physical Products</option>
+            <option value="Services">Local Services</option>
+            <option value="Professionals">Professional Services</option>
+          </select>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('category-modal')" class="px-4 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-100 rounded-xl">Cancel</button>
+          <button type="submit" class="px-4 py-2 text-xs font-bold text-charcoal bg-honey hover:bg-honey-hover rounded-xl shadow-xs">Save Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full"></div>
+
+  <script>
+    /* Global Application State & Datasets */
+    let currentVendorIndex = 0;
+
+    const vendorQueueData = [
+      { logo: 'https://images.unsplash.com/photo-1560058038-f9b311421301?w=100&auto=format&fit=crop&q=80', name: 'Golden Hive Organics', applicant: 'Marcus Vance', type: 'Product Store', location: 'Sacramento, CA', date: 'Sep 17, 2026', risk: 'Low (2%)', status: 'Pending Review' },
+      { logo: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=100&auto=format&fit=crop&q=80', name: 'Apex Plumbing & Heating', applicant: 'Sarah Jenkins', type: 'Service Provider', location: 'Vancouver, BC', date: 'Sep 16, 2026', risk: 'Low (5%)', status: 'Pending Review' },
+      { logo: 'https://images.unsplash.com/photo-1556742049-0a67aa623e80?w=100&auto=format&fit=crop&q=80', name: 'Artisan Woodcrafters', applicant: 'David Miller', type: 'Product Store', location: 'Austin, TX', date: 'Sep 16, 2026', risk: 'Medium (18%)', status: 'Pending Review' },
+      { logo: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?w=100&auto=format&fit=crop&q=80', name: 'Urban Electrical Solutions', applicant: 'Elena Rostova', type: 'Service Provider', location: 'Toronto, ON', date: 'Sep 15, 2026', risk: 'Low (4%)', status: 'Pending Review' },
+      { logo: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=100&auto=format&fit=crop&q=80', name: 'SustainaPack Logistics', applicant: 'Robert Chen', type: 'B2B Services', location: 'Seattle, WA', date: 'Sep 15, 2026', risk: 'High (42%)', status: 'Pending Review' },
+      { logo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80', name: 'HoneyComb Tech Labs', applicant: 'Rachel Adams', type: 'Digital Products', location: 'Denver, CO', date: 'Sep 14, 2026', risk: 'Low (1%)', status: 'Pending Review' }
+    ];
+
+    const membersData = [
+      { avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80', name: 'Sophia Martinez', email: 'sophia.m@example.com', location: 'San Jose, CA', join: 'May 12, 2025', type: 'Buyer', status: 'Active' },
+      { avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80', name: 'Liam O\'Connor', email: 'liam.oc@example.com', location: 'Seattle, WA', join: 'Jan 04, 2026', type: 'Vendor & Buyer', status: 'Active' },
+      { avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80', name: 'Alexander Wright', email: 'alex.wright@example.com', location: 'Dallas, TX', join: 'Aug 19, 2025', type: 'Buyer', status: 'Active' },
+      { avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&auto=format&fit=crop&q=80', name: 'Emily Zhang', email: 'emily.zhang@example.com', location: 'Vancouver, BC', join: 'Nov 30, 2025', type: 'Buyer', status: 'Pending' },
+      { avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop&q=80', name: 'Brandon Cole', email: 'brandon.c@example.com', location: 'Miami, FL', join: 'Mar 15, 2026', type: 'Buyer', status: 'Suspended' },
+      { avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&auto=format&fit=crop&q=80', name: 'Chloe Bennett', email: 'chloe.b@example.com', location: 'Chicago, IL', join: 'Feb 10, 2026', type: 'Vendor', status: 'Active' },
+      { avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&auto=format&fit=crop&q=80', name: 'Nathan Harris', email: 'nathan.h@example.com', location: 'Phoenix, AZ', join: 'Jun 22, 2025', type: 'Buyer', status: 'Active' },
+      { avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&auto=format&fit=crop&q=80', name: 'Victoria Kim', email: 'victoria.k@example.com', location: 'Portland, OR', join: 'Sep 01, 2026', type: 'Buyer', status: 'Active' }
+    ];
+
+    const ordersData = [
+      { id: 'ORD-94821', customer: 'Sophia Martinez', vendor: 'Golden Hive Organics', amount: '$148.50', payment: 'Paid', fulfillment: 'Shipped', date: 'Sep 17, 2026' },
+      { id: 'ORD-94820', customer: 'Alexander Wright', vendor: 'Artisan Woodcrafters', amount: '$420.00', payment: 'Paid', fulfillment: 'Processing', date: 'Sep 17, 2026' },
+      { id: 'ORD-94819', customer: 'Nathan Harris', vendor: 'HoneyComb Tech Labs', amount: '$89.00', payment: 'Paid', fulfillment: 'Delivered', date: 'Sep 16, 2026' },
+      { id: 'ORD-94818', customer: 'Victoria Kim', vendor: 'Golden Hive Organics', amount: '$64.20', payment: 'Refunded', fulfillment: 'Cancelled', date: 'Sep 16, 2026' }
+    ];
+
+    const bookingsData = [
+      { id: 'BKG-3042', customer: 'Liam O\'Connor', provider: 'Apex Plumbing & Heating', service: 'Full System Inspection', date: 'Sep 19, 2026 10:00 AM', amount: '$250.00', status: 'Confirmed' },
+      { id: 'BKG-3041', customer: 'Chloe Bennett', provider: 'Urban Electrical Solutions', service: 'Panel Upgrade & Wiring', date: 'Sep 21, 2026 02:00 PM', amount: '$850.00', status: 'Pending Provider' },
+      { id: 'BKG-3040', customer: 'Emily Zhang', provider: 'Apex Plumbing & Heating', service: 'Emergency Pipe Leak Fix', date: 'Sep 17, 2026 04:30 PM', amount: '$180.00', status: 'Completed' }
+    ];
+
+    const disputesData = [
+      { caseId: 'DSP-8821', type: 'Item Not Received', customer: 'Michael Scott', vendor: 'EcoGoods Co', amount: '$310.00', priority: 'Urgent', status: 'Admin Review' },
+      { caseId: 'DSP-8820', type: 'Service Incomplete', customer: 'Pam Beesly', vendor: 'Scranton Cleaning', amount: '$150.00', priority: 'High', status: 'Vendor Response Pending' },
+      { caseId: 'DSP-8819', type: 'Damaged Merchandise', customer: 'Jim Halpert', vendor: 'Pratt Paper Supply', amount: '$75.50', priority: 'Medium', status: 'Customer Response Pending' }
+    ];
+
+    const supportTicketsData = [
+      { id: 'TCK-401', user: 'Laura Palmer', subject: 'Payout delay on Stripe account', priority: 'High', agent: 'Joey L.' },
+      { id: 'TCK-402', user: 'Dale Cooper', subject: 'Two-Factor Auth Reset Request', priority: 'Medium', agent: 'Unassigned' },
+      { id: 'TCK-403', user: 'Audrey Horne', subject: 'Vendor Subscription Downgrade Issue', priority: 'Low', agent: 'Joey L.' }
+    ];
+
+    const categoriesData = [
+      { name: 'Organic & Honey Goods', count: '1,420 Listings', sub: '12 Subcategories', icon: 'hexagon' },
+      { name: 'Home & Professional Services', count: '890 Listings', sub: '8 Subcategories', icon: 'wrench' },
+      { name: 'Handcrafted Goods', count: '2,150 Listings', sub: '15 Subcategories', icon: 'package' },
+      { name: 'Electronics & Tech', count: '640 Listings', sub: '6 Subcategories', icon: 'cpu' }
+    ];
+
+    const auditLogsData = [
+      { admin: 'Joey Lustre', action: 'Approved Vendor Application', target: 'Apex Plumbing', ip: '192.168.1.42', date: '2026-09-17 21:12:04', result: 'Success' },
+      { admin: 'System Automatic', action: 'Failed Auth Attempt', target: 'admin_panel', ip: '45.142.214.12', date: '2026-09-17 20:45:18', result: 'Blocked' },
+      { admin: 'Joey Lustre', action: 'Updated Commission Rule', target: 'Service Category (8%)', ip: '192.168.1.42', date: '2026-09-17 19:30:00', result: 'Success' },
+      { admin: 'Sarah Connor', action: 'Issued Full Refund', target: 'ORD-94818', ip: '10.0.4.12', date: '2026-09-17 18:15:22', result: 'Success' }
+    ];
+
+    const geoData = [
+      { region: 'California, US', gmv: '$890,400', vendors: '1,120', growth: '+16.4%' },
+      { region: 'British Columbia, CA', gmv: '$540,200', vendors: '640', growth: '+12.1%' },
+      { region: 'Texas, US', gmv: '$420,100', vendors: '510', growth: '+14.8%' },
+      { region: 'Ontario, CA', gmv: '$380,900', vendors: '430', growth: '+9.2%' }
+    ];
+
+    const notificationsData = [
+      { title: 'New Vendor Awaiting Review', desc: 'Golden Hive Organics submitted business license documents.', time: '10 mins ago', type: 'vendor', priority: 'High' },
+      { title: 'High-Value Order Received', desc: 'Order #ORD-94820 processed for $420.00.', time: '25 mins ago', type: 'order', priority: 'Medium' },
+      { title: 'Payment Dispute Opened', desc: 'Case #DSP-8821 opened regarding non-delivery claim.', time: '1 hr ago', type: 'dispute', priority: 'Urgent' },
+      { title: 'Failed Vendor Payout Alert', desc: 'Bank transfer failed for Vendor #V-1049 (Invalid Routing).', time: '2 hrs ago', type: 'payout', priority: 'Urgent' },
+      { title: 'Unusual Login Activity', desc: 'Multiple failed login attempts detected from IP 45.142.214.12.', time: '3 hrs ago', type: 'security', priority: 'High' },
+      { title: 'Product Listing Reported', desc: 'Listing #L-904 flagged for trademark infringement.', time: '4 hrs ago', type: 'moderation', priority: 'Medium' },
+      { title: 'Scheduled Maintenance', desc: 'Platform database maintenance set for Sep 24, 02:00 UTC.', time: '1 day ago', type: 'system', priority: 'Low' }
+    ];
+
+    // Local Storage Task Initializer
+    let adminTasks = JSON.parse(localStorage.getItem('asbeez_admin_tasks')) || [
+      { id: 1, text: 'Review pending vendor approval applications', completed: false, priority: 'High' },
+      { id: 2, text: 'Resolve urgent dispute #DSP-8821', completed: true, priority: 'Urgent' },
+      { id: 3, text: 'Verify failed vendor payouts batch', completed: false, priority: 'Medium' },
+      { id: 4, text: 'Publish Q4 promotional banner on homepage', completed: true, priority: 'Low' },
+      { id: 5, text: 'Check daily MFA adoption rate & security alerts', completed: true, priority: 'Medium' }
+    ];
+
+    window.onload = function() {
+      renderVendorQueue();
+      renderMembersTable();
+      renderOrdersTable();
+      renderBookingsTable();
+      renderDisputes();
+      renderSupportTickets();
+      renderCategories();
+      renderTasks();
+      renderAuditLogs();
+      renderGeoList();
+      renderNotifications();
+      initCharts();
+
+      // Initialize Lucide icons
+      lucide.createIcons();
+
+      // Keyboard Shortcut listener ('/' for search)
+      document.addEventListener('keydown', function(e) {
+        if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          const searchInput = document.getElementById('global-search-input');
+          if (searchInput) searchInput.focus();
+        }
+        if (e.key === 'Escape') {
+          closeModal('vendor-modal');
+          closeModal('category-modal');
+          closeDropdowns();
+        }
+      });
+    };
+
+    /* Rendering Functions */
+    function renderVendorQueue() {
+      const tbody = document.getElementById('vendor-queue-tbody');
+      tbody.innerHTML = vendorQueueData.map((item, index) => `
+        <tr class="hover:bg-gray-50 transition-colors">
+          <td class="py-3.5 px-4 flex items-center gap-3">
+            <img src="${item.logo}" alt="${item.name}" class="w-9 h-9 rounded-xl object-cover border border-gray-200">
+            <div>
+              <p class="font-bold text-charcoal">${item.name}</p>
+              <p class="text-xs text-gray-500">${item.applicant}</p>
+            </div>
+          </td>
+          <td class="py-3.5 px-4"><span class="px-2.5 py-1 rounded-lg bg-gray-100 text-xs font-medium text-gray-700">${item.type}</span></td>
+          <td class="py-3.5 px-4 text-xs font-medium text-gray-600">${item.location}</td>
+          <td class="py-3.5 px-4 text-xs text-gray-500">${item.date}</td>
+          <td class="py-3.5 px-4">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${item.risk.includes('High') ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">
+              ${item.risk}
+            </span>
+          </td>
+          <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-xs font-semibold">${item.status}</span></td>
+          <td class="py-3.5 px-4 text-right">
+            <button onclick="openVendorReviewModal(${index})" class="px-3 py-1.5 bg-honey hover:bg-honey-hover text-charcoal font-bold text-xs rounded-xl shadow-2xs transition-colors">Review</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderMembersTable() {
+      const tbody = document.getElementById('members-tbody');
+      tbody.innerHTML = membersData.map(item => `
+        <tr class="hover:bg-gray-50 transition-colors">
+          <td class="py-3.5 px-4 flex items-center gap-3">
+            <img src="${item.avatar}" class="w-8 h-8 rounded-full object-cover border border-honey">
+            <span class="font-semibold text-charcoal">${item.name}</span>
+          </td>
+          <td class="py-3.5 px-4 text-xs text-gray-600">${item.email}</td>
+          <td class="py-3.5 px-4 text-xs text-gray-500">${item.location}</td>
+          <td class="py-3.5 px-4 text-xs text-gray-500">${item.join}</td>
+          <td class="py-3.5 px-4 text-xs font-medium">${item.type}</td>
+          <td class="py-3.5 px-4">
+            <span class="px-2 py-0.5 rounded-full text-xs font-bold ${item.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : item.status === 'Pending' ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700'}">
+              ${item.status}
+            </span>
+          </td>
+          <td class="py-3.5 px-4 text-right space-x-2">
+            <button onclick="triggerToast('Viewing profile for ${item.name}', 'info')" class="text-xs text-blue-600 font-semibold hover:underline">View</button>
+            <button onclick="triggerToast('Suspended member ${item.name}', 'warning')" class="text-xs text-rose-600 font-semibold hover:underline">Suspend</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderOrdersTable() {
+      const tbody = document.getElementById('orders-tbody');
+      tbody.innerHTML = ordersData.map(item => `
+        <tr class="hover:bg-gray-50 text-xs">
+          <td class="py-3 px-4 font-bold text-charcoal">${item.id}</td>
+          <td class="py-3 px-4 text-gray-700">${item.customer}</td>
+          <td class="py-3 px-4 text-gray-700 font-medium">${item.vendor}</td>
+          <td class="py-3 px-4 font-bold text-charcoal">${item.amount}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 font-semibold">${item.payment}</span></td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-700 font-semibold">${item.fulfillment}</span></td>
+          <td class="py-3 px-4 text-gray-500">${item.date}</td>
+          <td class="py-3 px-4 text-right"><button onclick="triggerToast('Inspecting Order ${item.id}', 'info')" class="text-amber-600 font-bold hover:underline">Inspect</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderBookingsTable() {
+      const tbody = document.getElementById('bookings-tbody');
+      tbody.innerHTML = bookingsData.map(item => `
+        <tr class="hover:bg-gray-50 text-xs">
+          <td class="py-3 px-4 font-bold text-charcoal">${item.id}</td>
+          <td class="py-3 px-4 text-gray-700">${item.customer}</td>
+          <td class="py-3 px-4 text-gray-700 font-medium">${item.provider}</td>
+          <td class="py-3 px-4 text-gray-600">${item.service}</td>
+          <td class="py-3 px-4 text-gray-500 font-mono">${item.date}</td>
+          <td class="py-3 px-4 font-bold text-charcoal">${item.amount}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-teal-100 text-teal-700 font-semibold">${item.status}</span></td>
+          <td class="py-3 px-4 text-right"><button onclick="triggerToast('Inspecting Booking ${item.id}', 'info')" class="text-amber-600 font-bold hover:underline">Manage</button></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderDisputes() {
+      const container = document.getElementById('disputes-list');
+      container.innerHTML = disputesData.map(item => `
+        <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-between gap-4 hover:border-honey transition-colors">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-sm text-charcoal">${item.caseId}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${item.priority === 'Urgent' ? 'bg-rose-500 text-white' : 'bg-amber-500 text-white'}">${item.priority}</span>
+              <span class="text-xs text-gray-400 font-medium">${item.type}</span>
+            </div>
+            <p class="text-xs text-gray-600">Dispute between <strong class="text-charcoal">${item.customer}</strong> and <strong class="text-charcoal">${item.vendor}</strong> (${item.amount})</p>
+          </div>
+          <button onclick="triggerToast('Opening Case File ${item.caseId}', 'info')" class="px-3 py-1.5 bg-charcoal text-white hover:bg-gray-800 rounded-xl text-xs font-bold transition-colors">Resolve</button>
+        </div>
+      `).join('');
+    }
+
+    function renderSupportTickets() {
+      const container = document.getElementById('support-tickets-list');
+      container.innerHTML = supportTicketsData.map(item => `
+        <div class="p-3 bg-gray-50 rounded-xl border border-gray-100 space-y-1 text-xs">
+          <div class="flex items-center justify-between font-bold text-charcoal">
+            <span>${item.id} - ${item.user}</span>
+            <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-700 text-[10px] font-semibold">${item.priority}</span>
+          </div>
+          <p class="text-gray-600 truncate">${item.subject}</p>
+          <p class="text-[10px] text-gray-400">Agent: ${item.agent}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderCategories() {
+      const container = document.getElementById('category-list-container');
+      container.innerHTML = categoriesData.map(item => `
+        <div class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-between text-xs">
+          <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded-lg bg-honey/20 text-charcoal flex items-center justify-center font-bold">🐝</div>
+            <div>
+              <p class="font-bold text-charcoal">${item.name}</p>
+              <p class="text-[10px] text-gray-400">${item.count} &bull; ${item.sub}</p>
+            </div>
+          </div>
+          <button onclick="triggerToast('Category configured', 'info')" class="text-gray-400 hover:text-charcoal"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+        </div>
+      `).join('');
+    }
+
+    function renderTasks() {
+      const container = document.getElementById('tasks-container');
+      const badge = document.getElementById('task-completion-badge');
+      
+      const doneCount = adminTasks.filter(t => t.completed).length;
+      badge.textContent = `${doneCount}/${adminTasks.length} Done`;
+
+      container.innerHTML = adminTasks.map((t, idx) => `
+        <div class="p-2.5 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between text-xs">
+          <label class="flex items-center gap-2.5 cursor-pointer flex-1">
+            <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTaskState(${idx})" class="rounded text-honey focus:ring-honey w-4 h-4">
+            <span class="${t.completed ? 'line-through text-gray-400' : 'text-charcoal font-medium'}">${t.text}</span>
+          </label>
+          <button onclick="deleteTask(${idx})" class="text-gray-400 hover:text-rose-500 p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+        </div>
+      `).join('');
+      localStorage.setItem('asbeez_admin_tasks', JSON.stringify(adminTasks));
+    }
+
+    function renderAuditLogs() {
+      const tbody = document.getElementById('audit-tbody');
+      tbody.innerHTML = auditLogsData.map(item => `
+        <tr class="hover:bg-gray-50">
+          <td class="py-2.5 px-3 font-semibold text-charcoal">${item.admin}</td>
+          <td class="py-2.5 px-3 text-gray-700">${item.action}</td>
+          <td class="py-2.5 px-3 font-mono text-gray-500">${item.target}</td>
+          <td class="py-2.5 px-3 font-mono text-gray-400">${item.ip}</td>
+          <td class="py-2.5 px-3 text-gray-400">${item.date}</td>
+          <td class="py-2.5 px-3 text-right"><span class="px-2 py-0.5 rounded font-bold ${item.result === 'Success' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">${item.result}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderGeoList() {
+      const container = document.getElementById('geo-list-container');
+      container.innerHTML = geoData.map(item => `
+        <div class="p-3 bg-gray-50 rounded-xl border border-gray-100 space-y-1 text-xs">
+          <div class="flex justify-between items-center font-bold">
+            <span class="text-charcoal">${item.region}</span>
+            <span class="text-emerald-600">${item.growth}</span>
+          </div>
+          <div class="flex justify-between text-gray-500 text-[11px]">
+            <span>GMV: ${item.gmv}</span>
+            <span>Vendors: ${item.vendors}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderNotifications() {
+      const container = document.getElementById('notification-list');
+      container.innerHTML = notificationsData.map(item => `
+        <div class="p-3 hover:bg-honey/10 transition-colors flex items-start gap-3 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-honey/20 text-amber-700 flex items-center justify-center flex-shrink-0 text-xs font-bold">🐝</div>
+          <div class="space-y-0.5 flex-1">
+            <div class="flex items-center justify-between">
+              <h4 class="text-xs font-bold text-charcoal">${item.title}</h4>
+              <span class="text-[10px] text-gray-400">${item.time}</span>
+            </div>
+            <p class="text-xs text-gray-600 leading-tight">${item.desc}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* Interactive Functions & Event Handlers */
+    function toggleSidebarCollapse() {
+      const sidebar = document.getElementById('sidebar');
+      const icon = document.getElementById('sidebar-toggle-icon');
+      sidebar.classList.toggle('w-64');
+      sidebar.classList.toggle('w-20');
+      
+      const texts = document.querySelectorAll('.sidebar-text');
+      texts.forEach(el => el.classList.toggle('hidden'));
+    }
+
+    function toggleMobileSidebar(show) {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      if (show) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+
+    function toggleNavGroup(groupId) {
+      const group = document.getElementById(groupId);
+      const chevron = document.getElementById(groupId + '-chevron');
+      group.classList.toggle('hidden');
+      if (chevron) chevron.classList.toggle('rotate-180');
+    }
+
+    function toggleDropdown(dropdownId) {
+      const el = document.getElementById(dropdownId);
+      const isHidden = el.classList.contains('hidden');
+      closeDropdowns();
+      if (isHidden) el.classList.remove('hidden');
+    }
+
+    function closeDropdowns() {
+      ['quick-actions-menu', 'notifications-dropdown', 'profile-menu', 'search-results-dropdown'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+    }
+
+    function toggleOrdersTab(type) {
+      const ordersContainer = document.getElementById('orders-table-container');
+      const bookingsContainer = document.getElementById('bookings-table-container');
+      const btnOrders = document.getElementById('tab-btn-orders');
+      const btnBookings = document.getElementById('tab-btn-bookings');
+
+      if (type === 'orders') {
+        ordersContainer.classList.remove('hidden');
+        bookingsContainer.classList.add('hidden');
+        btnOrders.className = "px-4 py-1.5 rounded-lg bg-white shadow-xs text-charcoal font-semibold";
+        btnBookings.className = "px-4 py-1.5 rounded-lg text-gray-500 hover:text-charcoal font-semibold";
+      } else {
+        ordersContainer.classList.add('hidden');
+        bookingsContainer.classList.remove('hidden');
+        btnBookings.className = "px-4 py-1.5 rounded-lg bg-white shadow-xs text-charcoal font-semibold";
+        btnOrders.className = "px-4 py-1.5 rounded-lg text-gray-500 hover:text-charcoal font-semibold";
+      }
+    }
+
+    function openVendorReviewModal(index) {
+      currentVendorIndex = index;
+      const data = vendorQueueData[index];
+      document.getElementById('modal-vendor-logo').src = data.logo;
+      document.getElementById('modal-vendor-name').textContent = data.name;
+      document.getElementById('modal-vendor-applicant').textContent = `Applicant: ${data.applicant} (${data.location})`;
+      document.getElementById('modal-vendor-type').textContent = data.type;
+      document.getElementById('modal-vendor-risk').textContent = data.risk;
+      document.getElementById('vendor-modal').classList.remove('hidden');
+    }
+
+    function approveVendorApplication() {
+      const vendorName = vendorQueueData[currentVendorIndex].name;
+      vendorQueueData.splice(currentVendorIndex, 1);
+      renderVendorQueue();
+      closeModal('vendor-modal');
+      triggerToast(`Vendor "${vendorName}" approved and storefront created!`, 'success');
+    }
+
+    function rejectVendorApplication() {
+      const vendorName = vendorQueueData[currentVendorIndex].name;
+      vendorQueueData.splice(currentVendorIndex, 1);
+      renderVendorQueue();
+      closeModal('vendor-modal');
+      triggerToast(`Vendor application for "${vendorName}" rejected.`, 'error');
+    }
+
+    function openAddCategoryModal() {
+      document.getElementById('category-modal').classList.remove('hidden');
+    }
+
+    function handleAddCategoryForm(e) {
+      e.preventDefault();
+      const title = document.getElementById('cat-title-input').value;
+      categoriesData.unshift({ name: title, count: '0 Listings', sub: '0 Subcategories', icon: 'folder' });
+      renderCategories();
+      closeModal('category-modal');
+      triggerToast(`New category "${title}" added successfully.`, 'success');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
+
+    /* Task Manager Actions */
+    function toggleTaskState(idx) {
+      adminTasks[idx].completed = !adminTasks[idx].completed;
+      renderTasks();
+    }
+
+    function handleAddTask(e) {
+      e.preventDefault();
+      const input = document.getElementById('new-task-input');
+      if (input.value.trim()) {
+        adminTasks.unshift({ id: Date.now(), text: input.value.trim(), completed: false, priority: 'Medium' });
+        input.value = '';
+        renderTasks();
+        triggerToast('New admin task added', 'info');
+      }
+    }
+
+    function deleteTask(idx) {
+      adminTasks.splice(idx, 1);
+      renderTasks();
+      triggerToast('Task deleted', 'info');
+    }
+
+    /* Toast Notification System */
+    function triggerToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const colors = {
+        success: 'bg-charcoal border-l-4 border-honey text-white',
+        error: 'bg-rose-950 border-l-4 border-rose-500 text-white',
+        info: 'bg-charcoal border-l-4 border-blue-500 text-white',
+        warning: 'bg-amber-950 border-l-4 border-amber-500 text-white'
+      };
+
+      toast.className = `p-4 rounded-xl shadow-2xl border ${colors[type]} flex items-center justify-between gap-3 pointer-events-auto toast-enter`;
+      toast.innerHTML = `
+        <div class="flex items-center gap-2.5">
+          <span class="text-honey font-bold">🐝</span>
+          <span class="text-xs font-semibold">${message}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+      `;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.classList.remove('toast-enter');
+        toast.classList.add('toast-enter-active');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('toast-exit');
+        setTimeout(() => toast.remove(), 200);
+      }, 4000);
+    }
+
+    function simulateCSVExport() {
+      triggerToast('Downloading CSV Financial Data Export...', 'success');
+    }
+
+    function markAllNotificationsRead() {
+      document.getElementById('unread-notification-count').textContent = '0';
+      triggerToast('All notifications marked as read', 'info');
+    }
+
+    function handleGlobalSearch(e) {
+      const query = e.target.value.toLowerCase().trim();
+      const dropdown = document.getElementById('search-results-dropdown');
+      const list = document.getElementById('search-results-list');
+
+      if (query.length < 2) {
+        dropdown.classList.add('hidden');
+        return;
+      }
+
+      const matches = [
+        ...membersData.filter(m => m.name.toLowerCase().includes(query) || m.email.toLowerCase().includes(query)).map(m => `Member: ${m.name}`),
+        ...vendorQueueData.filter(v => v.name.toLowerCase().includes(query)).map(v => `Vendor Application: ${v.name}`),
+        ...ordersData.filter(o => o.id.toLowerCase().includes(query) || o.customer.toLowerCase().includes(query)).map(o => `Order: ${o.id}`)
+      ];
+
+      if (matches.length > 0) {
+        list.innerHTML = matches.map(m => `<li class="p-2.5 hover:bg-honey/10 cursor-pointer text-xs font-semibold text-charcoal" onclick="triggerToast('Navigating to ${m}', 'info')">${m}</li>`).join('');
+        dropdown.classList.remove('hidden');
+      } else {
+        list.innerHTML = `<li class="p-3 text-xs text-gray-400 text-center">No matching entities found</li>`;
+        dropdown.classList.remove('hidden');
+      }
+    }
+
+    let perfChart, compChart;
+
+    function initCharts() {
+      // Main Performance Chart
+      const ctxPerf = document.getElementById('performanceChart').getContext('2d');
+      perfChart = new Chart(ctxPerf, {
+        type: 'line',
+        data: {
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+          datasets: [{
+            label: 'Current Period Revenue ($)',
+            data: [280000, 310000, 340000, 354650],
+            borderColor: '#F7B928',
+            backgroundColor: 'rgba(247, 185, 40, 0.15)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+          }, {
+            label: 'Previous Period ($)',
+            data: [240000, 260000, 290000, 310000],
+            borderColor: '#D1D5DB',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            fill: false,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              grid: { color: '#F3F4F6' },
+              ticks: { font: { family: 'Inter', size: 10 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Inter', size: 10 } }
+            }
+          }
+        }
+      });
+
+      // Doughnut Composition Chart
+      const ctxComp = document.getElementById('compositionChart').getContext('2d');
+      compChart = new Chart(ctxComp, {
+        type: 'doughnut',
+        data: {
+          labels: ['Product Sales (46%)', 'Service Bookings (31%)', 'Subscriptions (12%)', 'Advertising (7%)', 'Other (4%)'],
+          datasets: [{
+            data: [46, 31, 12, 7, 4],
+            backgroundColor: ['#F7B928', '#E89B0C', '#242424', '#2563EB', '#9CA3AF'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 10 } } }
+          },
+          cutout: '70%'
+        }
+      });
+    }
+
+    function updateMainChart() {
+      const metric = document.getElementById('chart-metric-select').value;
+      
+      const datasets = {
+        revenue: [280000, 310000, 340000, 354650],
+        orders: [6200, 6900, 7400, 8446],
+        bookings: [2800, 3000, 3200, 3487],
+        commissions: [28000, 31000, 34000, 35465],
+        refunds: [4200, 3800, 3100, 2400]
+      };
+
+      perfChart.data.datasets[0].data = datasets[metric];
+      perfChart.update();
+      triggerToast(`Chart metric updated to ${metric.toUpperCase()}`, 'info');
+    }
+  </script>
+
+</body>
+</html>
