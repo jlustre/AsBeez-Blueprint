@@ -1,49 +1,135 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 
-import { authApi, type User } from '../lib/api';
+import {
+    authApi,
+    getToken,
+    type ChangePasswordInput,
+    type RegisterInput,
+    type ResetPasswordInput,
+    type User,
+    type UserRole,
+} from '../lib/api';
 
 type AuthContextValue = {
     user: User | null;
     loading: boolean;
     login: (email: string, password: string) => Promise<User>;
-    register: (input: { name: string; email: string; password: string; password_confirmation: string }) => Promise<User>;
+    register: (input: RegisterInput) => Promise<User>;
     logout: () => Promise<void>;
+    logoutAll: () => Promise<void>;
+    forgotPassword: (email: string) => Promise<string>;
+    resetPassword: (input: ResetPasswordInput) => Promise<string>;
+    changePassword: (input: ChangePasswordInput) => Promise<string>;
+    resendVerification: () => Promise<string>;
+    refresh: () => Promise<User | null>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+
+/** Where each role belongs once it is signed in. */
+export function dashboardHashFor(role: UserRole): string {
+    if (role === 'super-admin') {
+        return '#admin-dashboard';
+    }
+
+    if (role === 'vendor') {
+        return '#vendor-dashboard';
+    }
+
+    return '#member-dashboard';
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        authApi.me()
-            .then(setUser)
-            .catch(() => setUser(null))
-            .finally(() => setLoading(false));
+    const refresh = useCallback(async () => {
+        // No stored token means no session to restore — skip the guaranteed 401.
+        if (!getToken()) {
+            setUser(null);
+            return null;
+        }
+
+        try {
+            const currentUser = await authApi.me();
+            setUser(currentUser);
+            return currentUser;
+        } catch {
+            setUser(null);
+            return null;
+        }
     }, []);
 
-    async function login(email: string, password: string) {
-        const authenticatedUser = await authApi.login({ email, password });
+    useEffect(() => {
+        refresh().finally(() => setLoading(false));
+    }, [refresh]);
+
+    function enter(authenticatedUser: User) {
         setUser(authenticatedUser);
-        window.location.hash = '#member-dashboard';
+        window.location.hash = dashboardHashFor(authenticatedUser.role);
         return authenticatedUser;
     }
 
-    async function register(input: { name: string; email: string; password: string; password_confirmation: string }) {
-        const authenticatedUser = await authApi.register(input);
-        setUser(authenticatedUser);
-        window.location.hash = '#member-dashboard';
-        return authenticatedUser;
+    async function login(email: string, password: string) {
+        return enter(await authApi.login({ email, password }));
+    }
+
+    async function register(input: RegisterInput) {
+        return enter(await authApi.register(input));
     }
 
     async function logout() {
-        await authApi.logout();
-        setUser(null);
-        window.location.hash = '';
+        try {
+            await authApi.logout();
+        } finally {
+            setUser(null);
+            window.location.hash = '';
+        }
     }
 
-    return <AuthContext.Provider value={{ user, loading, login, register, logout }}>{children}</AuthContext.Provider>;
+    async function logoutAll() {
+        try {
+            await authApi.logoutAll();
+        } finally {
+            setUser(null);
+            window.location.hash = '';
+        }
+    }
+
+    async function forgotPassword(email: string) {
+        return (await authApi.forgotPassword(email)).message;
+    }
+
+    async function resetPassword(input: ResetPasswordInput) {
+        const { message } = await authApi.resetPassword(input);
+        // Every token was revoked server side, so drop any local session too.
+        setUser(null);
+        return message;
+    }
+
+    async function changePassword(input: ChangePasswordInput) {
+        return (await authApi.changePassword(input)).message;
+    }
+
+    async function resendVerification() {
+        return (await authApi.resendVerification()).message;
+    }
+
+    const value: AuthContextValue = {
+        user,
+        loading,
+        login,
+        register,
+        logout,
+        logoutAll,
+        forgotPassword,
+        resetPassword,
+        changePassword,
+        resendVerification,
+        refresh,
+    };
+
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

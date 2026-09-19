@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -16,7 +20,8 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email:rfc', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:12', 'confirmed'],
+            'password' => ['required', 'string', 'confirmed', Password::defaults()],
+            'role' => ['sometimes', Rule::in(User::SELF_ASSIGNABLE_ROLES)],
             'device_name' => ['sometimes', 'string', 'max:255'],
         ]);
 
@@ -24,12 +29,13 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => $validated['password'],
+            'role' => $validated['role'] ?? User::ROLE_MEMBER,
         ]);
 
-        return response()->json([
-            'user' => $user,
-            'token' => $user->createToken($validated['device_name'] ?? 'frontend')->plainTextToken,
-        ], 201);
+        // Queues the verification mail via Laravel's SendEmailVerificationNotification listener.
+        event(new Registered($user));
+
+        return $this->tokenResponse($user, $validated['device_name'] ?? null, 201);
     }
 
     public function login(Request $request): JsonResponse
@@ -48,21 +54,41 @@ class AuthController extends Controller
             ]);
         }
 
-        return response()->json([
-            'user' => $user,
-            'token' => $user->createToken($validated['device_name'] ?? 'frontend')->plainTextToken,
-        ]);
+        return $this->tokenResponse($user, $validated['device_name'] ?? null);
     }
 
     public function me(Request $request): JsonResponse
     {
-        return response()->json(['user' => $request->user()]);
+        return response()->json(['user' => new UserResource($request->user())]);
     }
 
+    /**
+     * Revoke only the token that made this request, leaving the user signed in
+     * on their other devices.
+     */
     public function logout(Request $request): JsonResponse
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logged out successfully.']);
+    }
+
+    /**
+     * Revoke every token the user holds — the "sign out everywhere" escape hatch
+     * after a suspected compromise.
+     */
+    public function logoutAll(Request $request): JsonResponse
     {
         $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Logged out successfully.']);
+        return response()->json(['message' => 'Logged out of all devices.']);
+    }
+
+    private function tokenResponse(User $user, ?string $deviceName, int $status = 200): JsonResponse
+    {
+        return response()->json([
+            'user' => new UserResource($user),
+            'token' => $user->createToken($deviceName ?: 'frontend')->plainTextToken,
+        ], $status);
     }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   AlertTriangle,
   ArrowUpRight,
@@ -16,6 +16,7 @@ import {
   Hexagon,
   LayoutDashboard,
   Lock,
+  LogOut,
   Menu,
   Package,
   Percent,
@@ -31,6 +32,10 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
+
+import { useAuth } from '../../auth/AuthProvider';
+import { handleMenuKeys } from '../../lib/menu';
+import { MenuCloseButton } from '../ui/MenuCloseButton';
 
 const sidebarItems = [
   { label: 'Dashboard', icon: LayoutDashboard, active: true },
@@ -105,13 +110,83 @@ const quickActions = [
   'Schedule Maintenance',
 ] as const;
 
+type MenuItem = {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  hint?: string;
+  href?: string;
+  tone?: string;
+};
+
+/** Top-bar "Quick Action" menu — the same operations offered in the side panel. */
+const quickActionMenu: MenuItem[] = [
+  { label: 'Review Vendor Queue', icon: Store, hint: '12 waiting' },
+  { label: 'Add New Category', icon: FileText },
+  { label: 'Export Financial Report', icon: Download },
+  { label: 'Schedule Maintenance', icon: Clock3 },
+];
+
+const adminNotifications = [
+  { icon: UserPlus, tone: 'bg-indigo-50 text-indigo-700', text: '12 vendor applications are awaiting approval.', when: '8 mins ago' },
+  { icon: ShieldAlert, tone: 'bg-rose-50 text-rose-700', text: 'Dispute #DSP-2043 escalated to platform review.', when: '35 mins ago' },
+  { icon: Zap, tone: 'bg-amber-50 text-amber-700', text: 'Payment gateway latency above threshold.', when: '1 hour ago' },
+  { icon: TrendingUp, tone: 'bg-emerald-50 text-emerald-700', text: 'Monthly revenue passed the $1.2M milestone.', when: 'Yesterday' },
+] as const;
+
+const profileMenu: MenuItem[] = [
+  { label: 'Browse Marketplace', icon: Store, href: '#marketplace' },
+  { label: 'View Profile', icon: UserRound },
+  { label: 'Account Settings', icon: Settings, href: '#account-security' },
+  { label: 'Security Center', icon: Lock },
+  { label: 'Platform Status', icon: Globe, hint: 'Operational' },
+];
+
 const dashboardRoutes = [
   { label: 'Admin', hash: '#admin-dashboard', icon: ShieldAlert },
   { label: 'Vendor', hash: '#vendor-dashboard', icon: Store },
   { label: 'Member', hash: '#member-dashboard', icon: UserRound },
 ] as const;
 
+type AdminMenu = 'quick' | 'notifications' | 'profile';
+
+
 export function AdminDashboardPage() {
+  const { user, logout } = useAuth();
+  const [openMenu, setOpenMenu] = useState<AdminMenu | null>(null);
+  const [notifCount, setNotifCount] = useState(adminNotifications.length + 3);
+  const actions = useRef<HTMLDivElement>(null);
+
+  // A click anywhere outside the action cluster closes whichever menu is open.
+  useEffect(() => {
+    if (!openMenu) {
+      return;
+    }
+
+    function onPointerDown(event: MouseEvent) {
+      if (actions.current && !actions.current.contains(event.target as Node)) {
+        setOpenMenu(null);
+      }
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setOpenMenu(null);
+      }
+    }
+
+    document.addEventListener('mousedown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [openMenu]);
+
+  function toggleMenu(menu: AdminMenu) {
+    setOpenMenu((current) => (current === menu ? null : menu));
+  }
+
   return (
     <div className="min-h-screen bg-[#F5F6F8] text-slate-900 antialiased">
       <div className="flex min-h-screen overflow-hidden">
@@ -140,12 +215,12 @@ export function AdminDashboardPage() {
             <div className="flex items-center gap-3">
               <img
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
-                alt="Joey Lustre"
+                alt={user?.name ?? 'Administrator'}
                 className="h-10 w-10 rounded-full border-2 border-yellow-400 object-cover"
               />
               <div>
-                <h4 className="text-sm font-semibold text-white">Joey Lustre</h4>
-                <div className="text-[11px] font-medium text-yellow-300">Super Admin</div>
+                <h4 className="text-sm font-semibold text-white">{user?.name ?? 'Administrator'}</h4>
+                <div className="text-[11px] font-medium capitalize text-yellow-300">{(user?.role ?? 'super-admin').replace('-', ' ')}</div>
               </div>
             </div>
           </div>
@@ -229,7 +304,7 @@ export function AdminDashboardPage() {
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur-sm">
+          <header className="relative z-40 border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur-sm">
             <div className="flex items-center justify-between gap-4 px-4 py-4 sm:px-6">
               <div className="flex items-center gap-3">
                 <button className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 md:hidden" aria-label="Open sidebar">
@@ -257,7 +332,7 @@ export function AdminDashboardPage() {
                 </kbd>
               </div>
 
-              <div className="flex items-center gap-2 sm:gap-3">
+              <div ref={actions} className="flex items-center gap-2 sm:gap-3">
                 <div className="hidden items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 p-1 lg:flex" aria-label="Dashboard switcher">
                   {dashboardRoutes.map(({ label, hash, icon: Icon }) => (
                     <button
@@ -275,21 +350,156 @@ export function AdminDashboardPage() {
                     </button>
                   ))}
                 </div>
-                <button className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-yellow-500">
-                  <Sparkles className="h-4 w-4" />
-                  <span className="hidden sm:inline">Quick Action</span>
-                  <ChevronDown className="h-4 w-4" />
-                </button>
-                <button className="relative rounded-xl p-2 text-slate-600 transition hover:bg-slate-100" aria-label="Notifications">
-                  <Bell className="h-5 w-5" />
-                  <span className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white">
-                    7
-                  </span>
-                </button>
-                <button className="flex items-center gap-2 rounded-xl p-1.5 transition hover:bg-slate-100">
-                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=80" alt="Admin profile" className="h-8 w-8 rounded-full object-cover ring-2 ring-yellow-400" />
-                  <ChevronDown className="hidden h-4 w-4 text-slate-500 sm:block" />
-                </button>
+
+                {/* Quick Action menu */}
+                <div className="relative">
+                  <button
+                    onClick={() => toggleMenu('quick')}
+                    aria-haspopup="menu"
+                    aria-expanded={openMenu === 'quick'}
+                    className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-yellow-500"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    <span className="hidden sm:inline">Quick Action</span>
+                    <ChevronDown className={`h-4 w-4 transition-transform ${openMenu === 'quick' ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {openMenu === 'quick' && (
+                    <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-slate-300 bg-white py-2 shadow-2xl ring-1 ring-slate-900/10">
+                      <div className="flex items-center justify-between gap-2 border-b border-slate-100 px-4 pb-2 pt-1">
+                        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Operations</span>
+                        <MenuCloseButton onClose={() => setOpenMenu(null)} tone="text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus:ring-yellow-400" />
+                      </div>
+                      {quickActionMenu.map(({ label, icon: Icon, hint }) => (
+                        <button
+                          key={label}
+                          role="menuitem"
+                          onClick={() => setOpenMenu(null)}
+                          className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-sm text-slate-700 transition hover:bg-yellow-50 hover:text-slate-900"
+                        >
+                          <span className="flex items-center gap-2.5">
+                            <Icon className="h-4 w-4 text-slate-400" />
+                            {label}
+                          </span>
+                          {hint ? (
+                            <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-bold text-yellow-800">{hint}</span>
+                          ) : (
+                            <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Notifications menu */}
+                <div className="relative">
+                  <button
+                    onClick={() => toggleMenu('notifications')}
+                    aria-haspopup="menu"
+                    aria-expanded={openMenu === 'notifications'}
+                    className="relative rounded-xl p-2 text-slate-600 transition hover:bg-slate-100"
+                    aria-label="Notifications"
+                  >
+                    <Bell className="h-5 w-5" />
+                    {notifCount > 0 && (
+                      <span className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white">
+                        {notifCount}
+                      </span>
+                    )}
+                  </button>
+
+                  {openMenu === 'notifications' && (
+                    <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-80 rounded-2xl border border-slate-300 bg-white py-2 shadow-2xl ring-1 ring-slate-900/10 sm:w-96">
+                      <div className="flex items-center justify-between border-b border-slate-100 px-4 py-2">
+                        <h3 className="text-sm font-bold text-slate-900">Platform alerts</h3>
+                        <div className="flex items-center gap-2">
+                          <button onClick={() => setNotifCount(0)} className="text-xs font-semibold text-yellow-700 hover:underline">
+                            Mark all read
+                          </button>
+                          <MenuCloseButton onClose={() => setOpenMenu(null)} tone="text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus:ring-yellow-400" />
+                        </div>
+                      </div>
+                      <div className="max-h-80 divide-y divide-slate-50 overflow-y-auto">
+                        {adminNotifications.map(({ icon: Icon, tone, text, when }) => (
+                          <button
+                            key={text}
+                            role="menuitem"
+                            onClick={() => setOpenMenu(null)}
+                            className="flex w-full gap-3 px-4 py-3 text-left transition hover:bg-slate-50"
+                          >
+                            <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${tone}`}>
+                              <Icon className="h-4 w-4" />
+                            </span>
+                            <span className="min-w-0 flex-1">
+                              <span className="block text-xs font-medium text-slate-800">{text}</span>
+                              <span className="text-[10px] text-slate-500">{when}</span>
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                      <div className="border-t border-slate-100 px-4 py-2 text-center">
+                        <a href="#" className="text-xs font-semibold text-slate-700 hover:text-yellow-700">View all alerts</a>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Profile menu */}
+                <div className="relative">
+                  <button
+                    onClick={() => toggleMenu('profile')}
+                    aria-haspopup="menu"
+                    aria-expanded={openMenu === 'profile'}
+                    aria-label="Account menu"
+                    className="flex items-center gap-2 rounded-xl p-1.5 transition hover:bg-slate-100"
+                  >
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=80" alt="Admin profile" className="h-8 w-8 rounded-full object-cover ring-2 ring-yellow-400" />
+                    <ChevronDown className={`hidden h-4 w-4 text-slate-500 transition-transform sm:block ${openMenu === 'profile' ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {openMenu === 'profile' && (
+                    <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-60 rounded-2xl border border-slate-300 bg-white py-2 shadow-2xl ring-1 ring-slate-900/10">
+                      <div className="flex items-start justify-between gap-2 border-b border-slate-100 px-4 py-2.5">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-bold text-slate-900">{user?.name ?? 'Administrator'}</p>
+                          <p className="truncate text-[11px] text-slate-500">{user?.email ?? ''}</p>
+                          <span className="mt-1.5 inline-block rounded bg-yellow-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-yellow-800">
+                            {(user?.role ?? 'super-admin').replace('-', ' ')}
+                          </span>
+                        </div>
+                        <MenuCloseButton onClose={() => setOpenMenu(null)} tone="text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus:ring-yellow-400" />
+                      </div>
+                      <div className="py-1">
+                        {profileMenu.map(({ label, icon: Icon, hint, href }) => (
+                          <a
+                            key={label}
+                            role="menuitem"
+                            href={href ?? '#'}
+                            onClick={() => setOpenMenu(null)}
+                            className="flex items-center justify-between gap-2.5 px-4 py-2 text-sm text-slate-700 transition hover:bg-yellow-50 hover:text-slate-900"
+                          >
+                            <span className="flex items-center gap-2.5">
+                              <Icon className="h-4 w-4 text-slate-400" />
+                              {label}
+                            </span>
+                            {hint && <span className="text-[10px] font-semibold text-emerald-600">{hint}</span>}
+                          </a>
+                        ))}
+                      </div>
+                      <div className="border-t border-slate-100 pt-1">
+                        <button
+                          role="menuitem"
+                          onClick={() => { setOpenMenu(null); void logout(); }}
+                          className="flex w-full items-center gap-2.5 px-4 py-2 text-sm text-rose-600 transition hover:bg-rose-50"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </header>

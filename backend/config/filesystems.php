@@ -38,6 +38,20 @@ return [
             'report' => false,
         ],
 
+        /*
+         * Store banners and logos. Local today; switching to S3 is a change of
+         * driver here (plus the credentials), never a change in the models or
+         * controllers, which only ever address this disk by name.
+         */
+        'store_media' => [
+            'driver' => env('STORE_MEDIA_DISK_DRIVER', 'local'),
+            'root' => storage_path('app/public/store-media'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage/store-media',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

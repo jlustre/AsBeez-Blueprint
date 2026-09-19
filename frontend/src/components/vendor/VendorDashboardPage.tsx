@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowUpRight,
   BadgeCheck,
@@ -27,10 +27,17 @@ import {
   Star,
   Store,
   TrendingUp,
+  TriangleAlert,
+  UserPlus,
   Users,
   WalletCards,
   X,
 } from 'lucide-react';
+
+import { useAuth } from '../../auth/AuthProvider';
+import { handleMenuKeys } from '../../lib/menu';
+import { MenuCloseButton } from '../ui/MenuCloseButton';
+import { StoreProfilePage } from './StoreProfilePage';
 
 const kpis = [
   { label: 'Total Revenue', value: '$24,860', delta: '12.5%', tone: 'bg-softyellow text-amber' },
@@ -118,12 +125,43 @@ const tasksSeed = [
 ] as const;
 
 const notifications = [
-  { icon: 'shopping-bag', text: 'New order #AB-4831 received', when: '2 min ago', alert: true },
-  { icon: 'calendar-check', text: 'Website consultation confirmed', when: '18 min ago', alert: true },
-  { icon: 'triangle-alert', text: 'Two products are out of stock', when: '1 hour ago', alert: true },
-  { icon: 'star', text: 'New 5-star customer review', when: '3 hours ago', alert: true },
-  { icon: 'wallet', text: 'Payout of $2,840 completed', when: 'Yesterday', alert: false },
+  { icon: ShoppingBag, tone: 'bg-softyellow text-amber', text: 'New order #AB-4831 received', when: '2 min ago', alert: true },
+  { icon: CalendarCheck2, tone: 'bg-brandInfo/10 text-brandInfo', text: 'Website consultation confirmed', when: '18 min ago', alert: true },
+  { icon: TriangleAlert, tone: 'bg-red-50 text-danger', text: 'Two products are out of stock', when: '1 hour ago', alert: true },
+  { icon: Star, tone: 'bg-honey/15 text-[#8A5900]', text: 'New 5-star customer review', when: '3 hours ago', alert: true },
+  { icon: WalletCards, tone: 'bg-green-50 text-success', text: 'Payout of $2,840 completed', when: 'Yesterday', alert: false },
 ] as const;
+
+type TopMenuItem = {
+  label: string;
+  hint: string;
+  icon: typeof LayoutDashboard;
+  href?: string;
+};
+
+/** "Create New" menu — the same six shortcuts the quick-actions panel offers. */
+const createMenu: TopMenuItem[] = [
+  { label: 'Add Product', hint: 'Create a new item', icon: Package },
+  { label: 'Add Service', hint: 'List your expertise', icon: BriefcaseBusiness },
+  { label: 'Create Promotion', hint: 'Launch a campaign', icon: Megaphone },
+  { label: 'Add Team Member', hint: 'Invite a collaborator', icon: UserPlus },
+  { label: 'Create Discount', hint: 'Reward customers', icon: DollarSign },
+  { label: 'Community Update', hint: 'Post an announcement', icon: Sparkles },
+];
+
+const topMessages = [
+  { name: 'Mia Carter', preview: 'Is gift wrapping available for the headphones?', when: '2 min', avatar: 'https://i.pravatar.cc/96?img=13' },
+  { name: 'Ethan Clark', preview: 'Can we move the consultation to 3 PM?', when: '16 min', avatar: 'https://i.pravatar.cc/96?img=12' },
+  { name: 'Priya Shah', preview: 'The skincare kit arrived — thank you!', when: '1 hr', avatar: 'https://i.pravatar.cc/96?img=5' },
+] as const;
+
+const profileMenu: TopMenuItem[] = [
+  { label: 'Browse Marketplace', hint: 'Shop as a customer', icon: ShoppingBag, href: '#marketplace' },
+  { label: 'Store Profile', hint: 'Public storefront', icon: Store, href: '#store-profile' },
+  { label: 'Subscription', hint: 'Growth plan', icon: CreditCard },
+  { label: 'Account Settings', hint: 'Password & security', icon: Settings, href: '#account-security' },
+  { label: 'Help & Support', hint: 'Docs and contact', icon: CircleHelp },
+];
 
 function formatMoney(value: number) {
   return new Intl.NumberFormat('en-US', {
@@ -139,7 +177,15 @@ function getBadgeClass(value: string) {
   return 'bg-gray-100 text-gray-600';
 }
 
+type VendorMenu = 'create' | 'messages' | 'notifications' | 'profile';
+
 export function VendorDashboardPage() {
+  const { user, logout } = useAuth();
+  const [openMenu, setOpenMenu] = useState<VendorMenu | null>(null);
+  const [notifCount, setNotifCount] = useState<number>(notifications.length);
+  const [msgCount, setMsgCount] = useState(5);
+  const topActions = useRef<HTMLDivElement>(null);
+  const [routeHash, setRouteHash] = useState(() => window.location.hash);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [showCompleted, setShowCompleted] = useState(false);
@@ -158,12 +204,41 @@ export function VendorDashboardPage() {
     const onKeydown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setSidebarOpen(false);
+        setOpenMenu(null);
       }
     };
 
     window.addEventListener('keydown', onKeydown);
     return () => window.removeEventListener('keydown', onKeydown);
   }, []);
+
+  useEffect(() => {
+    const onHashChange = () => setRouteHash(window.location.hash);
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  const onStoreProfile = routeHash === '#store-profile';
+
+  // A click anywhere outside the top-bar action cluster closes the open menu.
+  useEffect(() => {
+    if (!openMenu) {
+      return;
+    }
+
+    const onPointerDown = (event: MouseEvent) => {
+      if (topActions.current && !topActions.current.contains(event.target as Node)) {
+        setOpenMenu(null);
+      }
+    };
+
+    document.addEventListener('mousedown', onPointerDown);
+    return () => document.removeEventListener('mousedown', onPointerDown);
+  }, [openMenu]);
+
+  const toggleMenu = (menu: VendorMenu) => {
+    setOpenMenu((current) => (current === menu ? null : menu));
+  };
 
   const toggleTask = (id: number) => {
     setTaskList((current) =>
@@ -200,7 +275,7 @@ export function VendorDashboardPage() {
               <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gray-400">Vendor Center</div>
             </div>
           )}
-          <button className="ml-auto rounded-lg p-2 text-gray-300 hover:bg-white/10 lg:hidden" onClick={() => setSidebarOpen(false)} aria-label="Close menu">
+          <button className="ml-auto rounded-lg p-2 text-gray-300 hover:bg-white/10 lg:hidden" onClick={() => setSidebarOpen(false)} aria-label="Close navigation">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -257,8 +332,29 @@ export function VendorDashboardPage() {
                     'Help & Support': CircleHelp,
                   };
                   const Icon = iconMap[label as keyof typeof iconMap] ?? Store;
+                  const href = label === 'Store Profile' ? '#store-profile' : undefined;
+                  const active = label === 'Store Profile' && onStoreProfile;
+                  const tone = active
+                    ? 'bg-honey text-charcoal'
+                    : 'text-gray-300 hover:bg-white/10 hover:text-white';
+
+                  if (href) {
+                    return (
+                      <a
+                        key={label}
+                        href={href}
+                        onClick={() => setSidebarOpen(false)}
+                        aria-current={active ? 'page' : undefined}
+                        className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold ${tone}`}
+                      >
+                        <Icon className="h-5 w-5" />
+                        <span className="flex-1 text-left">{label}</span>
+                      </a>
+                    );
+                  }
+
                   return (
-                    <button key={label} className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-gray-300 hover:bg-white/10 hover:text-white">
+                    <button key={label} className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold ${tone}`}>
                       <Icon className="h-5 w-5" />
                       <span className="flex-1 text-left">{label}</span>
                     </button>
@@ -296,8 +392,12 @@ export function VendorDashboardPage() {
               <LayoutDashboard className="h-5 w-5" />
             </button>
             <div className="min-w-0">
-              <p className="hidden text-xs font-semibold text-gray-500 sm:block">Vendor Center / Overview</p>
-              <h1 className="truncate text-lg font-extrabold sm:text-xl">Vendor Dashboard</h1>
+              <p className="hidden text-xs font-semibold text-gray-500 sm:block">
+                Vendor Center / {onStoreProfile ? 'Store Profile' : 'Overview'}
+              </p>
+              <h1 className="truncate text-lg font-extrabold sm:text-xl">
+                {onStoreProfile ? 'Store Profile' : 'Vendor Dashboard'}
+              </h1>
             </div>
 
             <div className="relative ml-auto hidden w-full max-w-sm xl:block">
@@ -305,36 +405,215 @@ export function VendorDashboardPage() {
               <input type="search" placeholder="Search orders, customers, products…" className="w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-10 pr-4 text-sm focus:border-honey focus:bg-white focus:outline-none" />
             </div>
 
-            <div className="relative">
-              <button className="hidden items-center gap-2 rounded-xl bg-honey px-4 py-2.5 text-sm font-extrabold hover:bg-amber sm:flex">
-                <Plus className="h-4 w-4" />
-                Create New
-                <ChevronDown className="h-4 w-4" />
-              </button>
-            </div>
-            <button className="relative hidden rounded-xl border border-gray-200 p-2.5 hover:bg-gray-50 md:block" aria-label="Messages">
-              <MessageSquareText className="h-5 w-5" />
-              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brandInfo px-1 text-[10px] font-bold text-white">5</span>
-            </button>
-            <div className="relative">
-              <button className="relative rounded-xl border border-gray-200 p-2.5 hover:bg-gray-50" aria-label="Notifications">
-                <Bell className="h-5 w-5" />
-                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">5</span>
-              </button>
-            </div>
-            <div className="relative">
-              <button className="flex items-center gap-2 rounded-xl p-1.5 hover:bg-gray-50">
-                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80" alt="Joey profile" className="h-9 w-9 rounded-xl object-cover" />
-                <span className="hidden text-left lg:block">
-                  <span className="block text-sm font-extrabold">Joey</span>
-                  <span className="block text-[11px] text-gray-500">Owner</span>
-                </span>
-                <ChevronDown className="hidden h-4 w-4 lg:block" />
-              </button>
+            <div ref={topActions} className="flex items-center gap-3">
+
+              {/* Create New menu */}
+              <div className="relative">
+                <button
+                  onClick={() => toggleMenu('create')}
+                  aria-haspopup="menu"
+                  aria-expanded={openMenu === 'create'}
+                  className="hidden items-center gap-2 rounded-xl bg-honey px-4 py-2.5 text-sm font-extrabold hover:bg-amber sm:flex"
+                >
+                  <Plus className="h-4 w-4" />
+                  Create New
+                  <ChevronDown className={`h-4 w-4 transition-transform ${openMenu === 'create' ? 'rotate-180' : ''}`} />
+                </button>
+
+                {openMenu === 'create' && (
+                  <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-72 rounded-2xl border border-gray-300 bg-white py-2 shadow-2xl ring-1 ring-charcoal/10">
+                    <div className="flex items-center justify-between gap-2 border-b border-gray-100 px-4 pb-2 pt-1">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">Create</span>
+                      <MenuCloseButton onClose={() => setOpenMenu(null)} />
+                    </div>
+                    {createMenu.map(({ label, hint, icon: Icon }) => (
+                      <button
+                        key={label}
+                        role="menuitem"
+                        onClick={() => setOpenMenu(null)}
+                        className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition hover:bg-softyellow/60"
+                      >
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-honey/15 text-charcoal">
+                          <Icon className="h-4 w-4" />
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-sm font-bold text-charcoal">{label}</span>
+                          <span className="block text-xs text-gray-500">{hint}</span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Messages menu */}
+              <div className="relative hidden md:block">
+                <button
+                  onClick={() => toggleMenu('messages')}
+                  aria-haspopup="menu"
+                  aria-expanded={openMenu === 'messages'}
+                  className="relative rounded-xl border border-gray-200 p-2.5 hover:bg-gray-50"
+                  aria-label="Messages"
+                >
+                  <MessageSquareText className="h-5 w-5" />
+                  {msgCount > 0 && (
+                    <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brandInfo px-1 text-[10px] font-bold text-white">
+                      {msgCount}
+                    </span>
+                  )}
+                </button>
+
+                {openMenu === 'messages' && (
+                  <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-80 rounded-2xl border border-gray-300 bg-white py-2 shadow-2xl ring-1 ring-charcoal/10 sm:w-96">
+                    <div className="flex items-center justify-between border-b border-gray-100 px-4 py-2">
+                      <h3 className="text-sm font-extrabold text-charcoal">Messages</h3>
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => setMsgCount(0)} className="text-xs font-bold text-[#8A5900] hover:underline">Mark as read</button>
+                        <MenuCloseButton onClose={() => setOpenMenu(null)} />
+                      </div>
+                    </div>
+                    <div className="max-h-80 divide-y divide-gray-50 overflow-y-auto">
+                      {topMessages.map((message) => (
+                        <button
+                          key={message.name}
+                          role="menuitem"
+                          onClick={() => setOpenMenu(null)}
+                          className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-gray-50"
+                        >
+                          <img src={message.avatar} alt={message.name} className="h-10 w-10 shrink-0 rounded-xl object-cover" />
+                          <span className="min-w-0 flex-1">
+                            <span className="flex justify-between gap-2">
+                              <strong className="text-sm text-charcoal">{message.name}</strong>
+                              <span className="text-[11px] text-gray-500">{message.when}</span>
+                            </span>
+                            <span className="block truncate text-xs text-gray-500">{message.preview}</span>
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                    <div className="border-t border-gray-100 px-4 py-2 text-center">
+                      <a href="#" className="text-xs font-bold text-charcoal hover:text-amber">Open inbox</a>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Notifications menu */}
+              <div className="relative">
+                <button
+                  onClick={() => toggleMenu('notifications')}
+                  aria-haspopup="menu"
+                  aria-expanded={openMenu === 'notifications'}
+                  className="relative rounded-xl border border-gray-200 p-2.5 hover:bg-gray-50"
+                  aria-label="Notifications"
+                >
+                  <Bell className="h-5 w-5" />
+                  {notifCount > 0 && (
+                    <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                      {notifCount}
+                    </span>
+                  )}
+                </button>
+
+                {openMenu === 'notifications' && (
+                  <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-80 rounded-2xl border border-gray-300 bg-white py-2 shadow-2xl ring-1 ring-charcoal/10 sm:w-96">
+                    <div className="flex items-center justify-between border-b border-gray-100 px-4 py-2">
+                      <h3 className="text-sm font-extrabold text-charcoal">Notifications</h3>
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => setNotifCount(0)} className="text-xs font-bold text-[#8A5900] hover:underline">Mark all read</button>
+                        <MenuCloseButton onClose={() => setOpenMenu(null)} />
+                      </div>
+                    </div>
+                    <div className="max-h-80 divide-y divide-gray-50 overflow-y-auto">
+                      {notifications.map(({ icon: Icon, tone, text, when }) => (
+                        <button
+                          key={text}
+                          role="menuitem"
+                          onClick={() => setOpenMenu(null)}
+                          className="flex w-full gap-3 px-4 py-3 text-left transition hover:bg-gray-50"
+                        >
+                          <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${tone}`}>
+                            <Icon className="h-4 w-4" />
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block text-xs font-semibold text-charcoal">{text}</span>
+                            <span className="text-[11px] text-gray-500">{when}</span>
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                    <div className="border-t border-gray-100 px-4 py-2 text-center">
+                      <a href="#" className="text-xs font-bold text-charcoal hover:text-amber">View all activity</a>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Profile menu */}
+              <div className="relative">
+                <button
+                  onClick={() => toggleMenu('profile')}
+                  aria-haspopup="menu"
+                  aria-expanded={openMenu === 'profile'}
+                  aria-label="Account menu"
+                  className="flex items-center gap-2 rounded-xl p-1.5 hover:bg-gray-50"
+                >
+                  <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80" alt={`${user?.name ?? 'Vendor'} profile`} className="h-9 w-9 rounded-xl object-cover" />
+                  <span className="hidden text-left lg:block">
+                    <span className="block text-sm font-extrabold">{(user?.name ?? 'Vendor').split(' ')[0]}</span>
+                    <span className="block text-[11px] text-gray-500">Owner</span>
+                  </span>
+                  <ChevronDown className={`hidden h-4 w-4 transition-transform lg:block ${openMenu === 'profile' ? 'rotate-180' : ''}`} />
+                </button>
+
+                {openMenu === 'profile' && (
+                  <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-64 rounded-2xl border border-gray-300 bg-white py-2 shadow-2xl ring-1 ring-charcoal/10">
+                    <div className="flex items-start justify-between gap-2 border-b border-gray-100 px-4 py-2.5">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-extrabold text-charcoal">{user?.name ?? 'Vendor'}</p>
+                        <p className="truncate text-[11px] text-gray-500">{user?.email ?? ''}</p>
+                        <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-softyellow px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#8A5900]">
+                          <BadgeCheck className="h-3 w-3" />
+                          {(user?.role ?? 'vendor').replace('-', ' ')}
+                        </span>
+                      </div>
+                      <MenuCloseButton onClose={() => setOpenMenu(null)} />
+                    </div>
+                    <div className="py-1">
+                      {profileMenu.map(({ label, hint, icon: Icon, href }) => (
+                        <a
+                          key={label}
+                          role="menuitem"
+                          href={href ?? '#'}
+                          onClick={() => setOpenMenu(null)}
+                          className="flex items-center gap-3 px-4 py-2 transition hover:bg-softyellow/60"
+                        >
+                          <Icon className="h-4 w-4 shrink-0 text-gray-500" />
+                          <span className="min-w-0">
+                            <span className="block text-sm font-semibold text-charcoal">{label}</span>
+                            <span className="block text-[11px] text-gray-500">{hint}</span>
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                    <div className="border-t border-gray-100 pt-1">
+                      <button
+                        role="menuitem"
+                        onClick={() => { setOpenMenu(null); void logout(); }}
+                        className="flex w-full items-center gap-3 px-4 py-2 text-sm font-semibold text-danger transition hover:bg-red-50"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </header>
 
+        {onStoreProfile ? <StoreProfilePage /> : (
         <main className="p-4 sm:p-6">
           <section className="grid gap-5 xl:grid-cols-[1.7fr_1fr]">
             <article className="relative overflow-hidden rounded-3xl bg-charcoal p-6 text-white shadow-soft sm:p-8">
@@ -797,6 +1076,7 @@ export function VendorDashboardPage() {
             </article>
           </section>
         </main>
+        )}
 
         <footer className="mt-6 border-t border-gray-200 bg-white px-6 py-6 text-xs text-gray-500">
           <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
