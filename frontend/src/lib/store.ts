@@ -57,12 +57,28 @@ export type StructureNavLink = {
     roles: string[] | null;
 };
 
+export type StructureCountry = {
+    code: string;
+    name: string;
+};
+
+export type StructureRegion = {
+    code: string;
+    name: string;
+    /** state | province | territory | region | district | country */
+    type: string;
+};
+
 export type Structure = {
     categories: StructureCategory[];
+    countries: StructureCountry[];
+    /** Keyed by country code; absent means that country has no seeded list. */
+    regions: Record<string, StructureRegion[]>;
     social_platforms: StructureSocialPlatform[];
     policy_types: StructurePolicyType[];
     setting_definitions: StructureSettingDefinition[];
-    nav_links: StructureNavLink[];
+    /** Keyed by context: 'vendor' | 'member'. */
+    nav_links: Record<string, StructureNavLink[]>;
 };
 
 /* ------------------------------------------------------------------ */
@@ -139,7 +155,10 @@ export type StoreProfile = {
     contact: { public_email: string | null; public_phone: string | null; website: string | null };
     location: {
         country: string | null;
+        /** Resolved for display; the code is what is stored. */
+        country_name: string | null;
         state: string | null;
+        state_name: string | null;
         city: string | null;
         postal_code: string | null;
         address_line: string | null;

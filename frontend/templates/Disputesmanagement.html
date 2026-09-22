@@ -1,0 +1,851 @@
+<main class="min-h-screen bg-amber-50/40 pb-28 text-slate-900 lg:pb-12"> <div class="mx-auto max-w-[1600px] space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+
+<!-- Page Header -->
+<header class="space-y-5">
+  <nav aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+      <li><a href="/admin" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Dashboard</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/admin/customer-service" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Customer Service</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="font-semibold text-slate-800" aria-current="page">Disputes</li>
+    </ol>
+  </nav>
+
+  <div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+    <div>
+      <div class="flex items-center gap-3">
+        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-400 text-slate-950 shadow-sm">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M12 3 3 7.5 12 12l9-4.5L12 3Z"/>
+            <path d="m3 12 9 4.5 9-4.5M3 16.5 12 21l9-4.5"/>
+          </svg>
+        </span>
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Disputes</h1>
+          <p class="mt-1 max-w-3xl text-sm leading-6 text-slate-600">Investigate and resolve conflicts involving orders, bookings, payments, deliveries, refunds, cancellations, and chargebacks.</p>
+        </div>
+      </div>
+
+      <span class="mt-3 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600">
+        <svg class="h-4 w-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+        September 1–20, 2026
+      </span>
+    </div>
+
+    <div class="grid gap-2 sm:grid-cols-3">
+      <a href="/admin/disputes/export" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v3h16v-3"/></svg>
+        Export Report
+      </a>
+      <a href="/admin/disputes/settings" class="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-100 px-4 py-2.5 text-sm font-semibold text-amber-950 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21H9.6v-.09A1.7 1.7 0 0 0 8.5 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.5-1H3V10h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.09A1.7 1.7 0 0 0 15.5 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.5 1h.1v4h-.09a1.7 1.7 0 0 0-1.51 1Z"/></svg>
+        Dispute Settings
+      </a>
+      <a href="/admin/disputes/create" class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2.5 text-sm font-bold text-slate-950 shadow-sm hover:bg-amber-400 active:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Create Dispute
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Overview Statistics -->
+<section aria-labelledby="overview-heading">
+  <div class="mb-3 flex items-center justify-between">
+    <h2 id="overview-heading" class="text-lg font-bold text-slate-950">Dispute overview</h2>
+    <span class="text-xs font-medium text-slate-500">Compared with the previous period</span>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+    <a href="/admin/disputes" class="rounded-2xl border border-amber-100 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-amber-100 p-2 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 3h14v18H5zM8 7h8M8 11h8M8 15h5"/></svg></span><span class="text-xs font-bold text-rose-600">↑ 8.4%</span></div>
+      <p class="mt-3 text-xs font-semibold text-slate-500">Total disputes</p><p class="mt-1 text-2xl font-bold">284</p><p class="mt-2 text-xs text-amber-700">View all cases →</p>
+    </a>
+    <a href="/admin/disputes?status=open" class="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-blue-100 p-2 text-blue-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="text-xs font-bold text-rose-600">↑ 5.2%</span></div>
+      <p class="mt-3 text-xs font-semibold text-slate-500">Open disputes</p><p class="mt-1 text-2xl font-bold">76</p><p class="mt-2 text-xs text-blue-700">Review open cases →</p>
+    </a>
+    <a href="/admin/disputes?status=awaiting-customer" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-violet-100 p-2 text-violet-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg></span><span class="text-xs font-bold text-emerald-700">↓ 3.1%</span></div>
+      <p class="mt-3 text-xs font-semibold text-slate-500">Awaiting customer</p><p class="mt-1 text-2xl font-bold">19</p><p class="mt-2 text-xs text-violet-700">Send reminders →</p>
+    </a>
+    <a href="/admin/disputes?status=awaiting-vendor" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-orange-100 p-2 text-orange-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9h18l-2-5H5L3 9Z"/><path d="M5 9v11h14V9M9 20v-6h6v6"/></svg></span><span class="text-xs font-bold text-rose-600">↑ 2.6%</span></div>
+      <p class="mt-3 text-xs font-semibold text-slate-500">Awaiting vendor</p><p class="mt-1 text-2xl font-bold">27</p><p class="mt-2 text-xs text-orange-700">Contact vendors →</p>
+    </a>
+    <a href="/admin/disputes?status=review" class="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-cyan-100 p-2 text-cyan-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4M8 11h6"/></svg></span><span class="text-xs font-bold text-slate-500">— 0%</span></div>
+      <p class="mt-3 text-xs font-semibold text-slate-500">Under admin review</p><p class="mt-1 text-2xl font-bold">21</p><p class="mt-2 text-xs text-cyan-700">Open review queue →</p>
+    </a>
+    <a href="/admin/disputes/escalated" class="rounded-2xl border border-rose-100 bg-white p-4 shadow-sm hover:border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-rose-100 p-2 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m12 3 9 16H3L12 3Z"/><path d="M12 9v4M12 17h.01"/></svg></span><span class="text-xs font-bold text-rose-600">↑ 2 cases</span></div>
+      <p class="mt-3 text-xs font-semibold text-slate-500">Escalated cases</p><p class="mt-1 text-2xl font-bold">8</p><p class="mt-2 text-xs text-rose-700">Review escalations →</p>
+    </a>
+    <a href="/admin/disputes?deadline=approaching" class="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm hover:border-orange-300 focus:outline-none focus:ring-2 focus:ring-orange-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-orange-100 p-2 text-orange-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6h4"/></svg></span><span class="text-xs font-bold text-rose-600">Urgent</span></div>
+      <p class="mt-3 text-xs font-semibold text-slate-500">Deadline approaching</p><p class="mt-1 text-2xl font-bold">14</p><p class="mt-2 text-xs text-orange-700">View deadlines →</p>
+    </a>
+    <a href="/admin/disputes?status=resolved" class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm hover:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-emerald-100 p-2 text-emerald-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><span class="text-xs font-bold text-emerald-700">↑ 14.8%</span></div>
+      <p class="mt-3 text-xs font-semibold text-slate-500">Resolved this month</p><p class="mt-1 text-2xl font-bold">92</p><p class="mt-2 text-xs text-emerald-700">View resolutions →</p>
+    </a>
+    <a href="/admin/refunds?source=dispute" class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm hover:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-emerald-100 p-2 text-emerald-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v20M17 6.5c0-2-2-3-5-3s-5 1.3-5 3 1.3 2.5 5 3.5 5 2 5 4-2 3.5-5 3.5-5-1.5-5-3.5"/></svg></span><span class="text-xs font-bold text-emerald-700">↓ 6.2%</span></div>
+      <p class="mt-3 text-xs font-semibold text-slate-500">Refunded amount</p><p class="mt-1 text-2xl font-bold">$18,460</p><p class="mt-2 text-xs text-emerald-700">View refunds →</p>
+    </a>
+    <a href="/admin/reports/disputes" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-slate-100 p-2 text-slate-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-8M22 19H2"/></svg></span><span class="text-xs font-bold text-emerald-700">↓ 4.5h</span></div>
+      <p class="mt-3 text-xs font-semibold text-slate-500">Average resolution</p><p class="mt-1 text-2xl font-bold">2.8 days</p><p class="mt-2 text-xs text-slate-600">Open analytics →</p>
+    </a>
+  </div>
+</section>
+
+<!-- Priority Alerts -->
+<section aria-labelledby="priority-alerts-heading" class="rounded-2xl border border-rose-200 bg-rose-50 p-5 shadow-sm">
+  <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+    <div>
+      <div class="flex items-center gap-2">
+        <svg class="h-5 w-5 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.6 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z"/></svg>
+        <h2 id="priority-alerts-heading" class="font-bold text-rose-950">Priority alerts</h2>
+      </div>
+      <p class="mt-1 text-sm text-rose-800">Nine cases require immediate review or action.</p>
+    </div>
+    <a href="/admin/disputes?priority=urgent" class="text-sm font-bold text-rose-700 hover:text-rose-900 focus:outline-none focus:underline">View priority queue →</a>
+  </div>
+
+  <div class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+    <a href="/admin/disputes/DSP-204" class="rounded-xl border border-rose-200 bg-white p-4 hover:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-500">
+      <div class="flex justify-between gap-2"><span class="text-xs font-bold uppercase text-rose-700">Deadline overdue</span><span class="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-700">Critical</span></div>
+      <p class="mt-2 font-bold">DSP-204 · Service no-show</p><p class="mt-1 text-sm text-slate-600">Vendor response is 18 hours overdue.</p><p class="mt-2 text-xs text-slate-500">Assigned: Daniel Reyes</p>
+    </a>
+    <a href="/admin/chargebacks/CB-991" class="rounded-xl border border-orange-200 bg-white p-4 hover:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500">
+      <div class="flex justify-between gap-2"><span class="text-xs font-bold uppercase text-orange-700">Evidence due today</span><span class="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-bold text-orange-700">Urgent</span></div>
+      <p class="mt-2 font-bold">CB-991 · $1,480.00</p><p class="mt-1 text-sm text-slate-600">Chargeback evidence must be submitted by 5 PM.</p><p class="mt-2 text-xs text-slate-500">Assigned: Maya Chen</p>
+    </a>
+    <a href="/admin/disputes/DSP-219" class="rounded-xl border border-rose-200 bg-white p-4 hover:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-500">
+      <div class="flex justify-between gap-2"><span class="text-xs font-bold uppercase text-rose-700">Safety complaint</span><span class="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-700">Critical</span></div>
+      <p class="mt-2 font-bold">DSP-219 · Home service</p><p class="mt-1 text-sm text-slate-600">Customer reported unsafe provider conduct.</p><p class="mt-2 text-xs text-slate-500">Assigned: Compliance Team</p>
+    </a>
+    <a href="/admin/disputes/DSP-217" class="rounded-xl border border-orange-200 bg-white p-4 hover:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500">
+      <div class="flex justify-between gap-2"><span class="text-xs font-bold uppercase text-orange-700">Possible fraud</span><span class="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-bold text-orange-700">High</span></div>
+      <p class="mt-2 font-bold">DSP-217 · Duplicate claim</p><p class="mt-1 text-sm text-slate-600">Refund request matches a previously closed case.</p><p class="mt-2 text-xs text-slate-500">Assigned: Fraud Operations</p>
+    </a>
+  </div>
+</section>
+
+<!-- Status Navigation -->
+<nav aria-label="Dispute status" class="overflow-x-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">
+  <div class="flex min-w-max gap-1">
+    <a href="/admin/disputes" aria-current="page" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-500">All Disputes <span class="ml-1 rounded-full bg-white/20 px-2 py-0.5 text-xs">284</span></a>
+    <a href="/admin/disputes?status=new" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500">New <span class="ml-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800">12</span></a>
+    <a href="/admin/disputes?status=open" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-blue-50">Open <span class="ml-1 text-xs">76</span></a>
+    <a href="/admin/disputes?status=awaiting-customer" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-violet-50">Awaiting Customer <span class="ml-1 text-xs">19</span></a>
+    <a href="/admin/disputes?status=awaiting-vendor" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-orange-50">Awaiting Vendor <span class="ml-1 text-xs">27</span></a>
+    <a href="/admin/disputes?status=review" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-blue-50">Under Review <span class="ml-1 text-xs">21</span></a>
+    <a href="/admin/disputes/escalated" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-rose-700 hover:bg-rose-50">Escalated <span class="ml-1 rounded-full bg-rose-100 px-2 py-0.5 text-xs">8</span></a>
+    <a href="/admin/disputes?status=resolved" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-emerald-50">Resolved</a>
+    <a href="/admin/disputes?status=closed" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Closed</a>
+    <a href="/admin/chargebacks" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-orange-50">Chargebacks <span class="ml-1 rounded-full bg-orange-100 px-2 py-0.5 text-xs text-orange-700">11</span></a>
+  </div>
+</nav>
+
+<!-- Filters -->
+<section aria-labelledby="filters-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex flex-wrap items-start justify-between gap-3">
+    <div><h2 id="filters-heading" class="font-bold">Search and filters</h2><p class="mt-1 text-sm text-slate-500">Find cases using transaction, party, evidence, financial, deadline, or risk information.</p></div>
+    <div class="flex gap-2">
+      <button type="button" class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500">Reset Filters</button>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Save Filter</button>
+    </div>
+  </div>
+
+  <form action="/admin/disputes" method="get" class="mt-5 space-y-4">
+    <div>
+      <label for="dispute-search" class="sr-only">Search disputes</label>
+      <div class="relative">
+        <svg class="pointer-events-none absolute left-3 top-3 h-5 w-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="dispute-search" name="search" type="search" placeholder="Search dispute, order, booking, customer, vendor, product, or service…" class="w-full rounded-xl border border-slate-300 py-2.5 pl-10 pr-4 text-sm placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200">
+      </div>
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+      <div><label for="dispute-type" class="mb-1 block text-xs font-semibold text-slate-600">Dispute type</label><select id="dispute-type" name="type" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All types</option><option>Order dispute</option><option>Booking dispute</option><option>Payment dispute</option><option>Chargeback</option><option>Safety complaint</option></select></div>
+      <div><label for="reason" class="mb-1 block text-xs font-semibold text-slate-600">Reason</label><select id="reason" name="reason" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All reasons</option><option>Item not received</option><option>Damaged product</option><option>Unauthorized charge</option><option>Provider no-show</option><option>Unsatisfactory service</option></select></div>
+      <div><label for="case-status" class="mb-1 block text-xs font-semibold text-slate-600">Status</label><select id="case-status" name="status" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All statuses</option><option>New</option><option>Open</option><option>Awaiting Customer</option><option>Awaiting Vendor</option><option>Under Review</option><option>Escalated</option><option>Resolved</option></select></div>
+      <div><label for="priority" class="mb-1 block text-xs font-semibold text-slate-600">Priority</label><select id="priority" name="priority" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All priorities</option><option>Low</option><option>Normal</option><option>High</option><option>Urgent</option><option>Critical</option></select></div>
+      <div><label for="administrator" class="mb-1 block text-xs font-semibold text-slate-600">Administrator</label><select id="administrator" name="administrator" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Anyone</option><option>Unassigned</option><option>Maya Chen</option><option>Daniel Reyes</option><option>Compliance Team</option></select></div>
+      <div><label for="transaction-type" class="mb-1 block text-xs font-semibold text-slate-600">Transaction type</label><select id="transaction-type" name="transaction_type" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All transactions</option><option>Product order</option><option>Service booking</option><option>Subscription</option></select></div>
+      <div><label for="payment-status" class="mb-1 block text-xs font-semibold text-slate-600">Payment status</label><select id="payment-status" name="payment_status" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any payment status</option><option>Paid</option><option>Refunded</option><option>Partially refunded</option><option>Chargeback filed</option></select></div>
+      <div><label for="outcome" class="mb-1 block text-xs font-semibold text-slate-600">Resolution outcome</label><select id="outcome" name="outcome" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any outcome</option><option>Customer favored</option><option>Vendor favored</option><option>Split decision</option><option>Dismissed</option></select></div>
+      <div><label for="evidence-status" class="mb-1 block text-xs font-semibold text-slate-600">Evidence</label><select id="evidence-status" name="evidence" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any evidence status</option><option>Complete</option><option>Missing customer evidence</option><option>Missing vendor evidence</option><option>Under review</option></select></div>
+      <div><label for="chargeback-status" class="mb-1 block text-xs font-semibold text-slate-600">Chargeback</label><select id="chargeback-status" name="chargeback" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any chargeback status</option><option>None</option><option>Filed</option><option>Evidence due</option><option>Won</option><option>Lost</option></select></div>
+      <div><label for="risk-level" class="mb-1 block text-xs font-semibold text-slate-600">Risk level</label><select id="risk-level" name="risk" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any risk</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div>
+      <div><label for="location" class="mb-1 block text-xs font-semibold text-slate-600">Location</label><input id="location" name="location" type="text" placeholder="Country, state, or city" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="opened-from" class="mb-1 block text-xs font-semibold text-slate-600">Opened from</label><input id="opened-from" name="opened_from" type="date" value="2026-09-01" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="opened-to" class="mb-1 block text-xs font-semibold text-slate-600">Opened to</label><input id="opened-to" name="opened_to" type="date" value="2026-09-20" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="deadline" class="mb-1 block text-xs font-semibold text-slate-600">Resolution deadline</label><input id="deadline" name="deadline" type="date" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="minimum-amount" class="mb-1 block text-xs font-semibold text-slate-600">Minimum amount</label><input id="minimum-amount" name="min_amount" type="number" min="0" placeholder="$0" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="maximum-amount" class="mb-1 block text-xs font-semibold text-slate-600">Maximum amount</label><input id="maximum-amount" name="max_amount" type="number" min="0" placeholder="No maximum" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
+      <div class="flex flex-wrap gap-2" aria-label="Active filters">
+        <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">Date: Sep 1–20 <button type="button" aria-label="Remove date filter" class="rounded-full px-1 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500">×</button></span>
+        <span class="inline-flex items-center gap-1 rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-800">Unresolved <button type="button" aria-label="Remove unresolved filter" class="rounded-full px-1 hover:bg-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-500">×</button></span>
+      </div>
+      <button type="submit" class="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">Apply Filters</button>
+    </div>
+  </form>
+</section>
+
+<!-- Disputes Table -->
+<section aria-labelledby="disputes-table-heading" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex flex-col gap-3 border-b border-slate-200 p-5 xl:flex-row xl:items-center xl:justify-between">
+    <div><h2 id="disputes-table-heading" class="font-bold">Dispute cases</h2><p class="mt-1 text-sm text-slate-500">Showing 1–6 of 284 cases</p></div>
+    <div class="flex flex-wrap gap-2">
+      <label for="bulk-action" class="sr-only">Bulk action</label>
+      <select id="bulk-action" class="rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Bulk actions</option><option>Assign administrator</option><option>Update priority</option><option>Change status</option><option>Send reminder</option><option>Request evidence</option><option>Export selected</option><option>Escalate selected</option><option>Close selected</option></select>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Apply</button>
+      <label for="sort-disputes" class="sr-only">Sort disputes</label>
+      <select id="sort-disputes" class="rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Most urgent</option><option>Newest first</option><option>Oldest first</option><option>Highest amount</option><option>Deadline soonest</option></select>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-[1550px] w-full text-left text-sm">
+      <caption class="sr-only">AsBeez marketplace dispute cases</caption>
+      <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
+        <tr>
+          <th scope="col" class="px-4 py-3"><label for="select-all-disputes" class="sr-only">Select all disputes</label><input id="select-all-disputes" type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></th>
+          <th scope="col" class="px-4 py-3">Dispute</th>
+          <th scope="col" class="px-4 py-3">Transaction</th>
+          <th scope="col" class="px-4 py-3">Customer</th>
+          <th scope="col" class="px-4 py-3">Vendor</th>
+          <th scope="col" class="px-4 py-3">Reason</th>
+          <th scope="col" class="px-4 py-3">Amount</th>
+          <th scope="col" class="px-4 py-3">Evidence</th>
+          <th scope="col" class="px-4 py-3">Assigned</th>
+          <th scope="col" class="px-4 py-3">Deadline</th>
+          <th scope="col" class="px-4 py-3">Priority</th>
+          <th scope="col" class="px-4 py-3">Status</th>
+          <th scope="col" class="px-4 py-3 text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr class="bg-rose-50/70 hover:bg-rose-50">
+          <td class="px-4 py-4"><input type="checkbox" checked aria-label="Select dispute DSP-204" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/disputes/DSP-204" class="font-bold hover:text-rose-700">DSP-204</a><p class="mt-1 text-xs text-slate-500">Opened Sep 18, 2026</p></td>
+          <td class="px-4 py-4"><a href="/admin/bookings/BKG-6089" class="font-semibold text-blue-700 hover:underline">BKG-6089</a><p class="text-xs text-slate-500">Service booking</p></td>
+          <td class="px-4 py-4"><div class="flex items-center gap-2"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">OM</span><div><p class="font-semibold">Olivia Martin</p><p class="text-xs text-slate-500">olivia@example.com</p></div></div></td>
+          <td class="px-4 py-4"><p class="font-semibold">GlowBee Wellness</p><p class="text-xs text-slate-500">Verified vendor</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Provider no-show</p><p class="text-xs text-rose-600">Customer requests full refund</p></td>
+          <td class="px-4 py-4 font-bold">$140.00 USD</td>
+          <td class="px-4 py-4"><span class="font-semibold">8 files</span><p class="text-xs text-amber-700">2 need review</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Daniel Reyes</p><p class="text-xs text-slate-500">Resolution Team</p></td>
+          <td class="px-4 py-4"><p class="font-bold text-rose-700">Overdue 18h</p><p class="text-xs text-slate-500">Sep 19, 5:00 PM</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-bold text-rose-700">Critical</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700">Escalated</span></td>
+          <td class="px-4 py-4"><div class="flex items-center justify-end gap-2"><a href="/admin/disputes/DSP-204" class="font-bold text-rose-700 hover:text-rose-900">Review Case</a><button type="button" aria-label="More actions for dispute DSP-204" class="rounded-lg p-2 hover:bg-white focus:outline-none focus:ring-2 focus:ring-rose-500">•••</button></div></td>
+        </tr>
+
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select dispute DSP-219" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/disputes/DSP-219" class="font-bold hover:text-rose-700">DSP-219</a><p class="text-xs text-slate-500">Opened Sep 20, 2026</p></td>
+          <td class="px-4 py-4"><a href="/admin/bookings/BKG-6104" class="font-semibold text-blue-700">BKG-6104</a><p class="text-xs text-slate-500">Home service</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Grace Kim</p><p class="text-xs text-slate-500">Identity verified</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">QuickFix Home</p><p class="text-xs text-slate-500">Payout held</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Safety complaint</p><p class="text-xs text-rose-600">Conduct investigation</p></td>
+          <td class="px-4 py-4 font-bold">$310.00</td>
+          <td class="px-4 py-4"><p class="font-semibold">5 files</p><p class="text-xs text-emerald-700">Complete</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Compliance Team</p></td>
+          <td class="px-4 py-4"><p class="font-bold text-rose-700">6 hours</p><p class="text-xs text-slate-500">Sep 20, 8:00 PM</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-bold text-rose-700">Critical</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">Under Investigation</span></td>
+          <td class="px-4 py-4 text-right"><a href="/admin/disputes/DSP-219" class="font-bold text-rose-700">Review Case</a></td>
+        </tr>
+
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select dispute DSP-217" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/disputes/DSP-217" class="font-bold hover:text-amber-700">DSP-217</a><p class="text-xs text-slate-500">Opened Sep 20, 2026</p></td>
+          <td class="px-4 py-4"><a href="/admin/orders/ASB-10482" class="font-semibold text-amber-700">ASB-10482</a><p class="text-xs text-slate-500">Product order</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Chris Morgan</p><p class="text-xs text-orange-600">Risk review</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">TechNest Supply</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Duplicate refund</p><p class="text-xs text-slate-500">Potential fraud</p></td>
+          <td class="px-4 py-4 font-bold">$286.40</td>
+          <td class="px-4 py-4"><p class="font-semibold">4 files</p><p class="text-xs text-blue-700">Under review</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Fraud Operations</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">1 day</p><p class="text-xs text-slate-500">Sep 21</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700">High</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-cyan-100 px-2.5 py-1 text-xs font-bold text-cyan-700">Evidence Review</span></td>
+          <td class="px-4 py-4 text-right"><a href="/admin/disputes/DSP-217" class="font-bold text-amber-700">Review Case</a></td>
+        </tr>
+
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select dispute DSP-211" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/disputes/DSP-211" class="font-bold hover:text-amber-700">DSP-211</a><p class="text-xs text-slate-500">Opened Sep 19, 2026</p></td>
+          <td class="px-4 py-4"><a href="/admin/orders/ASB-10451" class="font-semibold text-amber-700">ASB-10451</a><p class="text-xs text-slate-500">Delivery order</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Liam Brooks</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Honey Home Goods</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Item not received</p><p class="text-xs text-slate-500">Marked delivered</p></td>
+          <td class="px-4 py-4 font-bold">$189.95</td>
+          <td class="px-4 py-4"><p class="font-semibold">6 files</p><p class="text-xs text-amber-700">Vendor evidence due</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Maya Chen</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">2 days</p><p class="text-xs text-slate-500">Sep 22</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700">High</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700">Awaiting Vendor</span></td>
+          <td class="px-4 py-4 text-right"><a href="/admin/disputes/DSP-211" class="font-bold text-amber-700">Review Case</a></td>
+        </tr>
+
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select dispute DSP-207" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/disputes/DSP-207" class="font-bold hover:text-amber-700">DSP-207</a><p class="text-xs text-slate-500">Opened Sep 18, 2026</p></td>
+          <td class="px-4 py-4"><a href="/admin/orders/ASB-10466" class="font-semibold text-amber-700">ASB-10466</a><p class="text-xs text-slate-500">Product order</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Nina Patel</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">BeeWell Market</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Damaged product</p><p class="text-xs text-slate-500">Partial refund requested</p></td>
+          <td class="px-4 py-4 font-bold">$39.00</td>
+          <td class="px-4 py-4"><p class="font-semibold">7 files</p><p class="text-xs text-emerald-700">Verified</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Daniel Reyes</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">3 days</p><p class="text-xs text-slate-500">Sep 23</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-700">Normal</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-violet-100 px-2.5 py-1 text-xs font-bold text-violet-700">Mediation</span></td>
+          <td class="px-4 py-4 text-right"><a href="/admin/disputes/DSP-207" class="font-bold text-amber-700">Review Case</a></td>
+        </tr>
+
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select dispute DSP-198" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/disputes/DSP-198" class="font-bold hover:text-emerald-700">DSP-198</a><p class="text-xs text-slate-500">Opened Sep 14, 2026</p></td>
+          <td class="px-4 py-4"><a href="/admin/orders/ASB-10398" class="font-semibold text-amber-700">ASB-10398</a><p class="text-xs text-slate-500">Subscription</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Samuel Wong</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">LearnHive Pro</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Incorrect recurring charge</p></td>
+          <td class="px-4 py-4 font-bold">$79.00</td>
+          <td class="px-4 py-4"><p class="font-semibold">5 files</p><p class="text-xs text-emerald-700">Complete</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Maya Chen</p></td>
+          <td class="px-4 py-4"><p class="font-semibold text-emerald-700">Completed</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">Low</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">Resolved</span></td>
+          <td class="px-4 py-4 text-right"><a href="/admin/disputes/DSP-198" class="font-bold text-emerald-700">View Resolution</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex flex-col gap-3 border-t border-slate-200 p-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex items-center gap-2 text-sm text-slate-600"><label for="rows-per-page">Rows per page</label><select id="rows-per-page" class="rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>10</option><option>25</option><option>50</option><option>100</option></select></div>
+    <nav aria-label="Dispute pagination" class="flex items-center gap-1">
+      <a href="/admin/disputes?page=1" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Previous</a>
+      <a href="/admin/disputes?page=1" aria-current="page" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white">1</a>
+      <a href="/admin/disputes?page=2" class="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-100">2</a>
+      <a href="/admin/disputes?page=3" class="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-100">3</a>
+      <span class="px-2 text-slate-400">…</span>
+      <a href="/admin/disputes?page=29" class="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-100">29</a>
+      <a href="/admin/disputes?page=2" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Next</a>
+    </nav>
+  </div>
+</section>
+
+<!-- Selected Case -->
+<section aria-labelledby="selected-case-heading" class="overflow-hidden rounded-2xl border border-rose-300 bg-white shadow-sm">
+  <div class="border-b border-rose-200 bg-gradient-to-r from-rose-100 via-amber-50 to-white p-5">
+    <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+      <div>
+        <div class="flex flex-wrap items-center gap-2">
+          <h2 id="selected-case-heading" class="text-xl font-bold">DSP-204 · Service Provider No-show</h2>
+          <span class="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700">Escalated</span>
+          <span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-bold text-rose-700">Critical Priority</span>
+          <span class="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700">Medium Risk</span>
+        </div>
+        <p class="mt-2 text-sm text-slate-600">Opened September 18, 2026 · Resolution deadline overdue by 18 hours</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/bookings/BKG-6089" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">View Transaction</a>
+        <a href="/admin/customers/4729" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50">View Customer</a>
+        <a href="/admin/vendors/188" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50">View Vendor</a>
+        <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50">Print Case</button>
+        <a href="/admin/disputes/DSP-204/download" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-800">Download Case File</a>
+        <button type="button" aria-label="More actions for dispute DSP-204" class="rounded-lg border border-slate-300 bg-white p-2 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-rose-500">•••</button>
+      </div>
+    </div>
+  </div>
+
+  <dl class="grid gap-px bg-slate-200 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Transaction</dt><dd class="mt-1 font-bold">BKG-6089</dd><dd class="text-xs text-slate-500">Service booking</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Disputed amount</dt><dd class="mt-1 font-bold">$140.00 USD</dd><dd class="text-xs text-slate-500">Full booking amount</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Customer</dt><dd class="mt-1 font-bold">Olivia Martin</dd><dd class="text-xs text-slate-500">Identity verified</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Vendor</dt><dd class="mt-1 font-bold">GlowBee Wellness</dd><dd class="text-xs text-slate-500">Payout currently held</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Assigned admin</dt><dd class="mt-1 font-bold">Daniel Reyes</dd><dd class="text-xs text-slate-500">Level 2 escalation</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Chargeback</dt><dd class="mt-1 font-bold text-slate-600">Not filed</dd><dd class="text-xs text-slate-500">Payment still protected</dd></div>
+  </dl>
+</section>
+
+<!-- Statements and Transaction -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="statements-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm xl:col-span-2">
+    <div><h2 id="statements-heading" class="font-bold">Reason and party statements</h2><p class="mt-1 text-sm text-slate-500">Statements and resolution expectations submitted by both parties.</p></div>
+
+    <dl class="mt-5 grid gap-4 sm:grid-cols-3">
+      <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs font-bold uppercase text-slate-500">Category</dt><dd class="mt-1 font-semibold">Service fulfillment</dd></div>
+      <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs font-bold uppercase text-slate-500">Primary reason</dt><dd class="mt-1 font-semibold">Provider no-show</dd></div>
+      <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs font-bold uppercase text-slate-500">Requested resolution</dt><dd class="mt-1 font-semibold">Full refund</dd></div>
+    </dl>
+
+    <div class="mt-5 grid gap-4 lg:grid-cols-2">
+      <article class="rounded-xl border border-blue-200 bg-blue-50 p-4">
+        <div class="flex items-center justify-between"><h3 class="font-bold text-blue-950">Customer statement</h3><span class="text-xs font-semibold text-blue-700">Sep 18 · 1:24 PM</span></div>
+        <p class="mt-3 text-sm leading-6 text-slate-700">I arrived ten minutes early and waited for more than forty-five minutes. No provider arrived, and the store did not answer my calls. I am requesting a full refund and reimbursement for transportation.</p>
+      </article>
+      <article class="rounded-xl border border-amber-200 bg-amber-50 p-4">
+        <div class="flex items-center justify-between"><h3 class="font-bold text-amber-950">Vendor statement</h3><span class="text-xs font-semibold text-amber-700">Sep 19 · 10:08 AM</span></div>
+        <p class="mt-3 text-sm leading-6 text-slate-700">The assigned provider reported an emergency but did not update our scheduling system. We offered to reschedule and add a complimentary treatment. We acknowledge the communication failure.</p>
+      </article>
+      <article class="rounded-xl border border-slate-200 bg-slate-50 p-4 lg:col-span-2">
+        <h3 class="font-bold">Administrator summary</h3>
+        <p class="mt-2 text-sm leading-6 text-slate-600">Appointment records and building-entry logs support the customer’s statement. The vendor acknowledges that the provider did not attend. Recommended resolution: full refund plus a $20 AsBeez service credit.</p>
+      </article>
+    </div>
+
+    <div class="mt-5 grid gap-4 border-t border-slate-100 pt-4 sm:grid-cols-3">
+      <div><p class="text-xs font-bold uppercase text-slate-500">Affected service</p><p class="mt-1 text-sm font-semibold">Signature Facial · 90 minutes</p></div>
+      <div><p class="text-xs font-bold uppercase text-slate-500">Important dates</p><p class="mt-1 text-sm font-semibold">Booked Sep 12 · Appointment Sep 18</p></div>
+      <div><p class="text-xs font-bold uppercase text-slate-500">Previous resolution attempts</p><p class="mt-1 text-sm font-semibold">2 customer calls · 1 reschedule offer</p></div>
+    </div>
+  </section>
+
+  <aside aria-labelledby="transaction-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><h2 id="transaction-heading" class="font-bold">Related transaction</h2><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Booking</span></div>
+    <dl class="mt-5 space-y-3 text-sm">
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Booking</dt><dd class="font-semibold">BKG-6089</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Transaction date</dt><dd class="font-semibold">Sep 12, 2026</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Service</dt><dd class="text-right font-semibold">Signature Facial</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Vendor</dt><dd class="font-semibold">GlowBee Wellness</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Customer</dt><dd class="font-semibold">Olivia Martin</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Duration</dt><dd class="font-semibold">90 minutes</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Subtotal / discount</dt><dd class="font-semibold">$150.00 / −$15.00</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Service fee / tax</dt><dd class="font-semibold">$5.00 / $0.00</dd></div>
+      <div class="flex justify-between gap-4 border-t border-slate-200 pt-3"><dt class="font-bold">Customer total</dt><dd class="font-bold">$140.00</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Payment</dt><dd class="font-semibold">Visa •••• 1182 · Paid</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Reference</dt><dd class="font-semibold">pi_8H6089AZ</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Appointment</dt><dd class="font-semibold text-rose-700">Provider no-show</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Vendor payout</dt><dd class="font-semibold text-orange-700">$112.00 · Held</dd></div>
+      <div class="flex justify-between gap-4"><dt class="text-slate-500">Previous refunds</dt><dd class="font-semibold">$0.00</dd></div>
+    </dl>
+    <a href="/admin/bookings/BKG-6089" class="mt-5 inline-flex text-sm font-bold text-blue-700 hover:text-blue-900">View complete transaction →</a>
+  </aside>
+</div>
+
+<!-- Evidence Center -->
+<section aria-labelledby="evidence-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+    <div><h2 id="evidence-heading" class="font-bold">Evidence center</h2><p class="mt-1 text-sm text-slate-500">Eight files submitted · six verified · two awaiting review.</p></div>
+    <button type="button" class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2.5 text-sm font-bold text-slate-950 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4M4 16v4h16v-4"/></svg>
+      Upload Evidence
+    </button>
+  </div>
+
+  <div class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+    <article class="rounded-xl border border-blue-200 bg-blue-50/50 p-4">
+      <div class="flex items-start gap-3"><span class="rounded-lg bg-blue-100 p-2 text-blue-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="2"/><path d="m3 17 5-5 4 4 3-3 6 6"/></svg></span><div class="min-w-0"><h3 class="truncate text-sm font-bold">waiting-area-photo.jpg</h3><p class="text-xs text-slate-500">JPG · 2.4 MB</p></div></div>
+      <p class="mt-3 text-xs text-slate-600">Customer · Sep 18, 1:30 PM</p><span class="mt-2 inline-block rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Verified</span>
+      <div class="mt-3 flex gap-3 text-xs font-bold"><a href="/admin/disputes/DSP-204/evidence/1" class="text-blue-700">Preview</a><a href="/admin/disputes/DSP-204/evidence/1/download" class="text-slate-600">Download</a></div>
+    </article>
+
+    <article class="rounded-xl border border-blue-200 bg-blue-50/50 p-4">
+      <div class="flex items-start gap-3"><span class="rounded-lg bg-blue-100 p-2 text-blue-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2h9l4 4v16H6z"/><path d="M14 2v5h5M9 12h7M9 16h7"/></svg></span><div class="min-w-0"><h3 class="truncate text-sm font-bold">ride-receipt.pdf</h3><p class="text-xs text-slate-500">PDF · 184 KB</p></div></div>
+      <p class="mt-3 text-xs text-slate-600">Customer · Sep 18, 1:35 PM</p><span class="mt-2 inline-block rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Verified</span>
+      <div class="mt-3 flex gap-3 text-xs font-bold"><a href="/admin/disputes/DSP-204/evidence/2" class="text-blue-700">Preview</a><a href="/admin/disputes/DSP-204/evidence/2/download" class="text-slate-600">Download</a></div>
+    </article>
+
+    <article class="rounded-xl border border-amber-200 bg-amber-50/50 p-4">
+      <div class="flex items-start gap-3"><span class="rounded-lg bg-amber-100 p-2 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 3h10v18H7zM10 7h4M10 11h4M10 15h4"/></svg></span><div class="min-w-0"><h3 class="truncate text-sm font-bold">provider-schedule.pdf</h3><p class="text-xs text-slate-500">PDF · 920 KB</p></div></div>
+      <p class="mt-3 text-xs text-slate-600">Vendor · Sep 19, 9:50 AM</p><span class="mt-2 inline-block rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Needs review</span>
+      <div class="mt-3 flex flex-wrap gap-3 text-xs font-bold"><a href="/admin/disputes/DSP-204/evidence/3" class="text-amber-700">Preview</a><button type="button" class="text-emerald-700">Mark Verified</button><button type="button" class="text-rose-700">Reject</button></div>
+    </article>
+
+    <article class="rounded-xl border border-amber-200 bg-amber-50/50 p-4">
+      <div class="flex items-start gap-3"><span class="rounded-lg bg-amber-100 p-2 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"/></svg></span><div class="min-w-0"><h3 class="truncate text-sm font-bold">message-transcript.txt</h3><p class="text-xs text-slate-500">TXT · 42 KB</p></div></div>
+      <p class="mt-3 text-xs text-slate-600">AsBeez system · Sep 19, 10:15 AM</p><span class="mt-2 inline-block rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Needs review</span>
+      <div class="mt-3 flex flex-wrap gap-3 text-xs font-bold"><a href="/admin/disputes/DSP-204/evidence/4" class="text-amber-700">Preview</a><button type="button" class="text-emerald-700">Mark Verified</button><button type="button" class="text-rose-700">Reject</button></div>
+    </article>
+  </div>
+
+  <div class="mt-5 grid gap-4 lg:grid-cols-3">
+    <div class="rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-6 text-center lg:col-span-2">
+      <svg class="mx-auto h-8 w-8 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4M4 16v4h16v-4"/></svg>
+      <p class="mt-2 text-sm font-bold">Drop evidence files here or select files</p>
+      <p class="mt-1 text-xs text-slate-500">PDF, JPG, PNG, MP4, DOCX, TXT, or ZIP · Maximum 25 MB per file</p>
+      <label for="evidence-file" class="mt-3 inline-flex cursor-pointer rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50">Choose Files<input id="evidence-file" name="evidence_files" type="file" multiple class="sr-only"></label>
+    </div>
+    <div>
+      <label for="evidence-category" class="block text-xs font-bold text-slate-600">Evidence category</label>
+      <select id="evidence-category" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Customer evidence</option><option>Vendor evidence</option><option>Transaction record</option><option>Communication</option><option>Internal investigation</option></select>
+      <label for="evidence-note" class="mt-3 block text-xs font-bold text-slate-600">Internal evidence note</label>
+      <textarea id="evidence-note" rows="3" placeholder="Describe the evidence and relevance…" class="mt-1 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea>
+    </div>
+  </div>
+</section>
+
+<!-- Timeline and Communication -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="timeline-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="timeline-heading" class="font-bold">Case timeline</h2>
+    <p class="mt-1 text-sm text-slate-500">Complete transaction and dispute history.</p>
+
+    <ol class="relative mt-6 ml-3 border-l-2 border-amber-200">
+      <li class="relative pb-6 pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white ring-4 ring-white">✓</span><h3 class="text-sm font-bold">Booking and payment created</h3><p class="text-sm text-slate-600">Customer booked the Signature Facial and paid $140.00.</p><p class="mt-1 text-xs text-slate-400">Sep 12, 2:16 PM · AsBeez system</p></li>
+      <li class="relative pb-6 pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white ring-4 ring-white">✓</span><h3 class="text-sm font-bold">Appointment time passed</h3><p class="text-sm text-slate-600">No provider check-in or service-completion record was received.</p><p class="mt-1 text-xs text-slate-400">Sep 18, 12:00 PM · Booking system</p></li>
+      <li class="relative pb-6 pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-white ring-4 ring-white">!</span><h3 class="text-sm font-bold">Customer contacted vendor</h3><p class="text-sm text-slate-600">Two calls and one marketplace message were recorded.</p><p class="mt-1 text-xs text-slate-400">Sep 18, 12:08 PM · Customer</p></li>
+      <li class="relative pb-6 pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-amber-500 text-slate-950 ring-4 ring-white">•</span><h3 class="text-sm font-bold">Dispute opened</h3><p class="text-sm text-slate-600">Customer requested a full refund and transportation reimbursement.</p><p class="mt-1 text-xs text-slate-400">Sep 18, 1:24 PM · Customer</p></li>
+      <li class="relative pb-6 pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-amber-500 text-slate-950 ring-4 ring-white">•</span><h3 class="text-sm font-bold">Vendor response received</h3><p class="text-sm text-slate-600">Vendor acknowledged the provider and communication failure.</p><p class="mt-1 text-xs text-slate-400">Sep 19, 10:08 AM · GlowBee Wellness</p></li>
+      <li class="relative pb-6 pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-rose-500 text-white ring-4 ring-white">!</span><h3 class="text-sm font-bold">Case escalated</h3><p class="text-sm text-slate-600">Vendor response deadline expired without a proposed refund.</p><p class="mt-1 text-xs text-slate-400">Sep 20, 9:00 AM · Daniel Reyes</p></li>
+      <li class="relative pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-slate-500 ring-4 ring-white">○</span><h3 class="text-sm font-bold text-slate-500">Resolution pending</h3><p class="text-sm text-slate-500">Administrator approval and financial adjustment required.</p></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="communication-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><div><h2 id="communication-heading" class="font-bold">Communication center</h2><p class="mt-1 text-sm text-slate-500">Case messages and delivery records.</p></div><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">2 unread</span></div>
+
+    <div class="mt-4 space-y-3">
+      <article class="rounded-xl border border-blue-200 bg-blue-50 p-3"><div class="flex justify-between gap-3"><p class="text-xs font-bold text-blue-700">CUSTOMER · READ</p><time class="text-xs text-slate-400">Sep 20, 9:32 AM</time></div><p class="mt-1 text-sm">I would prefer the refund instead of rescheduling. Please confirm when it will be processed.</p></article>
+      <article class="rounded-xl border border-amber-200 bg-amber-50 p-3"><div class="flex justify-between gap-3"><p class="text-xs font-bold text-amber-700">VENDOR · UNREAD</p><time class="text-xs text-slate-400">Sep 20, 10:12 AM</time></div><p class="mt-1 text-sm">We agree to refund the service but ask AsBeez to cover the requested transportation credit.</p></article>
+      <article class="rounded-xl border border-slate-200 bg-slate-50 p-3"><div class="flex justify-between gap-3"><p class="text-xs font-bold text-slate-600">AUTOMATED NOTICE</p><time class="text-xs text-slate-400">Sep 20, 10:15 AM</time></div><p class="mt-1 text-sm">Email delivered · SMS delivered · Both parties notified of escalation.</p></article>
+    </div>
+
+    <div class="mt-5 grid gap-3 sm:grid-cols-2">
+      <div><label for="message-recipient" class="block text-xs font-bold text-slate-600">Recipient</label><select id="message-recipient" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Customer</option><option>Vendor</option><option>Customer and vendor</option></select></div>
+      <div><label for="message-template" class="block text-xs font-bold text-slate-600">Saved response</label><select id="message-template" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Select a template</option><option>Evidence request</option><option>Response reminder</option><option>Proposed resolution</option><option>Deadline notice</option></select></div>
+      <div class="sm:col-span-2"><label for="message-subject" class="block text-xs font-bold text-slate-600">Subject</label><input id="message-subject" type="text" value="Update regarding dispute DSP-204" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div class="sm:col-span-2"><label for="case-message" class="block text-xs font-bold text-slate-600">Message</label><textarea id="case-message" rows="4" placeholder="Write a case message…" class="mt-1 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea><p class="mt-1 text-xs text-slate-500">Messages sent to both parties are visible in their dispute portals.</p></div>
+      <div><label for="message-attachment" class="block text-xs font-bold text-slate-600">Attachment</label><input id="message-attachment" type="file" class="mt-1 block w-full text-xs text-slate-500 file:mr-2 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:font-semibold"></div>
+    </div>
+
+    <div class="mt-4 flex flex-wrap gap-2">
+      <button type="button" class="rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-slate-950 hover:bg-amber-400">Send Message</button>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Request Evidence</button>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Send Reminder</button>
+      <button type="button" class="rounded-lg border border-rose-300 px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50">Resend Failed Notice</button>
+    </div>
+  </section>
+</div>
+
+<!-- Resolution Workspace -->
+<section aria-labelledby="resolution-heading" class="rounded-2xl border border-amber-300 bg-white p-5 shadow-sm">
+  <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+    <div><h2 id="resolution-heading" class="text-lg font-bold">Resolution workspace</h2><p class="mt-1 text-sm text-slate-500">Prepare the financial and operational outcome before requesting authorization.</p></div>
+    <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">Draft resolution</span>
+  </div>
+
+  <form class="mt-5">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="sm:col-span-2"><label for="resolution-outcome" class="block text-xs font-bold text-slate-600">Resolution outcome</label><select id="resolution-outcome" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Customer favored</option><option>Vendor favored</option><option>Split decision</option><option>Full refund</option><option>Partial refund</option><option>Replacement</option><option>Service re-performance</option><option>Account credit</option><option>No financial adjustment</option><option>Chargeback accepted</option><option>Case dismissed</option></select></div>
+      <div><label for="effective-date" class="block text-xs font-bold text-slate-600">Effective date</label><input id="effective-date" type="date" value="2026-09-20" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="authorization" class="block text-xs font-bold text-slate-600">Authorization</label><select id="authorization" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Supervisor required</option><option>Administrator authorized</option><option>Finance approval required</option></select></div>
+      <div><label for="customer-refund" class="block text-xs font-bold text-slate-600">Customer refund</label><input id="customer-refund" type="number" value="140.00" min="0" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="vendor-deduction" class="block text-xs font-bold text-slate-600">Vendor deduction</label><input id="vendor-deduction" type="number" value="112.00" min="0" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="marketplace-contribution" class="block text-xs font-bold text-slate-600">AsBeez contribution</label><input id="marketplace-contribution" type="number" value="20.00" min="0" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="shipping-reimbursement" class="block text-xs font-bold text-slate-600">Transport reimbursement</label><input id="shipping-reimbursement" type="number" value="0.00" min="0" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="service-credit" class="block text-xs font-bold text-slate-600">Service credit</label><input id="service-credit" type="number" value="20.00" min="0" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="account-credit" class="block text-xs font-bold text-slate-600">Coupon/account credit</label><input id="account-credit" type="number" value="0.00" min="0" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="restocking-fee" class="block text-xs font-bold text-slate-600">Restocking fee</label><input id="restocking-fee" type="number" value="0.00" min="0" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="cancellation-fee" class="block text-xs font-bold text-slate-600">Cancellation fee</label><input id="cancellation-fee" type="number" value="0.00" min="0" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="payout-action" class="block text-xs font-bold text-slate-600">Vendor payout</label><select id="payout-action" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Hold payout</option><option>Release payout</option><option>Partially release</option><option>Reverse payout</option></select></div>
+      <div><label for="return-responsibility" class="block text-xs font-bold text-slate-600">Return responsibility</label><select id="return-responsibility" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Not applicable</option><option>Vendor</option><option>Customer</option><option>AsBeez</option></select></div>
+    </div>
+
+    <div class="mt-4 flex flex-wrap gap-5">
+      <label class="inline-flex items-center gap-2 text-sm font-semibold"><input type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"> Replacement required</label>
+      <label class="inline-flex items-center gap-2 text-sm font-semibold"><input type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"> Return required</label>
+      <label class="inline-flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"> Customer account credit</label>
+    </div>
+
+    <label for="resolution-explanation" class="mt-4 block text-xs font-bold text-slate-600">Resolution explanation</label>
+    <textarea id="resolution-explanation" rows="4" class="mt-1 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">The evidence confirms that the assigned provider did not attend the appointment. Approve a full refund of $140.00 and issue a $20.00 AsBeez service credit for the inconvenience.</textarea>
+  </form>
+
+  <dl class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+    <div class="rounded-xl bg-blue-50 p-4"><dt class="text-xs font-bold text-slate-500">Customer receives</dt><dd class="mt-1 text-xl font-bold text-blue-700">$160.00</dd></div>
+    <div class="rounded-xl bg-orange-50 p-4"><dt class="text-xs font-bold text-slate-500">Vendor receives</dt><dd class="mt-1 text-xl font-bold text-orange-700">$0.00</dd></div>
+    <div class="rounded-xl bg-amber-50 p-4"><dt class="text-xs font-bold text-slate-500">AsBeez absorbs</dt><dd class="mt-1 text-xl font-bold text-amber-700">$20.00</dd></div>
+    <div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs font-bold text-slate-500">Processing fees</dt><dd class="mt-1 text-xl font-bold">$4.36</dd></div>
+    <div class="rounded-xl bg-rose-50 p-4"><dt class="text-xs font-bold text-slate-500">Financial impact</dt><dd class="mt-1 text-xl font-bold text-rose-700">−$24.36</dd></div>
+  </dl>
+
+  <p class="mt-5 rounded-xl border border-orange-200 bg-orange-50 p-3 text-sm text-orange-900"><span class="font-bold">Confirmation required:</span> Refunds, payout changes, credits, claim rejection, escalation, and case closure cannot be automatically undone.</p>
+
+  <div class="mt-4 flex flex-wrap gap-2">
+    <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Save Draft</button>
+    <button type="button" class="rounded-lg bg-amber-500 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-400">Propose Resolution</button>
+    <button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-700">Approve Full Refund</button>
+    <button type="button" class="rounded-lg border border-emerald-300 px-3 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50">Approve Partial Refund</button>
+    <button type="button" class="rounded-lg border border-orange-300 px-3 py-2 text-sm font-semibold text-orange-700 hover:bg-orange-50">Hold Vendor Payout</button>
+    <button type="button" class="rounded-lg border border-blue-300 px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50">Issue Account Credit</button>
+    <button type="button" class="rounded-lg border border-rose-300 px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50">Reject Claim</button>
+    <button type="button" class="rounded-lg border border-rose-300 px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50">Escalate Case</button>
+    <button type="button" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-800">Close Case</button>
+  </div>
+</section>
+
+<!-- Return and Chargeback -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="return-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><h2 id="return-heading" class="font-bold">Return &amp; refund information</h2><label class="inline-flex items-center gap-2 text-sm font-semibold"><input type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"> Return required</label></div>
+    <dl class="mt-5 grid gap-4 sm:grid-cols-2">
+      <div><dt class="text-xs font-bold uppercase text-slate-500">RMA number</dt><dd class="mt-1 font-semibold text-slate-400">Not generated</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Return label</dt><dd class="mt-1 font-semibold text-slate-400">Not applicable</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Return address</dt><dd class="mt-1 font-semibold">Not applicable to service</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Shipping responsibility</dt><dd class="mt-1 font-semibold">Not applicable</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Refund method</dt><dd class="mt-1 font-semibold">Original Visa •••• 1182</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Refund amount</dt><dd class="mt-1 font-semibold">$140.00</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Processing status</dt><dd class="mt-1 font-semibold text-amber-700">Awaiting approval</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Estimated receipt</dt><dd class="mt-1 font-semibold">3–5 business days</dd></div>
+    </dl>
+    <div class="mt-5 flex flex-wrap gap-2">
+      <button type="button" disabled class="cursor-not-allowed rounded-lg bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-400">Generate Return Label</button>
+      <button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-700">Approve Refund</button>
+      <button type="button" disabled class="cursor-not-allowed rounded-lg bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-400">Retry Refund</button>
+      <button type="button" disabled class="cursor-not-allowed rounded-lg bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-400">Download Receipt</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="chargeback-heading" class="rounded-2xl border border-orange-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><h2 id="chargeback-heading" class="font-bold">Chargeback management</h2><span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-600">Not filed</span></div>
+    <p class="mt-3 rounded-xl bg-orange-50 p-3 text-sm text-orange-900"><span class="font-bold">Monitor closely:</span> If the customer files a chargeback, evidence must normally be submitted within 7–10 days.</p>
+    <dl class="mt-5 grid gap-4 sm:grid-cols-2">
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Payment processor</dt><dd class="mt-1 font-semibold">Stripe</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Reference</dt><dd class="mt-1 font-semibold text-slate-400">Not available</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Reason code</dt><dd class="mt-1 font-semibold">Service not provided</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Potential amount</dt><dd class="mt-1 font-semibold">$140.00</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Processor fee</dt><dd class="mt-1 font-semibold">$15.00 if filed</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Liability party</dt><dd class="mt-1 font-semibold">Pending resolution</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Win probability</dt><dd class="mt-1 font-semibold text-orange-700">Low · 28%</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Evidence readiness</dt><dd class="mt-1 font-semibold text-emerald-700">6 of 8 items ready</dd></div>
+    </dl>
+    <div class="mt-4 rounded-xl border border-slate-200 p-3">
+      <p class="text-xs font-bold uppercase text-slate-500">Evidence checklist</p>
+      <ul class="mt-2 space-y-2 text-sm"><li>✓ Payment and booking record</li><li>✓ Customer/vendor correspondence</li><li>✓ Appointment log</li><li class="text-orange-700">○ Final resolution record required</li></ul>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-2">
+      <button type="button" class="rounded-lg border border-rose-300 px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50">Accept Chargeback</button>
+      <button type="button" class="rounded-lg border border-orange-300 px-3 py-2 text-sm font-semibold text-orange-700 hover:bg-orange-50">Challenge Chargeback</button>
+      <button type="button" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-800">Download Evidence Package</button>
+      <a href="/admin/payments/pi_8H6089AZ" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Payment Record</a>
+    </div>
+  </section>
+</div>
+
+<!-- Parties and Policy -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="customer-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-start gap-3"><span class="flex h-11 w-11 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">OM</span><div><div class="flex flex-wrap items-center gap-2"><h2 id="customer-heading" class="font-bold">Olivia Martin</h2><span class="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-700">Verified</span></div><p class="text-sm text-slate-500">olivia@example.com · (415) 555-0148</p><p class="text-xs text-slate-400">Active member since May 2023</p></div></div>
+    <dl class="mt-5 grid grid-cols-2 gap-3 text-sm">
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Orders / bookings</dt><dd class="font-bold">12 / 7</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Lifetime spend</dt><dd class="font-bold">$2,184</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Cancellation rate</dt><dd class="font-bold">3.4%</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Completed</dt><dd class="font-bold">17</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Refunds</dt><dd class="font-bold">1 · $48</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Previous disputes</dt><dd class="font-bold">0</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Chargebacks</dt><dd class="font-bold">0</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Fraud risk</dt><dd class="font-bold text-emerald-700">Low · 6/100</dd></div>
+    </dl>
+    <p class="mt-4 text-sm text-slate-600"><span class="font-semibold">Note:</span> Long-standing customer with no prior dispute concerns.</p>
+    <div class="mt-4 flex flex-wrap gap-3 text-sm font-bold"><a href="/admin/customers/4729" class="text-blue-700">Profile</a><a href="/admin/customers/4729/transactions" class="text-blue-700">Transactions</a><a href="/admin/customers/4729/disputes" class="text-blue-700">Disputes</a><a href="/admin/messages/new?customer=4729" class="text-blue-700">Message</a><button type="button" class="text-rose-700">Restrict Account</button></div>
+  </section>
+
+  <section aria-labelledby="vendor-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-start gap-3"><span class="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900 text-amber-400">✦</span><div><div class="flex flex-wrap items-center gap-2"><h2 id="vendor-heading" class="font-bold">GlowBee Wellness</h2><span class="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-bold text-blue-700">Verified</span></div><p class="text-sm text-slate-500">Owner: Amelia Foster · 4.7 rating</p><p class="text-xs text-orange-600">Account standing: Review required</p></div></div>
+    <dl class="mt-5 grid grid-cols-2 gap-3 text-sm">
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Fulfillment</dt><dd class="font-bold">94.8%</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Booking completion</dt><dd class="font-bold">92.1%</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Cancellation rate</dt><dd class="font-bold">5.2%</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Refund rate</dt><dd class="font-bold">3.8%</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Dispute rate</dt><dd class="font-bold text-orange-700">2.9%</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Response time</dt><dd class="font-bold">2h 18m</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Balance / pending</dt><dd class="font-bold">$4,820 / $1,164</dd></div>
+      <div class="rounded-lg bg-slate-50 p-3"><dt class="text-xs text-slate-500">Warnings / disputes</dt><dd class="font-bold">1 / 6</dd></div>
+    </dl>
+    <div class="mt-4 flex flex-wrap gap-3 text-sm font-bold"><a href="/admin/vendors/188" class="text-amber-700">Profile</a><a href="/stores/glowbee-wellness" class="text-amber-700">Live Store</a><a href="/admin/vendors/188/transactions" class="text-amber-700">Transactions</a><a href="/admin/vendors/188/disputes" class="text-amber-700">History</a><a href="/admin/vendors/188/compliance" class="text-amber-700">Compliance</a><button type="button" class="text-rose-700">Place Payout Hold</button></div>
+  </section>
+
+  <section aria-labelledby="policy-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="policy-heading" class="font-bold">Policy &amp; eligibility review</h2>
+    <div class="mt-4 space-y-2 text-sm">
+      <div class="flex items-center justify-between rounded-lg bg-emerald-50 p-2.5"><span>Buyer protection</span><span class="font-bold text-emerald-700">✓ Eligible</span></div>
+      <div class="flex items-center justify-between rounded-lg bg-rose-50 p-2.5"><span>Vendor protection</span><span class="font-bold text-rose-700">✕ Not eligible</span></div>
+      <div class="flex items-center justify-between rounded-lg bg-slate-50 p-2.5"><span>Return policy</span><span class="font-bold text-slate-600">Not applicable</span></div>
+      <div class="flex items-center justify-between rounded-lg bg-emerald-50 p-2.5"><span>Refund policy</span><span class="font-bold text-emerald-700">✓ Eligible</span></div>
+      <div class="flex items-center justify-between rounded-lg bg-amber-50 p-2.5"><span>Cancellation policy</span><span class="font-bold text-amber-700">Needs review</span></div>
+      <div class="flex items-center justify-between rounded-lg bg-emerald-50 p-2.5"><span>Service guarantee</span><span class="font-bold text-emerald-700">✓ Eligible</span></div>
+      <div class="flex items-center justify-between rounded-lg bg-emerald-50 p-2.5"><span>Evidence compliance</span><span class="font-bold text-emerald-700">✓ Complete</span></div>
+      <div class="flex items-center justify-between rounded-lg bg-emerald-50 p-2.5"><span>Filing deadline</span><span class="font-bold text-emerald-700">✓ On time</span></div>
+      <div class="flex items-center justify-between rounded-lg bg-slate-50 p-2.5"><span>Prohibited service check</span><span class="font-bold text-slate-600">No match</span></div>
+      <div class="flex items-center justify-between rounded-lg bg-blue-50 p-2.5"><span>Policy version</span><span class="font-bold text-blue-700">2026.3</span></div>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-x-3 gap-y-2 text-xs font-bold"><a href="/policies/buyer-protection" class="text-amber-700">Buyer Protection</a><a href="/policies/vendor-protection" class="text-amber-700">Vendor Protection</a><a href="/policies/refunds" class="text-amber-700">Refund Policy</a><a href="/policies/cancellations" class="text-amber-700">Cancellation Policy</a><a href="/terms" class="text-amber-700">Terms</a><a href="/policies/disputes" class="text-amber-700">Resolution Guidelines</a></div>
+  </section>
+</div>
+
+<!-- Notes and Assignment -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="notes-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><div><h2 id="notes-heading" class="font-bold">Internal notes &amp; audit log</h2><p class="mt-1 text-xs text-slate-500">Not visible to customers or vendors.</p></div><span class="rounded-full bg-slate-900 px-2 py-1 text-xs font-bold text-white">Admin only</span></div>
+    <label for="internal-note" class="mt-4 block text-xs font-bold text-slate-600">New internal note</label>
+    <textarea id="internal-note" rows="3" placeholder="Add investigation details or instructions…" class="mt-1 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea>
+    <div class="mt-3 grid gap-3 sm:grid-cols-2">
+      <div><label for="note-visibility" class="block text-xs font-bold text-slate-600">Visibility</label><select id="note-visibility" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>All administrators</option><option>Resolution team only</option><option>Compliance team only</option></select></div>
+      <div><label for="note-priority" class="block text-xs font-bold text-slate-600">Priority</label><select id="note-priority" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Normal</option><option>Important</option><option>Urgent</option></select></div>
+      <label class="flex items-center gap-2 text-sm"><input type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"> Mention assigned administrator</label>
+      <label for="note-attachment" class="text-sm font-semibold">Attachment <input id="note-attachment" type="file" class="mt-1 block w-full text-xs text-slate-500"></label>
+    </div>
+    <button type="button" class="mt-3 rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-800">Add Note</button>
+
+    <div class="mt-5 space-y-4 border-t border-slate-100 pt-4">
+      <article><div class="flex justify-between gap-3"><div><p class="text-sm font-bold">Daniel Reyes <span class="ml-1 rounded bg-orange-100 px-1.5 py-0.5 text-xs text-orange-700">Important</span></p><p class="text-xs text-slate-400">Sep 20, 10:35 AM</p></div></div><p class="mt-2 text-sm text-slate-600">Vendor accepts the refund. Supervisor approval is required because the case passed its SLA deadline.</p></article>
+      <article class="border-t border-slate-100 pt-3"><p class="text-xs font-bold text-slate-500">AUDIT · Sep 20, 9:00 AM</p><p class="mt-1 text-sm text-slate-600">Status changed from Awaiting Vendor to Escalated. Payout hold applied automatically.</p></article>
+      <article class="border-t border-slate-100 pt-3"><p class="text-xs font-bold text-slate-500">AUDIT · Sep 19, 10:08 AM</p><p class="mt-1 text-sm text-slate-600">Vendor response and two evidence files received.</p></article>
+      <article class="border-t border-slate-100 pt-3"><p class="text-xs font-bold text-slate-500">AUDIT · Sep 18, 1:30 PM</p><p class="mt-1 text-sm text-slate-600">Daniel Reyes assigned. Customer statement and evidence verified.</p></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="assignment-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="assignment-heading" class="font-bold">Assignment &amp; escalation</h2>
+    <p class="mt-1 text-sm text-slate-500">Manage ownership, review requirements, and internal deadlines.</p>
+    <div class="mt-5 grid gap-4 sm:grid-cols-2">
+      <div><label for="assigned-admin" class="block text-xs font-bold text-slate-600">Assigned administrator</label><select id="assigned-admin" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Daniel Reyes</option><option>Maya Chen</option><option>Assign to me</option></select></div>
+      <div><label for="dispute-team" class="block text-xs font-bold text-slate-600">Dispute team</label><select id="dispute-team" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Resolution Team</option><option>Payments Team</option><option>Fraud Operations</option><option>Compliance Team</option></select></div>
+      <div><label for="assignment-priority" class="block text-xs font-bold text-slate-600">Priority</label><select id="assignment-priority" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Critical</option><option>Urgent</option><option>High</option><option>Normal</option><option>Low</option></select></div>
+      <div><label for="escalation-level" class="block text-xs font-bold text-slate-600">Escalation level</label><select id="escalation-level" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Level 2</option><option>Level 1</option><option>Level 3 · Executive</option></select></div>
+      <div><label for="department" class="block text-xs font-bold text-slate-600">Department</label><select id="department" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Customer Operations</option><option>Finance</option><option>Compliance</option><option>Legal</option></select></div>
+      <div><label for="supervisor" class="block text-xs font-bold text-slate-600">Supervisor approval</label><select id="supervisor" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Required</option><option>Approved</option><option>Not required</option></select></div>
+      <div><label for="internal-deadline" class="block text-xs font-bold text-slate-600">Internal SLA deadline</label><input id="internal-deadline" type="datetime-local" value="2026-09-20T15:00" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="customer-deadline" class="block text-xs font-bold text-slate-600">Customer-facing deadline</label><input id="customer-deadline" type="datetime-local" value="2026-09-20T17:00" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+    </div>
+    <div class="mt-4 space-y-2">
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Legal review required</span><input type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></label>
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Compliance review required</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></label>
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Fraud review required</span><input type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></label>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-2">
+      <button type="button" class="rounded-lg bg-amber-500 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-400">Assign to Me</button>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Reassign</button>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Add Collaborator</button>
+      <button type="button" class="rounded-lg border border-orange-300 px-3 py-2 text-sm font-semibold text-orange-700 hover:bg-orange-50">Extend Deadline</button>
+      <button type="button" class="rounded-lg border border-rose-300 px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50">Escalate to Supervisor</button>
+      <button type="button" class="rounded-lg border border-rose-300 px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50">Escalate to Compliance</button>
+    </div>
+  </section>
+</div>
+
+<!-- Analytics -->
+<section aria-labelledby="analytics-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div><h2 id="analytics-heading" class="font-bold">Dispute analytics</h2><p class="mt-1 text-sm text-slate-500">Resolution performance, outcomes, and marketplace risk trends.</p></div>
+    <div class="flex flex-wrap gap-1 rounded-xl bg-slate-100 p-1 text-xs font-bold">
+      <button type="button" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-white">Today</button>
+      <button type="button" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-white">Last 7 days</button>
+      <button type="button" class="rounded-lg bg-white px-3 py-2 shadow-sm">Last 30 days</button>
+      <button type="button" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-white">This quarter</button>
+      <button type="button" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-white">Custom</button>
+    </div>
+  </div>
+
+  <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+    <div class="rounded-xl bg-amber-50 p-4"><p class="text-xs font-semibold text-slate-500">Opened</p><p class="mt-1 text-xl font-bold">108</p><div class="mt-3 flex h-8 items-end gap-1"><span class="h-3 w-full rounded-t bg-amber-200"></span><span class="h-5 w-full rounded-t bg-amber-300"></span><span class="h-4 w-full rounded-t bg-amber-300"></span><span class="h-7 w-full rounded-t bg-amber-400"></span><span class="h-8 w-full rounded-t bg-amber-500"></span></div></div>
+    <div class="rounded-xl bg-emerald-50 p-4"><p class="text-xs font-semibold text-slate-500">Resolved</p><p class="mt-1 text-xl font-bold">92</p><p class="mt-3 text-xs font-bold text-emerald-700">↑ 14.8%</p></div>
+    <div class="rounded-xl bg-blue-50 p-4"><p class="text-xs font-semibold text-slate-500">Resolution rate</p><p class="mt-1 text-xl font-bold">85.2%</p><div class="mt-3 h-2 rounded-full bg-blue-100"><div class="h-2 w-[85.2%] rounded-full bg-blue-500"></div></div></div>
+    <div class="rounded-xl bg-slate-50 p-4"><p class="text-xs font-semibold text-slate-500">Average resolution</p><p class="mt-1 text-xl font-bold">2.8 days</p><p class="mt-3 text-xs text-emerald-700">4.5 hours faster</p></div>
+    <div class="rounded-xl bg-rose-50 p-4"><p class="text-xs font-semibold text-slate-500">Refund value</p><p class="mt-1 text-xl font-bold">$18.5K</p><p class="mt-3 text-xs text-emerald-700">↓ 6.2%</p></div>
+    <div class="rounded-xl bg-violet-50 p-4"><p class="text-xs font-semibold text-slate-500">Chargeback win rate</p><p class="mt-1 text-xl font-bold">71.4%</p><div class="mt-3 h-2 rounded-full bg-violet-100"><div class="h-2 w-[71.4%] rounded-full bg-violet-500"></div></div></div>
+    <div class="rounded-xl bg-blue-50 p-4"><p class="text-xs font-semibold text-slate-500">Customer favored</p><p class="mt-1 text-xl font-bold">48%</p></div>
+    <div class="rounded-xl bg-amber-50 p-4"><p class="text-xs font-semibold text-slate-500">Vendor favored</p><p class="mt-1 text-xl font-bold">29%</p></div>
+    <div class="rounded-xl bg-slate-50 p-4"><p class="text-xs font-semibold text-slate-500">Split decisions</p><p class="mt-1 text-xl font-bold">23%</p></div>
+    <div class="rounded-xl bg-orange-50 p-4"><p class="text-xs font-semibold text-slate-500">Escalation rate</p><p class="mt-1 text-xl font-bold">7.4%</p></div>
+    <div class="rounded-xl bg-slate-50 p-4 xl:col-span-2"><p class="text-xs font-semibold text-slate-500">Top dispute reasons</p><div class="mt-2 space-y-2 text-xs"><div><div class="flex justify-between"><span>Item not received</span><span>31%</span></div><div class="mt-1 h-1.5 rounded bg-slate-200"><div class="h-1.5 w-[31%] rounded bg-amber-500"></div></div></div><div><div class="flex justify-between"><span>Service quality/no-show</span><span>24%</span></div><div class="mt-1 h-1.5 rounded bg-slate-200"><div class="h-1.5 w-[24%] rounded bg-blue-500"></div></div></div><div><div class="flex justify-between"><span>Damaged product</span><span>18%</span></div><div class="mt-1 h-1.5 rounded bg-slate-200"><div class="h-1.5 w-[18%] rounded bg-orange-500"></div></div></div></div></div>
+  </div>
+</section>
+
+<!-- Quick Links -->
+<section aria-labelledby="tools-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div><h2 id="tools-heading" class="text-lg font-bold">Dispute Management Tools</h2><p class="mt-1 text-sm text-slate-500">Quick access to case queues, financial resolutions, investigations, reports, and settings.</p></div>
+
+  <div class="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-5">
+    <div>
+      <h3 class="border-b border-amber-200 pb-2 text-sm font-bold text-amber-800">Case Queues</h3>
+      <div class="mt-2 space-y-1">
+        <a href="/admin/disputes" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500"><span>All Disputes</span><span class="rounded-full bg-amber-100 px-2 text-xs">284</span></a>
+        <a href="/admin/disputes?status=new" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-amber-50"><span>New Cases</span><span class="rounded-full bg-amber-100 px-2 text-xs">12</span></a>
+        <a href="/admin/disputes?assigned=none" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Unassigned Cases</a>
+        <a href="/admin/disputes?assigned=me" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">My Assigned Cases</a>
+        <a href="/admin/disputes?status=awaiting-customer" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Awaiting Customer</a>
+        <a href="/admin/disputes?status=awaiting-vendor" class="block rounded-lg p-2 text-sm font-semibold hover:bg-orange-50">Awaiting Vendor</a>
+        <a href="/admin/disputes?status=review" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Under Review</a>
+        <a href="/admin/disputes/escalated" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold text-rose-700 hover:bg-rose-50"><span>Escalated Cases</span><span class="rounded-full bg-rose-100 px-2 text-xs">8</span></a>
+        <a href="/admin/disputes?deadline=overdue" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold text-rose-700 hover:bg-rose-50"><span>Overdue Cases</span><span class="rounded-full bg-rose-100 px-2 text-xs">6</span></a>
+        <a href="/admin/disputes?status=resolved" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Resolved Cases</a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="border-b border-emerald-200 pb-2 text-sm font-bold text-emerald-800">Financial Resolution</h3>
+      <div class="mt-2 space-y-1">
+        <a href="/admin/refunds" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50"><span>Refund Requests</span><span class="rounded-full bg-emerald-100 px-2 text-xs">24</span></a>
+        <a href="/admin/refunds?type=partial" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Partial Refunds</a>
+        <a href="/admin/returns" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Returns</a>
+        <a href="/admin/chargebacks" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-orange-50"><span>Chargebacks</span><span class="rounded-full bg-orange-100 px-2 text-xs">11</span></a>
+        <a href="/admin/payments/reversals" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Payment Reversals</a>
+        <a href="/admin/payouts/holds" class="block rounded-lg p-2 text-sm font-semibold hover:bg-orange-50">Vendor Payout Holds</a>
+        <a href="/admin/credits" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Account Credits</a>
+        <a href="/admin/compensation" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Compensation Requests</a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="border-b border-blue-200 pb-2 text-sm font-bold text-blue-800">Investigation</h3>
+      <div class="mt-2 space-y-1">
+        <a href="/admin/disputes/evidence" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Evidence Review</a>
+        <a href="/admin/fraud" class="block rounded-lg p-2 text-sm font-semibold hover:bg-orange-50">Fraud Review</a>
+        <a href="/admin/disputes/safety" class="block rounded-lg p-2 text-sm font-semibold hover:bg-rose-50">Safety Complaints</a>
+        <a href="/admin/compliance/cases" class="block rounded-lg p-2 text-sm font-semibold hover:bg-rose-50">Compliance Cases</a>
+        <a href="/admin/legal/escalations" class="block rounded-lg p-2 text-sm font-semibold hover:bg-rose-50">Legal Escalations</a>
+        <a href="/admin/verifications" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Identity Verification</a>
+        <a href="/admin/transactions/audit" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Transaction Audit</a>
+        <a href="/admin/messages" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Communication History</a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="border-b border-violet-200 pb-2 text-sm font-bold text-violet-800">Reports &amp; Analytics</h3>
+      <div class="mt-2 space-y-1">
+        <a href="/admin/reports/disputes" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Dispute Analytics</a>
+        <a href="/admin/reports/resolutions" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Resolution Reports</a>
+        <a href="/admin/reports/refunds" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Refund Reports</a>
+        <a href="/admin/reports/chargebacks" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Chargeback Reports</a>
+        <a href="/admin/reports/vendor-disputes" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Vendor Dispute Rates</a>
+        <a href="/admin/reports/customer-disputes" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Customer Dispute History</a>
+        <a href="/admin/reports/admin-performance" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Administrator Performance</a>
+        <a href="/admin/reports/dispute-sla" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">SLA Performance</a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="border-b border-slate-300 pb-2 text-sm font-bold text-slate-800">Configuration</h3>
+      <div class="mt-2 space-y-1">
+        <a href="/admin/disputes/settings" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Dispute Settings</a>
+        <a href="/admin/disputes/settings/reasons" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Dispute Reasons</a>
+        <a href="/admin/disputes/settings/outcomes" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Resolution Outcomes</a>
+        <a href="/admin/disputes/settings/priorities" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Priority Rules</a>
+        <a href="/admin/disputes/settings/assignment" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Assignment Rules</a>
+        <a href="/admin/disputes/settings/escalation" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Escalation Rules</a>
+        <a href="/admin/disputes/settings/evidence" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Evidence Requirements</a>
+        <a href="/admin/disputes/settings/templates" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Response Templates</a>
+        <a href="/admin/disputes/settings/deadlines" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Deadline Rules</a>
+        <a href="/admin/policies/buyer-protection" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Buyer Protection</a>
+        <a href="/admin/policies/vendor-protection" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Vendor Protection</a>
+        <a href="/admin/policies/refunds" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Refund Policies</a>
+      </div>
+    </div>
+  </div>
+</section>
+</div> <!-- Mobile Action Bar --> <div class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-3 shadow-[0_-8px_24px_rgba(15,23,42,0.12)] backdrop-blur lg:hidden"> <div class="mx-auto flex max-w-3xl items-center gap-2"> <div class="min-w-0 flex-1"> <p class="truncate text-xs font-bold text-slate-950">DSP-204 · Critical</p> <p class="truncate text-xs font-semibold text-rose-600">Deadline overdue by 18 hours</p> </div> <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Message</button> <button type="button" class="rounded-lg border border-amber-300 bg-amber-100 px-3 py-2 text-xs font-bold text-amber-900 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500">Assign</button> <a href="/admin/disputes/DSP-204" class="rounded-lg bg-amber-500 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500">Review Case</a> </div> </div> </main>
+

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   AlertTriangle,
   ArrowUpRight,
@@ -15,9 +15,11 @@ import {
   Globe,
   Hexagon,
   LayoutDashboard,
+  LayoutGrid,
   Lock,
   LogOut,
   Menu,
+  Languages,
   Package,
   Percent,
   Search,
@@ -34,42 +36,56 @@ import {
 } from 'lucide-react';
 
 import { useAuth } from '../../auth/AuthProvider';
+import { useTranslation, type MessageKey } from '../../i18n';
 import { handleMenuKeys } from '../../lib/menu';
+import { Avatar } from '../ui/Avatar';
+import { LanguageMenu } from '../ui/LanguageMenu';
 import { MenuCloseButton } from '../ui/MenuCloseButton';
 
-const sidebarItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, active: true },
-  { label: 'Members', icon: Users },
-  { label: 'Vendors', icon: Store, badge: '12' },
-  { label: 'Products', icon: Package },
-  { label: 'Services', icon: BriefcaseBusiness },
-  { label: 'Orders & Bookings', icon: ShoppingBag },
-  { label: 'Disputes', icon: ShieldAlert, badge: '7' },
-  { label: 'Financials', icon: Percent },
+const sidebarItems: { label: MessageKey; icon: React.ComponentType<{ className?: string }>; href?: string; badge?: string }[] = [
+  { label: 'nav.dashboard', icon: LayoutDashboard, href: '#admin-dashboard' },
+  { label: 'admin.navMembers', icon: Users, href: '#admin-members' },
+  { label: 'admin.navVendors', icon: Store, href: '#admin-vendors' },
+  { label: 'nav.products', icon: Package, href: '#admin-products' },
+  { label: 'nav.services', icon: BriefcaseBusiness, href: '#admin-services' },
+  { label: 'admin.navOrdersBookings', icon: ShoppingBag, href: '#admin-orders' },
+  { label: 'admin.navDisputes', icon: ShieldAlert, href: '#admin-disputes' },
+  { label: 'admin.navFinancials', icon: Percent, href: '#admin-financials' },
 ];
 
-const platformConfigItems = ['Categories', 'Content & CMS', 'Commissions'];
-const systemItems = ['Audit Logs', 'Security Center', 'System Settings'];
+const platformConfigItems: { label: MessageKey; icon: React.ComponentType<{ className?: string }>; href?: string }[] = [
+  { label: 'admin.navCategories', icon: LayoutGrid, href: '#admin-categories' },
+  { label: 'admin.navContentCms', icon: FileText, href: '#admin-content' },
+  { label: 'admin.navCommissions', icon: Percent, href: '#admin-commissions' },
+  { label: 'admin.navPpf', icon: Settings, href: '#admin-ppf' },
+];
+const systemItems: MessageKey[] = ['admin.navAuditLogs', 'admin.navSecurityCenter', 'admin.navSystemSettings'];
 
 const kpis = [
-  { label: 'Total Revenue', value: '$1,284,650', delta: '+14.2%', icon: Sparkles, tone: 'bg-amber-50 text-amber-700' },
-  { label: 'Active Members', value: '48,392', delta: '+8.7%', icon: Users, tone: 'bg-blue-50 text-blue-700' },
-  { label: 'Active Vendors', value: '3,284', delta: '+6.4%', icon: Store, tone: 'bg-violet-50 text-violet-700' },
-  { label: 'Total Orders', value: '28,946', delta: '+11.8%', icon: ShoppingBag, tone: 'bg-emerald-50 text-emerald-700' },
-  { label: 'Service Bookings', value: '12,487', delta: '+9.6%', icon: Clock3, tone: 'bg-cyan-50 text-cyan-700' },
-  { label: 'Platform Commission', value: '$128,465', delta: '+12.1%', icon: Percent, tone: 'bg-yellow-50 text-yellow-700' },
-  { label: 'Open Disputes', value: '37', delta: '8 Require Action', icon: ShieldAlert, tone: 'bg-rose-50 text-rose-700' },
-  { label: 'Pending Approvals', value: '64', delta: '12 Vendor Queue', icon: UserPlus, tone: 'bg-indigo-50 text-indigo-700' },
+  { label: 'admin.kpiRevenue', value: '$1,284,650', delta: '+14.2%', icon: Sparkles, tone: 'bg-amber-50 text-amber-700' },
+  { label: 'admin.kpiMembers', value: '48,392', delta: '+8.7%', icon: Users, tone: 'bg-blue-50 text-blue-700' },
+  { label: 'admin.kpiVendors', value: '3,284', delta: '+6.4%', icon: Store, tone: 'bg-violet-50 text-violet-700' },
+  { label: 'admin.kpiOrders', value: '28,946', delta: '+11.8%', icon: ShoppingBag, tone: 'bg-emerald-50 text-emerald-700' },
+  { label: 'admin.kpiBookings', value: '12,487', delta: '+9.6%', icon: Clock3, tone: 'bg-cyan-50 text-cyan-700' },
+  { label: 'admin.kpiCommission', value: '$128,465', delta: '+12.1%', icon: Percent, tone: 'bg-yellow-50 text-yellow-700' },
+  { label: 'admin.kpiDisputes', value: '37', delta: '8 Require Action', icon: ShieldAlert, tone: 'bg-rose-50 text-rose-700' },
+  { label: 'admin.kpiApprovals', value: '64', delta: '12 Vendor Queue', icon: UserPlus, tone: 'bg-indigo-50 text-indigo-700' },
 ] as const;
 
+/*
+ * Everything below is demo data standing in for endpoints that do not exist
+ * yet (metrics, approvals, the activity feed). Labels that survive the real
+ * API — navigation, headings, actions — carry message keys; these values do
+ * not, because they will be replaced wholesale rather than translated.
+ */
 const healthChecks = [
-  { label: 'Marketplace', status: 'Operational', tone: 'bg-emerald-500' },
-  { label: 'Payments', status: 'Stripe & PayPal Active', tone: 'bg-emerald-500' },
-  { label: 'Search Engine', status: '99.98% Latency OK', tone: 'bg-emerald-500' },
-  { label: 'Email Delivery', status: 'Queue Clear', tone: 'bg-emerald-500' },
-  { label: 'Storage Usage', status: '68% (1.4 TB)', tone: 'bg-amber-400' },
-  { label: 'Backup', status: '2 hrs ago', tone: 'bg-blue-400' },
-  { label: 'Maintenance', status: 'Sep 24, 02:00 UTC', tone: 'bg-violet-400' },
+  { label: 'admin.healthMarketplace', status: 'Operational', tone: 'bg-emerald-500' },
+  { label: 'admin.healthPayments', status: 'Stripe & PayPal Active', tone: 'bg-emerald-500' },
+  { label: 'admin.healthSearch', status: '99.98% Latency OK', tone: 'bg-emerald-500' },
+  { label: 'admin.healthEmail', status: 'Queue Clear', tone: 'bg-emerald-500' },
+  { label: 'admin.healthStorage', status: '68% (1.4 TB)', tone: 'bg-amber-400' },
+  { label: 'admin.healthBackup', status: '2 hrs ago', tone: 'bg-blue-400' },
+  { label: 'admin.healthMaintenance', status: 'Sep 24, 02:00 UTC', tone: 'bg-violet-400' },
 ] as const;
 
 const revenueTrend = [72, 84, 68, 96, 110, 118, 128, 126, 142, 152, 168, 180];
@@ -103,27 +119,27 @@ const topVendors = [
   { name: 'Nimble Works', sales: '$69.7K', score: '4.7/5' },
 ] as const;
 
-const quickActions = [
-  'Review Vendor Queue',
-  'Add New Category',
-  'Export Financial Report',
-  'Schedule Maintenance',
-] as const;
+const quickActions: MessageKey[] = [
+  'admin.actionReviewQueue',
+  'admin.actionAddCategory',
+  'admin.actionExportReport',
+  'admin.actionScheduleMaintenance',
+];
 
 type MenuItem = {
-  label: string;
+  label: MessageKey;
   icon: React.ComponentType<{ className?: string }>;
-  hint?: string;
+  hint?: MessageKey | string;
   href?: string;
   tone?: string;
 };
 
 /** Top-bar "Quick Action" menu — the same operations offered in the side panel. */
 const quickActionMenu: MenuItem[] = [
-  { label: 'Review Vendor Queue', icon: Store, hint: '12 waiting' },
-  { label: 'Add New Category', icon: FileText },
-  { label: 'Export Financial Report', icon: Download },
-  { label: 'Schedule Maintenance', icon: Clock3 },
+  { label: 'admin.actionReviewQueue', icon: Store, hint: '12 waiting' },
+  { label: 'admin.actionAddCategory', icon: FileText },
+  { label: 'admin.actionExportReport', icon: Download },
+  { label: 'admin.actionScheduleMaintenance', icon: Clock3 },
 ];
 
 const adminNotifications = [
@@ -134,27 +150,47 @@ const adminNotifications = [
 ] as const;
 
 const profileMenu: MenuItem[] = [
-  { label: 'Browse Marketplace', icon: Store, href: '#marketplace' },
-  { label: 'View Profile', icon: UserRound },
-  { label: 'Account Settings', icon: Settings, href: '#account-security' },
-  { label: 'Security Center', icon: Lock },
-  { label: 'Platform Status', icon: Globe, hint: 'Operational' },
+  { label: 'storefront.browseMarketplace', icon: Store, href: '#marketplace' },
+  { label: 'admin.viewProfile', icon: UserRound },
+  { label: 'admin.accountSettings', icon: Settings, href: '#account-security' },
+  { label: 'admin.navSecurityCenter', icon: Lock },
+  { label: 'admin.navTranslations', icon: Languages, href: '#admin-translations' },
+  { label: 'admin.platformStatus', icon: Globe, hint: 'admin.operational' },
 ];
 
-const dashboardRoutes = [
-  { label: 'Admin', hash: '#admin-dashboard', icon: ShieldAlert },
-  { label: 'Vendor', hash: '#vendor-dashboard', icon: Store },
-  { label: 'Member', hash: '#member-dashboard', icon: UserRound },
-] as const;
+const dashboardRoutes: { label: MessageKey; hash: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { label: 'admin.roleAdmin', hash: '#admin-dashboard', icon: ShieldAlert },
+  { label: 'admin.roleVendor', hash: '#vendor-dashboard', icon: Store },
+  { label: 'admin.roleMember', hash: '#member-dashboard', icon: UserRound },
+];
 
-type AdminMenu = 'quick' | 'notifications' | 'profile';
+type AdminMenu = 'language' | 'quick' | 'notifications' | 'profile';
 
 
-export function AdminDashboardPage() {
+export function AdminDashboardPage({ mainContent }: { mainContent?: ReactNode } = {}) {
+  const { t, locale } = useTranslation();
   const { user, logout } = useAuth();
   const [openMenu, setOpenMenu] = useState<AdminMenu | null>(null);
   const [notifCount, setNotifCount] = useState(adminNotifications.length + 3);
+  const [routeHash, setRouteHash] = useState(() => window.location.hash || '#admin-dashboard');
   const actions = useRef<HTMLDivElement>(null);
+  const onMembers = routeHash === '#admin-members';
+  const onVendors = routeHash === '#admin-vendors';
+  const onProducts = routeHash === '#admin-products';
+  const onServices = routeHash === '#admin-services';
+  const onOrders = routeHash === '#admin-orders';
+  const onDisputes = routeHash === '#admin-disputes';
+  const onFinancials = routeHash === '#admin-financials';
+  const onCategories = routeHash === '#admin-categories';
+  const onContent = routeHash === '#admin-content';
+  const onCommissions = routeHash === '#admin-commissions';
+  const onPpf = routeHash === '#admin-ppf';
+
+  useEffect(() => {
+    const onHashChange = () => setRouteHash(window.location.hash || '#admin-dashboard');
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   // A click anywhere outside the action cluster closes whichever menu is open.
   useEffect(() => {
@@ -200,26 +236,26 @@ export function AdminDashboardPage() {
                 <div className="flex items-center gap-2 text-lg font-bold leading-none">
                   <span>AsBeez</span>
                   <span className="rounded bg-yellow-500/20 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-yellow-300">
-                    Admin
+                    {t('admin.badge')}
                   </span>
                 </div>
-                <div className="mt-0.5 text-[10px] uppercase tracking-[0.18em] text-slate-400">Manage the hive</div>
+                <div className="mt-0.5 text-[10px] uppercase tracking-[0.18em] text-slate-400">{t('admin.manageTheHive')}</div>
               </div>
             </div>
-            <button className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-800 hover:text-white" aria-label="Toggle sidebar">
+            <button className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-800 hover:text-white" aria-label={t('admin.toggleSidebar')}>
               <ChevronDown className="h-4 w-4" />
             </button>
           </div>
 
           <div className="border-b border-slate-800 bg-slate-800/40 px-4 py-3">
             <div className="flex items-center gap-3">
-              <img
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
-                alt={user?.name ?? 'Administrator'}
-                className="h-10 w-10 rounded-full border-2 border-yellow-400 object-cover"
+              <Avatar
+                user={user}
+                className="h-10 w-10 shrink-0 rounded-full border-2 border-yellow-400"
+                fallbackTone="bg-yellow-400 text-slate-900"
               />
               <div>
-                <h4 className="text-sm font-semibold text-white">{user?.name ?? 'Administrator'}</h4>
+                <h4 className="text-sm font-semibold text-white">{user?.name ?? t('admin.administrator')}</h4>
                 <div className="text-[11px] font-medium capitalize text-yellow-300">{(user?.role ?? 'super-admin').replace('-', ' ')}</div>
               </div>
             </div>
@@ -227,18 +263,33 @@ export function AdminDashboardPage() {
 
           <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-4 text-sm">
             <div>
-              <div className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Main Menu</div>
+              <div className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">{t('admin.mainMenu')}</div>
               <ul className="space-y-1">
-                {sidebarItems.map(({ label, icon: Icon, active, badge }) => (
+                {sidebarItems.map(({ label, icon: Icon, href, badge }) => {
+                  const active = href === routeHash || (href === '#admin-dashboard' && (routeHash === '' || routeHash === '#admin-dashboard'));
+                  const className = `flex w-full items-center justify-between rounded-lg px-3 py-2.5 transition ${
+                    active ? 'bg-yellow-400 text-slate-900 font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                  }`;
+
+                  return (
                   <li key={label}>
-                    <button
-                      className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 transition ${
-                        active ? 'bg-yellow-400 text-slate-900 font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                      }`}
-                    >
+                    {href ? (
+                      <a href={href} className={className}>
+                        <span className="flex items-center gap-3">
+                          <Icon className="h-5 w-5" />
+                          <span>{t(label)}</span>
+                        </span>
+                        {badge ? (
+                          <span className="rounded-full bg-yellow-500/20 px-2 py-0.5 text-[10px] font-bold text-yellow-300">
+                            {badge}
+                          </span>
+                        ) : null}
+                      </a>
+                    ) : (
+                    <button className={className}>
                       <span className="flex items-center gap-3">
                         <Icon className="h-5 w-5" />
-                        <span>{label}</span>
+                        <span>{t(label)}</span>
                       </span>
                       {badge ? (
                         <span className="rounded-full bg-yellow-500/20 px-2 py-0.5 text-[10px] font-bold text-yellow-300">
@@ -246,39 +297,55 @@ export function AdminDashboardPage() {
                         </span>
                       ) : null}
                     </button>
+                    )}
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             </div>
 
             <div>
               <div className="mb-2 flex items-center justify-between px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                <span>Platform Config</span>
+                <span>{t('admin.platformConfig')}</span>
                 <ChevronDown className="h-4 w-4" />
               </div>
               <ul className="space-y-1">
-                {platformConfigItems.map((item) => (
-                  <li key={item}>
-                    <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-slate-400 transition hover:bg-slate-800 hover:text-white">
-                      <FileText className="h-4 w-4" />
-                      <span>{item}</span>
+                {platformConfigItems.map(({ label, icon: Icon, href }) => {
+                  const active = href === routeHash;
+                  const className = `flex w-full items-center gap-3 rounded-lg px-3 py-2 transition ${
+                    active ? 'bg-yellow-400 text-slate-900 font-semibold shadow-sm' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                  }`;
+
+                  return (
+                  <li key={label}>
+                    {href ? (
+                      <a href={href} className={className}>
+                        <Icon className="h-4 w-4" />
+                        <span>{t(label)}</span>
+                      </a>
+                    ) : (
+                    <button className={className}>
+                      <Icon className="h-4 w-4" />
+                      <span>{t(label)}</span>
                     </button>
+                    )}
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             </div>
 
             <div>
               <div className="mb-2 flex items-center justify-between px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                <span>System & Security</span>
+                <span>{t('admin.systemSecurity')}</span>
                 <ChevronDown className="h-4 w-4" />
               </div>
               <ul className="space-y-1">
                 {systemItems.map((item) => (
                   <li key={item}>
                     <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-slate-400 transition hover:bg-slate-800 hover:text-white">
-                      {item === 'Security Center' ? <Lock className="h-4 w-4" /> : item === 'System Settings' ? <Settings className="h-4 w-4" /> : <ShieldAlert className="h-4 w-4" />}
-                      <span>{item}</span>
+                      {item === 'admin.navSecurityCenter' ? <Lock className="h-4 w-4" /> : item === 'admin.navSystemSettings' ? <Settings className="h-4 w-4" /> : <ShieldAlert className="h-4 w-4" />}
+                      <span>{t(item)}</span>
                     </button>
                   </li>
                 ))}
@@ -288,15 +355,15 @@ export function AdminDashboardPage() {
 
           <div className="border-t border-slate-800 bg-slate-950/60 p-4 text-xs text-slate-300">
             <div className="flex items-center justify-between">
-              <span>Version 3.4.2</span>
-              <span className="rounded bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">PRODUCTION</span>
+              <span>{t('admin.version', { version: '3.4.2' })}</span>
+              <span className="rounded bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">{t('admin.production')}</span>
             </div>
             <div className="mt-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                <span>System Operational</span>
+                <span>{t('admin.systemOperational')}</span>
               </div>
-              <button className="text-slate-400 transition hover:text-rose-400" aria-label="Log out">
+              <button className="text-slate-400 transition hover:text-rose-400" aria-label={t('admin.logOut')}>
                 <Lock className="h-4 w-4" />
               </button>
             </div>
@@ -307,16 +374,82 @@ export function AdminDashboardPage() {
           <header className="relative z-40 border-b border-slate-200 bg-white/90 shadow-sm backdrop-blur-sm">
             <div className="flex items-center justify-between gap-4 px-4 py-4 sm:px-6">
               <div className="flex items-center gap-3">
-                <button className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 md:hidden" aria-label="Open sidebar">
+                <button className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 md:hidden" aria-label={t('admin.openSidebar')}>
                   <Menu className="h-5 w-5" />
                 </button>
                 <div className="hidden sm:block">
                   <div className="flex items-center gap-2 text-xs text-slate-500">
-                    <span>AsBeez Platform</span>
+                    <span>{t('admin.platform')}</span>
                     <ChevronRight className="h-3.5 w-3.5" />
-                    <span className="font-medium text-slate-800">Administration Center</span>
+                    <span className="font-medium text-slate-800">{t('admin.administrationCenter')}</span>
+                    {onMembers ? (
+                      <>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="font-medium text-slate-800">{t('admin.navMembers')}</span>
+                      </>
+                    ) : null}
+                    {onVendors ? (
+                      <>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="font-medium text-slate-800">{t('admin.navVendors')}</span>
+                      </>
+                    ) : null}
+                    {onProducts ? (
+                      <>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="font-medium text-slate-800">{t('nav.products')}</span>
+                      </>
+                    ) : null}
+                    {onServices ? (
+                      <>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="font-medium text-slate-800">{t('nav.services')}</span>
+                      </>
+                    ) : null}
+                    {onOrders ? (
+                      <>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="font-medium text-slate-800">{t('admin.navOrdersBookings')}</span>
+                      </>
+                    ) : null}
+                    {onDisputes ? (
+                      <>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="font-medium text-slate-800">{t('admin.navDisputes')}</span>
+                      </>
+                    ) : null}
+                    {onFinancials ? (
+                      <>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="font-medium text-slate-800">{t('admin.navFinancials')}</span>
+                      </>
+                    ) : null}
+                    {onCategories ? (
+                      <>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="font-medium text-slate-800">{t('admin.navCategories')}</span>
+                      </>
+                    ) : null}
+                    {onContent ? (
+                      <>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="font-medium text-slate-800">{t('admin.navContentCms')}</span>
+                      </>
+                    ) : null}
+                    {onCommissions ? (
+                      <>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="font-medium text-slate-800">{t('admin.navCommissions')}</span>
+                      </>
+                    ) : null}
+                    {onPpf ? (
+                      <>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                        <span className="font-medium text-slate-800">{t('admin.navPpf')}</span>
+                      </>
+                    ) : null}
                   </div>
-                  <h1 className="text-lg font-bold text-slate-900">Overview Dashboard</h1>
+                  <h1 className="text-lg font-bold text-slate-900">{onPpf ? t('admin.ppfTitle') : onCommissions ? t('admin.commissionsTitle') : onContent ? t('admin.contentTitle') : onCategories ? t('admin.categoriesTitle') : onFinancials ? t('admin.financialsTitle') : onDisputes ? t('admin.disputesTitle') : onOrders ? t('admin.ordersTitle') : onServices ? t('admin.servicesTitle') : onProducts ? t('admin.productsTitle') : onVendors ? t('admin.vendorsTitle') : onMembers ? t('admin.membersTitle') : t('admin.overviewDashboard')}</h1>
                 </div>
               </div>
 
@@ -324,7 +457,7 @@ export function AdminDashboardPage() {
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
-                  placeholder="Search members, vendors, orders, listings..."
+                  placeholder={t('admin.searchPlaceholder')}
                   className="w-full rounded-xl border border-transparent bg-slate-100 py-2 pl-9 pr-11 text-sm text-slate-700 outline-none transition focus:border-yellow-400 focus:bg-white focus:ring-4 focus:ring-yellow-200"
                 />
                 <kbd className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-slate-300 bg-white px-1.5 py-0.5 text-[10px] font-semibold text-slate-500">
@@ -333,7 +466,7 @@ export function AdminDashboardPage() {
               </div>
 
               <div ref={actions} className="flex items-center gap-2 sm:gap-3">
-                <div className="hidden items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 p-1 lg:flex" aria-label="Dashboard switcher">
+                <div className="hidden items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 p-1 lg:flex" aria-label={t('admin.dashboardSwitcher')}>
                   {dashboardRoutes.map(({ label, hash, icon: Icon }) => (
                     <button
                       key={hash}
@@ -341,12 +474,14 @@ export function AdminDashboardPage() {
                         window.location.hash = hash;
                       }}
                       className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
-                        hash === '#admin-dashboard' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-white hover:text-slate-900'
+                        hash === '#admin-dashboard' && (routeHash === '#admin-dashboard' || routeHash === '#admin-members' || routeHash === '#admin-vendors' || routeHash === '#admin-products' || routeHash === '#admin-services' || routeHash === '#admin-orders' || routeHash === '#admin-disputes' || routeHash === '#admin-financials' || routeHash === '#admin-categories' || routeHash === '#admin-content' || routeHash === '#admin-commissions' || routeHash === '#admin-ppf' || routeHash === '')
+                          ? 'bg-slate-900 text-white'
+                          : 'text-slate-600 hover:bg-white hover:text-slate-900'
                       }`}
-                      title={`Open ${label} dashboard`}
+                      title={t('admin.openDashboard', { label: t(label) })}
                     >
                       <Icon className="h-3.5 w-3.5" />
-                      {label}
+                      {t(label)}
                     </button>
                   ))}
                 </div>
@@ -360,14 +495,14 @@ export function AdminDashboardPage() {
                     className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-yellow-500"
                   >
                     <Sparkles className="h-4 w-4" />
-                    <span className="hidden sm:inline">Quick Action</span>
+                    <span className="hidden sm:inline">{t('admin.quickAction')}</span>
                     <ChevronDown className={`h-4 w-4 transition-transform ${openMenu === 'quick' ? 'rotate-180' : ''}`} />
                   </button>
 
                   {openMenu === 'quick' && (
                     <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-2xl border border-slate-300 bg-white py-2 shadow-2xl ring-1 ring-slate-900/10">
                       <div className="flex items-center justify-between gap-2 border-b border-slate-100 px-4 pb-2 pt-1">
-                        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Operations</span>
+                        <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t('admin.operations')}</span>
                         <MenuCloseButton onClose={() => setOpenMenu(null)} tone="text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus:ring-yellow-400" />
                       </div>
                       {quickActionMenu.map(({ label, icon: Icon, hint }) => (
@@ -379,7 +514,7 @@ export function AdminDashboardPage() {
                         >
                           <span className="flex items-center gap-2.5">
                             <Icon className="h-4 w-4 text-slate-400" />
-                            {label}
+                            {t(label)}
                           </span>
                           {hint ? (
                             <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-bold text-yellow-800">{hint}</span>
@@ -392,6 +527,14 @@ export function AdminDashboardPage() {
                   )}
                 </div>
 
+                <LanguageMenu
+                  open={openMenu === 'language'}
+                  onToggle={() => toggleMenu('language')}
+                  onClose={() => setOpenMenu(null)}
+                  buttonClassName="flex items-center gap-1 rounded-xl p-2 text-slate-600 transition hover:bg-slate-100"
+                  closeTone="text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus:ring-yellow-400"
+                />
+
                 {/* Notifications menu */}
                 <div className="relative">
                   <button
@@ -399,7 +542,7 @@ export function AdminDashboardPage() {
                     aria-haspopup="menu"
                     aria-expanded={openMenu === 'notifications'}
                     className="relative rounded-xl p-2 text-slate-600 transition hover:bg-slate-100"
-                    aria-label="Notifications"
+                    aria-label={t('admin.notifications')}
                   >
                     <Bell className="h-5 w-5" />
                     {notifCount > 0 && (
@@ -412,10 +555,10 @@ export function AdminDashboardPage() {
                   {openMenu === 'notifications' && (
                     <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-80 rounded-2xl border border-slate-300 bg-white py-2 shadow-2xl ring-1 ring-slate-900/10 sm:w-96">
                       <div className="flex items-center justify-between border-b border-slate-100 px-4 py-2">
-                        <h3 className="text-sm font-bold text-slate-900">Platform alerts</h3>
+                        <h3 className="text-sm font-bold text-slate-900">{t('admin.platformAlerts')}</h3>
                         <div className="flex items-center gap-2">
                           <button onClick={() => setNotifCount(0)} className="text-xs font-semibold text-yellow-700 hover:underline">
-                            Mark all read
+                            {t('admin.markAllRead')}
                           </button>
                           <MenuCloseButton onClose={() => setOpenMenu(null)} tone="text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus:ring-yellow-400" />
                         </div>
@@ -439,7 +582,7 @@ export function AdminDashboardPage() {
                         ))}
                       </div>
                       <div className="border-t border-slate-100 px-4 py-2 text-center">
-                        <a href="#" className="text-xs font-semibold text-slate-700 hover:text-yellow-700">View all alerts</a>
+                        <a href="#" className="text-xs font-semibold text-slate-700 hover:text-yellow-700">{t('admin.viewAllAlerts')}</a>
                       </div>
                     </div>
                   )}
@@ -451,10 +594,10 @@ export function AdminDashboardPage() {
                     onClick={() => toggleMenu('profile')}
                     aria-haspopup="menu"
                     aria-expanded={openMenu === 'profile'}
-                    aria-label="Account menu"
+                    aria-label={t('admin.accountMenu')}
                     className="flex items-center gap-2 rounded-xl p-1.5 transition hover:bg-slate-100"
                   >
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=80" alt="Admin profile" className="h-8 w-8 rounded-full object-cover ring-2 ring-yellow-400" />
+                    <Avatar user={user} className="h-8 w-8 rounded-full ring-2 ring-yellow-400" fallbackTone="bg-yellow-400 text-slate-900" />
                     <ChevronDown className={`hidden h-4 w-4 text-slate-500 transition-transform sm:block ${openMenu === 'profile' ? 'rotate-180' : ''}`} />
                   </button>
 
@@ -462,7 +605,7 @@ export function AdminDashboardPage() {
                     <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-60 rounded-2xl border border-slate-300 bg-white py-2 shadow-2xl ring-1 ring-slate-900/10">
                       <div className="flex items-start justify-between gap-2 border-b border-slate-100 px-4 py-2.5">
                         <div className="min-w-0">
-                          <p className="truncate text-sm font-bold text-slate-900">{user?.name ?? 'Administrator'}</p>
+                          <p className="truncate text-sm font-bold text-slate-900">{user?.name ?? t('admin.administrator')}</p>
                           <p className="truncate text-[11px] text-slate-500">{user?.email ?? ''}</p>
                           <span className="mt-1.5 inline-block rounded bg-yellow-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-yellow-800">
                             {(user?.role ?? 'super-admin').replace('-', ' ')}
@@ -481,9 +624,9 @@ export function AdminDashboardPage() {
                           >
                             <span className="flex items-center gap-2.5">
                               <Icon className="h-4 w-4 text-slate-400" />
-                              {label}
+                              {t(label)}
                             </span>
-                            {hint && <span className="text-[10px] font-semibold text-emerald-600">{hint}</span>}
+                            {hint && <span className="text-[10px] font-semibold text-emerald-600">{t(hint as MessageKey)}</span>}
                           </a>
                         ))}
                       </div>
@@ -494,7 +637,7 @@ export function AdminDashboardPage() {
                           className="flex w-full items-center gap-2.5 px-4 py-2 text-sm text-rose-600 transition hover:bg-rose-50"
                         >
                           <LogOut className="h-4 w-4" />
-                          <span>Sign Out</span>
+                          <span>{t('auth.signOut')}</span>
                         </button>
                       </div>
                     </div>
@@ -505,6 +648,7 @@ export function AdminDashboardPage() {
           </header>
 
           <main className="flex-1 overflow-y-auto space-y-8 p-4 sm:p-6 lg:p-8">
+            {mainContent ?? <>
             <section className="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-6 text-white shadow-xl">
               <div className="absolute inset-y-0 right-0 w-1/3 opacity-10" style={{ backgroundImage: 'radial-gradient(#F7B928 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
               <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
@@ -512,14 +656,14 @@ export function AdminDashboardPage() {
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="inline-flex items-center gap-1 rounded-full bg-yellow-400 px-2.5 py-1 text-[11px] font-semibold text-slate-900">
                       <Zap className="h-3.5 w-3.5" />
-                      Hive Live Operations
+                      {t('admin.liveOperations')}
                     </span>
                     <span className="font-mono text-[11px] text-slate-300">2026-09-17 21:37:55 UTC</span>
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Welcome back, Joey.</h2>
+                    <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{t('admin.welcomeBack', { name: user?.name?.split(' ')[0] ?? t('admin.administrator') })}</h2>
                     <p className="mt-2 max-w-2xl text-sm text-slate-300">
-                      Here is the real-time operational status across the AsBeez online marketplace. All services are running optimally with zero critical incidents.
+                      {t('admin.heroIntro')}
                     </p>
                   </div>
                 </div>
@@ -527,11 +671,11 @@ export function AdminDashboardPage() {
                 <div className="flex flex-wrap items-center gap-3">
                   <button className="inline-flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-700">
                     <ExternalLink className="h-4 w-4" />
-                    View Live Marketplace
+                    {t('admin.viewLiveMarketplace')}
                   </button>
                   <button className="inline-flex items-center gap-2 rounded-xl bg-yellow-400 px-4 py-2.5 text-sm font-bold text-slate-900 shadow-lg shadow-yellow-500/20 transition hover:bg-yellow-500">
                     <Download className="h-4 w-4" />
-                    Generate Executive Report
+                    {t('admin.generateReport')}
                   </button>
                 </div>
               </div>
@@ -542,7 +686,7 @@ export function AdminDashboardPage() {
                     <div className="flex items-center gap-2.5">
                       <span className={`h-2.5 w-2.5 rounded-full ${tone}`} />
                       <div className="min-w-0">
-                        <p className="text-[10px] uppercase tracking-wide text-slate-400">{label}</p>
+                        <p className="text-[10px] uppercase tracking-wide text-slate-400">{t(label)}</p>
                         <p className="truncate text-xs font-bold text-white">{status}</p>
                       </div>
                     </div>
@@ -555,7 +699,7 @@ export function AdminDashboardPage() {
               {kpis.map(({ label, value, delta, icon: Icon, tone }) => (
                 <div key={label} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{label}</span>
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">{t(label)}</span>
                     <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${tone}`}>
                       <Icon className="h-5 w-5" />
                     </div>
@@ -565,7 +709,7 @@ export function AdminDashboardPage() {
                     <div className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
                       <TrendingUp className="h-4 w-4" />
                       <span>{delta}</span>
-                      {delta.includes('%') ? <span className="font-normal text-slate-400">vs last month</span> : null}
+                      {delta.includes('%') ? <span className="font-normal text-slate-400">{t('admin.vsLastMonth')}</span> : null}
                     </div>
                   </div>
                 </div>
@@ -576,12 +720,12 @@ export function AdminDashboardPage() {
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="mb-6 flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Marketplace performance</p>
-                    <h3 className="text-xl font-bold text-slate-900">Revenue trend</h3>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t('admin.marketplacePerformance')}</p>
+                    <h3 className="text-xl font-bold text-slate-900">{t('admin.revenueTrend')}</h3>
                   </div>
                   <button className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
                     <Gauge className="h-4 w-4" />
-                    Live
+                    {t('admin.live')}
                   </button>
                 </div>
 
@@ -589,7 +733,7 @@ export function AdminDashboardPage() {
                   {revenueTrend.map((value, index) => (
                     <div key={index} className="flex flex-1 flex-col items-center gap-2">
                       <div className="flex w-full items-end justify-center rounded-t-xl bg-gradient-to-t from-yellow-400 to-amber-200" style={{ height: `${value}%` }} />
-                      <span className="text-[10px] uppercase tracking-wide text-slate-400">{['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][index]}</span>
+                      <span className="text-[10px] uppercase tracking-wide text-slate-400">{new Date(2000, index, 1).toLocaleDateString(locale, { month: 'short' })}</span>
                     </div>
                   ))}
                 </div>
@@ -597,8 +741,8 @@ export function AdminDashboardPage() {
 
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="mb-5 flex items-center justify-between">
-                  <h3 className="text-xl font-bold text-slate-900">Top categories</h3>
-                  <button className="text-sm font-semibold text-yellow-600">Overview</button>
+                  <h3 className="text-xl font-bold text-slate-900">{t('admin.topCategories')}</h3>
+                  <button className="text-sm font-semibold text-yellow-600">{t('admin.overview')}</button>
                 </div>
 
                 <div className="space-y-4">
@@ -621,11 +765,11 @@ export function AdminDashboardPage() {
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="mb-5 flex items-center justify-between">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Approvals</p>
-                    <h3 className="text-xl font-bold text-slate-900">Vendor queue</h3>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t('admin.approvals')}</p>
+                    <h3 className="text-xl font-bold text-slate-900">{t('admin.vendorQueue')}</h3>
                   </div>
                   <button className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50">
-                    View all
+                    {t('common.viewAll')}
                     <ChevronRight className="h-4 w-4" />
                   </button>
                 </div>
@@ -650,10 +794,10 @@ export function AdminDashboardPage() {
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="mb-5 flex items-center justify-between">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Notifications</p>
-                    <h3 className="text-xl font-bold text-slate-900">Live admin feed</h3>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t('admin.notifications')}</p>
+                    <h3 className="text-xl font-bold text-slate-900">{t('admin.liveAdminFeed')}</h3>
                   </div>
-                  <button className="text-sm font-semibold text-yellow-600">Mark all as read</button>
+                  <button className="text-sm font-semibold text-yellow-600">{t('admin.markAllAsRead')}</button>
                 </div>
 
                 <div className="space-y-3">
@@ -674,10 +818,10 @@ export function AdminDashboardPage() {
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="mb-5 flex items-center justify-between">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Performance leaders</p>
-                    <h3 className="text-xl font-bold text-slate-900">Top vendors</h3>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t('admin.performanceLeaders')}</p>
+                    <h3 className="text-xl font-bold text-slate-900">{t('admin.topVendors')}</h3>
                   </div>
-                  <button className="rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-200">Export</button>
+                  <button className="rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-200">{t('admin.export')}</button>
                 </div>
 
                 <div className="space-y-3">
@@ -704,8 +848,8 @@ export function AdminDashboardPage() {
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="mb-5 flex items-center justify-between">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Operations</p>
-                    <h3 className="text-xl font-bold text-slate-900">Quick actions</h3>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t('admin.operations')}</p>
+                    <h3 className="text-xl font-bold text-slate-900">{t('admin.quickActions')}</h3>
                   </div>
                 </div>
 
@@ -717,7 +861,7 @@ export function AdminDashboardPage() {
                         index === 0 ? 'bg-yellow-50 text-slate-900' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                       }`}
                     >
-                      <span>{action}</span>
+                      <span>{t(action)}</span>
                       <ChevronRight className="h-4 w-4" />
                     </button>
                   ))}
@@ -726,9 +870,9 @@ export function AdminDashboardPage() {
                 <div className="mt-6 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-600">
                   <div className="mb-2 flex items-center gap-2 font-semibold text-slate-800">
                     <AlertTriangle className="h-4 w-4 text-amber-600" />
-                    Review required
+                    {t('admin.reviewRequired')}
                   </div>
-                  <p>8 disputes are awaiting a response before the next SLA checkpoint.</p>
+                  <p>{t('admin.disputesWaiting')}</p>
                 </div>
               </div>
             </section>
@@ -737,8 +881,8 @@ export function AdminDashboardPage() {
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="mb-5 flex items-center justify-between">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Business health</p>
-                    <h3 className="text-xl font-bold text-slate-900">Conversion overview</h3>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t('admin.businessHealth')}</p>
+                    <h3 className="text-xl font-bold text-slate-900">{t('admin.conversionOverview')}</h3>
                   </div>
                   <div className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">
                     <ArrowUpRight className="h-3.5 w-3.5" />
@@ -748,21 +892,21 @@ export function AdminDashboardPage() {
 
                 <div className="grid gap-4 md:grid-cols-3">
                   <div className="rounded-xl bg-slate-50 p-4">
-                    <div className="text-xs uppercase tracking-wide text-slate-500">Checkout completion</div>
+                    <div className="text-xs uppercase tracking-wide text-slate-500">{t('admin.checkoutCompletion')}</div>
                     <div className="mt-2 text-3xl font-extrabold text-slate-900">81%</div>
                     <div className="mt-2 h-2.5 rounded-full bg-slate-200">
                       <div className="h-2.5 w-[81%] rounded-full bg-emerald-500" />
                     </div>
                   </div>
                   <div className="rounded-xl bg-slate-50 p-4">
-                    <div className="text-xs uppercase tracking-wide text-slate-500">Avg. cart value</div>
+                    <div className="text-xs uppercase tracking-wide text-slate-500">{t('admin.avgCartValue')}</div>
                     <div className="mt-2 text-3xl font-extrabold text-slate-900">$148</div>
                     <div className="mt-2 h-2.5 rounded-full bg-slate-200">
                       <div className="h-2.5 w-[68%] rounded-full bg-blue-500" />
                     </div>
                   </div>
                   <div className="rounded-xl bg-slate-50 p-4">
-                    <div className="text-xs uppercase tracking-wide text-slate-500">Member retention</div>
+                    <div className="text-xs uppercase tracking-wide text-slate-500">{t('admin.memberRetention')}</div>
                     <div className="mt-2 text-3xl font-extrabold text-slate-900">92%</div>
                     <div className="mt-2 h-2.5 rounded-full bg-slate-200">
                       <div className="h-2.5 w-[92%] rounded-full bg-violet-500" />
@@ -774,28 +918,29 @@ export function AdminDashboardPage() {
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="mb-5 flex items-center justify-between">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Security</p>
-                    <h3 className="text-xl font-bold text-slate-900">System integrity</h3>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">{t('admin.security')}</p>
+                    <h3 className="text-xl font-bold text-slate-900">{t('admin.systemIntegrity')}</h3>
                   </div>
                   <ShieldAlert className="h-5 w-5 text-emerald-600" />
                 </div>
 
                 <div className="space-y-4 text-sm">
                   <div className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-3">
-                    <span className="text-slate-700">MFA coverage</span>
+                    <span className="text-slate-700">{t('admin.mfaCoverage')}</span>
                     <span className="font-bold text-slate-900">96%</span>
                   </div>
                   <div className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-3">
-                    <span className="text-slate-700">Audit log sync</span>
-                    <span className="font-bold text-emerald-700">Healthy</span>
+                    <span className="text-slate-700">{t('admin.auditLogSync')}</span>
+                    <span className="font-bold text-emerald-700">{t('admin.healthy')}</span>
                   </div>
                   <div className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-3">
-                    <span className="text-slate-700">Fraud alert queue</span>
+                    <span className="text-slate-700">{t('admin.fraudQueue')}</span>
                     <span className="font-bold text-amber-700">12 items</span>
                   </div>
                 </div>
               </div>
             </section>
+            </>}
           </main>
         </div>
       </div>

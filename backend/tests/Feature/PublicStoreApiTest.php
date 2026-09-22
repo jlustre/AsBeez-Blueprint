@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use App\Models\PolicyType;
 use App\Models\Store;
 use App\Models\StorePolicy;
@@ -139,21 +140,23 @@ class PublicStoreApiTest extends TestCase
         $this->actingAs(User::factory()->role(User::ROLE_VENDOR)->create())
             ->getJson('/api/v1/structure')
             ->assertOk()
-            ->assertJsonCount(8, 'categories')
+            ->assertJsonCount(Category::active()->count(), 'categories')
             ->assertJsonCount(9, 'social_platforms')
             ->assertJsonCount(7, 'policy_types')
             ->assertJsonCount(14, 'setting_definitions')
-            ->assertJsonCount(31, 'nav_links');
+            // nav_links is keyed by context so one call serves both workspaces.
+            ->assertJsonCount(31, 'nav_links.vendor');
     }
 
     public function test_structure_omits_inactive_rows(): void
     {
-        \App\Models\Category::query()->limit(2)->update(['is_active' => false]);
+        $active = Category::active()->count();
+        Category::query()->limit(2)->update(['is_active' => false]);
 
         $this->actingAs(User::factory()->role(User::ROLE_VENDOR)->create())
             ->getJson('/api/v1/structure')
             ->assertOk()
-            ->assertJsonCount(6, 'categories');
+            ->assertJsonCount($active - 2, 'categories');
     }
 
     public function test_structure_carries_the_brand_paths_so_the_page_ships_none(): void
@@ -172,10 +175,10 @@ class PublicStoreApiTest extends TestCase
         \App\Models\NavLink::query()->limit(3)->update(['roles' => ['super-admin']]);
 
         $vendorCount = $this->actingAs(User::factory()->role(User::ROLE_VENDOR)->create())
-            ->getJson('/api/v1/structure')->json('nav_links');
+            ->getJson('/api/v1/structure')->json('nav_links.vendor');
 
         $adminCount = $this->actingAs(User::factory()->role(User::ROLE_SUPER_ADMIN)->create())
-            ->getJson('/api/v1/structure')->json('nav_links');
+            ->getJson('/api/v1/structure')->json('nav_links.vendor');
 
         $this->assertCount(28, $vendorCount);
         $this->assertCount(31, $adminCount);

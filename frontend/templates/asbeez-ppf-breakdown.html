@@ -1,0 +1,263 @@
+<!-- AsBeez PPF Breakdown | Blade/Livewire-ready page component -->
+<main
+    class="min-h-screen bg-[#fffdf7] text-slate-900 print:bg-white"
+    x-data="{ market: 'shop', travel: 'hotels', view: 'cards', openFaq: 1, calculated: true }"
+>
+    <!-- Hero -->
+    <section class="relative isolate overflow-hidden border-b border-amber-200/70 bg-gradient-to-br from-amber-50 via-white to-orange-50">
+        <div class="pointer-events-none absolute inset-0 opacity-30" aria-hidden="true">
+            <svg class="h-full w-full" viewBox="0 0 1200 520" fill="none">
+                <g stroke="#f59e0b" stroke-width="1">
+                    <path d="M1040 30l52 30v60l-52 30-52-30V60z"/><path d="M1148 92l52 30v60l-52 30-52-30v-60z"/>
+                    <path d="M95 360l44 25v50l-44 25-44-25v-50z"/><path d="M187 412l44 25v50l-44 25-44-25v-50z"/>
+                </g>
+            </svg>
+        </div>
+        <div class="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-20">
+            <nav aria-label="Breadcrumb" class="mb-8 flex items-center gap-2 text-sm text-slate-600">
+                <a href="#" class="rounded hover:text-amber-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">Home</a>
+                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L10.94 10 7.23 6.29a.75.75 0 1 1 1.06-1.06l4.24 4.24a.75.75 0 0 1 0 1.06l-4.24 4.24a.75.75 0 0 1-1.08 0Z" clip-rule="evenodd"/></svg>
+                <a href="#" class="rounded hover:text-amber-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">Partner Center</a>
+                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 0 1 .02-1.06L10.94 10 7.23 6.29a.75.75 0 1 1 1.06-1.06l4.24 4.24a.75.75 0 0 1 0 1.06l-4.24 4.24a.75.75 0 0 1-1.08 0Z" clip-rule="evenodd"/></svg>
+                <span aria-current="page" class="font-medium text-slate-900">Platform Participation Fees</span>
+            </nav>
+
+            <div class="grid gap-10 lg:grid-cols-[1fr_360px] lg:items-end">
+                <div>
+                    <p class="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-amber-700">Transparent partner pricing</p>
+                    <h1 class="max-w-4xl text-4xl font-black tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">Platform Participation Fees</h1>
+                    <p class="mt-6 max-w-3xl text-lg leading-8 text-slate-650">Simple, market-specific pricing for the tools, customer reach, transaction support, and partner services that help your business grow on AsBeez.</p>
+                    <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+                        <a href="#estimator" class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3 font-bold text-white shadow-sm transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2">
+                            Find Your Tier
+                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.69l-3.22-3.22a.75.75 0 0 1 1.06-1.06l4.5 4.5a.75.75 0 0 1 0 1.06l-4.5 4.5a.75.75 0 1 1-1.06-1.06l3.22-3.22H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+                        </a>
+                        <a href="#apply" class="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 font-bold text-slate-900 transition hover:border-amber-400 hover:bg-amber-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">Apply as a Partner</a>
+                    </div>
+                    <p class="mt-5 flex items-center gap-2 text-sm font-medium text-slate-600">
+                        <svg class="h-5 w-5 text-emerald-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.27a1 1 0 0 1-1.42 0l-3.8-3.84a1 1 0 1 1 1.42-1.408L8.8 11.85l6.49-6.554a1 1 0 0 1 1.414-.006Z" clip-rule="evenodd"/></svg>
+                        No surprise deductions. Review your estimated fees before accepting a transaction.
+                    </p>
+                </div>
+
+                <aside class="rounded-2xl border border-amber-200 bg-white/90 p-6 shadow-xl shadow-amber-900/5 backdrop-blur">
+                    <div class="flex items-center gap-3">
+                        <span class="grid h-11 w-11 place-items-center rounded-xl bg-amber-100 text-amber-800">
+                            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/><path d="M9 2h6"/></svg>
+                        </span>
+                        <div><p class="font-bold">Proposed fee schedule</p><p class="text-sm text-slate-500">Illustrative rates for planning</p></div>
+                    </div>
+                    <dl class="mt-5 space-y-3 border-t border-slate-200 pt-5 text-sm">
+                        <div class="flex justify-between gap-4"><dt class="text-slate-500">Markets</dt><dd class="font-bold">7</dd></div>
+                        <div class="flex justify-between gap-4"><dt class="text-slate-500">Common tiers</dt><dd class="font-bold">4</dd></div>
+                        <div class="flex justify-between gap-4"><dt class="text-slate-500">Pricing model</dt><dd class="text-right font-bold">Market-specific</dd></div>
+                    </dl>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fee distinction -->
+    <section class="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8" aria-labelledby="fee-distinction-title">
+        <div class="rounded-2xl border border-sky-200 bg-sky-50 p-5 sm:p-6">
+            <div class="flex gap-4">
+                <svg class="mt-0.5 h-6 w-6 shrink-0 text-sky-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+                <div>
+                    <h2 id="fee-distinction-title" class="font-bold text-sky-950">Know what the PPF covers</h2>
+                    <p class="mt-1 text-sm leading-6 text-sky-900">The PPF pays for AsBeez platform participation and services. Payment processing, taxes, government or supplier charges, and optional promotions may be separate. Regulated markets may use subscriptions, listings, or qualified-lead fees instead of a transaction percentage.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market tabs -->
+    <div class="sticky top-0 z-30 mt-8 border-y border-slate-200 bg-white/95 shadow-sm backdrop-blur print:static" role="region" aria-label="Market selection">
+        <div class="mx-auto max-w-7xl overflow-x-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex min-w-max gap-1 py-2" role="tablist" aria-label="Choose a market">
+                <template x-for="item in [{id:'shop',label:'Shop'},{id:'digital',label:'Digital'},{id:'services',label:'Services'},{id:'realestate',label:'Real Estate'},{id:'automotive',label:'Automotive'},{id:'insurance',label:'Insurance'},{id:'travel',label:'Travel'}]" :key="item.id">
+                    <button type="button" role="tab" :id="'tab-'+item.id" :aria-selected="market === item.id" :aria-controls="'panel-'+item.id" @click="market=item.id" class="rounded-xl px-4 py-2.5 text-sm font-bold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500" :class="market === item.id ? 'bg-amber-400 text-slate-950 shadow-sm' : 'text-slate-600 hover:bg-amber-50 hover:text-slate-950'" x-text="item.label"></button>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shared tiers -->
+    <section class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8" aria-labelledby="tier-overview">
+        <div class="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div><p class="text-sm font-bold uppercase tracking-wider text-amber-700">One framework, market-specific fees</p><h2 id="tier-overview" class="mt-2 text-3xl font-black tracking-tight">Four tiers that grow with you</h2></div>
+            <p class="max-w-lg text-sm leading-6 text-slate-600">Qualification thresholds and charges change by market. Your exact rate is confirmed before enrollment or transaction acceptance.</p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700">ENTRY</span><h3 class="mt-4 text-xl font-black">Hive Start</h3><p class="mt-2 text-sm leading-6 text-slate-600">Affordable entry with no or minimal commitment.</p></article>
+            <article class="rounded-2xl border border-amber-300 bg-amber-50 p-5 shadow-sm"><span class="rounded-full bg-amber-200 px-3 py-1 text-xs font-bold text-amber-900">GROWING</span><h3 class="mt-4 text-xl font-black">Hive Growth</h3><p class="mt-2 text-sm leading-6 text-slate-700">Lower fees, analytics, and expanded selling tools.</p></article>
+            <article class="rounded-2xl border border-slate-800 bg-slate-950 p-5 text-white shadow-sm"><span class="rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-amber-300">ADVANCED</span><h3 class="mt-4 text-xl font-black">Hive Pro</h3><p class="mt-2 text-sm leading-6 text-slate-300">Advanced tools, priority support, and lower rates.</p></article>
+            <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><span class="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold text-violet-800">CUSTOM</span><h3 class="mt-4 text-xl font-black">Enterprise</h3><p class="mt-2 text-sm leading-6 text-slate-600">Negotiated pricing, integrations, SLAs, and account management.</p></article>
+        </div>
+    </section>
+
+    <!-- Pricing panels -->
+    <section class="border-y border-slate-200 bg-slate-50" aria-label="Market fee comparisons">
+        <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <div class="mb-7 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <p class="text-sm font-bold uppercase tracking-wider text-amber-700">Proposed pricing</p>
+                    <h2 class="mt-2 text-3xl font-black tracking-tight">Compare participation fees</h2>
+                </div>
+                <div class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-1" aria-label="Pricing view">
+                    <button type="button" @click="view='cards'" :aria-pressed="view === 'cards'" class="rounded-lg px-3 py-2 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500" :class="view === 'cards' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'">Tier cards</button>
+                    <button type="button" @click="view='table'" :aria-pressed="view === 'table'" class="rounded-lg px-3 py-2 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500" :class="view === 'table' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'">Detailed table</button>
+                    <button type="button" disabled aria-disabled="true" title="Annual pricing coming soon" class="cursor-not-allowed rounded-lg px-3 py-2 text-sm font-bold text-slate-400">Annual soon</button>
+                </div>
+            </div>
+
+            <!-- Reusable panel: Shop -->
+            <div x-show="market === 'shop'" id="panel-shop" role="tabpanel" aria-labelledby="tab-shop">
+                <div class="mb-6"><h3 class="text-2xl font-black">Shop <span class="font-medium text-slate-500">— Physical Products</span></h3><p class="mt-2 text-slate-600">For merchants, manufacturers, wholesalers, artisans, and local sellers. PPF applies to item price after seller-funded discounts; stated tax and shipping are excluded.</p></div>
+                <div x-show="view === 'cards'" class="grid gap-4 lg:grid-cols-4">
+                    <!-- Each tier card can become <x-pricing-card> -->
+                    <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><h4 class="text-xl font-black">Hive Start</h4><p class="mt-1 text-sm text-slate-500">Under $5,000 monthly GMV</p><p class="mt-5 text-3xl font-black">10% <span class="text-sm font-medium text-slate-500">PPF</span></p><dl class="mt-5 space-y-2 text-sm"><div class="flex justify-between"><dt>Subscription</dt><dd class="font-bold">$0</dd></div><div class="flex justify-between"><dt>Minimum</dt><dd class="font-bold">$0.30/item</dd></div><div class="flex justify-between"><dt>Cap</dt><dd class="font-bold">$100/item</dd></div><div class="flex justify-between"><dt>Payout</dt><dd class="font-bold">T+7</dd></div></dl><button class="mt-6 w-full rounded-xl border border-slate-300 px-4 py-2.5 font-bold hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">Choose Hive Start</button></article>
+                    <article class="relative rounded-2xl border-2 border-amber-400 bg-white p-5 shadow-lg"><span class="absolute right-4 top-4 rounded-full bg-amber-200 px-2.5 py-1 text-xs font-black text-amber-950">BEST FIT</span><h4 class="text-xl font-black">Hive Growth</h4><p class="mt-1 text-sm text-slate-500">$5,000–$25,000 monthly GMV</p><p class="mt-5 text-3xl font-black">8% <span class="text-sm font-medium text-slate-500">PPF</span></p><dl class="mt-5 space-y-2 text-sm"><div class="flex justify-between"><dt>Subscription</dt><dd class="font-bold">$39/month</dd></div><div class="flex justify-between"><dt>Minimum</dt><dd class="font-bold">$0.30/item</dd></div><div class="flex justify-between"><dt>Cap</dt><dd class="font-bold">$100/item</dd></div><div class="flex justify-between"><dt>Payout</dt><dd class="font-bold">T+5</dd></div></dl><button class="mt-6 w-full rounded-xl bg-amber-400 px-4 py-2.5 font-black text-slate-950 hover:bg-amber-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600">Choose Hive Growth</button></article>
+                    <article class="rounded-2xl border border-slate-800 bg-slate-950 p-5 text-white shadow-sm"><h4 class="text-xl font-black">Hive Pro</h4><p class="mt-1 text-sm text-slate-400">$25,000–$100,000 monthly GMV</p><p class="mt-5 text-3xl font-black">6% <span class="text-sm font-medium text-slate-400">PPF</span></p><dl class="mt-5 space-y-2 text-sm text-slate-200"><div class="flex justify-between"><dt>Subscription</dt><dd class="font-bold">$149/month</dd></div><div class="flex justify-between"><dt>Minimum</dt><dd class="font-bold">$0.25/item</dd></div><div class="flex justify-between"><dt>Cap</dt><dd class="font-bold">$75/item</dd></div><div class="flex justify-between"><dt>Payout</dt><dd class="font-bold">T+3</dd></div></dl><button class="mt-6 w-full rounded-xl bg-white px-4 py-2.5 font-black text-slate-950 hover:bg-amber-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">Choose Hive Pro</button></article>
+                    <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><h4 class="text-xl font-black">Enterprise</h4><p class="mt-1 text-sm text-slate-500">Over $100,000 monthly GMV</p><p class="mt-5 text-3xl font-black">4%–6%</p><p class="mt-1 text-sm text-slate-500">Custom subscription, cap, and SLA</p><ul class="mt-5 space-y-2 text-sm text-slate-700"><li>✓ Account manager</li><li>✓ Custom integrations</li><li>✓ Negotiated payout</li><li>✓ Volume terms</li></ul><button class="mt-6 w-full rounded-xl border border-slate-900 px-4 py-2.5 font-bold hover:bg-slate-900 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">Contact Sales</button></article>
+                </div>
+                <div x-show="view === 'table'" class="overflow-hidden rounded-2xl border border-slate-200 bg-white"><div class="overflow-x-auto"><table class="min-w-full text-left text-sm"><caption class="sr-only">Shop participation fee comparison</caption><thead class="bg-slate-900 text-white"><tr><th scope="col" class="p-4">Tier</th><th scope="col" class="p-4">Qualification</th><th scope="col" class="p-4">Subscription</th><th scope="col" class="p-4">PPF</th><th scope="col" class="p-4">Minimum</th><th scope="col" class="p-4">Cap</th></tr></thead><tbody class="divide-y divide-slate-200"><tr><th scope="row" class="p-4 font-bold">Hive Start</th><td class="p-4">Under $5k GMV</td><td class="p-4">$0</td><td class="p-4">10%</td><td class="p-4">$0.30</td><td class="p-4">$100</td></tr><tr class="bg-amber-50"><th scope="row" class="p-4 font-bold">Hive Growth</th><td class="p-4">$5k–$25k</td><td class="p-4">$39/mo</td><td class="p-4">8%</td><td class="p-4">$0.30</td><td class="p-4">$100</td></tr><tr><th scope="row" class="p-4 font-bold">Hive Pro</th><td class="p-4">$25k–$100k</td><td class="p-4">$149/mo</td><td class="p-4">6%</td><td class="p-4">$0.25</td><td class="p-4">$75</td></tr><tr><th scope="row" class="p-4 font-bold">Enterprise</th><td class="p-4">Over $100k</td><td class="p-4">Custom</td><td class="p-4">4%–6%</td><td class="p-4">Negotiated</td><td class="p-4">Negotiated</td></tr></tbody></table></div></div>
+                <div class="mt-5 grid gap-4 sm:grid-cols-2"><div class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950"><strong>Example:</strong> A $100 item on Hive Growth produces an $8.00 PPF.</div><div class="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600"><strong>Upgrade guidance:</strong> Growth begins to offset its subscription at roughly $1,950 monthly GMV compared with Start.</div></div>
+            </div>
+
+            <!-- Compact reusable tables for remaining markets -->
+            <div x-show="market === 'digital'" id="panel-digital" role="tabpanel" aria-labelledby="tab-digital">
+                <div class="mb-6"><h3 class="text-2xl font-black">Digital <span class="font-medium text-slate-500">— Digital Products</span></h3><p class="mt-2 text-slate-600">For creators, publishers, software vendors, educators, and template sellers. Fees apply to the license or access price after creator discounts, excluding tax.</p></div>
+                <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div class="overflow-x-auto"><table class="min-w-full text-left text-sm"><caption class="sr-only">Digital product fee tiers</caption><thead class="bg-slate-900 text-white"><tr><th class="p-4" scope="col">Tier</th><th class="p-4" scope="col">Qualification</th><th class="p-4" scope="col">Subscription</th><th class="p-4" scope="col">PPF + fixed</th><th class="p-4" scope="col">Cap</th><th class="p-4" scope="col">Included</th></tr></thead><tbody class="divide-y divide-slate-200"><tr><th class="p-4 font-bold" scope="row">Hive Start</th><td class="p-4">Under $2k GMV</td><td class="p-4">$0</td><td class="p-4">12% + $0.25</td><td class="p-4">$75</td><td class="p-4">Hosting, secure delivery, licenses</td></tr><tr class="bg-amber-50"><th class="p-4 font-bold" scope="row">Hive Growth <span class="ml-1 rounded bg-amber-200 px-2 py-0.5 text-xs">Best fit</span></th><td class="p-4">$2k–$10k</td><td class="p-4">$29/mo</td><td class="p-4">10% + $0.20</td><td class="p-4">$60</td><td class="p-4">Affiliates, coupons, analytics</td></tr><tr><th class="p-4 font-bold" scope="row">Hive Pro</th><td class="p-4">$10k–$50k</td><td class="p-4">$99/mo</td><td class="p-4">8% + $0.15</td><td class="p-4">$50</td><td class="p-4">API, bundles, priority review</td></tr><tr><th class="p-4 font-bold" scope="row">Enterprise</th><td class="p-4">Over $50k</td><td class="p-4">Custom</td><td class="p-4">5%–8% + custom</td><td class="p-4">$40/custom</td><td class="p-4">SLA and bulk licensing</td></tr></tbody></table></div></div>
+                <div class="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950"><strong>Example:</strong> A $50 digital product on Hive Growth produces a $5.20 PPF before payment processing.</div>
+            </div>
+
+            <div x-show="market === 'services'" id="panel-services" role="tabpanel" aria-labelledby="tab-services">
+                <div class="mb-6"><h3 class="text-2xl font-black">Services <span class="font-medium text-slate-500">— Professional Services</span></h3><p class="mt-2 text-slate-600">For freelancers, contractors, professionals, agencies, and local businesses. Fees apply to funded milestones or booking amounts released to the provider.</p></div>
+                <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div class="overflow-x-auto"><table class="min-w-full text-left text-sm"><caption class="sr-only">Professional service fee tiers</caption><thead class="bg-slate-900 text-white"><tr><th class="p-4">Tier</th><th class="p-4">Qualification</th><th class="p-4">Subscription</th><th class="p-4">PPF</th><th class="p-4">Minimum</th><th class="p-4">Cap</th><th class="p-4">Features</th></tr></thead><tbody class="divide-y divide-slate-200"><tr><th class="p-4 font-bold">Hive Start</th><td class="p-4">Under $5k billings</td><td class="p-4">$0</td><td class="p-4">12%</td><td class="p-4">$2</td><td class="p-4">$750/project</td><td class="p-4">Milestones, messaging</td></tr><tr class="bg-amber-50"><th class="p-4 font-bold">Hive Growth</th><td class="p-4">$5k–$20k</td><td class="p-4">$49/mo</td><td class="p-4">10%</td><td class="p-4">$2</td><td class="p-4">$600</td><td class="p-4">Scheduling, proposals</td></tr><tr><th class="p-4 font-bold">Hive Pro</th><td class="p-4">$20k–$75k</td><td class="p-4">$149/mo</td><td class="p-4">8%</td><td class="p-4">$1</td><td class="p-4">$500</td><td class="p-4">Recurring billing, teams</td></tr><tr><th class="p-4 font-bold">Enterprise</th><td class="p-4">Over $75k</td><td class="p-4">Custom</td><td class="p-4">5%–8%</td><td class="p-4">Custom</td><td class="p-4">Custom</td><td class="p-4">API, workforce tools</td></tr></tbody></table></div></div>
+                <div class="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950"><strong>Example:</strong> A released $1,000 milestone on Hive Pro produces an $80 PPF. Taxes, tips, and approved pass-through expenses are excluded.</div>
+            </div>
+
+            <div x-show="market === 'realestate'" id="panel-realestate" role="tabpanel" aria-labelledby="tab-realestate">
+                <div class="mb-6"><h3 class="text-2xl font-black">Real Estate</h3><p class="mt-2 text-slate-600">For agents, brokers, developers, property managers, and approved property-service providers.</p></div>
+                <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div class="overflow-x-auto"><table class="min-w-full text-left text-sm"><caption class="sr-only">Real estate participation tiers</caption><thead class="bg-slate-900 text-white"><tr><th class="p-4">Tier</th><th class="p-4">Partner</th><th class="p-4">Subscription</th><th class="p-4">Listing</th><th class="p-4">Buyer / seller lead</th><th class="p-4">Capacity</th></tr></thead><tbody class="divide-y divide-slate-200"><tr><th class="p-4 font-bold">Hive Start</th><td class="p-4">Individual agent</td><td class="p-4">$49/mo</td><td class="p-4">$25</td><td class="p-4">$50 / $75</td><td class="p-4">5 listings</td></tr><tr class="bg-amber-50"><th class="p-4 font-bold">Hive Growth</th><td class="p-4">Team/small brokerage</td><td class="p-4">$149/mo</td><td class="p-4">$15</td><td class="p-4">$40 / $60</td><td class="p-4">25 listings</td></tr><tr><th class="p-4 font-bold">Hive Pro</th><td class="p-4">Brokerage</td><td class="p-4">$499/mo</td><td class="p-4">$5</td><td class="p-4">$30 / $45</td><td class="p-4">150 listings</td></tr><tr><th class="p-4 font-bold">Enterprise</th><td class="p-4">Franchise/MLS</td><td class="p-4">Custom</td><td class="p-4">Custom</td><td class="p-4">Custom</td><td class="p-4">Custom feed/API</td></tr></tbody></table></div></div>
+                <div class="mt-5 grid gap-4 md:grid-cols-2"><div class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950"><strong>Example:</strong> Hive Growth with five listings and three buyer leads: $149 + $75 + $120 = <strong>$344</strong>.</div><div class="rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm text-violet-950"><strong>Compliance:</strong> Pricing covers platform, listing, advertising, and qualified leads. Closing-contingent compensation requires a legally approved licensed arrangement.</div></div>
+            </div>
+
+            <div x-show="market === 'automotive'" id="panel-automotive" role="tabpanel" aria-labelledby="tab-automotive">
+                <div class="mb-6"><h3 class="text-2xl font-black">Automotive</h3><p class="mt-2 text-slate-600">For dealers, private sellers, fleet operators, repair shops, and automotive businesses. There is no uncapped percentage of vehicle value.</p></div>
+                <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div class="overflow-x-auto"><table class="min-w-full text-left text-sm"><caption class="sr-only">Automotive participation tiers</caption><thead class="bg-slate-900 text-white"><tr><th class="p-4">Tier</th><th class="p-4">Qualification</th><th class="p-4">Subscription</th><th class="p-4">Listing</th><th class="p-4">Lead</th><th class="p-4">Sale cap</th></tr></thead><tbody class="divide-y divide-slate-200"><tr><th class="p-4 font-bold">Hive Start</th><td class="p-4">Private/small dealer</td><td class="p-4">$0</td><td class="p-4">$39/vehicle</td><td class="p-4">$35</td><td class="p-4">$199</td></tr><tr class="bg-amber-50"><th class="p-4 font-bold">Hive Growth</th><td class="p-4">Up to 50 vehicles</td><td class="p-4">$199/mo</td><td class="p-4">$15</td><td class="p-4">$25</td><td class="p-4">$149</td></tr><tr><th class="p-4 font-bold">Hive Pro</th><td class="p-4">Up to 250</td><td class="p-4">$699/mo</td><td class="p-4">$5</td><td class="p-4">$15</td><td class="p-4">$99</td></tr><tr><th class="p-4 font-bold">Enterprise</th><td class="p-4">Dealer group/fleet</td><td class="p-4">Custom</td><td class="p-4">Custom</td><td class="p-4">Custom</td><td class="p-4">$0–$99</td></tr></tbody></table></div></div>
+                <div class="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950"><strong>Example:</strong> Hive Growth with 20 new listings and 10 qualified leads: $199 + $300 + $250 = <strong>$749</strong>.</div>
+            </div>
+
+            <div x-show="market === 'insurance'" id="panel-insurance" role="tabpanel" aria-labelledby="tab-insurance">
+                <div class="mb-6"><h3 class="text-2xl font-black">Insurance</h3><p class="mt-2 text-slate-600">Technology and consent-based lead pricing for licensed producers, agencies, carriers, and approved distribution organizations.</p></div>
+                <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div class="overflow-x-auto"><table class="min-w-full text-left text-sm"><caption class="sr-only">Insurance participation tiers</caption><thead class="bg-slate-900 text-white"><tr><th class="p-4">Tier</th><th class="p-4">Partner</th><th class="p-4">Subscription</th><th class="p-4">Lead pricing</th><th class="p-4">Appointment</th><th class="p-4">Included</th></tr></thead><tbody class="divide-y divide-slate-200"><tr><th class="p-4 font-bold">Hive Start</th><td class="p-4">Licensed individual</td><td class="p-4">$39/mo</td><td class="p-4">$15–$60</td><td class="p-4">$40–$100</td><td class="p-4">Verification, lead tools</td></tr><tr class="bg-amber-50"><th class="p-4 font-bold">Hive Growth</th><td class="p-4">Agency team</td><td class="p-4">$129/mo</td><td class="p-4">10% discount</td><td class="p-4">$35–$90</td><td class="p-4">Routing, CRM export</td></tr><tr><th class="p-4 font-bold">Hive Pro</th><td class="p-4">Multi-agent agency</td><td class="p-4">$399/mo</td><td class="p-4">20% discount</td><td class="p-4">$30–$80</td><td class="p-4">API, compliance analytics</td></tr><tr><th class="p-4 font-bold">Enterprise</th><td class="p-4">Carrier/IMO/FMO</td><td class="p-4">Custom</td><td class="p-4">Custom</td><td class="p-4">Custom</td><td class="p-4">Integrations and SLA</td></tr></tbody></table></div></div>
+                <div class="mt-5 grid gap-4 md:grid-cols-2"><div class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950"><strong>Example:</strong> Hive Growth with ten standard $25 leads: $129 + $225 = <strong>$354</strong>.</div><div class="rounded-xl border border-violet-200 bg-violet-50 p-4 text-sm text-violet-950"><strong>Compliance:</strong> Premium- or commission-based compensation requires appropriate licensing, appointments, contracts, and jurisdictional approval.</div></div>
+            </div>
+
+            <div x-show="market === 'travel'" id="panel-travel" role="tabpanel" aria-labelledby="tab-travel">
+                <div class="mb-6"><h3 class="text-2xl font-black">Travel</h3><p class="mt-2 text-slate-600">Separate economics for accommodations, ticketing, and vehicle rentals.</p></div>
+                <div class="mb-5 inline-flex rounded-xl border border-slate-200 bg-white p-1" role="tablist" aria-label="Travel fee type">
+                    <button class="rounded-lg px-4 py-2 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500" :class="travel==='hotels'?'bg-amber-400 text-slate-950':'text-slate-600'" @click="travel='hotels'" :aria-selected="travel==='hotels'" role="tab">Hotels</button>
+                    <button class="rounded-lg px-4 py-2 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500" :class="travel==='flights'?'bg-amber-400 text-slate-950':'text-slate-600'" @click="travel='flights'" :aria-selected="travel==='flights'" role="tab">Flights</button>
+                    <button class="rounded-lg px-4 py-2 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500" :class="travel==='cars'?'bg-amber-400 text-slate-950':'text-slate-600'" @click="travel='cars'" :aria-selected="travel==='cars'" role="tab">Car rentals</button>
+                </div>
+                <div x-show="travel==='hotels'" class="overflow-hidden rounded-2xl border border-slate-200 bg-white"><div class="overflow-x-auto"><table class="min-w-full text-left text-sm"><caption class="sr-only">Hotel fee tiers</caption><thead class="bg-slate-900 text-white"><tr><th class="p-4">Tier</th><th class="p-4">Booking value</th><th class="p-4">Subscription</th><th class="p-4">Commission</th><th class="p-4">Minimum</th></tr></thead><tbody class="divide-y"><tr><th class="p-4">Hive Start</th><td class="p-4">Under $10k</td><td class="p-4">$0</td><td class="p-4">12%</td><td class="p-4">$3/stay</td></tr><tr class="bg-amber-50"><th class="p-4">Hive Growth</th><td class="p-4">$10k–$50k</td><td class="p-4">$99/mo</td><td class="p-4">11%</td><td class="p-4">$3</td></tr><tr><th class="p-4">Hive Pro</th><td class="p-4">$50k–$250k</td><td class="p-4">$299/mo</td><td class="p-4">10%</td><td class="p-4">$2</td></tr><tr><th class="p-4">Enterprise</th><td class="p-4">Over $250k</td><td class="p-4">Custom</td><td class="p-4">7%–10%</td><td class="p-4">Custom</td></tr></tbody></table></div><p class="border-t p-4 text-sm text-emerald-900"><strong>Example:</strong> A $600 eligible stay on Hive Growth produces a $66 booking PPF.</p></div>
+                <div x-show="travel==='flights'" class="overflow-hidden rounded-2xl border border-slate-200 bg-white"><div class="overflow-x-auto"><table class="min-w-full text-left text-sm"><caption class="sr-only">Flight service fees</caption><thead class="bg-slate-900 text-white"><tr><th class="p-4">Plan</th><th class="p-4">Domestic</th><th class="p-4">International</th><th class="p-4">Change service</th><th class="p-4">Features</th></tr></thead><tbody class="divide-y"><tr><th class="p-4">Self-Service</th><td class="p-4">$5</td><td class="p-4">$15</td><td class="p-4">$25 + airline</td><td class="p-4">Search, booking, email support</td></tr><tr class="bg-amber-50"><th class="p-4">Assisted</th><td class="p-4">$15</td><td class="p-4">$30</td><td class="p-4">$40 + airline</td><td class="p-4">Agent assistance</td></tr><tr><th class="p-4">Business</th><td class="p-4" colspan="2">$19/user/mo; $0–$5 ticket</td><td class="p-4">$15 + airline</td><td class="p-4">Profiles and policy tools</td></tr><tr><th class="p-4">Enterprise</th><td class="p-4">Custom</td><td class="p-4">Custom</td><td class="p-4">Custom</td><td class="p-4">Account support</td></tr></tbody></table></div><p class="border-t p-4 text-sm text-emerald-900"><strong>Example:</strong> A $1,200 self-service international ticket includes a separate $15 AsBeez service fee.</p></div>
+                <div x-show="travel==='cars'" class="overflow-hidden rounded-2xl border border-slate-200 bg-white"><div class="overflow-x-auto"><table class="min-w-full text-left text-sm"><caption class="sr-only">Car rental fee tiers</caption><thead class="bg-slate-900 text-white"><tr><th class="p-4">Tier</th><th class="p-4">Rental value</th><th class="p-4">Subscription</th><th class="p-4">Commission</th><th class="p-4">Minimum / cap</th></tr></thead><tbody class="divide-y"><tr><th class="p-4">Hive Start</th><td class="p-4">Under $10k</td><td class="p-4">$0</td><td class="p-4">10%</td><td class="p-4">$3 / $150</td></tr><tr class="bg-amber-50"><th class="p-4">Hive Growth</th><td class="p-4">$10k–$50k</td><td class="p-4">$79/mo</td><td class="p-4">9%</td><td class="p-4">$3 / $125</td></tr><tr><th class="p-4">Hive Pro</th><td class="p-4">$50k–$200k</td><td class="p-4">$249/mo</td><td class="p-4">8%</td><td class="p-4">$2 / $100</td></tr><tr><th class="p-4">Enterprise</th><td class="p-4">Over $200k</td><td class="p-4">Custom</td><td class="p-4">5%–8%</td><td class="p-4">Custom</td></tr></tbody></table></div><p class="border-t p-4 text-sm text-emerald-900"><strong>Example:</strong> A $500 eligible rental on Hive Pro produces a $40 booking PPF.</p></div>
+                <p class="mt-4 text-sm text-slate-600">Travel fee bases exclude government taxes, airport charges, refundable deposits, damage, fines, fuel, tolls, and separately priced optional products.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estimator -->
+    <section id="estimator" class="mx-auto max-w-7xl scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="estimator-title">
+        <div class="overflow-hidden rounded-3xl border border-slate-800 bg-slate-950 text-white shadow-2xl">
+            <div class="grid lg:grid-cols-[1.1fr_.9fr]">
+                <form class="p-6 sm:p-9" wire:submit.prevent="calculateEstimate" novalidate>
+                    <p class="text-sm font-bold uppercase tracking-wider text-amber-300">Illustrative calculator</p>
+                    <h2 id="estimator-title" class="mt-2 text-3xl font-black">Estimate Your Fees</h2>
+                    <p class="mt-2 text-sm leading-6 text-slate-300">Adjust the inputs to compare a representative monthly cost.</p>
+                    <div class="mt-7 grid gap-5 sm:grid-cols-2">
+                        <div><label for="est-market" class="mb-2 block text-sm font-bold">Market</label><select id="est-market" wire:model.live="selectedMarket" class="w-full rounded-xl border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400"><option>Shop</option><option>Digital</option><option>Services</option><option>Real Estate</option><option>Automotive</option><option>Insurance</option><option>Travel</option></select></div>
+                        <div><label for="est-tier" class="mb-2 block text-sm font-bold">Tier</label><select id="est-tier" wire:model.live="selectedTier" class="w-full rounded-xl border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400"><option>Hive Start</option><option selected>Hive Growth</option><option>Hive Pro</option><option>Enterprise</option></select></div>
+                        <div><label for="monthly-volume" class="mb-2 block text-sm font-bold">Monthly sales or billings</label><div class="relative"><span class="absolute left-4 top-3 text-slate-400">$</span><input id="monthly-volume" type="number" value="10000" min="0" wire:model.live.debounce.400ms="monthlyVolume" class="w-full rounded-xl border border-slate-600 bg-slate-900 py-3 pl-8 pr-4 text-white focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400"></div></div>
+                        <div><label for="transaction-count" class="mb-2 block text-sm font-bold">Transactions or bookings</label><input id="transaction-count" type="number" value="100" min="1" wire:model.live.debounce.400ms="transactionCount" class="w-full rounded-xl border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400"></div>
+                        <div><label for="average-value" class="mb-2 block text-sm font-bold">Average value</label><div class="relative"><span class="absolute left-4 top-3 text-slate-400">$</span><input id="average-value" type="number" value="100" min="0" class="w-full rounded-xl border border-slate-600 bg-slate-900 py-3 pl-8 pr-4 text-white focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400"></div></div>
+                        <div><label for="processing-rate" class="mb-2 block text-sm font-bold">Estimated processing rate</label><select id="processing-rate" class="w-full rounded-xl border border-slate-600 bg-slate-900 px-4 py-3 text-white focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400"><option>2.9% + $0.30</option><option>Enter contracted rate</option></select></div>
+                    </div>
+                    <p class="mt-3 text-sm text-rose-300" role="alert" hidden>Enter a value greater than zero.</p>
+                    <button type="submit" wire:click="calculateEstimate" class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 py-3.5 font-black text-slate-950 hover:bg-amber-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:cursor-wait disabled:opacity-60">
+                        <span wire:loading.remove>Calculate estimate</span><span wire:loading>Calculating…</span>
+                    </button>
+                    <p class="mt-4 text-xs leading-5 text-slate-400">This estimate is illustrative and is not a quote or contract. Final fees depend on your market, category, jurisdiction, agreement, and transaction details.</p>
+                </form>
+                <div class="bg-white p-6 text-slate-900 sm:p-9" aria-live="polite" aria-atomic="true">
+                    <div wire:loading class="space-y-4"><div class="h-6 w-36 animate-pulse rounded bg-slate-200"></div><div class="h-16 animate-pulse rounded-xl bg-slate-100"></div><div class="h-40 animate-pulse rounded-xl bg-slate-100"></div></div>
+                    <div wire:loading.remove>
+                        <div class="flex items-center justify-between"><div><p class="text-sm font-bold uppercase tracking-wider text-slate-500">Monthly estimate</p><h3 class="mt-1 text-2xl font-black">Hive Growth</h3></div><span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-800">BEST FIT</span></div>
+                        <dl class="mt-7 divide-y divide-slate-200 rounded-2xl border border-slate-200">
+                            <div class="flex justify-between gap-4 p-4"><dt>Participation fee</dt><dd class="font-bold">$800.00</dd></div>
+                            <div class="flex justify-between gap-4 p-4"><dt>Monthly subscription</dt><dd class="font-bold">$39.00</dd></div>
+                            <div class="flex justify-between gap-4 p-4"><dt>Estimated processing</dt><dd class="font-bold">$320.00</dd></div>
+                            <div class="flex justify-between gap-4 bg-slate-50 p-4"><dt class="font-bold">Estimated total</dt><dd class="text-xl font-black">$1,159.00</dd></div>
+                        </dl>
+                        <div class="mt-5 rounded-xl bg-amber-50 p-4"><p class="text-sm font-bold text-amber-950">Effective PPF rate: 8.0%</p><p class="mt-1 text-sm text-amber-900">Estimated proceeds before taxes and business costs: $8,841.00</p></div>
+                        <p class="mt-5 text-sm text-slate-600">Based on these inputs, Hive Growth is estimated to save <strong class="text-slate-950">$161/month</strong> compared with Hive Start.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fee anatomy -->
+    <section class="bg-amber-50/70 py-16" aria-labelledby="fee-anatomy-title">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="grid gap-10 lg:grid-cols-2 lg:items-start">
+                <div><p class="text-sm font-bold uppercase tracking-wider text-amber-700">Clear by design</p><h2 id="fee-anatomy-title" class="mt-2 text-3xl font-black">Understand every line of your fee</h2><div class="mt-7 grid gap-3 sm:grid-cols-2">
+                    <div class="rounded-xl bg-white p-4 shadow-sm"><h3 class="font-bold">Participation fee</h3><p class="mt-1 text-sm text-slate-600">Market-specific platform charge.</p></div><div class="rounded-xl bg-white p-4 shadow-sm"><h3 class="font-bold">Subscription</h3><p class="mt-1 text-sm text-slate-600">Monthly plan access when applicable.</p></div><div class="rounded-xl bg-white p-4 shadow-sm"><h3 class="font-bold">Processing</h3><p class="mt-1 text-sm text-slate-600">Shown separately from AsBeez PPF.</p></div><div class="rounded-xl bg-white p-4 shadow-sm"><h3 class="font-bold">Listing or lead</h3><p class="mt-1 text-sm text-slate-600">Used by regulated and high-value markets.</p></div><div class="rounded-xl bg-white p-4 shadow-sm"><h3 class="font-bold">Taxes and charges</h3><p class="mt-1 text-sm text-slate-600">Government and supplier amounts are itemized.</p></div><div class="rounded-xl bg-white p-4 shadow-sm"><h3 class="font-bold">Optional promotion</h3><p class="mt-1 text-sm text-slate-600">Never bundled without a clear label.</p></div>
+                </div></div>
+                <aside class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><div class="flex items-center justify-between border-b pb-4"><div><p class="font-black">Example statement</p><p class="text-sm text-slate-500">Order ABZ-10482</p></div><span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">Completed</span></div><dl class="mt-4 space-y-3 text-sm"><div class="flex justify-between"><dt>Merchandise subtotal</dt><dd>$100.00</dd></div><div class="flex justify-between"><dt>Tax collected</dt><dd>$8.25</dd></div><div class="flex justify-between"><dt>Shipping</dt><dd>$10.00</dd></div><div class="flex justify-between border-t pt-3"><dt>PPF base</dt><dd>$100.00</dd></div><div class="flex justify-between text-rose-700"><dt>Hive Growth PPF (8%)</dt><dd>−$8.00</dd></div><div class="flex justify-between text-rose-700"><dt>Processing</dt><dd>−$3.73</dd></div><div class="flex justify-between border-t pt-3 text-base font-black"><dt>Estimated partner payout</dt><dd>$106.52</dd></div></dl><p class="mt-4 text-xs text-slate-500">Illustrative only. Tax and shipping handling depends on transaction structure and jurisdiction.</p></aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tier movement -->
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="tier-movement-title">
+        <div class="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
+            <div><p class="text-sm font-bold uppercase tracking-wider text-amber-700">Prospective qualification</p><h2 id="tier-movement-title" class="mt-2 text-3xl font-black">Know when your tier changes</h2><p class="mt-4 leading-7 text-slate-600">Qualification generally uses your previous three completed months and applies to the next period. Seasonal businesses may be reviewed using trailing annual volume. Enterprise terms require approval and a signed agreement.</p></div>
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><div class="flex items-end justify-between gap-4"><div><p class="text-sm text-slate-500">Sample Shop partner</p><p class="text-xl font-black">$21,400 of $25,000</p></div><span class="text-sm font-bold text-amber-800">86% to Hive Pro</span></div><div class="mt-4 h-3 overflow-hidden rounded-full bg-slate-200" role="progressbar" aria-valuemin="0" aria-valuemax="25000" aria-valuenow="21400" aria-label="Progress toward Hive Pro"><div class="h-full w-[86%] rounded-full bg-amber-400"></div></div><div class="mt-4 flex items-center justify-between text-sm text-slate-500"><span>Current: Hive Growth</span><span>$3,600 remaining</span></div></div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="border-t border-slate-200 bg-white py-16" aria-labelledby="faq-title">
+        <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8"><div class="text-center"><p class="text-sm font-bold uppercase tracking-wider text-amber-700">Fee help</p><h2 id="faq-title" class="mt-2 text-3xl font-black">Frequently asked questions</h2></div>
+            <div class="mt-10 divide-y divide-slate-200 rounded-2xl border border-slate-200">
+                <template x-for="faq in [
+                    ['What is a Platform Participation Fee?','The PPF is the market-specific amount AsBeez charges for platform access and services such as discovery, transaction tools, and partner support.'],
+                    ['Is payment processing included in the PPF?','Not unless your agreement explicitly says so. Processing is normally shown as a separate line item.'],
+                    ['Are taxes included when the PPF is calculated?','Separately stated government taxes are generally excluded from the PPF base. Market and jurisdiction rules may vary.'],
+                    ['How does AsBeez determine my tier?','Your previous three completed months generally determine the tier that applies prospectively to the next period.'],
+                    ['Can I change tiers voluntarily?','Eligible partners may elect a paid tier before a billing period begins. Downgrades take effect under the applicable plan terms.'],
+                    ['What happens when an order or booking is refunded?','Variable fees are generally credited proportionately on eligible refunds. Fixed, processing, listing, or lead costs may follow different rules.'],
+                    ['Are fees different by category?','They may be. Category margin, risk, support requirements, and regulation can affect the approved fee schedule.'],
+                    ['Why do Real Estate and Insurance use listing or lead fees?','These markets have licensing and compensation restrictions, so AsBeez uses transparent technology, advertising, listing, and consent-based lead charges.'],
+                    ['Why do flights use fixed service fees?','Airfare margins and supplier compensation vary, making a disclosed fixed service fee clearer and more predictable.'],
+                    ['Can enterprise partners negotiate pricing?','Yes. Custom terms require volume, risk, finance, compliance, and contract approval.'],
+                    ['Will existing transactions change after a pricing update?','No. Accepted transactions retain the fee schedule version that applied when they were created, subject to the governing agreement.'],
+                    ['Where can I dispute a fee?','Open the transaction in Partner Center and select Dispute fee, or contact Partner Support with the transaction reference.']
+                ]" :key="faq[0]">
+                    <div x-data="{ open: false }"><h3><button type="button" @click="open=!open" :aria-expanded="open" class="flex w-full items-center justify-between gap-4 p-5 text-left font-bold hover:bg-amber-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-amber-500"><span x-text="faq[0]"></span><svg class="h-5 w-5 shrink-0 transition" :class="open && 'rotate-180'" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.22 7.22a.75.75 0 0 1 1.06 0L10 10.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg></button></h3><div x-show="open" x-collapse class="px-5 pb-5 text-sm leading-6 text-slate-600" x-text="faq[1]"></div></div>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="apply" class="bg-slate-950 py-16 text-white">
+        <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8"><span class="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-400 text-slate-950"><svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="m12 3 6 3.5v7L12 17l-6-3.5v-7z"/><path d="M12 17v4M8 21h8"/></svg></span><h2 class="mt-6 text-3xl font-black sm:text-4xl">Choose the fee structure that grows with your business</h2><p class="mx-auto mt-4 max-w-2xl text-slate-300">Start with the market and tier that fit today. As your business grows, AsBeez gives you a clear path to lower rates and stronger partner tools.</p><div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row"><a href="#" class="rounded-xl bg-amber-400 px-6 py-3 font-black text-slate-950 hover:bg-amber-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white">Apply as a Partner</a><a href="#" class="rounded-xl border border-slate-600 px-6 py-3 font-bold hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">Talk to Partner Support</a></div><div class="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-slate-400"><a href="#" class="hover:text-white">Partner Agreement</a><a href="#" class="hover:text-white">Fee Policy</a><a href="#" class="hover:text-white">Refund and Dispute Policy</a><a href="#" class="hover:text-white">Payment Processing Disclosure</a><a href="#" class="hover:text-white">Compliance Notices</a></div></div>
+    </section>
+
+    <div class="sr-only" aria-live="polite" wire:loading>Fee information is loading.</div>
+</main>

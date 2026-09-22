@@ -1,0 +1,643 @@
+<main class="min-h-screen bg-amber-50/60 px-4 py-6 text-slate-800 sm:px-6 lg:px-8"> <div class="mx-auto max-w-[100rem] space-y-6">
+
+<!-- Page Header -->
+<header class="space-y-5">
+  <nav aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+      <li><a href="/admin" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Admin</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/admin/catalog" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Catalog Management</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="font-semibold text-slate-800" aria-current="page">Products</li>
+    </ol>
+  </nav>
+
+  <div class="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+    <div>
+      <div class="flex flex-wrap items-center gap-3">
+        <h1 class="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Products Management</h1>
+        <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">128,642 products</span>
+      </div>
+      <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">Manage marketplace listings, moderation, pricing, inventory, performance, customer feedback, and product compliance.</p>
+    </div>
+
+    <div class="grid gap-2 sm:flex">
+      <a href="/admin/products/export" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold shadow-sm hover:border-amber-400 hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14"/></svg>
+        Export Products
+      </a>
+      <a href="/admin/products/import" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold shadow-sm hover:border-amber-400 hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 16V4m0 0 4 4m-4-4L8 8M5 20h14"/></svg>
+        Import Products
+      </a>
+      <a href="/admin/products/create" class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-amber-500 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+        Add Product
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Product Statistics -->
+<section aria-labelledby="product-statistics-heading">
+  <h2 id="product-statistics-heading" class="sr-only">Product statistics</h2>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-8">
+    <a href="/admin/products" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-400 hover:shadow-md">
+      <div class="flex items-center justify-between"><span class="rounded-xl bg-slate-100 p-2"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="m4 7 8-4 8 4-8 4-8-4Zm0 0v10l8 4 8-4V7M12 11v10"/></svg></span><span class="text-xs font-bold text-emerald-600">+8.7%</span></div><p class="mt-4 text-2xl font-black">128,642</p><p class="text-xs text-slate-500">Total products</p>
+    </a>
+    <a href="/admin/products?status=published" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-emerald-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-emerald-100 p-2 text-emerald-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="m5 12 4 4L19 6"/></svg></span><span class="text-xs font-bold text-emerald-600">+7.1%</span></div><p class="mt-4 text-2xl font-black">112,486</p><p class="text-xs text-slate-500">Published</p>
+    </a>
+    <a href="/admin/products?status=draft" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-amber-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-amber-100 p-2 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 20h4l11-11-4-4L4 16v4Z"/></svg></span><span class="text-xs font-bold text-slate-500">+124</span></div><p class="mt-4 text-2xl font-black">8,294</p><p class="text-xs text-slate-500">Drafts</p>
+    </a>
+    <a href="/admin/products?status=pending" class="rounded-2xl border border-amber-200 bg-white p-4 shadow-sm hover:border-amber-500">
+      <div class="flex justify-between"><span class="rounded-xl bg-amber-100 p-2 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-width="2" d="M12 7v5l3 2"/></svg></span><span class="text-xs font-bold text-rose-600">+86</span></div><p class="mt-4 text-2xl font-black">2,186</p><p class="text-xs text-slate-500">Pending approval</p>
+    </a>
+    <a href="/admin/products?status=flagged" class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm hover:border-rose-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-rose-100 p-2 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M6 21V4m0 1h11l-2 4 2 4H6"/></svg></span><span class="text-xs font-bold text-rose-600">+12</span></div><p class="mt-4 text-2xl font-black">384</p><p class="text-xs text-slate-500">Flagged</p>
+    </a>
+    <a href="/admin/products?status=rejected" class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm hover:border-rose-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-rose-100 p-2 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-width="2" d="m8 8 8 8m0-8-8 8"/></svg></span><span class="text-xs font-bold text-emerald-600">-4.2%</span></div><p class="mt-4 text-2xl font-black">642</p><p class="text-xs text-slate-500">Rejected</p>
+    </a>
+    <a href="/admin/products?inventory=out-of-stock" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-slate-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-slate-100 p-2 text-slate-600"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 7h16v13H4zM8 7a4 4 0 0 1 8 0"/></svg></span><span class="text-xs font-bold text-rose-600">+214</span></div><p class="mt-4 text-2xl font-black">4,238</p><p class="text-xs text-slate-500">Out of stock</p>
+    </a>
+    <a href="/admin/products/compliance?status=alert" class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm hover:border-rose-500">
+      <div class="flex justify-between"><span class="rounded-xl bg-rose-100 p-2 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 3 2 21h20L12 3Zm0 6v5m0 3h.01"/></svg></span><span class="text-xs font-bold text-rose-600">+9</span></div><p class="mt-4 text-2xl font-black">127</p><p class="text-xs text-slate-500">Compliance alerts</p>
+    </a>
+  </div>
+</section>
+
+<!-- Catalog Performance -->
+<section aria-labelledby="catalog-performance-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div><h2 id="catalog-performance-heading" class="text-lg font-bold">Catalog performance overview</h2><p class="mt-1 text-sm text-slate-500">Listing growth, moderation, sales, quality, and customer outcomes.</p></div>
+    <div class="flex flex-wrap gap-2">
+      <label for="catalog-range" class="sr-only">Catalog analytics range</label>
+      <select id="catalog-range" class="rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Last 7 days</option><option selected>Last 30 days</option><option>Last 90 days</option><option>This year</option><option>Custom range</option></select>
+      <a href="/admin/analytics/products" class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-bold hover:border-amber-400 hover:bg-amber-50">View Catalog Analytics</a>
+    </div>
+  </div>
+
+  <div class="mt-6 grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
+    <dl class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div class="rounded-xl bg-sky-50 p-4"><dt class="text-xs text-slate-500">New products</dt><dd class="mt-1 text-xl font-black">6,842</dd></div><div class="rounded-xl bg-emerald-50 p-4"><dt class="text-xs text-slate-500">Approved</dt><dd class="mt-1 text-xl font-black text-emerald-700">5,926</dd></div>
+      <div class="rounded-xl bg-rose-50 p-4"><dt class="text-xs text-slate-500">Rejected</dt><dd class="mt-1 text-xl font-black text-rose-700">324</dd></div><div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Archived</dt><dd class="mt-1 text-xl font-black">418</dd></div>
+      <div class="rounded-xl bg-amber-50 p-4"><dt class="text-xs text-slate-500">Units sold</dt><dd class="mt-1 text-xl font-black">486K</dd></div><div class="rounded-xl bg-violet-50 p-4"><dt class="text-xs text-slate-500">Gross sales</dt><dd class="mt-1 text-xl font-black text-violet-700">$24.8M</dd></div>
+      <div class="rounded-xl bg-amber-50 p-4"><dt class="text-xs text-slate-500">Commission</dt><dd class="mt-1 text-xl font-black text-amber-700">$1.94M</dd></div><div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Conversion</dt><dd class="mt-1 text-xl font-black">4.8%</dd></div>
+      <div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Average rating</dt><dd class="mt-1 text-xl font-black">4.63</dd></div><div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Approval time</dt><dd class="mt-1 text-xl font-black">8.4 hrs</dd></div>
+      <div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Return rate</dt><dd class="mt-1 text-xl font-black">2.1%</dd></div><div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Report rate</dt><dd class="mt-1 text-xl font-black">0.08%</dd></div>
+    </dl>
+    <div class="flex h-48 items-end gap-2 rounded-xl border border-slate-100 bg-gradient-to-b from-white to-amber-50 p-4" aria-label="Catalog growth chart">
+      <div class="h-[34%] flex-1 rounded-t bg-amber-200"></div><div class="h-[42%] flex-1 rounded-t bg-amber-300"></div><div class="h-[38%] flex-1 rounded-t bg-amber-300"></div>
+      <div class="h-[57%] flex-1 rounded-t bg-amber-400"></div><div class="h-[52%] flex-1 rounded-t bg-amber-300"></div><div class="h-[68%] flex-1 rounded-t bg-amber-400"></div>
+      <div class="h-[63%] flex-1 rounded-t bg-amber-400"></div><div class="h-[78%] flex-1 rounded-t bg-amber-500"></div><div class="h-[72%] flex-1 rounded-t bg-amber-500"></div>
+      <div class="h-[87%] flex-1 rounded-t bg-slate-800"></div><div class="h-[82%] flex-1 rounded-t bg-amber-500"></div><div class="h-full flex-1 rounded-t bg-slate-950"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Search and Filters -->
+<form action="/admin/products" method="get" aria-labelledby="product-filter-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-200 px-5 py-4 sm:px-6"><h2 id="product-filter-heading" class="text-lg font-bold">Search and filter products</h2></div>
+  <div class="space-y-4 p-5 sm:p-6">
+    <div class="relative">
+      <svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke-width="2"/><path stroke-width="2" d="m20 20-4-4"/></svg>
+      <label for="product-search" class="sr-only">Search products</label>
+      <input id="product-search" name="search" type="search" placeholder="Search product, ID, SKU, UPC/EAN/ISBN/GTIN, vendor, store, brand, category, or moderation case" class="w-full rounded-xl border-slate-300 py-3 pl-12 pr-4 text-sm shadow-sm focus:border-amber-500 focus:ring-amber-500">
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-6">
+      <div><label for="product-status" class="block text-xs font-bold text-slate-600">Product status</label><select id="product-status" name="status" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All statuses</option><option>Published</option><option>Draft</option><option>Pending approval</option><option>Changes requested</option><option>Rejected</option><option>Hidden</option><option>Suspended</option><option>Archived</option><option>Deleted</option></select></div>
+      <div><label for="product-type" class="block text-xs font-bold text-slate-600">Product type</label><select id="product-type" name="type" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All types</option><option>Physical product</option><option>Digital product</option><option>Downloadable product</option><option>Subscription product</option><option>Service</option><option>Gift card</option><option>Bundle</option><option>Custom product</option></select></div>
+      <div><label for="moderation-status" class="block text-xs font-bold text-slate-600">Moderation</label><select id="moderation-status" name="moderation" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All moderation</option><option>Not reviewed</option><option>Pending review</option><option>Approved</option><option>Changes requested</option><option>Rejected</option><option>Escalated</option><option>Under investigation</option></select></div>
+      <div><label for="inventory-status" class="block text-xs font-bold text-slate-600">Inventory</label><select id="inventory-status" name="inventory" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any inventory</option><option>In stock</option><option>Low stock</option><option>Out of stock</option><option>Backordered</option><option>Preorder</option><option>Not tracked</option></select></div>
+      <div><label for="vendor-filter" class="block text-xs font-bold text-slate-600">Vendor</label><select id="vendor-filter" name="vendor" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All vendors</option><option>Honeycomb Home Market</option><option>Northern Pro Supply</option><option>Verdant Wellness</option><option>Harbour Local Foods</option></select></div>
+      <div><label for="category-filter" class="block text-xs font-bold text-slate-600">Category</label><select id="category-filter" name="category" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All categories</option><option>Home &amp; Living</option><option>Electronics</option><option>Health &amp; Wellness</option><option>Food &amp; Grocery</option><option>Digital Goods</option></select></div>
+      <div><label for="brand-filter" class="block text-xs font-bold text-slate-600">Brand</label><input id="brand-filter" name="brand" placeholder="Any brand" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="region-filter" class="block text-xs font-bold text-slate-600">Country or region</label><select id="region-filter" name="region" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All regions</option><option>Canada</option><option>United States</option><option>United Kingdom</option><option>Philippines</option></select></div>
+      <div><label for="compliance-filter" class="block text-xs font-bold text-slate-600">Compliance</label><select id="compliance-filter" name="compliance" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All compliance</option><option>Compliant</option><option>Review required</option><option>Violation open</option><option>Monitoring</option></select></div>
+      <div><label for="risk-filter" class="block text-xs font-bold text-slate-600">Risk</label><select id="risk-filter" name="risk" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All risk levels</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div>
+      <div><label for="moderator-filter" class="block text-xs font-bold text-slate-600">Moderator</label><select id="moderator-filter" name="moderator" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All moderators</option><option>Sarah Mitchell</option><option>Daniel Kim</option><option>Elena Cruz</option><option>Unassigned</option></select></div>
+      <div><label for="product-sort" class="block text-xs font-bold text-slate-600">Sort by</label><select id="product-sort" name="sort" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Newest products</option><option>Oldest products</option><option>Name A–Z</option><option>Highest sales</option><option>Highest revenue</option><option>Highest rating</option><option>Lowest stock</option><option>Most reported</option><option>Highest risk</option><option>Pending longest</option></select></div>
+    </div>
+
+    <div class="flex flex-col gap-3 border-t border-slate-100 pt-4 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex flex-wrap gap-2">
+        <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Published <button type="button" aria-label="Remove Published filter">×</button></span>
+        <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Physical products <button type="button" aria-label="Remove Physical products filter">×</button></span>
+        <button type="button" class="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-bold hover:bg-slate-50">Saved Filters</button>
+        <button type="button" class="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-bold hover:bg-slate-50">More Filters</button>
+      </div>
+      <div class="flex gap-2"><a href="/admin/products" class="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100">Clear Filters</a><button type="submit" class="rounded-xl bg-amber-400 px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500">Apply Filters</button></div>
+    </div>
+  </div>
+</form>
+
+<!-- Products Directory -->
+<div class="grid gap-6 2xl:grid-cols-[minmax(0,1fr)_22rem]">
+  <section aria-labelledby="products-table-heading" class="min-w-0 rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div><h2 id="products-table-heading" class="text-lg font-bold">Product directory</h2><p class="mt-1 text-sm text-slate-500">Showing 1–25 of 128,642 products</p></div>
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="inline-flex items-center gap-2 text-sm font-semibold"><input type="checkbox" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"> Select page</label>
+        <button type="button" aria-label="Table view" class="rounded-lg bg-slate-900 p-2 text-white"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 5h16v14H4zm0 5h16M9 5v14"/></svg></button>
+        <button type="button" aria-label="Grid view" class="rounded-lg border p-2 hover:bg-amber-50"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z"/></svg></button>
+        <label for="density" class="sr-only">Table density</label><select id="density" class="rounded-lg border-slate-300 text-xs"><option>Comfortable</option><option>Compact</option></select>
+      </div>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="border-b border-amber-200 bg-amber-50 px-5 py-3">
+      <div class="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+        <p class="text-sm font-bold text-amber-900">2 products selected</p>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold">Approve</button><button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold">Request Changes</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Assign Category</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Assign Brand</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Assign Moderator</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Publish</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Unpublish</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Manage Tags</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Add to Collection</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Update Tax</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Shipping Class</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Feature</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Run Audit</button><button type="button" class="rounded-lg border border-orange-200 bg-white px-3 py-2 text-xs font-bold text-orange-700">Hide</button>
+          <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold">Archive</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Export</button>
+          <button type="button" class="px-2 py-2 text-xs font-bold text-slate-500">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[110rem] text-left text-sm">
+        <caption class="sr-only">AsBeez marketplace products</caption>
+        <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+          <tr>
+            <th scope="col" class="px-4 py-3"><input type="checkbox" aria-label="Select displayed products" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></th>
+            <th scope="col" class="px-4 py-3">Product</th><th scope="col" class="px-4 py-3">ID and SKU</th><th scope="col" class="px-4 py-3">Vendor and store</th><th scope="col" class="px-4 py-3">Category</th>
+            <th scope="col" class="px-4 py-3">Type</th><th scope="col" class="px-4 py-3 text-right">Price</th><th scope="col" class="px-4 py-3">Inventory</th><th scope="col" class="px-4 py-3 text-right">Sold</th>
+            <th scope="col" class="px-4 py-3 text-right">Revenue</th><th scope="col" class="px-4 py-3">Rating</th><th scope="col" class="px-4 py-3">Moderation</th><th scope="col" class="px-4 py-3">Status</th>
+            <th scope="col" class="px-4 py-3">Updated</th><th scope="col" class="px-4 py-3">Risk</th><th scope="col" class="px-4 py-3 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr class="bg-amber-50/40 hover:bg-amber-50">
+            <td class="px-4 py-4"><input type="checkbox" checked aria-label="Select Artisan Oak Serving Board" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-amber-200 to-orange-400"><svg class="h-7 w-7 text-amber-900" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M5 4h14v16H5zM8 8h8m-8 4h8"/></svg></div><div><a href="/admin/products/PRD-100284" class="font-bold text-slate-950 hover:text-amber-700">Artisan Oak Serving Board</a><p class="text-xs text-slate-500">3 sizes · 2 finishes</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">PRD-100284</p><p class="text-xs text-slate-500">SKU HH-BOARD-01</p></td><td class="px-4 py-4"><p class="font-semibold">Honeycomb Home Ltd.</p><p class="text-xs text-slate-500">Honeycomb Home Market</p></td>
+            <td class="px-4 py-4">Home &amp; Living</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Physical</span></td><td class="px-4 py-4 text-right"><p class="font-bold">$74.00</p><p class="text-xs text-slate-400 line-through">$89.00</p><span class="text-xs font-bold text-rose-600">17% off</span></td>
+            <td class="px-4 py-4"><p class="font-bold">86</p><span class="text-xs font-semibold text-emerald-700">In stock</span></td><td class="px-4 py-4 text-right font-semibold">1,284</td><td class="px-4 py-4 text-right font-semibold">$86,420</td>
+            <td class="px-4 py-4"><p class="font-semibold text-amber-600">4.9 ★</p><p class="text-xs text-slate-500">286 reviews</p></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Approved</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span></td><td class="px-4 py-4">Sep 19, 2026</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td>
+            <td class="px-4 py-4 text-right">
+              <details class="relative inline-block text-left">
+                <summary class="cursor-pointer list-none rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold hover:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">Actions</summary>
+                <div class="absolute right-0 z-30 mt-2 w-80 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
+                  <div class="grid grid-cols-2 gap-1 text-xs">
+                    <a href="/admin/products/PRD-100284" class="rounded-lg p-2 hover:bg-amber-50">View Product</a><a href="/products/artisan-oak-board" class="rounded-lg p-2 hover:bg-amber-50">Preview Listing</a>
+                    <a href="/admin/products/PRD-100284/edit" class="rounded-lg p-2 hover:bg-amber-50">Edit Product</a><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Duplicate Product</button>
+                    <a href="/admin/vendors/VND-100284" class="rounded-lg p-2 hover:bg-amber-50">View Vendor</a><a href="/store/honeycomb-home" class="rounded-lg p-2 hover:bg-amber-50">View Store</a>
+                    <a href="/admin/products/PRD-100284/variants" class="rounded-lg p-2 hover:bg-amber-50">Variants</a><a href="/admin/products/PRD-100284/inventory" class="rounded-lg p-2 hover:bg-amber-50">Inventory</a>
+                    <a href="/admin/products/PRD-100284/orders" class="rounded-lg p-2 hover:bg-amber-50">Orders</a><a href="/admin/products/PRD-100284/transactions" class="rounded-lg p-2 hover:bg-amber-50">Transactions</a>
+                    <a href="/admin/products/PRD-100284/analytics" class="rounded-lg p-2 hover:bg-amber-50">Sales Analytics</a><a href="/admin/products/PRD-100284/reviews" class="rounded-lg p-2 hover:bg-amber-50">Reviews</a>
+                    <a href="/admin/products/PRD-100284/questions" class="rounded-lg p-2 hover:bg-amber-50">Questions</a><a href="/admin/products/PRD-100284/reports" class="rounded-lg p-2 hover:bg-amber-50">Reports</a>
+                    <a href="/admin/products/PRD-100284/moderation" class="rounded-lg p-2 hover:bg-amber-50">Moderation History</a><a href="/admin/products/PRD-100284/compliance" class="rounded-lg p-2 hover:bg-amber-50">Compliance</a>
+                    <a href="/admin/products/PRD-100284/changes" class="rounded-lg p-2 hover:bg-amber-50">Change History</a><a href="/admin/products/PRD-100284/activity" class="rounded-lg p-2 hover:bg-amber-50">Activity Log</a>
+                    <button type="button" class="rounded-lg p-2 text-left hover:bg-emerald-50">Approve Product</button><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Request Changes</button>
+                    <button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Publish</button><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Feature Product</button>
+                    <button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Add Internal Note</button><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Assign Moderator</button>
+                    <button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Run Product Audit</button>
+                  </div>
+                  <div class="mt-2 grid grid-cols-2 gap-1 border-t border-slate-200 pt-2 text-xs">
+                    <button type="button" class="rounded-lg p-2 text-left text-orange-700 hover:bg-orange-50">Unpublish / Hide</button><button type="button" class="rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Reject Product</button>
+                    <button type="button" class="rounded-lg p-2 text-left text-slate-700 hover:bg-slate-50">Archive / Restore</button><button type="button" class="rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Remove Product</button>
+                  </div>
+                </div>
+              </details>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" checked aria-label="Select Botanical Skincare Set" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 21V9m0 3c-4 0-7-3-7-7 4 0 7 3 7 7Zm0 4c4 0 7-3 7-7-4 0-7 3-7 7Z"/></svg></div><div><a href="/admin/products/PRD-100936" class="font-bold hover:text-amber-700">Botanical Skincare Starter Set</a><p class="text-xs text-slate-500">5-piece bundle</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">PRD-100936</p><p class="text-xs text-slate-500">SKU VW-SET-05</p></td><td class="px-4 py-4"><p>Verdant Wellness Co.</p><p class="text-xs text-slate-500">Verdant Wellness</p></td><td class="px-4 py-4">Health &amp; Wellness</td><td class="px-4 py-4"><span class="rounded-full bg-violet-100 px-2 py-1 text-xs font-bold text-violet-700">Bundle</span></td>
+            <td class="px-4 py-4 text-right font-bold">$128.00</td><td class="px-4 py-4"><p class="font-bold">42</p><span class="text-xs text-emerald-700">In stock</span></td><td class="px-4 py-4 text-right">0</td><td class="px-4 py-4 text-right">$0</td><td class="px-4 py-4 text-slate-400">No reviews</td>
+            <td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Pending review</span></td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Pending</span></td><td class="px-4 py-4">Today</td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Medium</span></td>
+            <td class="px-4 py-4 text-right"><a href="/admin/products/PRD-100936/moderate" class="rounded-lg border border-amber-300 px-3 py-2 text-xs font-bold text-amber-800 hover:bg-amber-50">Review</a></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select ProGrade Cordless Drill" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-violet-100 text-violet-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 7h12v6H4zM16 9h4v2h-4M8 13v7h5v-7"/></svg></div><div><a href="/admin/products/PRD-087421" class="font-bold hover:text-amber-700">ProGrade 20V Cordless Drill</a><p class="text-xs text-slate-500">4 variants · battery included</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">PRD-087421</p><p class="text-xs text-slate-500">SKU NPS-DRILL-20</p></td><td class="px-4 py-4"><p>Northern Pro Supply Inc.</p><p class="text-xs text-slate-500">Northern Pro Supply</p></td><td class="px-4 py-4">Tools</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Physical</span></td>
+            <td class="px-4 py-4 text-right font-bold">$189.00</td><td class="px-4 py-4"><p class="font-bold">642</p><span class="text-xs text-emerald-700">In stock</span></td><td class="px-4 py-4 text-right font-semibold">8,428</td><td class="px-4 py-4 text-right font-semibold">$1.42M</td><td class="px-4 py-4"><p class="font-semibold text-amber-600">4.8 ★</p><p class="text-xs text-slate-500">4,208 reviews</p></td>
+            <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Approved</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span></td><td class="px-4 py-4">Sep 18</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td><td class="px-4 py-4 text-right"><a href="/admin/products/PRD-087421" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Manage</a></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Coastal Linen Throw" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-sky-100 text-sky-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M5 4h14v16H5zM9 4v16m6-16v16"/></svg></div><div><a href="/admin/products/PRD-099824" class="font-bold hover:text-amber-700">Coastal Linen Throw Blanket</a><p class="text-xs text-slate-500">6 colors</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">PRD-099824</p><p class="text-xs text-slate-500">SKU HH-LINEN-06</p></td><td class="px-4 py-4"><p>Honeycomb Home Ltd.</p><p class="text-xs text-slate-500">Honeycomb Home Market</p></td><td class="px-4 py-4">Home Textiles</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Physical</span></td>
+            <td class="px-4 py-4 text-right font-bold">$96.00</td><td class="px-4 py-4"><p class="font-bold text-amber-700">6</p><span class="text-xs text-amber-700">Low stock</span></td><td class="px-4 py-4 text-right">846</td><td class="px-4 py-4 text-right">$78,482</td><td class="px-4 py-4">4.7 ★</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Approved</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span></td><td class="px-4 py-4">Sep 17</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td><td class="px-4 py-4 text-right"><a href="/admin/products/PRD-099824/inventory" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Inventory</a></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Wildflower Honey Pack" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-yellow-100 text-yellow-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M8 3h8v4l2 3v10H6V10l2-3V3Z"/></svg></div><div><a href="/admin/products/PRD-098322" class="font-bold hover:text-amber-700">Wildflower Honey Three-Pack</a><p class="text-xs text-slate-500">Local artisan food</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">PRD-098322</p><p class="text-xs text-slate-500">SKU HLF-HNY-3</p></td><td class="px-4 py-4"><p>Harbour Local Foods</p><p class="text-xs text-slate-500">Harbour Foods</p></td><td class="px-4 py-4">Food &amp; Grocery</td><td class="px-4 py-4"><span class="rounded-full bg-violet-100 px-2 py-1 text-xs font-bold text-violet-700">Bundle</span></td>
+            <td class="px-4 py-4 text-right font-bold">$42.00</td><td class="px-4 py-4"><p class="font-bold text-rose-700">0</p><span class="text-xs text-rose-700">Out of stock</span></td><td class="px-4 py-4 text-right">1,208</td><td class="px-4 py-4 text-right">$49,282</td><td class="px-4 py-4">5.0 ★</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Approved</span></td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Unavailable</span></td><td class="px-4 py-4">Sep 16</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td><td class="px-4 py-4 text-right"><a href="/admin/products/PRD-098322/inventory" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Review Stock</a></td>
+          </tr>
+
+          <tr class="bg-rose-50/40 hover:bg-rose-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Designer Inspired Handbag" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-rose-100 text-rose-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M5 8h14l-1 12H6L5 8Zm4 0a3 3 0 0 1 6 0"/></svg></div><div><a href="/admin/products/PRD-089522" class="font-bold hover:text-rose-700">Designer-Inspired Luxury Handbag</a><p class="text-xs text-rose-600">Trademark report received</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">PRD-089522</p><p class="text-xs text-slate-500">SKU NS-BAG-221</p></td><td class="px-4 py-4"><p>Nova Style Depot</p><p class="text-xs text-slate-500">Nova Style</p></td><td class="px-4 py-4">Fashion</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Physical</span></td>
+            <td class="px-4 py-4 text-right font-bold">$249.00</td><td class="px-4 py-4">14</td><td class="px-4 py-4 text-right">28</td><td class="px-4 py-4 text-right">$6,842</td><td class="px-4 py-4">3.1 ★</td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Investigation</span></td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Hidden</span></td><td class="px-4 py-4">Sep 19</td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">High</span></td><td class="px-4 py-4 text-right"><a href="/admin/products/PRD-089522/investigation" class="rounded-lg border border-rose-300 px-3 py-2 text-xs font-bold text-rose-700">Investigate</a></td>
+          </tr>
+
+          <tr class="bg-rose-50/20 hover:bg-rose-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Herbal Detox Capsules" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-red-100 text-red-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M8 3h8v5l3 4v8H5v-8l3-4V3Z"/></svg></div><div><a href="/admin/products/PRD-088117" class="font-bold hover:text-rose-700">Rapid Herbal Detox Capsules</a><p class="text-xs text-rose-600">Unsubstantiated health claims</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">PRD-088117</p><p class="text-xs text-slate-500">SKU VW-DTX-30</p></td><td class="px-4 py-4"><p>Verdant Wellness Co.</p><p class="text-xs text-slate-500">Verdant Wellness</p></td><td class="px-4 py-4">Supplements</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Physical</span></td>
+            <td class="px-4 py-4 text-right font-bold">$39.00</td><td class="px-4 py-4">0</td><td class="px-4 py-4 text-right">0</td><td class="px-4 py-4 text-right">$0</td><td class="px-4 py-4 text-slate-400">No reviews</td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Rejected</span></td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Rejected</span></td><td class="px-4 py-4">Sep 14</td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">High</span></td><td class="px-4 py-4 text-right"><a href="/admin/products/PRD-088117/moderation" class="rounded-lg border border-rose-300 px-3 py-2 text-xs font-bold text-rose-700">View Decision</a></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Small Business Invoice Template" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-100 text-blue-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M6 3h9l3 3v15H6zM9 11h6m-6 4h6"/></svg></div><div><a href="/admin/products/PRD-092816" class="font-bold hover:text-amber-700">Small Business Invoice Template</a><p class="text-xs text-slate-500">Excel · Google Sheets · PDF</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">PRD-092816</p><p class="text-xs text-slate-500">SKU PP-INV-001</p></td><td class="px-4 py-4"><p>Pacific Pixel Studio</p><p class="text-xs text-slate-500">Pacific Pixel</p></td><td class="px-4 py-4">Digital Goods</td><td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Digital</span></td>
+            <td class="px-4 py-4 text-right font-bold">$18.00</td><td class="px-4 py-4"><span class="text-xs font-semibold text-blue-700">Not tracked</span></td><td class="px-4 py-4 text-right">2,846</td><td class="px-4 py-4 text-right">$48,382</td><td class="px-4 py-4">4.8 ★</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Approved</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span></td><td class="px-4 py-4">Sep 18</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td><td class="px-4 py-4 text-right"><a href="/admin/products/PRD-092816" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Manage</a></td>
+          </tr>
+
+          <tr class="text-slate-500 hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Personalized Family Sign" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-slate-200 text-slate-600"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M5 5h14v14H5zM8 15l3-3 2 2 3-4 2 5"/></svg></div><div><a href="/admin/products/PRD-074210" class="font-bold text-slate-700 hover:text-amber-700">Personalized Family Welcome Sign</a><p class="text-xs">12 variants · custom text</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">PRD-074210</p><p class="text-xs">SKU HH-SIGN-CUSTOM</p></td><td class="px-4 py-4"><p>Honeycomb Home Ltd.</p><p class="text-xs">Honeycomb Home Market</p></td><td class="px-4 py-4">Home Décor</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Custom</span></td>
+            <td class="px-4 py-4 text-right font-bold">$110.00</td><td class="px-4 py-4">Not tracked</td><td class="px-4 py-4 text-right">128</td><td class="px-4 py-4 text-right">$13,842</td><td class="px-4 py-4">4.9 ★</td><td class="px-4 py-4">Approved</td><td class="px-4 py-4"><span class="rounded-full bg-slate-200 px-2 py-1 text-xs font-bold">Archived</span></td><td class="px-4 py-4">Jun 4</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Low</span></td><td class="px-4 py-4 text-right"><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-50">Restore</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex flex-col gap-4 border-t border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex items-center gap-2 text-sm text-slate-600"><span>Rows</span><label for="products-per-page" class="sr-only">Products per page</label><select id="products-per-page" class="rounded-lg border-slate-300 text-sm"><option>10</option><option selected>25</option><option>50</option><option>100</option></select><span>Showing 1–25 of 128,642</span></div>
+      <nav aria-label="Product pagination" class="flex items-center gap-1">
+        <button type="button" disabled aria-label="First page" class="rounded-lg border px-3 py-2 text-slate-300">«</button><button type="button" disabled aria-label="Previous page" class="rounded-lg border px-3 py-2 text-slate-300">‹</button>
+        <a href="?page=1" aria-current="page" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white">1</a><a href="?page=2" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">2</a><a href="?page=3" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">3</a><span class="px-2">…</span><a href="?page=5146" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">5146</a>
+        <a href="?page=2" aria-label="Next page" class="rounded-lg border px-3 py-2 hover:bg-amber-50">›</a><a href="?page=5146" aria-label="Last page" class="rounded-lg border px-3 py-2 hover:bg-amber-50">»</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Product Overview -->
+  <aside aria-labelledby="product-overview-heading" class="self-start rounded-2xl border border-slate-200 bg-white shadow-sm 2xl:sticky 2xl:top-6">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="product-overview-heading" class="text-lg font-bold">Product Overview</h2><p class="mt-1 text-xs text-slate-500">Selected product</p></div>
+    <div class="p-5 text-center">
+      <div class="mx-auto flex h-40 w-full items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-orange-300"><svg class="h-16 w-16 text-amber-900" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.5" d="M5 4h14v16H5zM8 8h8m-8 4h8"/></svg></div>
+      <h3 class="mt-4 text-lg font-bold">Artisan Oak Serving Board</h3><p class="text-xs text-slate-500">PRD-100284 · SKU HH-BOARD-01</p>
+      <div class="mt-3 flex flex-wrap justify-center gap-2"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span><span class="rounded-full bg-sky-100 px-2 py-1 text-xs font-bold text-sky-700">Approved</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Compliant</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low risk</span></div>
+    </div>
+    <dl class="grid grid-cols-2 gap-x-4 gap-y-3 border-y border-slate-200 px-5 py-4 text-sm">
+      <div><dt class="text-xs text-slate-500">Vendor</dt><dd class="font-semibold">Honeycomb Home Ltd.</dd></div><div><dt class="text-xs text-slate-500">Store</dt><dd class="font-semibold">Honeycomb Home</dd></div>
+      <div><dt class="text-xs text-slate-500">Brand</dt><dd class="font-semibold">Hive &amp; Hearth</dd></div><div><dt class="text-xs text-slate-500">Category</dt><dd class="font-semibold">Kitchen &amp; Dining</dd></div>
+      <div><dt class="text-xs text-slate-500">Type</dt><dd class="font-semibold">Physical</dd></div><div><dt class="text-xs text-slate-500">Price</dt><dd class="font-semibold">$74.00 <span class="text-xs text-slate-400 line-through">$89</span></dd></div>
+      <div><dt class="text-xs text-slate-500">Cost</dt><dd class="font-semibold">$28.00</dd></div><div><dt class="text-xs text-slate-500">Margin</dt><dd class="font-semibold">62.2%</dd></div>
+      <div><dt class="text-xs text-slate-500">Commission</dt><dd class="font-semibold">8%</dd></div><div><dt class="text-xs text-slate-500">Inventory</dt><dd class="font-semibold text-emerald-700">86 in stock</dd></div>
+      <div><dt class="text-xs text-slate-500">Units sold</dt><dd class="font-semibold">1,284</dd></div><div><dt class="text-xs text-slate-500">Revenue</dt><dd class="font-semibold">$86,420</dd></div>
+      <div><dt class="text-xs text-slate-500">Refund / Return</dt><dd class="font-semibold">0.9% / 1.2%</dd></div><div><dt class="text-xs text-slate-500">Conversion</dt><dd class="font-semibold">6.4%</dd></div>
+      <div><dt class="text-xs text-slate-500">Rating</dt><dd class="font-semibold text-amber-600">4.9 ★</dd></div><div><dt class="text-xs text-slate-500">Reviews</dt><dd class="font-semibold">286</dd></div>
+      <div><dt class="text-xs text-slate-500">Questions / Reports</dt><dd class="font-semibold">18 / 0</dd></div><div><dt class="text-xs text-slate-500">Moderator</dt><dd class="font-semibold">Sarah Mitchell</dd></div>
+      <div><dt class="text-xs text-slate-500">Created</dt><dd class="font-semibold">Jul 10, 2026</dd></div><div><dt class="text-xs text-slate-500">Published</dt><dd class="font-semibold">Jul 11, 2026</dd></div>
+      <div class="col-span-2"><dt class="text-xs text-slate-500">Last updated</dt><dd class="font-semibold">September 19, 2026 at 4:18 PM</dd></div>
+    </dl>
+    <div class="grid grid-cols-2 gap-2 p-5">
+      <a href="/admin/products/PRD-100284" class="rounded-lg bg-slate-900 px-3 py-2 text-center text-xs font-bold text-white">View Product</a><a href="/products/artisan-oak-board" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">Preview Listing</a>
+      <a href="/admin/products/PRD-100284/edit" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">Edit Product</a><a href="/admin/vendors/VND-100284" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">View Vendor</a>
+      <a href="/admin/products/PRD-100284/orders" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">View Orders</a><a href="/admin/products/PRD-100284/moderate" class="rounded-lg border border-amber-300 px-3 py-2 text-center text-xs font-bold text-amber-800 hover:bg-amber-50">Moderate Product</a>
+    </div>
+  </aside>
+</div>
+
+<!-- Product Detail Panels -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="quality-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="quality-heading" class="text-lg font-bold">Content and listing quality</h2></div>
+    <div class="space-y-5 p-5">
+      <div class="rounded-2xl bg-gradient-to-r from-slate-900 to-amber-800 p-5 text-white"><div class="flex items-end justify-between"><div><p class="text-xs text-amber-200">Product quality score</p><p class="text-3xl font-black">96/100</p></div><span class="rounded-full bg-emerald-400/20 px-3 py-1 text-xs font-bold text-emerald-200">Excellent</span></div><div class="mt-3 h-2 rounded-full bg-white/20"><div class="h-full w-[96%] rounded-full bg-amber-400"></div></div></div>
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Title quality</dt><dd class="font-bold text-emerald-700">Excellent</dd></div><div><dt class="text-xs text-slate-500">Short description</dt><dd class="font-bold text-emerald-700">Complete</dd></div>
+        <div><dt class="text-xs text-slate-500">Full description</dt><dd class="font-bold text-emerald-700">High quality</dd></div><div><dt class="text-xs text-slate-500">Images</dt><dd class="font-bold">8 approved</dd></div>
+        <div><dt class="text-xs text-slate-500">Resolution / Main image</dt><dd class="font-bold text-emerald-700">Pass</dd></div><div><dt class="text-xs text-slate-500">Video</dt><dd class="font-bold">1 available</dd></div>
+        <div><dt class="text-xs text-slate-500">Specifications</dt><dd class="font-bold">100%</dd></div><div><dt class="text-xs text-slate-500">Attributes</dt><dd class="font-bold">96%</dd></div>
+        <div><dt class="text-xs text-slate-500">Variants</dt><dd class="font-bold text-emerald-700">Complete</dd></div><div><dt class="text-xs text-slate-500">Category / Brand</dt><dd class="font-bold text-emerald-700">Accurate</dd></div>
+        <div><dt class="text-xs text-slate-500">Search keywords</dt><dd class="font-bold">Strong</dd></div><div><dt class="text-xs text-slate-500">SEO title / description</dt><dd class="font-bold text-emerald-700">Complete</dd></div>
+        <div><dt class="text-xs text-slate-500">URL slug</dt><dd class="font-bold">artisan-oak-board</dd></div><div><dt class="text-xs text-slate-500">Image alt text</dt><dd class="font-bold text-amber-700">7 of 8</dd></div>
+        <div><dt class="text-xs text-slate-500">Shipping information</dt><dd class="font-bold text-emerald-700">Complete</dd></div><div><dt class="text-xs text-slate-500">Return / Warranty</dt><dd class="font-bold text-emerald-700">Visible</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2"><a href="/products/artisan-oak-board" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Preview</a><a href="/admin/products/PRD-100284/edit" class="rounded-lg border px-3 py-2 text-xs font-bold">Edit Content</a><a href="/admin/products/PRD-100284/images" class="rounded-lg border px-3 py-2 text-xs font-bold">Images</a><a href="/admin/products/PRD-100284/variants" class="rounded-lg border px-3 py-2 text-xs font-bold">Variants</a><a href="/admin/products/PRD-100284/seo" class="rounded-lg border px-3 py-2 text-xs font-bold">SEO</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Request Improvements</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Run Audit</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="pricing-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="pricing-heading" class="text-lg font-bold">Pricing and promotion review</h2></div>
+    <div class="space-y-5 p-5">
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Regular price</dt><dd class="font-bold">$89.00</dd></div><div><dt class="text-xs text-slate-500">Sale price</dt><dd class="font-bold text-rose-700">$74.00</dd></div>
+        <div><dt class="text-xs text-slate-500">Compare-at price</dt><dd class="font-bold">$89.00</dd></div><div><dt class="text-xs text-slate-500">Product cost</dt><dd class="font-bold">$28.00</dd></div>
+        <div><dt class="text-xs text-slate-500">Vendor margin</dt><dd class="font-bold">62.2%</dd></div><div><dt class="text-xs text-slate-500">Commission</dt><dd class="font-bold">8% · $5.92</dd></div>
+        <div><dt class="text-xs text-slate-500">30-day low</dt><dd class="font-bold">$69.00</dd></div><div><dt class="text-xs text-slate-500">30-day high</dt><dd class="font-bold">$89.00</dd></div>
+        <div><dt class="text-xs text-slate-500">Competitiveness</dt><dd class="font-bold text-emerald-700">Competitive</dd></div><div><dt class="text-xs text-slate-500">Active discount</dt><dd class="font-bold">17%</dd></div>
+        <div><dt class="text-xs text-slate-500">Coupon eligible</dt><dd class="font-bold text-emerald-700">Yes</dd></div><div><dt class="text-xs text-slate-500">Flash sale</dt><dd class="font-bold">No</dd></div>
+        <div><dt class="text-xs text-slate-500">Featured</dt><dd class="font-bold text-amber-700">Homepage</dd></div><div><dt class="text-xs text-slate-500">Promotion period</dt><dd class="font-bold">Sep 15–30</dd></div>
+        <div><dt class="text-xs text-slate-500">MAP status</dt><dd class="font-bold text-emerald-700">Compliant</dd></div><div><dt class="text-xs text-slate-500">Suspicious change</dt><dd class="font-bold text-emerald-700">None</dd></div>
+      </dl>
+      <div><label for="pricing-reason" class="block text-sm font-semibold">Reason for price or promotion adjustment</label><textarea id="pricing-reason" rows="2" placeholder="Required before manually changing vendor pricing or promotion status." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea></div>
+      <div class="flex flex-wrap gap-2"><a href="/admin/products/PRD-100284/pricing/history" class="rounded-lg border px-3 py-2 text-xs font-bold">Price History</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Edit Price</button><button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white">Approve Promotion</button><button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Reject Promotion</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">End Promotion</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Feature</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Remove Featured</button><button type="button" class="rounded-lg border border-amber-300 px-3 py-2 text-xs font-bold text-amber-800">Flag Pricing</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Request Explanation</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="inventory-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="inventory-heading" class="text-lg font-bold">Inventory and fulfillment</h2></div>
+    <div class="space-y-5 p-5">
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Total inventory</dt><dd class="font-bold">112</dd></div><div><dt class="text-xs text-slate-500">Available</dt><dd class="font-bold text-emerald-700">86</dd></div>
+        <div><dt class="text-xs text-slate-500">Reserved</dt><dd class="font-bold">12</dd></div><div><dt class="text-xs text-slate-500">Committed</dt><dd class="font-bold">8</dd></div>
+        <div><dt class="text-xs text-slate-500">Incoming</dt><dd class="font-bold">60</dd></div><div><dt class="text-xs text-slate-500">Damaged / Returned</dt><dd class="font-bold">2 / 4</dd></div>
+        <div><dt class="text-xs text-slate-500">Low-stock threshold</dt><dd class="font-bold">15</dd></div><div><dt class="text-xs text-slate-500">Reorder point</dt><dd class="font-bold">25</dd></div>
+        <div><dt class="text-xs text-slate-500">Tracking</dt><dd class="font-bold text-emerald-700">Enabled</dd></div><div><dt class="text-xs text-slate-500">Backorder / Preorder</dt><dd class="font-bold">Disabled</dd></div>
+        <div><dt class="text-xs text-slate-500">Location</dt><dd class="font-bold">Burnaby Warehouse</dd></div><div><dt class="text-xs text-slate-500">Fulfillment</dt><dd class="font-bold">Vendor fulfilled</dd></div>
+        <div><dt class="text-xs text-slate-500">Shipping profile</dt><dd class="font-bold">Standard Parcel</dd></div><div><dt class="text-xs text-slate-500">Weight</dt><dd class="font-bold">1.8 kg</dd></div>
+        <div><dt class="text-xs text-slate-500">Dimensions</dt><dd class="font-bold">45 × 28 × 4 cm</dd></div><div><dt class="text-xs text-slate-500">Handling</dt><dd class="font-bold">1–2 days</dd></div>
+        <div><dt class="text-xs text-slate-500">Delivery</dt><dd class="font-bold">2–7 days</dd></div><div><dt class="text-xs text-slate-500">Restrictions</dt><dd class="font-bold">None</dd></div>
+        <div><dt class="text-xs text-slate-500">Hazardous material</dt><dd class="font-bold text-emerald-700">No</dd></div><div><dt class="text-xs text-slate-500">Last synchronized</dt><dd class="font-bold">8 minutes ago</dd></div>
+        <div><dt class="text-xs text-slate-500">Sync source</dt><dd class="font-bold">AsBeez Inventory</dd></div>
+      </dl>
+      <div><label for="inventory-reason" class="block text-sm font-semibold">Manual adjustment reason</label><input id="inventory-reason" placeholder="Required for manual inventory adjustments" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div class="flex flex-wrap gap-2"><a href="/admin/products/PRD-100284/inventory/history" class="rounded-lg border px-3 py-2 text-xs font-bold">Inventory History</a><button type="button" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Adjust Inventory</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Low-Stock Threshold</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Backorders</button><a href="/admin/products/PRD-100284/fulfillment" class="rounded-lg border px-3 py-2 text-xs font-bold">Fulfillment</a><a href="/admin/products/PRD-100284/shipping" class="rounded-lg border px-3 py-2 text-xs font-bold">Shipping Profile</a><a href="/admin/inventory/alerts?product=PRD-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Alerts</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Force Sync</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- Variants and Performance -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="variants-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="variants-heading" class="text-lg font-bold">Variants, options, and bundles</h2><p class="mt-1 text-xs text-slate-500">6 active variants across size and finish options.</p></div>
+    <div class="overflow-x-auto p-5 sm:p-6">
+      <table class="w-full min-w-[42rem] text-left text-sm">
+        <thead class="border-b text-xs uppercase text-slate-500"><tr><th class="pb-3">Variant</th><th class="pb-3">SKU</th><th class="pb-3">Price</th><th class="pb-3">Inventory</th><th class="pb-3">Status</th><th class="pb-3">Actions</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-3 font-semibold">Medium · Natural Oak <span class="ml-1 rounded bg-amber-100 px-2 py-0.5 text-xs">Default</span></td><td class="py-3 font-mono text-xs">HH-BRD-M-NAT</td><td class="py-3">$74</td><td class="py-3">32</td><td class="py-3 text-emerald-700">Active</td><td class="py-3"><a href="/admin/products/PRD-100284/variants/1" class="font-bold text-amber-700">View</a></td></tr>
+          <tr><td class="py-3 font-semibold">Medium · Dark Walnut</td><td class="py-3 font-mono text-xs">HH-BRD-M-DARK</td><td class="py-3">$79</td><td class="py-3">18</td><td class="py-3 text-emerald-700">Active</td><td class="py-3"><a href="/admin/products/PRD-100284/variants/2/edit" class="font-bold text-amber-700">Edit</a></td></tr>
+          <tr><td class="py-3 font-semibold">Large · Natural Oak</td><td class="py-3 font-mono text-xs">HH-BRD-L-NAT</td><td class="py-3">$92</td><td class="py-3">14</td><td class="py-3 text-amber-700">Low stock</td><td class="py-3"><a href="/admin/products/PRD-100284/variants/3/edit" class="font-bold text-amber-700">Edit</a></td></tr>
+          <tr><td class="py-3 font-semibold">Large · Dark Walnut</td><td class="py-3 font-mono text-xs">HH-BRD-L-DARK</td><td class="py-3">$98</td><td class="py-3">12</td><td class="py-3 text-amber-700">Low stock</td><td class="py-3"><button type="button" class="font-bold text-orange-700">Disable</button></td></tr>
+          <tr><td class="py-3 font-semibold">Small · Natural Oak</td><td class="py-3 font-mono text-xs">HH-BRD-S-NAT</td><td class="py-3">$58</td><td class="py-3">10</td><td class="py-3 text-emerald-700">Active</td><td class="py-3"><button type="button" class="font-bold text-orange-700">Disable</button></td></tr>
+          <tr class="text-slate-400"><td class="py-3 font-semibold">Small · Dark Walnut</td><td class="py-3 font-mono text-xs">HH-BRD-S-DARK</td><td class="py-3">$62</td><td class="py-3">0</td><td class="py-3">Disabled</td><td class="py-3"><button type="button" class="font-bold text-emerald-700">Restore</button></td></tr>
+        </tbody>
+      </table>
+      <dl class="mt-5 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4"><div><dt class="text-xs text-slate-500">Option groups</dt><dd class="font-bold">Size, Finish</dd></div><div><dt class="text-xs text-slate-500">Bundle components</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Customization</dt><dd class="font-bold">Engraving</dd></div><div><dt class="text-xs text-slate-500">Personalization fields</dt><dd class="font-bold">1 optional</dd></div></dl>
+      <div class="mt-4 flex flex-wrap gap-2"><a href="/admin/products/PRD-100284/variants" class="rounded-lg border px-3 py-2 text-xs font-bold">Review Variants</a><a href="/admin/products/PRD-100284/bundle" class="rounded-lg border px-3 py-2 text-xs font-bold">Bundle Components</a><a href="/admin/products/PRD-100284/personalization" class="rounded-lg border px-3 py-2 text-xs font-bold">Personalization Options</a></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="product-performance-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4"><div><h2 id="product-performance-heading" class="text-lg font-bold">Product performance</h2><p class="mt-1 text-xs text-slate-500">Last 30 days</p></div><select aria-label="Product performance period" class="rounded-lg border-slate-300 text-xs"><option>30 days</option><option>90 days</option><option>1 year</option></select></div>
+    <div class="space-y-5 p-5 sm:p-6">
+      <div class="flex h-32 items-end gap-2 rounded-xl bg-slate-50 p-3" aria-label="Product performance chart"><div class="h-[30%] flex-1 rounded-t bg-amber-200"></div><div class="h-[48%] flex-1 rounded-t bg-amber-300"></div><div class="h-[42%] flex-1 rounded-t bg-amber-300"></div><div class="h-[62%] flex-1 rounded-t bg-amber-400"></div><div class="h-[55%] flex-1 rounded-t bg-amber-400"></div><div class="h-[76%] flex-1 rounded-t bg-amber-500"></div><div class="h-[68%] flex-1 rounded-t bg-amber-400"></div><div class="h-[88%] flex-1 rounded-t bg-slate-800"></div><div class="h-full flex-1 rounded-t bg-slate-950"></div></div>
+      <dl class="grid grid-cols-2 gap-3 text-center sm:grid-cols-4">
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Views</dt><dd class="font-black">42,860</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Unique visitors</dt><dd class="font-black">31,284</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Add to cart</dt><dd class="font-black">4,208</dd></div><div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Checkout starts</dt><dd class="font-black">2,842</dd></div>
+        <div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Orders</dt><dd class="font-black">2,002</dd></div><div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Units sold</dt><dd class="font-black">2,218</dd></div>
+        <div class="rounded-xl bg-violet-50 p-3"><dt class="text-xs text-slate-500">Gross revenue</dt><dd class="font-black">$164K</dd></div><div class="rounded-xl bg-violet-50 p-3"><dt class="text-xs text-slate-500">Net revenue</dt><dd class="font-black">$149K</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Conversion</dt><dd class="font-black">6.4%</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Cart abandonment</dt><dd class="font-black">32.4%</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Avg. quantity</dt><dd class="font-black">1.11</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Refund / Return</dt><dd class="font-black">18 / 26</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Wishlist / Shares</dt><dd class="font-black">3,482 / 624</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Search CTR</dt><dd class="font-black">8.2%</dd></div>
+        <div class="rounded-xl bg-sky-50 p-3"><dt class="text-xs text-slate-500">Ad spend</dt><dd class="font-black">$2,840</dd></div><div class="rounded-xl bg-sky-50 p-3"><dt class="text-xs text-slate-500">Ad ROAS</dt><dd class="font-black">6.8×</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2"><a href="/admin/products/PRD-100284/analytics" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Product Analytics</a><a href="/admin/products/PRD-100284/orders" class="rounded-lg border px-3 py-2 text-xs font-bold">Orders</a><a href="/admin/products/PRD-100284/transactions" class="rounded-lg border px-3 py-2 text-xs font-bold">Transactions</a><a href="/admin/products/PRD-100284/traffic" class="rounded-lg border px-3 py-2 text-xs font-bold">Traffic Sources</a><a href="/admin/products/PRD-100284/advertising" class="rounded-lg border px-3 py-2 text-xs font-bold">Advertising</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- Feedback, Compliance, Vendor Context -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="feedback-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="feedback-heading" class="text-lg font-bold">Reviews, questions, and reports</h2></div>
+    <div class="space-y-5 p-5">
+      <div class="flex items-center gap-5 rounded-xl bg-amber-50 p-4"><div><p class="text-3xl font-black">4.9</p><p class="text-sm text-amber-600">★★★★★</p><p class="text-xs text-slate-500">286 reviews</p></div><div class="flex-1 space-y-1 text-xs"><div class="flex items-center gap-2"><span>5</span><div class="h-2 flex-1 rounded bg-white"><div class="h-full w-[88%] rounded bg-amber-400"></div></div><span>88%</span></div><div class="flex items-center gap-2"><span>4</span><div class="h-2 flex-1 rounded bg-white"><div class="h-full w-[9%] rounded bg-amber-400"></div></div><span>9%</span></div><div class="flex items-center gap-2"><span>1–3</span><div class="h-2 flex-1 rounded bg-white"><div class="h-full w-[3%] rounded bg-amber-400"></div></div><span>3%</span></div></div></div>
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Verified purchases</dt><dd class="font-bold">272</dd></div><div><dt class="text-xs text-slate-500">Pending moderation</dt><dd class="font-bold">4</dd></div>
+        <div><dt class="text-xs text-slate-500">Reported reviews</dt><dd class="font-bold">1</dd></div><div><dt class="text-xs text-slate-500">Vendor responses</dt><dd class="font-bold">252</dd></div>
+        <div><dt class="text-xs text-slate-500">Awaiting response</dt><dd class="font-bold">8</dd></div><div><dt class="text-xs text-slate-500">Questions</dt><dd class="font-bold">18</dd></div>
+        <div><dt class="text-xs text-slate-500">Answered / Unanswered</dt><dd class="font-bold">16 / 2</dd></div><div><dt class="text-xs text-slate-500">Product reports</dt><dd class="font-bold">0</dd></div>
+        <div><dt class="text-xs text-slate-500">Counterfeit / Safety</dt><dd class="font-bold">0 / 0</dd></div><div><dt class="text-xs text-slate-500">Description mismatch</dt><dd class="font-bold">1 resolved</dd></div>
+        <div><dt class="text-xs text-slate-500">IP complaints</dt><dd class="font-bold">0</dd></div><div><dt class="text-xs text-slate-500">Customer complaints</dt><dd class="font-bold">2 resolved</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2"><a href="/admin/products/PRD-100284/reviews" class="rounded-lg border px-3 py-2 text-xs font-bold">Reviews</a><a href="/admin/reviews/pending?product=PRD-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Moderate Reviews</a><a href="/admin/products/PRD-100284/questions" class="rounded-lg border px-3 py-2 text-xs font-bold">Questions</a><a href="/admin/questions?status=unanswered&amp;product=PRD-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Unanswered</a><a href="/admin/products/PRD-100284/reports" class="rounded-lg border px-3 py-2 text-xs font-bold">Reports</a><a href="/admin/products/PRD-100284/complaints" class="rounded-lg border px-3 py-2 text-xs font-bold">Complaints</a><button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Escalate</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="compliance-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="compliance-heading" class="text-lg font-bold">Compliance and product safety</h2></div>
+    <div class="space-y-5 p-5">
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Product policy</dt><dd class="font-bold text-emerald-700">Compliant</dd></div><div><dt class="text-xs text-slate-500">Prohibited screening</dt><dd class="font-bold text-emerald-700">Passed</dd></div>
+        <div><dt class="text-xs text-slate-500">Restricted screening</dt><dd class="font-bold text-emerald-700">Passed</dd></div><div><dt class="text-xs text-slate-500">Brand authorization</dt><dd class="font-bold">Not required</dd></div>
+        <div><dt class="text-xs text-slate-500">Counterfeit risk</dt><dd class="font-bold text-emerald-700">Low</dd></div><div><dt class="text-xs text-slate-500">IP status</dt><dd class="font-bold text-emerald-700">Clear</dd></div>
+        <div><dt class="text-xs text-slate-500">Safety documents</dt><dd class="font-bold">Material declaration</dd></div><div><dt class="text-xs text-slate-500">Certification</dt><dd class="font-bold">Not required</dd></div>
+        <div><dt class="text-xs text-slate-500">Age restriction</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Hazardous materials</dt><dd class="font-bold text-emerald-700">No</dd></div>
+        <div><dt class="text-xs text-slate-500">Recall status</dt><dd class="font-bold text-emerald-700">No recall</dd></div><div><dt class="text-xs text-slate-500">Country of origin</dt><dd class="font-bold">Canada</dd></div>
+        <div><dt class="text-xs text-slate-500">Material disclosure</dt><dd class="font-bold">White oak, food-safe oil</dd></div><div><dt class="text-xs text-slate-500">Warning labels</dt><dd class="font-bold">Not required</dd></div>
+        <div><dt class="text-xs text-slate-500">Warranty</dt><dd class="font-bold text-emerald-700">Compliant</dd></div><div><dt class="text-xs text-slate-500">Regional restrictions</dt><dd class="font-bold">None</dd></div>
+        <div><dt class="text-xs text-slate-500">Tax class</dt><dd class="font-bold">Standard goods</dd></div><div><dt class="text-xs text-slate-500">Environmental</dt><dd class="font-bold text-emerald-700">Pass</dd></div>
+        <div><dt class="text-xs text-slate-500">Accessibility</dt><dd class="font-bold text-amber-700">1 alt text due</dd></div><div><dt class="text-xs text-slate-500">Compliance / Risk</dt><dd class="font-bold">96 / 6</dd></div>
+        <div><dt class="text-xs text-slate-500">Last review</dt><dd class="font-bold">Sep 12, 2026</dd></div><div><dt class="text-xs text-slate-500">Next review</dt><dd class="font-bold">Mar 12, 2027</dd></div>
+        <div><dt class="text-xs text-slate-500">Moderator</dt><dd class="font-bold">Sarah Mitchell</dd></div><div><dt class="text-xs text-slate-500">Previous violations</dt><dd class="font-bold">0</dd></div>
+      </dl>
+      <div class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">Compliance decisions require documented evidence and a review reason.</div>
+      <div class="flex flex-wrap gap-2"><a href="/admin/products/PRD-100284/documents" class="rounded-lg border px-3 py-2 text-xs font-bold">Review Documents</a><button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white">Approve</button><button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Reject</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Request Documents</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Compliance Note</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Schedule Review</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Restricted Scan</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Counterfeit Check</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Monitor</button><button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Escalate</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="vendor-context-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="vendor-context-heading" class="text-lg font-bold">Vendor and store context</h2></div>
+    <div class="space-y-5 p-5">
+      <div class="flex items-center gap-3"><span class="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-400 text-lg font-black">HH</span><div><h3 class="font-bold">Honeycomb Home Ltd.</h3><p class="text-sm text-slate-500">Honeycomb Home Market · VND-100284</p></div></div>
+      <div class="flex flex-wrap gap-2"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">Growth Plan</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span><span class="rounded-full bg-sky-100 px-2 py-1 text-xs font-bold text-sky-700">Verified</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low risk</span></div>
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Store health</dt><dd class="font-bold">94/100</dd></div><div><dt class="text-xs text-slate-500">Store rating</dt><dd class="font-bold text-amber-600">4.9 ★</dd></div>
+        <div><dt class="text-xs text-slate-500">Lifetime sales</dt><dd class="font-bold">$486,820</dd></div><div><dt class="text-xs text-slate-500">Refund rate</dt><dd class="font-bold">1.4%</dd></div>
+        <div><dt class="text-xs text-slate-500">Policy violations</dt><dd class="font-bold">0 open</dd></div><div><dt class="text-xs text-slate-500">Other flagged products</dt><dd class="font-bold">1</dd></div>
+        <div><dt class="text-xs text-slate-500">Open disputes</dt><dd class="font-bold">0</dd></div><div><dt class="text-xs text-slate-500">Account manager</dt><dd class="font-bold">Sarah Mitchell</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2"><a href="/admin/vendors/VND-100284" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Vendor Profile</a><a href="/store/honeycomb-home" class="rounded-lg border px-3 py-2 text-xs font-bold">Live Store</a><a href="/admin/vendors/VND-100284/products" class="rounded-lg border px-3 py-2 text-xs font-bold">Vendor Products</a><a href="/admin/vendors/VND-100284/compliance" class="rounded-lg border px-3 py-2 text-xs font-bold">Compliance</a><a href="/admin/vendors/VND-100284/payouts" class="rounded-lg border px-3 py-2 text-xs font-bold">Payouts</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Contact Vendor</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Add Vendor Note</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- Internal Notes -->
+<section aria-labelledby="internal-notes-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6"><div><h2 id="internal-notes-heading" class="text-lg font-bold">Internal notes and moderation ownership</h2><p class="mt-1 text-xs text-slate-500">Internal notes are never visible to vendors or customers.</p></div><a href="/admin/products/PRD-100284/audit" class="text-sm font-bold text-amber-700 hover:underline">Product Audit Log</a></div>
+  <div class="grid gap-6 p-5 sm:p-6 xl:grid-cols-[0.8fr_1.2fr]">
+    <div>
+      <dl class="grid grid-cols-2 gap-3 text-sm"><div><dt class="text-xs text-slate-500">Moderator</dt><dd class="font-bold">Sarah Mitchell</dd></div><div><dt class="text-xs text-slate-500">Compliance reviewer</dt><dd class="font-bold">Elena Cruz</dd></div><div><dt class="text-xs text-slate-500">Category manager</dt><dd class="font-bold">Daniel Kim</dd></div><div><dt class="text-xs text-slate-500">Priority</dt><dd class="font-bold">Normal</dd></div><div><dt class="text-xs text-slate-500">Risk</dt><dd class="font-bold text-emerald-700">Low</dd></div><div><dt class="text-xs text-slate-500">Case reference</dt><dd class="font-bold">No active case</dd></div><div><dt class="text-xs text-slate-500">Last review</dt><dd class="font-bold">Sep 12, 2026</dd></div><div><dt class="text-xs text-slate-500">Next review</dt><dd class="font-bold">Mar 12, 2027</dd></div></dl>
+      <div class="mt-4 flex flex-wrap gap-2"><span class="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold text-violet-700">Best Seller</span><span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">High Revenue</span><span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">Featured</span><span class="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-sky-700">Seasonal</span></div>
+    </div>
+    <div class="space-y-4">
+      <article class="rounded-xl bg-slate-50 p-4"><div class="flex justify-between gap-3"><p class="text-sm font-bold">Quality and compliance review completed.</p><time class="text-xs text-slate-400">Sep 12, 2026</time></div><p class="mt-2 text-sm text-slate-600">Listing is accurate and compliant. One secondary image requires updated alt text.</p><p class="mt-2 text-xs font-semibold text-slate-500">Sarah Mitchell · Senior Catalog Moderator</p></article>
+      <div><label for="product-note" class="block text-sm font-semibold">Add internal note</label><textarea id="product-note" rows="3" placeholder="Document evidence, decisions, and required follow-up." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea></div>
+      <div class="flex flex-wrap gap-2"><button type="button" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Add Note</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Add Tag</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Assign Moderator</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Assign Compliance Reviewer</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Set Priority</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Schedule Follow-Up</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Recent Product Activity -->
+<section aria-labelledby="activity-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6"><div><h2 id="activity-heading" class="text-lg font-bold">Recent product activity</h2><p class="mt-1 text-xs text-slate-500">Auditable catalog and moderation events.</p></div><a href="/admin/products/audit" class="text-sm font-bold text-amber-700 hover:underline">View Complete Product Audit Log</a></div>
+  <div class="overflow-x-auto">
+    <table class="w-full min-w-[68rem] text-left text-sm">
+      <thead class="bg-slate-50 text-xs uppercase text-slate-500"><tr><th class="px-5 py-3">Action</th><th class="px-5 py-3">Product</th><th class="px-5 py-3">Vendor</th><th class="px-5 py-3">Actor</th><th class="px-5 py-3">Date</th><th class="px-5 py-3">Reason</th><th class="px-5 py-3">Status</th><th class="px-5 py-3">Audit</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="px-5 py-4 font-semibold">Product approved</td><td class="px-5 py-4">Artisan Oak Serving Board</td><td class="px-5 py-4">Honeycomb Home</td><td class="px-5 py-4">Sarah Mitchell</td><td class="px-5 py-4">Sep 19, 4:18 PM</td><td class="px-5 py-4">Content and compliance checks passed.</td><td class="px-5 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Completed</span></td><td class="px-5 py-4"><a href="/admin/audit/PA-90218" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Price changed</td><td class="px-5 py-4">Coastal Linen Throw</td><td class="px-5 py-4">Honeycomb Home</td><td class="px-5 py-4">Vendor user</td><td class="px-5 py-4">Sep 19, 2:06 PM</td><td class="px-5 py-4">Seasonal pricing update.</td><td class="px-5 py-4"><span class="rounded-full bg-sky-100 px-2 py-1 text-xs font-bold text-sky-700">Recorded</span></td><td class="px-5 py-4"><a href="/admin/audit/PA-90211" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Product hidden</td><td class="px-5 py-4">Designer-Inspired Handbag</td><td class="px-5 py-4">Nova Style</td><td class="px-5 py-4">Elena Cruz</td><td class="px-5 py-4">Sep 18, 11:40 AM</td><td class="px-5 py-4">Trademark complaint pending review.</td><td class="px-5 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Enforced</span></td><td class="px-5 py-4"><a href="/admin/audit/PA-90188" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Product rejected</td><td class="px-5 py-4">Rapid Herbal Detox Capsules</td><td class="px-5 py-4">Verdant Wellness</td><td class="px-5 py-4">Daniel Kim</td><td class="px-5 py-4">Sep 18, 9:25 AM</td><td class="px-5 py-4">Unsubstantiated medical claims.</td><td class="px-5 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Rejected</span></td><td class="px-5 py-4"><a href="/admin/audit/PA-90172" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Inventory adjusted</td><td class="px-5 py-4">Wildflower Honey Three-Pack</td><td class="px-5 py-4">Harbour Foods</td><td class="px-5 py-4">Inventory sync</td><td class="px-5 py-4">Sep 17, 10:11 PM</td><td class="px-5 py-4">Warehouse inventory synchronization.</td><td class="px-5 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Out of stock</span></td><td class="px-5 py-4"><a href="/admin/audit/PA-90149" class="font-bold text-amber-700">View</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Product Moderation and Enforcement -->
+<section aria-labelledby="enforcement-heading" class="rounded-2xl border border-rose-200 bg-white shadow-sm">
+  <div class="border-b border-rose-100 px-5 py-4 sm:px-6"><h2 id="enforcement-heading" class="text-lg font-bold">Product moderation and enforcement</h2><p class="mt-1 text-xs text-slate-500">Sensitive listing controls require evidence, confirmation, and a documented reason.</p></div>
+  <form action="/admin/products/PRD-100284/enforcement" method="post" class="grid gap-6 p-5 sm:p-6 xl:grid-cols-[0.75fr_1.25fr]">
+    <dl class="grid grid-cols-2 gap-3 text-sm">
+      <div><dt class="text-xs text-slate-500">Product status</dt><dd class="font-bold text-emerald-700">Published</dd></div><div><dt class="text-xs text-slate-500">Moderation status</dt><dd class="font-bold text-emerald-700">Approved</dd></div>
+      <div><dt class="text-xs text-slate-500">Compliance status</dt><dd class="font-bold text-emerald-700">Compliant</dd></div><div><dt class="text-xs text-slate-500">Restriction reason</dt><dd class="font-bold">None</dd></div>
+      <div><dt class="text-xs text-slate-500">Rejection reason</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Hidden reason</dt><dd class="font-bold">None</dd></div>
+      <div><dt class="text-xs text-slate-500">Affected regions</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Enforcement period</dt><dd class="font-bold">Not applicable</dd></div>
+      <div><dt class="text-xs text-slate-500">Applied by</dt><dd class="font-bold">Not applicable</dd></div><div><dt class="text-xs text-slate-500">Related case</dt><dd class="font-bold">None</dd></div>
+      <div><dt class="text-xs text-slate-500">Vendor appeal</dt><dd class="font-bold">No appeal</dd></div><div class="col-span-2"><dt class="text-xs text-slate-500">Internal enforcement notes</dt><dd class="font-bold">Product is in good standing.</dd></div>
+    </dl>
+
+    <div class="space-y-4">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div><label for="product-action" class="block text-sm font-semibold">Moderation action</label><select id="product-action" required class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option value="">Select an action</option><option>Approve Product</option><option>Publish Product</option><option>Request Changes</option><option>Reject Product</option><option>Unpublish Product</option><option>Hide Product</option><option>Restrict by Region</option><option>Restrict by Age</option><option>Suspend Product</option><option>Remove Product</option><option>Archive Product</option><option>Restore Product</option><option>Place on Monitoring List</option><option>Initiate Product Recall</option></select></div>
+        <div><label for="violation-category" class="block text-sm font-semibold">Policy category</label><select id="violation-category" required class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option value="">Select category</option><option>Product content</option><option>Prohibited or restricted item</option><option>Safety or regulatory</option><option>Intellectual property</option><option>Counterfeit product</option><option>Misleading pricing</option><option>Customer harm</option><option>Marketplace quality</option></select></div>
+        <div><label for="evidence-reference" class="block text-sm font-semibold">Evidence or case reference</label><input id="evidence-reference" placeholder="CASE-000000" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div><label for="product-confirmation" class="block text-sm font-semibold">Confirmation</label><input id="product-confirmation" required placeholder="Type PRD-100284 to confirm" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500"></div>
+        <div><label for="affected-regions" class="block text-sm font-semibold">Affected regions</label><input id="affected-regions" placeholder="Global or selected regions" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div><label for="effective-date" class="block text-sm font-semibold">Effective date</label><input id="effective-date" type="datetime-local" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div><label for="expiration-date" class="block text-sm font-semibold">Optional expiration</label><input id="expiration-date" type="datetime-local" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div class="sm:col-span-2"><label for="enforcement-reason" class="block text-sm font-semibold">Required documented reason</label><textarea id="enforcement-reason" required rows="3" placeholder="Provide the policy basis, evidence reviewed, affected customers or regions, and required remediation." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500"></textarea></div>
+      </div>
+      <div class="grid gap-2 sm:grid-cols-3"><label class="flex items-start gap-3 text-sm"><input type="checkbox" checked class="mt-0.5 rounded text-amber-600 focus:ring-amber-500"><span>Notify vendor</span></label><label class="flex items-start gap-3 text-sm"><input type="checkbox" class="mt-0.5 rounded text-amber-600 focus:ring-amber-500"><span>Notify affected customers</span></label><label class="flex items-start gap-3 text-sm"><input type="checkbox" checked class="mt-0.5 rounded text-amber-600 focus:ring-amber-500"><span>Include appeal instructions</span></label></div>
+      <div class="flex flex-wrap items-center gap-3"><button type="submit" class="rounded-xl border border-rose-300 bg-white px-4 py-2.5 text-sm font-bold text-rose-700 hover:bg-rose-50">Review and Apply Action</button><a href="/policies/products" class="text-sm font-bold text-amber-700 hover:underline">View product policy</a></div>
+    </div>
+  </form>
+</section>
+
+<!-- Product Administration -->
+<section aria-labelledby="product-administration-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-200 px-5 py-5 sm:px-6"><h2 id="product-administration-heading" class="text-xl font-bold">Product Administration</h2><p class="mt-1 text-sm text-slate-500">Quick access to catalog administration tools and reports.</p></div>
+  <div class="grid gap-8 p-5 sm:p-6 lg:grid-cols-2 2xl:grid-cols-4">
+
+    <section aria-labelledby="management-links">
+      <h3 id="management-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Product management</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/products" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">All Products</a><a href="/admin/products/create" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Add Product</a>
+        <a href="/admin/products?status=published" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Published</a><a href="/admin/products?status=draft" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Draft Products</a>
+        <a href="/admin/products?status=pending" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending <span class="rounded-full bg-amber-100 px-2 text-xs">2,186</span></a><a href="/admin/products?status=changes-requested" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Changes Requested</a>
+        <a href="/admin/products?status=rejected" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Rejected <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">642</span></a><a href="/admin/products?status=hidden" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Hidden Products</a>
+        <a href="/admin/products?status=suspended" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Suspended</a><a href="/admin/products?status=archived" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Archived</a>
+        <a href="/admin/products?status=deleted" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Deleted</a><a href="/admin/products/duplicates" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Duplicate Products</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="moderation-links">
+      <h3 id="moderation-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Moderation and approval</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/products/moderation" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Moderation Queue</a><a href="/admin/products?moderation=unreviewed" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Unreviewed</a>
+        <a href="/admin/products?moderator=me" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Assigned to Me</a><a href="/admin/products?moderation=escalated" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Escalated Reviews</a>
+        <a href="/admin/products/appeals" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Appeals</a><a href="/admin/products/vendor-responses" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Responses</a>
+        <a href="/admin/products/audit" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Audit History</a><a href="/admin/products/moderation/rules" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Moderation Rules</a>
+        <a href="/admin/products/moderation/automation" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Automated Moderation</a><a href="/admin/products/quality-audits" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Quality Audits</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="catalog-links">
+      <h3 id="catalog-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Catalog organization</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/categories" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Categories</a><a href="/admin/subcategories" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Subcategories</a>
+        <a href="/admin/brands" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Brands</a><a href="/admin/brands/requests" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Brand Requests</a>
+        <a href="/admin/collections" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Collections</a><a href="/admin/product-types" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Types</a>
+        <a href="/admin/attributes" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Attributes</a><a href="/admin/attribute-sets" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Attribute Sets</a>
+        <a href="/admin/variants" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Variants</a><a href="/admin/tags" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Tags</a>
+        <a href="/admin/units" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Units of Measure</a><a href="/admin/product-conditions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Conditions</a>
+        <a href="/admin/shipping-classes" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Shipping Classes</a><a href="/admin/tax-classes" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Tax Classes</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="inventory-links">
+      <h3 id="inventory-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Inventory and fulfillment</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/inventory" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Inventory Overview</a><a href="/admin/products?inventory=low" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Low Stock <span class="rounded-full bg-amber-100 px-2 text-xs">6,842</span></a>
+        <a href="/admin/products?inventory=out" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Out of Stock <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">4,238</span></a><a href="/admin/products?inventory=backordered" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Backordered</a>
+        <a href="/admin/products?inventory=preorder" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Preorder Products</a><a href="/admin/inventory/adjustments" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Adjustments</a>
+        <a href="/admin/inventory/alerts" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Inventory Alerts</a><a href="/admin/warehouses" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Warehouses</a>
+        <a href="/admin/fulfillment-profiles" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Fulfillment Profiles</a><a href="/admin/shipping-profiles" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Shipping Profiles</a>
+        <a href="/admin/inventory/imports" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Inventory Imports</a><a href="/admin/inventory/sync-errors" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Sync Errors <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">92</span></a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="pricing-links">
+      <h3 id="pricing-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Pricing and promotions</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/product-prices" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Prices</a><a href="/admin/product-prices/sales" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Sale Prices</a>
+        <a href="/admin/product-prices/history" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Price History</a><a href="/admin/product-prices/suspicious" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Suspicious Pricing</a>
+        <a href="/admin/product-promotions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Promotions</a><a href="/admin/products/featured" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Featured Products</a>
+        <a href="/admin/flash-sales" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Flash Sales</a><a href="/admin/coupons" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Coupons</a>
+        <a href="/admin/bundles" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Bundles</a><a href="/admin/gift-cards" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Gift Cards</a>
+        <a href="/admin/commission-categories" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Commission Categories</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="customer-feedback-links">
+      <h3 id="customer-feedback-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Reviews and customer feedback</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/product-reviews" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Reviews</a><a href="/admin/product-reviews?status=pending" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending Reviews <span class="rounded-full bg-amber-100 px-2 text-xs">416</span></a>
+        <a href="/admin/product-reviews?status=reported" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Reported Reviews</a><a href="/admin/product-questions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Questions</a>
+        <a href="/admin/product-questions?status=unanswered" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Unanswered <span class="rounded-full bg-amber-100 px-2 text-xs">1,208</span></a>
+        <a href="/admin/product-reports" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Product Reports <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">184</span></a>
+        <a href="/admin/complaints/products" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Customer Complaints</a><a href="/admin/product-reports?type=mismatch" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Description Mismatches</a>
+        <a href="/admin/product-reports?type=safety" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Safety Reports <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">16</span></a>
+        <a href="/admin/product-reports?type=counterfeit" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Counterfeit Reports <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">28</span></a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="compliance-links">
+      <h3 id="compliance-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Compliance and safety</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/products/compliance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Compliance Reviews</a><a href="/admin/products?status=flagged" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Flagged Products <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">384</span></a>
+        <a href="/admin/products/prohibited" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Prohibited Products</a><a href="/admin/products/restricted" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Restricted Products</a>
+        <a href="/admin/products/safety-documents" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Safety Documentation</a><a href="/admin/products/certifications" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Certifications</a>
+        <a href="/admin/ip-complaints" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">IP Complaints <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">42</span></a><a href="/admin/brand-authorization" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Brand Authorization</a>
+        <a href="/admin/counterfeit-monitoring" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Counterfeit Monitoring</a><a href="/admin/product-recalls" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Product Recalls</a>
+        <a href="/admin/products/regional-restrictions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Regional Restrictions</a><a href="/admin/products/compliance/rules" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Compliance Rules</a>
+        <a href="/admin/products/audit" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Audit Log</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="reporting-links">
+      <h3 id="reporting-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Reporting and catalog operations</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/analytics/products" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Analytics</a><a href="/admin/reports/product-sales" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Sales Reports</a>
+        <a href="/admin/reports/inventory" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Inventory Reports</a><a href="/admin/reports/product-performance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Performance</a>
+        <a href="/admin/reports/conversions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Conversion Reports</a><a href="/admin/reports/product-returns" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Return Reports</a>
+        <a href="/admin/reports/product-compliance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Compliance Reports</a><a href="/admin/reports/vendor-products" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Product Reports</a>
+        <a href="/admin/products/exports" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Export Center</a><a href="/admin/products/imports" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Import History</a>
+        <a href="/admin/products/imports?status=failed" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Failed Imports</a><a href="/admin/products/bulk-history" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Bulk Editing History</a>
+      </nav>
+    </section>
+  </div>
+</section>
+</div> </main>

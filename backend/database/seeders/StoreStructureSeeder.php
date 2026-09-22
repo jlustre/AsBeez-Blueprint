@@ -9,6 +9,7 @@ use App\Models\SettingDefinition;
 use App\Models\SocialPlatform;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use InvalidArgumentException;
 
 /**
  * Seeds the admin-curated STRUCTURE: the option lists a store chooses from.
@@ -37,24 +38,719 @@ class StoreStructureSeeder extends Seeder
         $this->seedNavLinks();
     }
 
+    /**
+     * The marketplace taxonomy, as a tree.
+     *
+     * The roots are the seven markets the homepage sells — Physical Products,
+     * Digital Products, Professional Services, Real Estate, Automotive,
+     * Insurance and Travel. Everything else hangs beneath one of them, so the
+     * grid on /home is exactly seven cards without the page hard-coding them.
+     *
+     * One nested array rather than a root list plus a children map: a new
+     * branch is a single edit where it belongs, and nothing caps the depth.
+     * Sibling order in the array becomes `position`, so reordering is cut
+     * and paste instead of renumbering every neighbour.
+     *
+     * Shape: [name, slug, tone] with an optional fourth element holding
+     * children of the same shape.
+     *
+     * Slugs are the natural key every other seeder, demo fixture and test
+     * addresses a category by, so treat them as append-only: renaming one
+     * silently orphans those references. That is why a handful of display
+     * names no longer read like their slug — 'health-beauty' is "Beauty and
+     * Personal Care" and 'business-office' is "Office and School Supplies".
+     * The name is what a shopper sees and is free to change; the slug is the
+     * key and is not.
+     *
+     * Nothing here deletes: a slug dropped from this array leaves its row
+     * behind, still parented where it last was. So a department that goes
+     * away is re-homed rather than removed.
+     */
+    private const CATEGORY_TREE = [
+        ['Physical Products', 'physical-products', 'amber', [
+            ['Electronics and Computers', 'electronics', 'slate', [
+                ['Computers & Accessories', 'computers-accessories', 'slate', [
+                    ['Laptops', 'laptops', 'slate'],
+                    ['Desktops', 'desktops', 'slate'],
+                    ['Peripherals', 'peripherals', 'slate'],
+                ]],
+                ['Phones & Tablets', 'phones-tablets', 'blue'],
+                ['Audio & Headphones', 'audio-headphones', 'indigo'],
+                ['Cameras & Photography', 'cameras-photography', 'slate'],
+                ['Smart Home', 'smart-home', 'sky'],
+                ['Gaming', 'gaming', 'violet'],
+            ]],
+            ['Home, Furniture, and Appliances', 'home-living', 'amber', [
+                ['Furniture', 'furniture', 'amber'],
+                ['Appliances', 'home-appliances', 'slate'],
+                ['Kitchen & Dining', 'kitchen-dining', 'amber'],
+                ['Home Decor', 'home-decor', 'orange'],
+                ['Bed & Bath', 'bed-bath', 'sky'],
+                ['Storage & Organisation', 'storage-organisation', 'slate'],
+                ['Cleaning Supplies', 'cleaning-supplies', 'sky'],
+            ]],
+            ['Fashion, Shoes, and Accessories', 'fashion-apparel', 'pink', [
+                ['Women\'s Clothing', 'womens-clothing', 'pink'],
+                ['Men\'s Clothing', 'mens-clothing', 'slate'],
+                ['Footwear', 'footwear', 'slate'],
+                ['Bags & Accessories', 'bags-accessories', 'pink'],
+                ['Vintage & Secondhand', 'vintage-secondhand', 'rose'],
+            ]],
+            ['Beauty and Personal Care', 'health-beauty', 'rose', [
+                ['Skincare', 'skincare', 'rose'],
+                ['Hair Care', 'hair-care', 'rose'],
+                ['Cosmetics', 'cosmetics', 'pink'],
+                ['Fragrance', 'fragrance', 'violet'],
+                ['Bath & Body', 'bath-body', 'sky'],
+                ['Grooming & Shaving', 'grooming-shaving', 'slate'],
+            ]],
+            ['Health and Wellness Products', 'health-wellness', 'emerald', [
+                ['Supplements', 'supplements', 'emerald'],
+                ['Wellness & Fitness', 'wellness-fitness', 'emerald'],
+                ['Medical Supplies', 'medical-supplies', 'sky'],
+                ['First Aid', 'first-aid', 'red'],
+            ]],
+            ['Grocery and Specialty Food', 'food-beverage', 'amber', [
+                ['Honey & Pantry', 'honey-pantry', 'amber', [
+                    ['Raw Honey', 'raw-honey', 'amber'],
+                    ['Jams & Preserves', 'jams-preserves', 'amber'],
+                    ['Oils & Vinegars', 'oils-vinegars', 'amber'],
+                ]],
+                ['Prepared Food', 'prepared-food', 'orange', [
+                    ['Baked Goods', 'baked-goods', 'orange'],
+                    ['Meal Prep', 'meal-prep', 'orange'],
+                ]],
+                ['Coffee & Tea', 'coffee-tea', 'amber'],
+                ['Beverages', 'beverages', 'amber'],
+                ['Snacks & Confectionery', 'snacks-confectionery', 'orange'],
+                ['Specialty Diet', 'specialty-diet', 'emerald'],
+            ]],
+            ['Baby, Kids, and Toys', 'toys-kids-baby', 'fuchsia', [
+                ['Toys & Games', 'toys-games', 'fuchsia'],
+                ['Baby Gear', 'baby-gear', 'pink'],
+                ['Baby Feeding', 'baby-feeding', 'amber'],
+                ['Kids\' Clothing', 'kids-clothing', 'pink'],
+            ]],
+            ['Sports and Outdoors', 'sports-outdoors', 'emerald', [
+                ['Fitness Equipment', 'fitness-equipment', 'emerald'],
+                ['Camping & Hiking', 'camping-hiking', 'emerald'],
+                ['Cycling', 'cycling', 'sky'],
+                ['Water Sports', 'water-sports', 'blue'],
+                ['Team Sports', 'team-sports', 'orange'],
+                ['Hunting & Fishing', 'hunting-fishing', 'slate'],
+            ]],
+            ['Tools, Hardware, and Industrial Supplies', 'tools-hardware', 'slate', [
+                ['Workshop & Tools', 'workshop-tools', 'slate'],
+                ['Hardware & Fasteners', 'hardware-fasteners', 'slate'],
+                ['Building Materials', 'building-materials', 'orange'],
+                ['Safety & Workwear', 'safety-workwear', 'red'],
+                ['Industrial Supplies', 'industrial-supplies', 'slate'],
+            ]],
+            ['Office and School Supplies', 'business-office', 'blue', [
+                ['Office Supplies', 'office-supplies', 'slate'],
+                ['School Supplies', 'school-supplies', 'blue'],
+                ['Stationery & Paper', 'stationery-paper', 'sky'],
+                ['Printing & Signage', 'printing-signage', 'orange'],
+            ]],
+            ['Pet Supplies', 'pets', 'orange', [
+                ['Pet Food & Treats', 'pet-food', 'orange'],
+                ['Pet Accessories', 'pet-accessories', 'amber'],
+                ['Pet Health & Care', 'pet-health-products', 'emerald'],
+            ]],
+            ['Arts, Crafts, and Handmade Goods', 'arts-crafts', 'rose', [
+                ['Handmade Art', 'handmade-art', 'rose'],
+                ['Craft Supplies', 'craft-supplies', 'amber'],
+                ['Sewing & Textiles', 'sewing-textiles', 'violet'],
+            ]],
+            ['Jewelry and Watches', 'jewellery-watches', 'violet', [
+                ['Fine Jewelry', 'fine-jewellery', 'violet'],
+                ['Fashion Jewelry', 'fashion-jewellery', 'pink'],
+                ['Watches', 'watches', 'slate'],
+                ['Wedding & Engagement', 'wedding-engagement', 'rose'],
+            ]],
+            ['Books and Physical Media', 'books-media', 'indigo', [
+                ['Books', 'books', 'indigo'],
+                ['Music & Vinyl', 'music-vinyl', 'violet'],
+                ['Film & Video', 'film-video', 'slate'],
+                ['Magazines & Comics', 'magazines-comics', 'orange'],
+            ]],
+            ['Collectibles', 'collectibles-antiques', 'amber', [
+                ['Antiques', 'antiques', 'amber'],
+                ['Trading Cards', 'trading-cards', 'blue'],
+                ['Coins & Stamps', 'coins-stamps', 'slate'],
+                ['Memorabilia', 'memorabilia', 'fuchsia'],
+            ]],
+            ['Garden and Outdoor Living', 'garden-outdoor', 'emerald', [
+                ['Plants & Seeds', 'plants-seeds', 'emerald'],
+                ['Garden Tools', 'garden-tools', 'emerald'],
+                ['Outdoor Furniture', 'outdoor-furniture', 'emerald'],
+                ['Grills & Outdoor Cooking', 'outdoor-cooking', 'orange'],
+            ]],
+            ['Local Products and Gifts', 'local-products-gifts', 'amber', [
+                ['Gift Sets & Hampers', 'gift-sets', 'amber'],
+                ['Local Artisan Goods', 'local-artisan', 'rose'],
+                ['Souvenirs & Keepsakes', 'souvenirs', 'fuchsia'],
+                ['Seasonal & Holiday', 'seasonal-holiday', 'red'],
+            ]],
+            ['Wholesale and Business Supplies', 'wholesale-business-supplies', 'slate', [
+                ['Wholesale & Bulk', 'wholesale-bulk', 'amber'],
+                ['Business Equipment', 'business-equipment', 'slate'],
+                ['Packaging & Shipping', 'packaging-shipping', 'orange'],
+                ['Restaurant & Hospitality', 'restaurant-supplies', 'red'],
+                ['Retail Fixtures', 'retail-fixtures', 'sky'],
+            ]],
+        ]],
+        ['Digital Products', 'digital-products', 'violet', [
+            ['E-books and Publications', 'digital-ebooks', 'sky', [
+                ['Fiction & Non-fiction', 'ebooks-general', 'sky'],
+                ['Guides & How-to', 'ebooks-guides', 'blue'],
+                ['Magazines & Zines', 'ebooks-magazines', 'orange'],
+                ['Comics & Graphic Novels', 'ebooks-comics', 'fuchsia'],
+            ]],
+            ['Online Courses and Training Materials', 'digital-courses', 'blue', [
+                ['Video Courses', 'courses-video', 'blue'],
+                ['Workbooks & Worksheets', 'courses-workbooks', 'sky'],
+                ['Certification & Exam Prep', 'courses-certification', 'indigo'],
+                ['Coaching Programmes', 'courses-coaching', 'emerald'],
+            ]],
+            ['Software and Applications', 'digital-software', 'indigo', [
+                ['Desktop Software', 'software-desktop', 'indigo'],
+                ['Mobile Apps', 'software-mobile', 'blue'],
+                ['Plugins & Extensions', 'software-plugins', 'violet'],
+                ['Scripts & Code', 'software-scripts', 'slate'],
+                ['Web Apps & SaaS', 'software-saas', 'sky'],
+            ]],
+            ['Website Themes and Templates', 'digital-templates', 'violet', [
+                ['Website Themes', 'templates-themes', 'violet'],
+                ['Landing Pages', 'templates-landing', 'fuchsia'],
+                ['Email Templates', 'templates-email', 'sky'],
+                ['UI Kits & Components', 'templates-ui-kits', 'indigo'],
+            ]],
+            ['Graphics, Photos, Video, and Audio', 'digital-graphics', 'pink', [
+                ['Stock Photography & Video', 'digital-media', 'slate'],
+                ['Illustrations & Vectors', 'graphics-illustrations', 'pink'],
+                ['Fonts & Typography', 'graphics-fonts', 'violet'],
+                ['Icons & Logos', 'graphics-icons', 'blue'],
+                ['Motion Graphics & Presets', 'graphics-motion', 'fuchsia'],
+            ]],
+            ['Documents, Forms, and Business Templates', 'digital-documents', 'slate', [
+                ['Contracts & Legal Forms', 'documents-contracts', 'slate'],
+                ['Spreadsheets & Calculators', 'documents-spreadsheets', 'emerald'],
+                ['Presentations & Pitch Decks', 'documents-presentations', 'orange'],
+                ['Resumes & Cover Letters', 'documents-resumes', 'blue'],
+                ['Policies & Procedures', 'documents-policies', 'indigo'],
+            ]],
+            ['Music, Sound Effects, and Digital Media', 'digital-audio', 'fuchsia', [
+                ['Music Tracks', 'audio-music', 'fuchsia'],
+                ['Sound Effects', 'audio-sfx', 'orange'],
+                ['Loops & Samples', 'audio-loops', 'violet'],
+                ['Podcasts & Audiobooks', 'audio-spoken', 'amber'],
+            ]],
+            ['Memberships and Digital Subscriptions', 'digital-memberships', 'emerald', [
+                ['Membership Sites', 'memberships-sites', 'emerald'],
+                ['Paid Newsletters', 'memberships-newsletters', 'amber'],
+                ['Communities & Groups', 'memberships-communities', 'sky'],
+                ['Content Libraries', 'memberships-libraries', 'indigo'],
+            ]],
+            ['Licenses and Activation Keys', 'digital-licenses', 'red', [
+                ['Software Licenses', 'licenses-software', 'indigo'],
+                ['Game Keys', 'licenses-game-keys', 'red'],
+                ['Gift Cards & Vouchers', 'licenses-gift-cards', 'amber'],
+                ['Commercial Use Licenses', 'licenses-commercial', 'slate'],
+            ]],
+            ['Data, Research, and Reports', 'digital-data-reports', 'blue', [
+                ['Market Research', 'data-market-research', 'blue'],
+                ['Datasets', 'data-datasets', 'slate'],
+                ['Industry Reports', 'data-industry-reports', 'indigo'],
+                ['Whitepapers', 'data-whitepapers', 'sky'],
+            ]],
+            ['AI Prompts and Automation Assets', 'digital-ai-assets', 'violet', [
+                ['Prompt Packs', 'ai-prompt-packs', 'violet'],
+                ['Custom Assistants & Agents', 'ai-agents', 'indigo'],
+                ['Automation Workflows', 'ai-workflows', 'sky'],
+                ['Models & Training Data', 'ai-models', 'slate'],
+            ]],
+            ['Printable Products', 'digital-printables', 'amber', [
+                ['Planners & Journals', 'printables-planners', 'amber'],
+                ['Wall Art & Posters', 'printables-wall-art', 'rose'],
+                ['Invitations & Cards', 'printables-invitations', 'pink'],
+                ['Worksheets & Activities', 'printables-worksheets', 'blue'],
+                ['Patterns & Cut Files', 'printables-patterns', 'emerald'],
+            ]],
+            ['Games and Digital Entertainment', 'digital-games', 'orange', [
+                ['Indie Games', 'games-indie', 'orange'],
+                ['Game Assets & Mods', 'games-assets', 'violet'],
+                ['Tabletop & Print-and-Play', 'games-tabletop', 'amber'],
+                ['Virtual Items & Skins', 'games-virtual-items', 'fuchsia'],
+            ]],
+        ]],
+        ['Professional Services', 'professional-services', 'sky', [
+            ['Business and Professional', 'professionals', 'slate', [
+                ['Accounting and Bookkeeping', 'accounting-tax', 'blue'],
+                ['Legal Services', 'legal-services', 'slate'],
+                ['Business Consulting', 'consulting', 'indigo'],
+                ['Marketing and Advertising', 'marketing-advertising', 'fuchsia'],
+                ['Web and Software Development', 'web-development', 'indigo'],
+                ['Graphic and Creative Design', 'design-audit', 'violet'],
+                ['Writing, Translation, and Administrative Support', 'writing-translation', 'sky'],
+                ['Human Resources and Recruiting', 'hr-recruiting', 'emerald'],
+                ['IT Support and Cybersecurity', 'it-support', 'slate'],
+            ]],
+            ['Home and Local', 'local-services', 'sky', [
+                ['Cleaning', 'home-cleaning', 'sky'],
+                ['Handyman and Repairs', 'handyman-repairs', 'orange', [
+                    ['Carpentry', 'carpentry', 'orange'],
+                    ['Appliance Repair', 'appliance-repair', 'slate'],
+                    ['Pest Control', 'pest-control', 'slate'],
+                ]],
+                ['Construction and Renovation', 'construction-renovation', 'amber'],
+                ['Plumbing, Electrical, and HVAC', 'trades-repair', 'orange', [
+                    ['Plumbing', 'plumbing', 'orange'],
+                    ['Electrical', 'electrical', 'orange'],
+                    ['Heating & Cooling', 'heating-cooling', 'orange'],
+                ]],
+                ['Landscaping and Gardening', 'lawn-landscaping', 'emerald'],
+                ['Moving and Delivery', 'moving-delivery', 'sky'],
+                ['Photography and Event Services', 'local-events', 'fuchsia', [
+                    ['Event Photography', 'event-photography', 'fuchsia'],
+                    ['Catering', 'event-catering', 'fuchsia'],
+                    ['Venues & Rentals', 'event-rentals', 'fuchsia'],
+                ]],
+            ]],
+            ['Personal and Lifestyle', 'services-personal', 'rose', [
+                ['Beauty and Wellness Services', 'personal-care-services', 'rose', [
+                    ['Hair & Barber', 'hair-barber', 'rose'],
+                    ['Nails & Spa', 'nails-spa', 'pink'],
+                    ['Massage & Therapy', 'massage-therapy', 'emerald'],
+                ]],
+                ['Fitness and Coaching', 'fitness-coaching', 'emerald'],
+                ['Tutoring and Education', 'education-tutoring', 'blue', [
+                    ['Academic Tutoring', 'academic-tutoring', 'blue'],
+                    ['Music Lessons', 'music-lessons', 'violet'],
+                    ['Language Lessons', 'language-lessons', 'sky'],
+                ]],
+                ['Child, Senior, and Pet Care', 'pet-services', 'orange', [
+                    ['Childcare', 'childcare-services', 'rose'],
+                    ['Senior Care', 'senior-care', 'sky'],
+                    ['Pet Grooming', 'pet-grooming', 'rose'],
+                    ['Veterinary & Pet Health', 'pet-veterinary', 'emerald'],
+                    ['Pet Boarding & Sitting', 'pet-boarding', 'sky'],
+                ]],
+                ['Personal Assistance', 'personal-assistance', 'amber'],
+                ['Event Planning', 'event-planning', 'fuchsia'],
+            ]],
+            ['Jobs', 'jobs', 'slate', [
+                ['Job Listings', 'job-listings', 'slate'],
+                ['Full-time', 'jobs-full-time', 'slate'],
+                ['Part-time', 'jobs-part-time', 'slate'],
+                ['Contract & Freelance', 'jobs-contract', 'indigo'],
+                ['Internships', 'jobs-internships', 'sky'],
+                ['Volunteer', 'jobs-volunteer', 'emerald'],
+            ]],
+            ['Community', 'community', 'emerald', [
+                ['Community Listings', 'community-listings', 'emerald'],
+                ['Classes & Workshops', 'community-classes', 'blue'],
+                ['Local Groups', 'community-groups', 'sky'],
+                ['Lost & Found', 'community-lost-found', 'amber'],
+                ['Free & Giveaway', 'community-free', 'emerald'],
+            ]],
+        ]],
+        ['Real Estate', 'real-estate', 'blue', [
+            ['Residential Property for Sale', 'property-for-sale', 'blue', [
+                ['Houses', 'property-houses', 'blue'],
+                ['Apartments & Condos', 'property-condos', 'sky'],
+                ['Townhouses', 'property-townhouses', 'indigo'],
+                ['Multi-family', 'property-multi-family', 'slate'],
+            ]],
+            ['Commercial Property for Sale', 'property-commercial', 'slate', [
+                ['Office Buildings', 'property-office-sale', 'slate'],
+                ['Retail & Storefronts', 'property-retail-sale', 'orange'],
+                ['Industrial & Warehouse', 'property-industrial-sale', 'slate'],
+                ['Hospitality & Leisure', 'property-hospitality', 'fuchsia'],
+            ]],
+            ['New Developments', 'property-new-developments', 'violet', [
+                ['Pre-construction', 'property-preconstruction', 'violet'],
+                ['Show Homes & Model Units', 'property-show-homes', 'pink'],
+                ['Master-planned Communities', 'property-communities', 'emerald'],
+            ]],
+            ['Land and Lots', 'property-land', 'emerald', [
+                ['Residential Lots', 'property-residential-lots', 'emerald'],
+                ['Commercial Land', 'property-commercial-land', 'slate'],
+                ['Agricultural Land', 'property-agricultural-land', 'amber'],
+                ['Recreational Land', 'property-recreational-land', 'sky'],
+            ]],
+            ['Residential Rentals', 'property-for-rent', 'sky', [
+                ['Houses for Rent', 'property-house-rentals', 'sky'],
+                ['Apartments for Rent', 'property-apartment-rentals', 'blue'],
+                ['Rooms & Shared', 'property-rooms', 'indigo'],
+                ['Short-term Rentals', 'property-short-term', 'orange'],
+            ]],
+            ['Commercial Leasing', 'property-commercial-lease', 'indigo', [
+                ['Office Space', 'property-office-lease', 'indigo'],
+                ['Retail Space', 'property-retail-lease', 'orange'],
+                ['Industrial & Warehouse Space', 'property-industrial-lease', 'slate'],
+                ['Coworking & Flexible Space', 'property-coworking', 'violet'],
+            ]],
+            ['Vacation and Investment Properties', 'property-vacation-investment', 'amber', [
+                ['Vacation Homes', 'property-vacation-homes', 'amber'],
+                ['Rental Investments', 'property-rental-investment', 'emerald'],
+                ['Timeshares & Fractional', 'property-timeshare', 'sky'],
+                ['Overseas Property', 'property-overseas', 'blue'],
+            ]],
+            ['Real Estate Agents and Brokers', 'property-agents', 'rose', [
+                ['Buyer\'s Agents', 'property-buyer-agents', 'rose'],
+                ['Listing Agents', 'property-listing-agents', 'pink'],
+                ['Commercial Brokers', 'property-commercial-brokers', 'slate'],
+                ['Brokerages', 'property-brokerages', 'violet'],
+            ]],
+            ['Mortgage and Financing Connections', 'property-mortgage', 'emerald', [
+                ['Mortgage Brokers', 'property-mortgage-brokers', 'emerald'],
+                ['Lenders', 'property-lenders', 'blue'],
+                ['Refinancing', 'property-refinancing', 'sky'],
+                ['Pre-approval', 'property-preapproval', 'indigo'],
+            ]],
+            ['Property Management', 'property-services', 'orange', [
+                ['Residential Management', 'property-residential-management', 'orange'],
+                ['Commercial Management', 'property-commercial-management', 'slate'],
+                ['Tenant Placement', 'property-tenant-placement', 'sky'],
+                ['Maintenance Coordination', 'property-maintenance', 'amber'],
+            ]],
+            ['Home Inspection', 'property-inspection', 'red', [
+                ['Pre-purchase Inspection', 'property-prepurchase-inspection', 'red'],
+                ['Specialty Inspection', 'property-specialty-inspection', 'orange'],
+                ['Energy & Efficiency Audits', 'property-energy-audit', 'emerald'],
+            ]],
+            ['Appraisal and Valuation', 'property-appraisal', 'blue', [
+                ['Residential Appraisal', 'property-residential-appraisal', 'blue'],
+                ['Commercial Appraisal', 'property-commercial-appraisal', 'slate'],
+                ['Market Analysis', 'property-market-analysis', 'indigo'],
+            ]],
+            ['Escrow, Title, and Closing Services', 'property-escrow-title', 'slate', [
+                ['Escrow Services', 'property-escrow', 'slate'],
+                ['Title Search & Insurance', 'property-title', 'indigo'],
+                ['Closing & Settlement', 'property-closing', 'blue'],
+                ['Notary Services', 'property-notary', 'sky'],
+            ]],
+            ['Real Estate Legal Services', 'property-legal', 'violet', [
+                ['Conveyancing', 'property-conveyancing', 'violet'],
+                ['Landlord & Tenant Law', 'property-landlord-tenant', 'sky'],
+                ['Zoning & Land Use', 'property-zoning', 'emerald'],
+                ['Property Disputes', 'property-disputes', 'red'],
+            ]],
+        ]],
+        ['Automotive', 'automotive', 'red', [
+            ['New Vehicles', 'vehicles-new', 'red', [
+                ['Cars & Sedans', 'vehicles-new-cars', 'red'],
+                ['SUVs & Crossovers', 'vehicles-new-suvs', 'slate'],
+                ['Trucks & Pickups', 'vehicles-new-trucks', 'orange'],
+                ['Electric & Hybrid', 'vehicles-new-electric', 'emerald'],
+            ]],
+            ['Used Vehicles', 'vehicles-for-sale', 'orange', [
+                ['Cars & Sedans', 'vehicles-used-cars', 'orange'],
+                ['SUVs & Crossovers', 'vehicles-used-suvs', 'slate'],
+                ['Trucks & Pickups', 'vehicles-used-trucks', 'amber'],
+                ['Vans & Minivans', 'vehicles-used-vans', 'sky'],
+            ]],
+            ['Certified Pre-Owned Vehicles', 'vehicles-certified', 'blue', [
+                ['Manufacturer Certified', 'vehicles-cpo-manufacturer', 'blue'],
+                ['Dealer Certified', 'vehicles-cpo-dealer', 'indigo'],
+            ]],
+            ['Private-Party Vehicles', 'vehicles-private-party', 'amber', [
+                ['Owner Listings', 'vehicles-owner-listings', 'amber'],
+                ['Project & Salvage', 'vehicles-project-salvage', 'slate'],
+                ['Classic & Collector', 'vehicles-classic', 'rose'],
+            ]],
+            ['Motorcycles and Powersports', 'vehicles-motorcycles', 'violet', [
+                ['Motorcycles', 'powersports-motorcycles', 'violet'],
+                ['Scooters & Mopeds', 'powersports-scooters', 'sky'],
+                ['ATVs & UTVs', 'powersports-atv', 'orange'],
+                ['Snowmobiles & Watercraft', 'powersports-snow-water', 'blue'],
+            ]],
+            ['Recreational Vehicles', 'vehicles-recreational', 'emerald', [
+                ['Motorhomes', 'rv-motorhomes', 'emerald'],
+                ['Travel Trailers', 'rv-travel-trailers', 'amber'],
+                ['Campers & Pop-ups', 'rv-campers', 'sky'],
+            ]],
+            ['Commercial Vehicles', 'vehicles-commercial', 'slate', [
+                ['Box Trucks & Vans', 'commercial-box-trucks', 'slate'],
+                ['Heavy Trucks', 'commercial-heavy-trucks', 'orange'],
+                ['Trailers', 'commercial-trailers', 'amber'],
+                ['Construction & Farm Equipment', 'commercial-equipment', 'emerald'],
+            ]],
+            ['Boats and Marine Vehicles', 'vehicles-marine', 'blue', [
+                ['Powerboats', 'marine-powerboats', 'blue'],
+                ['Sailboats', 'marine-sailboats', 'sky'],
+                ['Personal Watercraft', 'marine-pwc', 'indigo'],
+                ['Marine Parts & Trailers', 'marine-parts', 'slate'],
+            ]],
+            ['Vehicle Parts and Accessories', 'auto-parts', 'slate', [
+                ['Tyres & Wheels', 'tyres-wheels', 'slate'],
+                ['Engine & Drivetrain', 'auto-parts-engine', 'red'],
+                ['Body & Exterior', 'auto-parts-body', 'orange'],
+                ['Interior & Electronics', 'auto-parts-interior', 'indigo'],
+                ['Performance & Tuning', 'auto-parts-performance', 'violet'],
+            ]],
+            ['Vehicle Inspections and History Reports', 'auto-inspections', 'indigo', [
+                ['Pre-purchase Inspection', 'auto-prepurchase-inspection', 'indigo'],
+                ['Vehicle History Reports', 'auto-history-reports', 'blue'],
+                ['Emissions & Safety Testing', 'auto-emissions-testing', 'emerald'],
+            ]],
+            ['Auto Repair and Maintenance', 'auto-repair', 'orange', [
+                ['General Repair', 'auto-general-repair', 'orange'],
+                ['Scheduled Maintenance', 'auto-maintenance', 'amber'],
+                ['Body & Collision', 'auto-body-collision', 'red'],
+                ['Tyre & Wheel Service', 'auto-tyre-service', 'slate'],
+                ['Mobile Mechanics', 'auto-mobile-mechanics', 'sky'],
+            ]],
+            ['Detailing and Car Care', 'auto-detailing', 'sky', [
+                ['Interior Detailing', 'auto-detail-interior', 'sky'],
+                ['Exterior & Paint Correction', 'auto-detail-exterior', 'blue'],
+                ['Ceramic Coating & Wraps', 'auto-detail-coating', 'violet'],
+                ['Car Wash', 'auto-car-wash', 'emerald'],
+            ]],
+            ['Towing and Roadside Assistance', 'auto-towing', 'red', [
+                ['Towing', 'auto-tow-service', 'red'],
+                ['Jump Start & Lockout', 'auto-jump-lockout', 'amber'],
+                ['Tyre Change & Fuel Delivery', 'auto-roadside-tyre-fuel', 'orange'],
+            ]],
+            ['Vehicle Financing Connections', 'auto-financing', 'emerald', [
+                ['Auto Loans', 'auto-loans', 'emerald'],
+                ['Lease Deals', 'auto-leasing', 'blue'],
+                ['Trade-in & Valuation', 'auto-trade-in', 'sky'],
+            ]],
+            ['Warranties and Protection Products', 'auto-warranties', 'violet', [
+                ['Extended Warranty', 'auto-extended-warranty', 'violet'],
+                ['Service Contracts', 'auto-service-contracts', 'indigo'],
+                ['GAP & Protection Plans', 'auto-gap-protection', 'slate'],
+            ]],
+            ['Local Car Rentals', 'auto-rentals', 'fuchsia', [
+                ['Daily & Weekly Rentals', 'auto-rental-daily', 'fuchsia'],
+                ['Van & Truck Rentals', 'auto-rental-truck', 'slate'],
+                ['Peer-to-peer Rentals', 'auto-rental-p2p', 'sky'],
+                ['Luxury & Specialty', 'auto-rental-luxury', 'violet'],
+            ]],
+        ]],
+        ['Insurance', 'insurance', 'indigo', [
+            ['Life Insurance', 'insurance-life', 'indigo', [
+                ['Term Life', 'insurance-term-life', 'indigo'],
+                ['Whole Life', 'insurance-whole-life', 'blue'],
+                ['Universal Life', 'insurance-universal-life', 'violet'],
+                ['Final Expense', 'insurance-final-expense', 'slate'],
+            ]],
+            ['Health Insurance', 'insurance-health', 'emerald', [
+                ['Individual & Family Plans', 'insurance-health-individual', 'emerald'],
+                ['Short-term Medical', 'insurance-health-short-term', 'sky'],
+                ['Dental & Vision', 'insurance-dental-vision', 'blue'],
+                ['Critical Illness', 'insurance-critical-illness', 'red'],
+            ]],
+            ['Medicare Solutions', 'insurance-medicare', 'blue', [
+                ['Medicare Advantage', 'insurance-medicare-advantage', 'blue'],
+                ['Medicare Supplement', 'insurance-medicare-supplement', 'sky'],
+                ['Part D Prescription', 'insurance-medicare-part-d', 'indigo'],
+            ]],
+            ['Disability Insurance', 'insurance-disability', 'orange', [
+                ['Short-term Disability', 'insurance-disability-short', 'orange'],
+                ['Long-term Disability', 'insurance-disability-long', 'amber'],
+                ['Business Overhead', 'insurance-disability-business', 'slate'],
+            ]],
+            ['Long-Term Care Insurance', 'insurance-long-term-care', 'rose', [
+                ['Traditional Long-Term Care', 'insurance-ltc-traditional', 'rose'],
+                ['Hybrid Life & Long-Term Care', 'insurance-ltc-hybrid', 'violet'],
+                ['Home Care Coverage', 'insurance-ltc-home-care', 'pink'],
+            ]],
+            ['Annuities', 'insurance-annuities', 'amber', [
+                ['Fixed Annuities', 'insurance-annuity-fixed', 'amber'],
+                ['Indexed Annuities', 'insurance-annuity-indexed', 'orange'],
+                ['Variable Annuities', 'insurance-annuity-variable', 'violet'],
+                ['Immediate Income', 'insurance-annuity-immediate', 'emerald'],
+            ]],
+            ['Auto Insurance', 'insurance-auto', 'red', [
+                ['Personal Auto', 'insurance-auto-personal', 'red'],
+                ['Motorcycle & Powersports', 'insurance-auto-motorcycle', 'violet'],
+                ['Commercial Auto', 'insurance-auto-commercial', 'slate'],
+                ['Classic & Collector', 'insurance-auto-classic', 'amber'],
+            ]],
+            ['Homeowners and Renters Insurance', 'insurance-property', 'blue', [
+                ['Homeowners', 'insurance-homeowners', 'blue'],
+                ['Renters', 'insurance-renters', 'sky'],
+                ['Condo', 'insurance-condo', 'indigo'],
+                ['Landlord & Rental Property', 'insurance-landlord', 'slate'],
+                ['Flood & Disaster', 'insurance-flood', 'emerald'],
+            ]],
+            ['Travel Insurance', 'insurance-travel', 'sky', [
+                ['Trip Cancellation', 'insurance-travel-cancellation', 'sky'],
+                ['Travel Medical', 'insurance-travel-medical', 'emerald'],
+                ['Annual Multi-trip', 'insurance-travel-annual', 'blue'],
+            ]],
+            ['Business and Commercial Insurance', 'insurance-business', 'slate', [
+                ['General Liability', 'insurance-general-liability', 'slate'],
+                ['Professional Liability', 'insurance-professional-liability', 'indigo'],
+                ['Commercial Property', 'insurance-commercial-property', 'blue'],
+                ['Workers\' Compensation', 'insurance-workers-comp', 'orange'],
+                ['Cyber Liability', 'insurance-cyber', 'violet'],
+            ]],
+            ['Group and Employee Benefits', 'insurance-group-benefits', 'emerald', [
+                ['Group Health', 'insurance-group-health', 'emerald'],
+                ['Group Life & Disability', 'insurance-group-life', 'indigo'],
+                ['Retirement Plans', 'insurance-group-retirement', 'amber'],
+                ['Voluntary Benefits', 'insurance-voluntary-benefits', 'sky'],
+            ]],
+            ['Specialty Insurance', 'insurance-specialty', 'fuchsia', [
+                ['Pet Insurance', 'insurance-pet', 'orange'],
+                ['Event & Liability', 'insurance-event', 'fuchsia'],
+                ['Marine & Boat', 'insurance-marine', 'blue'],
+                ['Umbrella', 'insurance-umbrella', 'slate'],
+                ['Identity Theft', 'insurance-identity-theft', 'red'],
+            ]],
+            ['Insurance Agents and Agencies', 'insurance-brokers', 'violet', [
+                ['Independent Agents', 'insurance-independent-agents', 'violet'],
+                ['Captive Agents', 'insurance-captive-agents', 'indigo'],
+                ['Agencies & Brokerages', 'insurance-agencies', 'slate'],
+                ['Benefits Consultants', 'insurance-benefits-consultants', 'emerald'],
+            ]],
+            ['Educational Resources and Needs Analysis', 'insurance-education', 'sky', [
+                ['Coverage Guides', 'insurance-guides', 'sky'],
+                ['Needs Analysis Tools', 'insurance-needs-analysis', 'blue'],
+                ['Quote Comparison', 'insurance-quote-comparison', 'emerald'],
+                ['Glossary & FAQs', 'insurance-glossary', 'slate'],
+            ]],
+        ]],
+        ['Travel', 'travel', 'emerald', [
+            ['Hotels and Resorts', 'travel-accommodation', 'amber', [
+                ['Hotels', 'travel-hotels', 'amber'],
+                ['Resorts', 'travel-resorts', 'orange'],
+                ['Boutique & Design Hotels', 'travel-boutique-hotels', 'violet'],
+                ['Hostels & Guesthouses', 'travel-hostels', 'emerald'],
+                ['Bed & Breakfast', 'travel-bnb', 'rose'],
+            ]],
+            ['Vacation Rentals', 'travel-vacation-rentals', 'orange', [
+                ['Holiday Homes', 'travel-holiday-homes', 'orange'],
+                ['Apartments & Condos', 'travel-rental-apartments', 'sky'],
+                ['Cabins & Chalets', 'travel-cabins', 'emerald'],
+                ['Villas', 'travel-villas', 'amber'],
+            ]],
+            ['Flights', 'travel-flights', 'sky', [
+                ['One-way & Return', 'travel-flights-standard', 'sky'],
+                ['Multi-city', 'travel-flights-multi-city', 'blue'],
+                ['Business & First Class', 'travel-flights-premium', 'violet'],
+                ['Charter & Private', 'travel-flights-charter', 'slate'],
+            ]],
+            ['Car Rentals', 'travel-car-rental', 'slate', [
+                ['Airport Pick-up', 'travel-car-airport', 'slate'],
+                ['City Rentals', 'travel-car-city', 'blue'],
+                ['Campervans & Motorhomes', 'travel-car-campervan', 'emerald'],
+                ['Chauffeur & Private Hire', 'travel-car-chauffeur', 'violet'],
+            ]],
+            ['Cruises', 'travel-cruises', 'blue', [
+                ['Ocean Cruises', 'travel-cruise-ocean', 'blue'],
+                ['River Cruises', 'travel-cruise-river', 'sky'],
+                ['Expedition & Adventure', 'travel-cruise-expedition', 'emerald'],
+                ['Luxury Cruises', 'travel-cruise-luxury', 'violet'],
+            ]],
+            ['Tours and Activities', 'travel-tours', 'fuchsia', [
+                ['Day Tours & Excursions', 'travel-day-tours', 'fuchsia'],
+                ['Attractions & Tickets', 'travel-attractions', 'pink'],
+                ['Adventure & Outdoor', 'travel-adventure', 'emerald'],
+                ['Food & Cultural Experiences', 'travel-food-culture', 'amber'],
+                ['Multi-day Guided Tours', 'travel-guided-tours', 'orange'],
+            ]],
+            ['Travel Packages', 'travel-packages', 'rose', [
+                ['Flight + Hotel', 'travel-package-flight-hotel', 'rose'],
+                ['All-inclusive', 'travel-package-all-inclusive', 'amber'],
+                ['Honeymoon & Romance', 'travel-package-honeymoon', 'pink'],
+                ['Family Packages', 'travel-package-family', 'sky'],
+            ]],
+            ['Airport Transfers', 'travel-transport', 'orange', [
+                ['Private Transfers', 'travel-transfer-private', 'orange'],
+                ['Shared Shuttles', 'travel-transfer-shuttle', 'amber'],
+                ['Ride-hailing & Taxi', 'travel-transfer-taxi', 'slate'],
+            ]],
+            ['Rail and Bus Travel', 'travel-rail-bus', 'indigo', [
+                ['Rail Tickets & Passes', 'travel-rail', 'indigo'],
+                ['Intercity Coach', 'travel-coach', 'slate'],
+                ['Scenic & Sleeper Rail', 'travel-scenic-rail', 'emerald'],
+            ]],
+            ['Travel Agents and Advisors', 'travel-agents', 'violet', [
+                ['Leisure Travel Advisors', 'travel-advisors-leisure', 'violet'],
+                ['Destination Specialists', 'travel-advisors-destination', 'fuchsia'],
+                ['Luxury Travel Advisors', 'travel-advisors-luxury', 'amber'],
+                ['Agencies', 'travel-agencies', 'slate'],
+            ]],
+            ['Corporate Travel', 'travel-corporate', 'slate', [
+                ['Business Travel Booking', 'travel-corporate-booking', 'slate'],
+                ['Travel Policy & Expense', 'travel-corporate-policy', 'indigo'],
+                ['Meetings & Conferences', 'travel-corporate-mice', 'blue'],
+            ]],
+            ['Group Travel', 'travel-group', 'emerald', [
+                ['Tour Groups', 'travel-group-tours', 'emerald'],
+                ['School & Student Trips', 'travel-group-student', 'blue'],
+                ['Weddings & Celebrations', 'travel-group-weddings', 'pink'],
+                ['Faith & Affinity Groups', 'travel-group-affinity', 'sky'],
+            ]],
+            ['Travel Insurance', 'travel-protection', 'red', [
+                ['Trip Protection', 'travel-protection-trip', 'red'],
+                ['Medical & Evacuation', 'travel-protection-medical', 'emerald'],
+                ['Baggage & Delay', 'travel-protection-baggage', 'amber'],
+            ]],
+            ['Visa and Travel Document Assistance', 'travel-documents', 'blue', [
+                ['Visa Applications', 'travel-visa', 'blue'],
+                ['Passport Services', 'travel-passport', 'indigo'],
+                ['Travel Authorisation', 'travel-eta', 'sky'],
+                ['Translation & Notarisation', 'travel-doc-translation', 'slate'],
+            ]],
+        ]],
+    ];
+
     private function seedCategories(): void
     {
-        $categories = [
-            ['Food & Beverage', 'food-beverage', 'amber', 0],
-            ['Home & Living', 'home-living', 'amber', 1],
-            ['Local Services', 'local-services', 'sky', 2],
-            ['Fashion & Apparel', 'fashion-apparel', 'slate', 3],
-            ['Electronics', 'electronics', 'slate', 4],
-            ['Health & Beauty', 'health-beauty', 'slate', 5],
-            ['Professionals', 'professionals', 'slate', 6],
-            ['Jobs', 'jobs', 'slate', 7],
-        ];
+        $seen = [];
+        $this->guardCategoryTree(self::CATEGORY_TREE, $seen);
+        $this->writeCategories(self::CATEGORY_TREE, null);
+    }
 
-        foreach ($categories as [$name, $slug, $tone, $position]) {
-            Category::updateOrCreate(
+    /**
+     * Refuses to seed a tree that would fail quietly.
+     *
+     * A mistyped tone falls back to grey in the frontend registry and a
+     * repeated slug reparents a whole branch onto its twin — neither shows up
+     * as an error, so both are caught here instead of in production.
+     *
+     * @param  array<int, array<int, mixed>>  $nodes
+     * @param  array<string, true>  $seen
+     */
+    private function guardCategoryTree(array $nodes, array &$seen): void
+    {
+        foreach ($nodes as $node) {
+            [, $slug, $tone] = $node;
+
+            if (isset($seen[$slug])) {
+                throw new InvalidArgumentException("Duplicate category slug [{$slug}].");
+            }
+
+            if (! in_array($tone, Category::TONES, true)) {
+                throw new InvalidArgumentException("Unknown tone [{$tone}] on category [{$slug}].");
+            }
+
+            $seen[$slug] = true;
+
+            $this->guardCategoryTree($node[3] ?? [], $seen);
+        }
+    }
+
+    /**
+     * @param  array<int, array<int, mixed>>  $nodes
+     */
+    private function writeCategories(array $nodes, ?int $parentId): void
+    {
+        foreach ($nodes as $position => $node) {
+            [$name, $slug, $tone] = $node;
+
+            $category = Category::updateOrCreate(
                 ['slug' => $slug],
-                ['name' => $name, 'tone' => $tone, 'position' => $position, 'is_active' => true],
+                ['name' => $name, 'tone' => $tone, 'position' => $position, 'is_active' => true, 'parent_id' => $parentId],
             );
+
+            $this->writeCategories($node[3] ?? [], $category->id);
         }
     }
 

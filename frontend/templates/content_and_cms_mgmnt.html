@@ -1,0 +1,246 @@
+<main class="min-h-screen bg-amber-50/40 pb-28 text-slate-900 lg:pb-12"> <div class="mx-auto max-w-[1600px] space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+<!-- Page Header -->
+<header class="space-y-5">
+  <nav aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+      <li><a href="/admin" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Dashboard</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/admin/content" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Content</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="font-semibold text-slate-800" aria-current="page">Content &amp; CMS</li>
+    </ol>
+  </nav>
+
+  <div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+    <div class="flex items-start gap-3">
+      <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-400 text-slate-950 shadow-sm">
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 3h10l4 4v14H5z"/><path d="M14 3v5h5M8 12h8M8 16h8M8 8h2"/></svg>
+      </span>
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Content &amp; CMS</h1>
+        <p class="mt-1 max-w-3xl text-sm leading-6 text-slate-600">Create, organize, review, publish, and analyze public marketplace content, reusable sections, media, navigation, and communication templates.</p>
+      </div>
+    </div>
+
+    <div class="grid gap-2 sm:grid-cols-3">
+      <a href="/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        View Website
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9"/><path d="M20 13v7H4V4h7"/></svg>
+      </a>
+      <a href="/admin/content/export" class="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-100 px-4 py-2.5 text-sm font-semibold text-amber-950 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v3h16v-3"/></svg>
+        Export Content
+      </a>
+      <a href="/admin/content/create" class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2.5 text-sm font-bold text-slate-950 shadow-sm hover:bg-amber-400 active:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Create Content
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Statistics -->
+<section aria-labelledby="overview-heading">
+  <div class="mb-3 flex items-center justify-between">
+    <h2 id="overview-heading" class="text-lg font-bold">Content overview</h2>
+    <span class="text-xs font-medium text-slate-500">Updated 8 minutes ago</span>
+  </div>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+    <a href="/admin/content" class="rounded-2xl border border-amber-100 bg-white p-4 shadow-sm hover:border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500"><p class="text-xs font-semibold text-slate-500">Total content items</p><div class="mt-2 flex items-end justify-between"><p class="text-2xl font-bold">1,286</p><span class="text-xs font-bold text-emerald-700">+46</span></div><p class="mt-2 text-xs text-amber-700">View all content →</p></a>
+    <a href="/admin/content?status=published" class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm hover:border-emerald-300"><p class="text-xs font-semibold text-slate-500">Published</p><p class="mt-2 text-2xl font-bold text-emerald-700">984</p><p class="mt-2 text-xs text-emerald-700">76.5% of content →</p></a>
+    <a href="/admin/content?status=draft" class="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm hover:border-orange-300"><p class="text-xs font-semibold text-slate-500">Drafts</p><p class="mt-2 text-2xl font-bold text-orange-700">126</p><p class="mt-2 text-xs text-orange-700">Review drafts →</p></a>
+    <a href="/admin/content?status=scheduled" class="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm hover:border-blue-300"><p class="text-xs font-semibold text-slate-500">Scheduled</p><p class="mt-2 text-2xl font-bold text-blue-700">34</p><p class="mt-2 text-xs text-blue-700">Open calendar →</p></a>
+    <a href="/admin/content?status=review" class="rounded-2xl border border-violet-100 bg-white p-4 shadow-sm hover:border-violet-300"><p class="text-xs font-semibold text-slate-500">In review</p><p class="mt-2 text-2xl font-bold text-violet-700">27</p><p class="mt-2 text-xs text-violet-700">Approval queue →</p></a>
+    <a href="/admin/content?status=revision" class="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm hover:border-orange-300"><p class="text-xs font-semibold text-slate-500">Needs revision</p><p class="mt-2 text-2xl font-bold text-orange-700">18</p><p class="mt-2 text-xs text-orange-700">Resolve feedback →</p></a>
+    <a href="/admin/content?status=expired" class="rounded-2xl border border-rose-100 bg-white p-4 shadow-sm hover:border-rose-300"><p class="text-xs font-semibold text-slate-500">Expired content</p><p class="mt-2 text-2xl font-bold text-rose-700">12</p><p class="mt-2 text-xs text-rose-700">Review expired →</p></a>
+    <a href="/admin/content/pages" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-amber-300"><p class="text-xs font-semibold text-slate-500">Pages</p><p class="mt-2 text-2xl font-bold">148</p><p class="mt-2 text-xs text-amber-700">Manage pages →</p></a>
+    <a href="/admin/content/articles" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-amber-300"><p class="text-xs font-semibold text-slate-500">Articles</p><p class="mt-2 text-2xl font-bold">286</p><p class="mt-2 text-xs text-amber-700">Editorial library →</p></a>
+    <a href="/admin/content/help-center" class="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm hover:border-blue-300"><p class="text-xs font-semibold text-slate-500">Help-center articles</p><p class="mt-2 text-2xl font-bold">194</p><p class="mt-2 text-xs text-blue-700">Manage help content →</p></a>
+    <a href="/admin/content/media" class="rounded-2xl border border-violet-100 bg-white p-4 shadow-sm hover:border-violet-300"><p class="text-xs font-semibold text-slate-500">Media assets</p><p class="mt-2 text-2xl font-bold">4,862</p><p class="mt-2 text-xs text-violet-700">Open media library →</p></a>
+    <a href="/admin/content/translations?status=missing" class="rounded-2xl border border-rose-100 bg-white p-4 shadow-sm hover:border-rose-300"><p class="text-xs font-semibold text-slate-500">Missing translations</p><p class="mt-2 text-2xl font-bold text-rose-700">73</p><p class="mt-2 text-xs text-rose-700">Translation queue →</p></a>
+  </div>
+</section>
+
+<!-- Content Health -->
+<section aria-labelledby="health-heading" class="rounded-2xl border border-orange-200 bg-orange-50 p-5 shadow-sm">
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div class="max-w-xl">
+      <div class="flex items-center gap-2"><svg class="h-5 w-5 text-orange-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="m12 3 9 16H3L12 3Z"/></svg><h2 id="health-heading" class="font-bold text-orange-950">Content health</h2></div>
+      <p class="mt-1 text-sm text-orange-900">Most public content is healthy, but 58 issues could affect discovery, accessibility, or publishing.</p>
+      <div class="mt-4 flex items-center gap-3"><div class="h-2.5 flex-1 overflow-hidden rounded-full bg-orange-200" role="progressbar" aria-label="Content health" aria-valuemin="0" aria-valuemax="100" aria-valuenow="91"><div class="h-full w-[91%] rounded-full bg-emerald-500"></div></div><span class="text-sm font-bold text-emerald-700">91%</span></div>
+    </div>
+    <a href="/admin/content/health" class="text-sm font-bold text-orange-800 hover:text-orange-950">Open health report →</a>
+  </div>
+  <div class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+    <a href="/admin/content/broken-links" class="rounded-xl border border-rose-200 bg-white p-3 hover:border-rose-400"><div class="flex justify-between"><span class="text-xs font-bold text-rose-700">BROKEN LINKS</span><span class="rounded-full bg-rose-100 px-2 text-xs font-bold">9</span></div><p class="mt-1 font-semibold">Vendor Registration Guide</p><p class="mt-1 text-xs text-slate-500">Contains two broken internal links.</p></a>
+    <a href="/admin/content?issue=seo" class="rounded-xl border border-orange-200 bg-white p-3 hover:border-orange-400"><div class="flex justify-between"><span class="text-xs font-bold text-orange-700">SEO INCOMPLETE</span><span class="rounded-full bg-orange-100 px-2 text-xs font-bold">14</span></div><p class="mt-1 font-semibold">Home Services Landing Page</p><p class="mt-1 text-xs text-slate-500">Missing meta description and OG image.</p></a>
+    <a href="/admin/content?issue=accessibility" class="rounded-xl border border-orange-200 bg-white p-3 hover:border-orange-400"><div class="flex justify-between"><span class="text-xs font-bold text-orange-700">ACCESSIBILITY</span><span class="rounded-full bg-orange-100 px-2 text-xs font-bold">11</span></div><p class="mt-1 font-semibold">Fall Marketplace Sale</p><p class="mt-1 text-xs text-slate-500">Three images are missing alt text.</p></a>
+    <a href="/admin/content?approval=legal" class="rounded-xl border border-rose-200 bg-white p-3 hover:border-rose-400"><div class="flex justify-between"><span class="text-xs font-bold text-rose-700">LEGAL REVIEW</span><span class="rounded-full bg-rose-100 px-2 text-xs font-bold">6</span></div><p class="mt-1 font-semibold">Buyer Protection Policy</p><p class="mt-1 text-xs text-slate-500">Updated policy is awaiting final legal approval.</p></a>
+  </div>
+</section>
+
+<!-- Type Navigation -->
+<nav aria-label="Content types" class="overflow-x-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">
+  <div class="flex min-w-max gap-1">
+    <a href="/admin/content" aria-current="page" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white">All Content <span class="ml-1 rounded-full bg-white/20 px-2 py-0.5 text-xs">1,286</span></a>
+    <a href="/admin/content/pages" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-amber-50">Pages <span class="ml-1 text-xs">148</span></a>
+    <a href="/admin/content/landing-pages" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-amber-50">Landing Pages</a>
+    <a href="/admin/content/articles" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-amber-50">Blog &amp; Articles <span class="ml-1 text-xs">286</span></a>
+    <a href="/admin/content/help-center" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-blue-50">Help Center <span class="ml-1 text-xs">194</span></a>
+    <a href="/admin/content/faqs" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-blue-50">FAQs</a>
+    <a href="/admin/content/banners" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-violet-50">Banners</a>
+    <a href="/admin/content/announcements" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-violet-50">Announcements</a>
+    <a href="/admin/content/templates" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Templates</a>
+    <a href="/admin/content/media" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Media</a>
+    <a href="/admin/content/navigation" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Navigation</a>
+    <a href="/admin/content/footer" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Footer</a>
+  </div>
+</nav>
+
+<!-- Filters -->
+<section aria-labelledby="filters-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex flex-wrap items-start justify-between gap-3">
+    <div><h2 id="filters-heading" class="font-bold">Search and filters</h2><p class="mt-1 text-sm text-slate-500">Find content by type, publication state, owner, audience, language, or health.</p></div>
+    <div class="flex gap-2"><button type="button" class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100">Reset Filters</button><button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Save Filter</button></div>
+  </div>
+  <form action="/admin/content" method="get" class="mt-5 space-y-4">
+    <div>
+      <label for="content-search" class="sr-only">Search content</label>
+      <div class="relative"><svg class="pointer-events-none absolute left-3 top-3 h-5 w-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="content-search" name="search" type="search" placeholder="Search title, content ID, slug, category, or tag…" class="w-full rounded-xl border border-slate-300 py-2.5 pl-10 pr-4 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"></div>
+    </div>
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+      <div><label for="content-type" class="mb-1 block text-xs font-semibold text-slate-600">Content type</label><select id="content-type" class="w-full rounded-lg border-slate-300 text-sm"><option>All types</option><option>Page</option><option>Landing page</option><option>Article</option><option>Help article</option><option>FAQ</option><option>Banner</option><option>Template</option></select></div>
+      <div><label for="content-status" class="mb-1 block text-xs font-semibold text-slate-600">Status</label><select id="content-status" class="w-full rounded-lg border-slate-300 text-sm"><option>All statuses</option><option>Published</option><option>Draft</option><option>Scheduled</option><option>In Review</option><option>Needs Revision</option><option>Expired</option></select></div>
+      <div><label for="content-author" class="mb-1 block text-xs font-semibold text-slate-600">Author</label><select id="content-author" class="w-full rounded-lg border-slate-300 text-sm"><option>Any author</option><option>Maya Chen</option><option>Daniel Reyes</option><option>Content Team</option></select></div>
+      <div><label for="assigned-editor" class="mb-1 block text-xs font-semibold text-slate-600">Assigned editor</label><select id="assigned-editor" class="w-full rounded-lg border-slate-300 text-sm"><option>Anyone</option><option>Unassigned</option><option>Daniel Reyes</option><option>Sophia Bennett</option></select></div>
+      <div><label for="approval-status" class="mb-1 block text-xs font-semibold text-slate-600">Approval</label><select id="approval-status" class="w-full rounded-lg border-slate-300 text-sm"><option>Any approval state</option><option>Not submitted</option><option>Editorial review</option><option>Legal review</option><option>Approved</option><option>Rejected</option></select></div>
+      <div><label for="channel" class="mb-1 block text-xs font-semibold text-slate-600">Channel</label><select id="channel" class="w-full rounded-lg border-slate-300 text-sm"><option>All channels</option><option>Website</option><option>Help Center</option><option>Email</option><option>SMS</option><option>In-app</option></select></div>
+      <div><label for="audience" class="mb-1 block text-xs font-semibold text-slate-600">Audience</label><select id="audience" class="w-full rounded-lg border-slate-300 text-sm"><option>All audiences</option><option>Public</option><option>Members</option><option>Vendors</option><option>Administrators</option></select></div>
+      <div><label for="language" class="mb-1 block text-xs font-semibold text-slate-600">Language</label><select id="language" class="w-full rounded-lg border-slate-300 text-sm"><option>All languages</option><option>English</option><option>French</option><option>Spanish</option><option>Tagalog</option><option>Chinese</option><option>Punjabi</option></select></div>
+      <div><label for="translation-status" class="mb-1 block text-xs font-semibold text-slate-600">Translations</label><select id="translation-status" class="w-full rounded-lg border-slate-300 text-sm"><option>Any translation status</option><option>Complete</option><option>Incomplete</option><option>Outdated</option><option>Missing</option></select></div>
+      <div><label for="seo-status" class="mb-1 block text-xs font-semibold text-slate-600">SEO completeness</label><select id="seo-status" class="w-full rounded-lg border-slate-300 text-sm"><option>Any score</option><option>90–100%</option><option>70–89%</option><option>Below 70%</option><option>Missing</option></select></div>
+      <div><label for="image-status" class="mb-1 block text-xs font-semibold text-slate-600">Featured image</label><select id="image-status" class="w-full rounded-lg border-slate-300 text-sm"><option>Any image status</option><option>Available</option><option>Missing</option><option>Missing alt text</option></select></div>
+      <div><label for="content-category" class="mb-1 block text-xs font-semibold text-slate-600">Category</label><select id="content-category" class="w-full rounded-lg border-slate-300 text-sm"><option>All categories</option><option>Marketplace Guides</option><option>Vendor Education</option><option>Policies</option><option>Marketing</option></select></div>
+      <div><label for="publication-date" class="mb-1 block text-xs font-semibold text-slate-600">Publication date</label><input id="publication-date" type="date" class="w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="scheduled-date" class="mb-1 block text-xs font-semibold text-slate-600">Scheduled date</label><input id="scheduled-date" type="date" class="w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="expiration-date" class="mb-1 block text-xs font-semibold text-slate-600">Expiration date</label><input id="expiration-date" type="date" class="w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="updated-date" class="mb-1 block text-xs font-semibold text-slate-600">Updated since</label><input id="updated-date" type="date" class="w-full rounded-lg border-slate-300 text-sm"></div>
+      <div class="sm:col-span-2"><label for="tags" class="mb-1 block text-xs font-semibold text-slate-600">Tags</label><input id="tags" type="text" placeholder="Search tags…" class="w-full rounded-lg border-slate-300 text-sm"></div>
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
+      <div class="flex flex-wrap gap-2"><span class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">Status: Published <button type="button" aria-label="Remove published filter">×</button></span><span class="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800">Language: English <button type="button" aria-label="Remove English filter">×</button></span></div>
+      <button type="submit" class="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500">Apply Filters</button>
+    </div>
+  </form>
+</section>
+
+<!-- View Controls and Priority Content -->
+<section aria-label="Content view controls" class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm xl:flex-row xl:items-center xl:justify-between">
+  <div class="flex flex-wrap gap-1 rounded-xl bg-slate-100 p-1">
+    <button type="button" aria-pressed="true" class="rounded-lg bg-white px-3 py-2 text-sm font-bold shadow-sm">Table View</button>
+    <button type="button" aria-pressed="false" class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-white">Card View</button>
+    <button type="button" aria-pressed="false" class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-white">Calendar View</button>
+    <button type="button" aria-pressed="false" class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-white">Content Tree</button>
+  </div>
+  <div class="flex flex-wrap items-center gap-3 text-sm">
+    <span class="text-slate-500">1,286 results</span>
+    <label class="flex items-center gap-2"><input type="checkbox" class="rounded border-slate-300 text-amber-500"> Archived</label>
+    <label class="flex items-center gap-2"><input type="checkbox" class="rounded border-slate-300 text-amber-500"> Expired</label>
+    <label for="content-sort" class="sr-only">Sort content</label><select id="content-sort" class="rounded-lg border-slate-300 text-sm"><option>Recently updated</option><option>Newest published</option><option>Most viewed</option><option>Title A–Z</option></select>
+    <label for="content-density" class="sr-only">Content density</label><select id="content-density" class="rounded-lg border-slate-300 text-sm"><option>Comfortable</option><option>Compact</option></select>
+  </div>
+</section>
+
+<section aria-labelledby="priority-heading" class="rounded-2xl border border-blue-200 bg-blue-50 p-5 shadow-sm">
+  <div class="flex items-center justify-between"><div><h2 id="priority-heading" class="font-bold text-blue-950">Recent &amp; priority content</h2><p class="mt-1 text-sm text-blue-800">Items requiring editing, approval, scheduling, or immediate attention.</p></div><a href="/admin/content/editorial-queue" class="text-sm font-bold text-blue-700">Open editorial queue →</a></div>
+  <div class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+    <a href="/admin/content/PAGE-0048/edit" class="rounded-xl border border-blue-200 bg-white p-3 hover:border-blue-400"><p class="text-xs font-bold text-blue-700">RECENTLY EDITED</p><p class="mt-1 font-semibold">How AsBeez Works</p><p class="mt-1 text-xs text-slate-500">Page · Maya Chen · 12 minutes ago</p></a>
+    <a href="/admin/content/POLICY-0021/review" class="rounded-xl border border-violet-200 bg-white p-3 hover:border-violet-400"><p class="text-xs font-bold text-violet-700">AWAITING APPROVAL</p><p class="mt-1 font-semibold">Buyer Protection Policy</p><p class="mt-1 text-xs text-slate-500">Legal review due today · Daniel Reyes</p></a>
+    <a href="/admin/content/PROMO-0084/edit" class="rounded-xl border border-orange-200 bg-white p-3 hover:border-orange-400"><p class="text-xs font-bold text-orange-700">EXPIRES SOON</p><p class="mt-1 font-semibold">Fall Marketplace Sale</p><p class="mt-1 text-xs text-slate-500">Expires Sep 22 · 84,210 views</p></a>
+    <a href="/admin/content/ANN-0047/edit" class="rounded-xl border border-rose-200 bg-white p-3 hover:border-rose-400"><p class="text-xs font-bold text-rose-700">FAILED PUBLICATION</p><p class="mt-1 font-semibold">Marketplace Safety Announcement</p><p class="mt-1 text-xs text-slate-500">Publishing failed at 8:00 AM · Retry required</p></a>
+  </div>
+</section>
+
+<!-- Content Table -->
+<section aria-labelledby="content-table-heading" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex flex-col gap-3 border-b border-slate-200 p-5 xl:flex-row xl:items-center xl:justify-between">
+    <div><h2 id="content-table-heading" class="font-bold">Content library</h2><p class="mt-1 text-sm text-slate-500">Showing 1–6 of 1,286 content items</p></div>
+    <div class="flex flex-wrap gap-2">
+      <label for="bulk-action" class="sr-only">Bulk action</label><select id="bulk-action" class="rounded-lg border-slate-300 text-sm"><option>Bulk actions</option><option>Change status</option><option>Assign editor</option><option>Submit for review</option><option>Schedule publication</option><option>Add tags</option><option>Change audience</option><option>Export selected</option><option>Duplicate selected</option><option>Archive selected</option><option>Delete selected</option></select>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Apply</button>
+    </div>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-[1350px] w-full text-left text-sm">
+      <caption class="sr-only">AsBeez content-management records</caption>
+      <thead class="bg-slate-50 text-xs uppercase text-slate-600"><tr><th scope="col" class="px-4 py-3"><label for="select-all-content" class="sr-only">Select all content</label><input id="select-all-content" type="checkbox" class="rounded border-slate-300 text-amber-500"></th><th scope="col" class="px-4 py-3">Content</th><th scope="col" class="px-4 py-3">Type</th><th scope="col" class="px-4 py-3">Channel</th><th scope="col" class="px-4 py-3">Author</th><th scope="col" class="px-4 py-3">Language</th><th scope="col" class="px-4 py-3">SEO</th><th scope="col" class="px-4 py-3">Updated</th><th scope="col" class="px-4 py-3">Publication</th><th scope="col" class="px-4 py-3">Status</th><th scope="col" class="px-4 py-3">Views</th><th scope="col" class="px-4 py-3 text-right">Actions</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr class="bg-amber-50/50 hover:bg-amber-50"><td class="px-4 py-4"><input type="checkbox" checked aria-label="Select How AsBeez Works" class="rounded border-slate-300 text-amber-500"></td><td class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 3h14v18H5zM8 8h8M8 12h8M8 16h5"/></svg></span><div><a href="/admin/content/PAGE-0048/edit" class="font-bold hover:text-amber-700">How AsBeez Works</a><p class="text-xs text-slate-500">PAGE-0048 · /how-asbeez-works</p></div></div></td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">Page</span></td><td class="px-4 py-4">Website</td><td class="px-4 py-4"><div class="flex items-center gap-2"><span class="flex h-7 w-7 items-center justify-center rounded-full bg-slate-200 text-xs font-bold">MC</span><span>Maya Chen</span></div></td><td class="px-4 py-4">EN · 3/6</td><td class="px-4 py-4 font-bold text-emerald-700">92%</td><td class="px-4 py-4">12 min ago</td><td class="px-4 py-4">Sep 8, 2026</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span></td><td class="px-4 py-4 font-semibold">84,620</td><td class="px-4 py-4"><div class="flex justify-end gap-2"><a href="/admin/content/PAGE-0048/edit" class="font-bold text-amber-700">Edit Content</a><button type="button" aria-label="More actions for How AsBeez Works">•••</button></div></td></tr>
+        <tr><td class="px-4 py-4"><input type="checkbox" aria-label="Select Vendor Registration Guide" class="rounded border-slate-300 text-amber-500"></td><td class="px-4 py-4"><a href="/admin/content/GUIDE-0034/edit" class="font-bold">Vendor Registration Guide</a><p class="text-xs text-slate-500">GUIDE-0034 · /vendors/getting-started</p></td><td class="px-4 py-4">Help Article</td><td class="px-4 py-4">Help Center</td><td class="px-4 py-4">Daniel Reyes</td><td class="px-4 py-4">EN · 6/6</td><td class="px-4 py-4 font-bold text-orange-700">71%</td><td class="px-4 py-4">1 hour ago</td><td class="px-4 py-4">Aug 20, 2026</td><td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2 py-1 text-xs font-bold text-orange-700">Needs Revision</span></td><td class="px-4 py-4">26,481</td><td class="px-4 py-4 text-right"><a href="/admin/content/GUIDE-0034/edit" class="font-bold text-amber-700">Edit Content</a></td></tr>
+        <tr><td class="px-4 py-4"><input type="checkbox" aria-label="Select Buyer Protection Policy" class="rounded border-slate-300 text-amber-500"></td><td class="px-4 py-4"><a href="/admin/content/POLICY-0021/review" class="font-bold">Buyer Protection Policy</a><p class="text-xs text-slate-500">POLICY-0021 · /policies/buyer-protection</p></td><td class="px-4 py-4">Policy</td><td class="px-4 py-4">Website</td><td class="px-4 py-4">Legal Team</td><td class="px-4 py-4">EN · 2/6</td><td class="px-4 py-4 font-bold text-emerald-700">96%</td><td class="px-4 py-4">Today</td><td class="px-4 py-4">Pending</td><td class="px-4 py-4"><span class="rounded-full bg-violet-100 px-2 py-1 text-xs font-bold text-violet-700">In Review</span></td><td class="px-4 py-4">42,816</td><td class="px-4 py-4 text-right"><a href="/admin/content/POLICY-0021/review" class="font-bold text-violet-700">Review</a></td></tr>
+        <tr><td class="px-4 py-4"><input type="checkbox" aria-label="Select Fall Marketplace Sale" class="rounded border-slate-300 text-amber-500"></td><td class="px-4 py-4"><a href="/admin/content/PROMO-0084/edit" class="font-bold">Fall Marketplace Sale</a><p class="text-xs text-slate-500">PROMO-0084 · /deals/fall-sale</p></td><td class="px-4 py-4">Landing Page</td><td class="px-4 py-4">Website</td><td class="px-4 py-4">Marketing Team</td><td class="px-4 py-4">EN · 4/6</td><td class="px-4 py-4 font-bold text-emerald-700">90%</td><td class="px-4 py-4">Yesterday</td><td class="px-4 py-4">Expires Sep 22</td><td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Scheduled</span></td><td class="px-4 py-4">84,210</td><td class="px-4 py-4 text-right"><a href="/admin/content/PROMO-0084/edit" class="font-bold text-amber-700">Edit Content</a></td></tr>
+        <tr><td class="px-4 py-4"><input type="checkbox" aria-label="Select Marketplace Safety Announcement" class="rounded border-slate-300 text-amber-500"></td><td class="px-4 py-4"><a href="/admin/content/ANN-0047/edit" class="font-bold">Marketplace Safety Announcement</a><p class="text-xs text-slate-500">ANN-0047 · Dashboard announcement</p></td><td class="px-4 py-4">Announcement</td><td class="px-4 py-4">Web · In-app</td><td class="px-4 py-4">Trust Team</td><td class="px-4 py-4">EN only</td><td class="px-4 py-4">N/A</td><td class="px-4 py-4">Today</td><td class="px-4 py-4">Failed 8:00 AM</td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Failed Publication</span></td><td class="px-4 py-4">—</td><td class="px-4 py-4 text-right"><a href="/admin/content/ANN-0047/edit" class="font-bold text-rose-700">Resolve</a></td></tr>
+        <tr><td class="px-4 py-4"><input type="checkbox" aria-label="Select Weekly Deals Email" class="rounded border-slate-300 text-amber-500"></td><td class="px-4 py-4"><a href="/admin/content/templates/EMAIL-0018/edit" class="font-bold">Weekly Deals Email</a><p class="text-xs text-slate-500">EMAIL-0018 · Campaign template</p></td><td class="px-4 py-4">Email Template</td><td class="px-4 py-4">Email</td><td class="px-4 py-4">Marketing Team</td><td class="px-4 py-4">EN · 3/6</td><td class="px-4 py-4">N/A</td><td class="px-4 py-4">Sep 18</td><td class="px-4 py-4">Not published</td><td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2 py-1 text-xs font-bold text-orange-700">Draft</span></td><td class="px-4 py-4">42 sends</td><td class="px-4 py-4 text-right"><a href="/admin/content/templates/EMAIL-0018/edit" class="font-bold text-amber-700">Edit Template</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="flex flex-col gap-3 border-t border-slate-200 p-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex items-center gap-2 text-sm"><label for="rows-per-page">Rows per page</label><select id="rows-per-page" class="rounded-lg border-slate-300 text-sm"><option>10</option><option>25</option><option>50</option><option>100</option></select></div>
+    <nav aria-label="Content pagination" class="flex gap-1"><a href="/admin/content?page=1" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold">Previous</a><a href="/admin/content?page=1" aria-current="page" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white">1</a><a href="/admin/content?page=2" class="rounded-lg px-3 py-2 text-sm font-semibold">2</a><a href="/admin/content?page=3" class="rounded-lg px-3 py-2 text-sm font-semibold">3</a><span class="px-2 py-2">…</span><a href="/admin/content?page=129" class="rounded-lg px-3 py-2 text-sm font-semibold">129</a><a href="/admin/content?page=2" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold">Next</a></nav>
+  </div>
+</section>
+
+<!-- Content Tree and Selected Summary -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="tree-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="tree-heading" class="font-bold">Site content tree</h2>
+    <p class="mt-1 text-sm text-slate-500">Public page hierarchy and navigation structure.</p>
+    <ul class="mt-5 space-y-2 text-sm">
+      <li class="rounded-lg border border-slate-200 p-3"><div class="flex items-center gap-2"><button type="button" aria-label="Expand homepage">›</button><span class="text-slate-400">⠿</span><span class="flex-1 font-semibold">Homepage</span><span class="text-xs font-bold text-emerald-700">Published</span><a href="/admin/content/homepage/edit" class="font-bold text-amber-700">Edit</a></div></li>
+      <li class="rounded-lg border border-slate-200"><div class="flex items-center gap-2 p-3"><button type="button" aria-label="Collapse Shop">⌄</button><span class="text-slate-400">⠿</span><span class="flex-1 font-semibold">Shop <span class="text-xs font-normal text-slate-500">4 children</span></span><span class="text-xs text-emerald-700">Public</span></div><ul class="ml-8 border-l border-slate-200 pb-3 pl-4"><li class="mt-2 flex items-center gap-2"><span class="text-slate-400">⠿</span><span class="flex-1">Products</span><a href="/admin/content/products-page/edit" class="font-bold text-amber-700">Edit</a></li><li class="mt-2 flex items-center gap-2"><span class="text-slate-400">⠿</span><span class="flex-1">Services</span><a href="/admin/content/services-page/edit" class="font-bold text-amber-700">Edit</a></li><li class="mt-2 flex items-center gap-2"><span class="text-slate-400">⠿</span><span class="flex-1">Categories</span><a href="/admin/content/categories-page/edit" class="font-bold text-amber-700">Edit</a></li><li class="mt-2 flex items-center gap-2"><span class="text-slate-400">⠿</span><span class="flex-1">Collections</span><a href="/admin/content/collections-page/edit" class="font-bold text-amber-700">Edit</a></li></ul></li>
+      <li class="rounded-lg border-2 border-amber-400 bg-amber-50"><div class="flex items-center gap-2 p-3"><button type="button" aria-label="Collapse How It Works">⌄</button><span class="text-slate-400">⠿</span><span class="flex-1 font-bold">How It Works <span class="text-xs font-normal text-slate-500">3 children</span></span><a href="/admin/content/PAGE-0048/edit" class="font-bold text-amber-700">Edit</a><button type="button" aria-label="More actions for How It Works">•••</button></div><ul class="ml-8 border-l border-amber-300 pb-3 pl-4"><li class="mt-2">For Buyers</li><li class="mt-2">For Vendors</li><li class="mt-2">Trust &amp; Safety</li></ul></li>
+      <li class="rounded-lg border border-slate-200 p-3"><div class="flex items-center gap-2"><button type="button" aria-label="Expand Help Center">›</button><span class="text-slate-400">⠿</span><span class="flex-1 font-semibold">Help Center <span class="text-xs font-normal text-slate-500">5 children</span></span><a href="/admin/content/help-center" class="font-bold text-amber-700">Edit</a></div></li>
+      <li class="rounded-lg border border-slate-200 p-3"><div class="flex items-center gap-2"><button type="button" aria-label="Expand Legal">›</button><span class="text-slate-400">⠿</span><span class="flex-1 font-semibold">Legal <span class="text-xs font-normal text-slate-500">4 children</span></span><a href="/admin/content/legal" class="font-bold text-amber-700">Edit</a></div></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="selected-heading" class="overflow-hidden rounded-2xl border border-amber-300 bg-white shadow-sm xl:col-span-2">
+    <div class="border-b border-amber-200 bg-gradient-to-r from-amber-100 via-amber-50 to-white p-5">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div><div class="flex flex-wrap items-center gap-2"><h2 id="selected-heading" class="text-xl font-bold">How AsBeez Works</h2><span class="rounded-full bg-amber-200 px-2 py-1 text-xs font-bold">Standard Page</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Public</span></div><p class="mt-2 text-sm text-slate-600">PAGE-0048 · /how-asbeez-works</p></div>
+        <div class="flex flex-wrap gap-2"><a href="/how-asbeez-works" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold">View Live Page</a><a href="/admin/content/PAGE-0048/preview" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold">Preview Draft</a><a href="/admin/content/PAGE-0048/edit" class="rounded-lg bg-amber-500 px-3 py-2 text-sm font-bold text-slate-950">Edit Content</a><button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold">Duplicate</button><button type="button" aria-label="More actions for selected content" class="rounded-lg border border-slate-300 p-2">•••</button></div>
+      </div>
+    </div>
+    <dl class="grid gap-px bg-slate-200 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Author / editor</dt><dd class="mt-1 font-semibold">Maya Chen / Daniel Reyes</dd></div>
+      <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Language</dt><dd class="mt-1 font-semibold">English · 3 of 6 translated</dd></div>
+      <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">SEO / performance</dt><dd class="mt-1 font-semibold">92% · 84,620 views</dd></div>
+      <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Conversion / dates</dt><dd class="mt-1 font-semibold">6.8% · Published Sep 8</dd><dd class="text-xs text-slate-500">Updated 12 minutes ago</dd></div>
+    </dl>
+    <div class="flex flex-wrap gap-2 p-5"><a href="/admin/content/PAGE-0048/translations/create" class="rounded-lg border border-blue-300 px-3 py-2 text-sm font-semibold text-blue-700">Create Translation</a><button type="button" class="rounded-lg border border-orange-300 px-3 py-2 text-sm font-semibold text-orange-700">Unpublish</button><button type="button" class="rounded-lg border border-rose-300 px-3 py-2 text-sm font-semibold text-rose-700">Archive</button></div>
+  </section>
+</div>
+
+<!-- Content Editor -->
+<section aria-labelledby="editor-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex items-center justify-between"><div><h2 id="editor-heading" class="font-bold">Content editor</h2><p class="mt-1 text-sm text-slate-500">Edit the selected page’s content, ownership, URLs, and publication information.</p></div><span class="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700">Unsaved changes</span></div>
+  <form class="mt-5 grid gap-6 xl:grid-cols-3">
+    <div class="space-y-4 xl:col-span-2">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div><label for="content-title" class="block text-xs font-bold text-slate-600">Title</label><input id="content-title" type="text" value="How AsBeez Works" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+        <div><label for="internal-title" class="block text-xs font-bold text-slate-600">Internal title</label><input id="internal-title" type="text" value="Core Marketplace How-It-Works Page" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+        <div><label for="content-id" class="block text-xs font-bold text-slate-600">Content ID</label><input id="content-id" type="text" value="PAGE-0048" readonly class="mt-1 w-full rounded-lg border-slate-300 bg-slate-50 text-sm"></div>
+        <div><label for="editor-content-type" class="block text-xs font-bold text-slate-600">Content type</label><select id="editor-content-type" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Standard Page</option><option>Landing Page</option><option>Article</option></select></div>
+        <div><label for="parent-page" class="block text-xs font-bold text-slate-600">Parent page</label><select id="parent-page" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>No parent</option><option>About AsBeez</option><option>Help Center</option></select></div>
+        <div><label for="content-slug" class="block text-xs font-bold text-slate-600">URL slug</label><input id="content-slug" type="text" value="how-asbeez-works" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      </div>
+      <div><label for="short-summary" class="block text-xs font-bold text-slate-600">Short summary</label><textarea id="short-summary" rows="2" class="mt-1 w-full rounded-xl border-slate-300 text-sm">Learn how members discover products and services, place orders or bookings, and connect with trusted AsBeez vendors.</textarea></div>
+      <div>
+        <label for="main-content" class="block text-xs font-bold text-slate-600">Main content</label>
+        <div class="mt-1 overflow-hidden rounded-xl border border-slate-300">
+          <div class="flex flex-wrap gap-1 border-b border-slate-200 bg-slate-50 p-2" aria-label="Content editor toolbar">
+            <button type="button" class="rounded px-2 py-1 text-xs font-bold hover:bg-white">Heading</button><button type="button" class="rounded px-2 py-1 text-xs font-bold hover:bg-white">B</button><button type="button" class="rounded px-2 py-1 text-xs italic hover:bg-white">I</button><button type="button" class="rounded px-2 py-1 text-xs hover:bg-white">Link</button><button type="button" class="rounded px-2 py-1 text-xs hover:bg-white">List</button><button type="button" class="rounded px-2 py-1 text-xs hover:bg-white">Quote</button><button type="button" class="rounded px-2 py-1 text-xs hover:bg-white">Image</button><button type="button" class="rounded px-2 py-1 text-xs hover:bg-white">Video</button><button type="button" class="rounded px-2 py-1 text-xs hover:bg-white">Table</button><button type="button" class="rounded px-2 py-1 text-xs hover:bg-white">Button</button><button type="button" class="rounded px-2 py-1 text-xs hover:bg-white">Divider</button><button type="button" class="rounded px-2 py-1 text-xs hover:bg-white">Reusable Block</button>
+          </div>
+          <textarea id="main-content" rows="12" class="w-full border-0 text-sm leading-6 focus:ring-0">AsBeez brings products, professional services, trusted vendors, and local customers together in one marketplace.
+		  </div> <!-- Sticky Mobile Action Bar --> <div class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-3 shadow-[0_-8px_24px_rgba(15,23,42,0.12)] backdrop-blur lg:hidden"> <div class="mx-auto flex max-w-3xl items-center gap-2"> <div class="min-w-0 flex-1"><p class="truncate text-xs font-bold">How AsBeez Works</p><p class="truncate text-xs font-semibold text-emerald-700">● Published · Unsaved changes</p></div> <a href="/admin/content/PAGE-0048/preview" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold">Preview</a> <button type="button" class="rounded-lg border border-amber-300 bg-amber-100 px-3 py-2 text-xs font-bold text-amber-900">Save Draft</button> <button type="button" class="rounded-lg bg-amber-500 px-3 py-2 text-xs font-bold text-slate-950">Publish</button> </div> </div> </main>
+		  

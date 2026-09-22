@@ -36,6 +36,18 @@ class PlaceholderImage
         return self::toPng($image);
     }
 
+    /** A catalog or hero cover: honey gradient, honeycomb, darkened lower edge. */
+    public static function cover(int $width = 800, int $height = 600, int $variant = 0): string
+    {
+        $image = imagecreatetruecolor($width, $height);
+
+        self::verticalGradient($image, $width, $height, self::shift(self::HONEY, $variant), self::shift(self::AMBER, $variant));
+        self::honeycomb($image, $width, $height, 48, self::CREAM, 18);
+        self::bottomShade($image, $width, $height);
+
+        return self::toPng($image);
+    }
+
     /** A square mark: charcoal honeycomb cell on a honey field. */
     public static function logo(int $size = 400, int $variant = 0): string
     {

@@ -1,0 +1,635 @@
+<main class="min-h-screen bg-amber-50/60 px-4 py-6 text-slate-800 sm:px-6 lg:px-8"> <div class="mx-auto max-w-[100rem] space-y-6">
+<!-- Page Header -->
+<header class="space-y-5">
+  <nav aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+      <li><a href="/admin" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Admin</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/admin/users" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">User Management</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="font-semibold text-slate-800" aria-current="page">Members</li>
+    </ol>
+  </nav>
+
+  <div class="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+    <div>
+      <div class="flex flex-wrap items-center gap-3">
+        <h1 class="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Members</h1>
+        <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">24,862 total</span>
+      </div>
+      <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+        Manage member accounts, verification, security, rewards, marketplace activity, and platform access.
+      </p>
+    </div>
+
+    <div class="grid gap-2 sm:flex">
+      <a href="/admin/members/export" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold shadow-sm hover:border-amber-400 hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14"/></svg>
+        Export Members
+      </a>
+      <a href="/admin/members/import" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold shadow-sm hover:border-amber-400 hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 16V4m0 0 4 4m-4-4L8 8M5 20h14"/></svg>
+        Import Members
+      </a>
+      <a href="/admin/members/create" class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-amber-500 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+        Add Member
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Member Statistics -->
+<section aria-labelledby="member-statistics-heading">
+  <h2 id="member-statistics-heading" class="sr-only">Member statistics</h2>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-8">
+    <a href="/admin/members" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-400 hover:shadow-md">
+      <div class="flex items-center justify-between"><span class="rounded-xl bg-slate-100 p-2 text-slate-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></span><span class="text-xs font-bold text-emerald-600">+8.4%</span></div>
+      <p class="mt-4 text-2xl font-black text-slate-950">24,862</p><p class="text-xs text-slate-500">Total members</p>
+    </a>
+    <a href="/admin/members?status=active" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-emerald-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-emerald-100 p-2 text-emerald-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="m5 12 4 4L19 6"/></svg></span><span class="text-xs font-bold text-emerald-600">+6.2%</span></div>
+      <p class="mt-4 text-2xl font-black">21,476</p><p class="text-xs text-slate-500">Active members</p>
+    </a>
+    <a href="/admin/members?joined=this-month" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-sky-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-sky-100 p-2 text-sky-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 5v14M5 12h14"/></svg></span><span class="text-xs font-bold text-emerald-600">+12.7%</span></div>
+      <p class="mt-4 text-2xl font-black">1,248</p><p class="text-xs text-slate-500">New this month</p>
+    </a>
+    <a href="/admin/members?verification=verified" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-emerald-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-emerald-100 p-2 text-emerald-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 3 5 6v5c0 4.6 2.9 8.8 7 10 4.1-1.2 7-5.4 7-10V6l-7-3Zm-3 9 2 2 4-4"/></svg></span><span class="text-xs font-bold text-emerald-600">+4.1%</span></div>
+      <p class="mt-4 text-2xl font-black">18,392</p><p class="text-xs text-slate-500">Verified</p>
+    </a>
+    <a href="/admin/members?verification=pending" class="rounded-2xl border border-amber-200 bg-white p-4 shadow-sm hover:border-amber-500">
+      <div class="flex justify-between"><span class="rounded-xl bg-amber-100 p-2 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-width="2" d="M12 7v5l3 2"/></svg></span><span class="text-xs font-bold text-rose-600">+32</span></div>
+      <p class="mt-4 text-2xl font-black">684</p><p class="text-xs text-slate-500">Pending verification</p>
+    </a>
+    <a href="/admin/members?status=suspended" class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm hover:border-rose-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-rose-100 p-2 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-width="2" d="m8 8 8 8"/></svg></span><span class="text-xs font-bold text-emerald-600">-5</span></div>
+      <p class="mt-4 text-2xl font-black">73</p><p class="text-xs text-slate-500">Suspended</p>
+    </a>
+    <a href="/admin/members?status=deactivated" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-slate-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-slate-100 p-2 text-slate-600"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M6 6h12v12H6z"/></svg></span><span class="text-xs font-bold text-slate-500">+11</span></div>
+      <p class="mt-4 text-2xl font-black">214</p><p class="text-xs text-slate-500">Deactivated</p>
+    </a>
+    <a href="/admin/security/alerts?type=member" class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm hover:border-rose-500">
+      <div class="flex justify-between"><span class="rounded-xl bg-rose-100 p-2 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 3 2 21h20L12 3Zm0 6v5m0 3h.01"/></svg></span><span class="text-xs font-bold text-rose-600">+3</span></div>
+      <p class="mt-4 text-2xl font-black">19</p><p class="text-xs text-slate-500">Security alerts</p>
+    </a>
+  </div>
+</section>
+
+<!-- Growth Overview -->
+<section aria-labelledby="growth-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div>
+      <h2 id="growth-heading" class="text-lg font-bold text-slate-950">Member growth overview</h2>
+      <p class="mt-1 text-sm text-slate-500">Registration and retention performance for the last 30 days.</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <label for="growth-range" class="sr-only">Analytics time range</label>
+      <select id="growth-range" class="rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        <option>Last 7 days</option><option selected>Last 30 days</option><option>Last 90 days</option><option>This year</option><option>Custom range</option>
+      </select>
+      <a href="/admin/analytics/members" class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-bold hover:border-amber-400 hover:bg-amber-50">View Member Analytics</a>
+    </div>
+  </div>
+
+  <div class="mt-6 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+    <dl class="grid grid-cols-2 gap-3 sm:grid-cols-5 lg:grid-cols-2 xl:grid-cols-5">
+      <div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Registrations</dt><dd class="mt-1 text-xl font-black">1,248</dd></div>
+      <div class="rounded-xl bg-emerald-50 p-4"><dt class="text-xs text-slate-500">Activated</dt><dd class="mt-1 text-xl font-black text-emerald-700">1,106</dd></div>
+      <div class="rounded-xl bg-rose-50 p-4"><dt class="text-xs text-slate-500">Deactivated</dt><dd class="mt-1 text-xl font-black text-rose-700">38</dd></div>
+      <div class="rounded-xl bg-amber-50 p-4"><dt class="text-xs text-slate-500">Verification</dt><dd class="mt-1 text-xl font-black text-amber-700">74.0%</dd></div>
+      <div class="rounded-xl bg-sky-50 p-4"><dt class="text-xs text-slate-500">Retention</dt><dd class="mt-1 text-xl font-black text-sky-700">93.8%</dd></div>
+    </dl>
+
+    <div class="flex h-40 items-end gap-2 rounded-xl border border-slate-100 bg-gradient-to-b from-amber-50/20 to-amber-50 p-4" aria-label="Member registrations over the last 14 periods">
+      <div class="h-[38%] flex-1 rounded-t bg-amber-200"></div><div class="h-[48%] flex-1 rounded-t bg-amber-300"></div>
+      <div class="h-[44%] flex-1 rounded-t bg-amber-300"></div><div class="h-[60%] flex-1 rounded-t bg-amber-400"></div>
+      <div class="h-[52%] flex-1 rounded-t bg-amber-300"></div><div class="h-[69%] flex-1 rounded-t bg-amber-400"></div>
+      <div class="h-[64%] flex-1 rounded-t bg-amber-400"></div><div class="h-[78%] flex-1 rounded-t bg-amber-500"></div>
+      <div class="h-[72%] flex-1 rounded-t bg-amber-400"></div><div class="h-[88%] flex-1 rounded-t bg-slate-800"></div>
+      <div class="h-[81%] flex-1 rounded-t bg-amber-500"></div><div class="h-[92%] flex-1 rounded-t bg-slate-900"></div>
+      <div class="h-[86%] flex-1 rounded-t bg-amber-500"></div><div class="h-full flex-1 rounded-t bg-slate-950"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Search and Filters -->
+<form action="/admin/members" method="get" aria-labelledby="filter-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-200 px-5 py-4 sm:px-6">
+    <h2 id="filter-heading" class="text-lg font-bold text-slate-950">Search and filter members</h2>
+  </div>
+  <div class="space-y-4 p-5 sm:p-6">
+    <div class="relative">
+      <svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke-width="2"/><path stroke-width="2" d="m20 20-4-4"/></svg>
+      <label for="member-search" class="sr-only">Search members</label>
+      <input id="member-search" name="search" type="search" placeholder="Search by name, member ID, username, email, phone, or referral code" class="w-full rounded-xl border-slate-300 py-3 pl-12 pr-4 text-sm shadow-sm focus:border-amber-500 focus:ring-amber-500">
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+      <div><label for="account-status" class="block text-xs font-bold text-slate-600">Account status</label><select id="account-status" name="status" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All statuses</option><option>Active</option><option>Pending</option><option>Restricted</option><option>Suspended</option><option>Deactivated</option></select></div>
+      <div><label for="verification" class="block text-xs font-bold text-slate-600">Verification</label><select id="verification" name="verification" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All verification</option><option>Verified</option><option>Partially verified</option><option>Pending review</option><option>Rejected</option><option>Not submitted</option></select></div>
+      <div><label for="membership" class="block text-xs font-bold text-slate-600">Membership</label><select id="membership" name="membership" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All levels</option><option>Free Member</option><option>Honey Member</option><option>Golden Hive</option><option>Premium Member</option></select></div>
+      <div><label for="region" class="block text-xs font-bold text-slate-600">Country or region</label><select id="region" name="region" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All regions</option><option>Canada</option><option>United States</option><option>United Kingdom</option><option>Philippines</option></select></div>
+      <div><label for="risk" class="block text-xs font-bold text-slate-600">Risk level</label><select id="risk" name="risk" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All risk levels</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div>
+      <div><label for="sort" class="block text-xs font-bold text-slate-600">Sort by</label><select id="sort" name="sort" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Newest members</option><option>Oldest members</option><option>Name A–Z</option><option>Name Z–A</option><option>Most active</option><option>Highest spending</option><option>Most reward points</option><option>Highest risk</option></select></div>
+      <div><label for="registered-from" class="block text-xs font-bold text-slate-600">Registered from</label><input id="registered-from" name="registered_from" type="date" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="registered-to" class="block text-xs font-bold text-slate-600">Registered to</label><input id="registered-to" name="registered_to" type="date" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="activity" class="block text-xs font-bold text-slate-600">Marketplace activity</label><select id="activity" name="activity" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any activity</option><option>Purchased recently</option><option>No purchases</option><option>Open dispute</option><option>Frequent returns</option><option>Inactive 90+ days</option></select></div>
+    </div>
+
+    <div class="flex flex-col gap-3 border-t border-slate-100 pt-4 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex flex-wrap gap-2">
+        <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Active <button type="button" aria-label="Remove Active filter">×</button></span>
+        <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Canada <button type="button" aria-label="Remove Canada filter">×</button></span>
+        <button type="button" class="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-bold hover:bg-slate-50">Saved Filters</button>
+        <button type="button" class="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-bold hover:bg-slate-50">More Filters</button>
+      </div>
+      <div class="flex gap-2">
+        <a href="/admin/members" class="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100">Clear Filters</a>
+        <button type="submit" class="rounded-xl bg-amber-400 px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Members Workspace -->
+<div class="grid gap-6 2xl:grid-cols-[minmax(0,1fr)_22rem]">
+  <section aria-labelledby="members-table-heading" class="min-w-0 rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 id="members-table-heading" class="text-lg font-bold text-slate-950">Member directory</h2>
+        <p class="mt-1 text-sm text-slate-500">Showing 1–25 of 24,862 members</p>
+      </div>
+      <label class="inline-flex items-center gap-2 text-sm font-semibold"><input type="checkbox" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"> Select all members on this page</label>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="border-b border-amber-200 bg-amber-50 px-5 py-3">
+      <div class="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+        <p class="text-sm font-bold text-amber-900">2 members selected</p>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold hover:bg-amber-100">Verify Accounts</button>
+          <button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold hover:bg-amber-100">Send Notification</button>
+          <button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold hover:bg-amber-100">Assign Membership</button>
+          <button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold hover:bg-amber-100">Adjust Points</button>
+          <button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold hover:bg-amber-100">Add Note</button>
+          <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold hover:bg-slate-50">Require Password Reset</button>
+          <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold hover:bg-slate-50">Restrict</button>
+          <button type="button" class="rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs font-bold text-rose-700 hover:bg-rose-50">Suspend</button>
+          <button type="button" class="rounded-lg border border-emerald-200 bg-white px-3 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-50">Reactivate</button>
+          <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold hover:bg-slate-50">Export</button>
+          <button type="button" class="px-2 py-2 text-xs font-bold text-slate-500 hover:text-slate-900">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Members Table -->
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[96rem] text-left text-sm">
+        <caption class="sr-only">AsBeez member accounts</caption>
+        <thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+          <tr>
+            <th scope="col" class="px-4 py-3"><input type="checkbox" aria-label="Select all displayed members" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></th>
+            <th scope="col" class="px-4 py-3">Member</th><th scope="col" class="px-4 py-3">Member ID</th><th scope="col" class="px-4 py-3">Contact</th>
+            <th scope="col" class="px-4 py-3">Membership</th><th scope="col" class="px-4 py-3">Verification</th><th scope="col" class="px-4 py-3 text-right">Orders</th>
+            <th scope="col" class="px-4 py-3 text-right">Lifetime spend</th><th scope="col" class="px-4 py-3 text-right">Points</th><th scope="col" class="px-4 py-3">Joined</th>
+            <th scope="col" class="px-4 py-3">Last active</th><th scope="col" class="px-4 py-3">Status</th><th scope="col" class="px-4 py-3">Risk</th><th scope="col" class="px-4 py-3 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr class="bg-amber-50/40 hover:bg-amber-50">
+            <td class="px-4 py-4"><input type="checkbox" checked aria-label="Select Joey Lustre" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-amber-400 font-black text-slate-950">JL</span><div><a href="/admin/members/MBR-100284" class="font-bold text-slate-950 hover:text-amber-700">Joey Lustre</a><p class="text-xs text-slate-500">@joey-lustre</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">MBR-100284</td><td class="px-4 py-4"><p>joey@example.com</p><p class="text-xs text-slate-500">+1 ••• ••• 0148</p></td>
+            <td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">Honey</span></td>
+            <td class="px-4 py-4"><p class="font-semibold text-emerald-700">Fully verified</p><p class="text-xs text-slate-500">Email · Phone · ID</p></td>
+            <td class="px-4 py-4 text-right font-semibold">38</td><td class="px-4 py-4 text-right font-semibold">$4,860.20</td><td class="px-4 py-4 text-right font-semibold">2,480</td>
+            <td class="px-4 py-4"><p>Jul 8, 2026</p><p class="text-xs text-slate-500">2 months ago</p></td><td class="px-4 py-4"><p>Today</p><p class="text-xs text-slate-500">9:17 PM</p></td>
+            <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td>
+            <td class="px-4 py-4 text-right">
+              <details class="relative inline-block text-left">
+                <summary class="cursor-pointer list-none rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold hover:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">Actions</summary>
+                <div class="absolute right-0 z-30 mt-2 w-72 rounded-xl border border-slate-200 bg-white p-2 text-left shadow-xl">
+                  <div class="grid grid-cols-2 gap-1">
+                    <a href="/admin/members/MBR-100284" class="rounded-lg p-2 hover:bg-amber-50">View Profile</a><a href="/admin/members/MBR-100284/edit" class="rounded-lg p-2 hover:bg-amber-50">Edit Member</a>
+                    <a href="/admin/members/MBR-100284/orders" class="rounded-lg p-2 hover:bg-amber-50">Orders</a><a href="/admin/members/MBR-100284/transactions" class="rounded-lg p-2 hover:bg-amber-50">Transactions</a>
+                    <a href="/admin/members/MBR-100284/messages" class="rounded-lg p-2 hover:bg-amber-50">Messages</a><a href="/admin/members/MBR-100284/reviews" class="rounded-lg p-2 hover:bg-amber-50">Reviews</a>
+                    <a href="/admin/members/MBR-100284/support" class="rounded-lg p-2 hover:bg-amber-50">Support Tickets</a><a href="/admin/members/MBR-100284/verification" class="rounded-lg p-2 hover:bg-amber-50">Verification</a>
+                    <a href="/admin/members/MBR-100284/logins" class="rounded-lg p-2 hover:bg-amber-50">Login History</a><a href="/admin/members/MBR-100284/activity" class="rounded-lg p-2 hover:bg-amber-50">Activity Log</a>
+                    <a href="/admin/members/MBR-100284/rewards" class="rounded-lg p-2 hover:bg-amber-50">Manage Rewards</a><a href="/admin/members/MBR-100284/membership" class="rounded-lg p-2 hover:bg-amber-50">Membership</a>
+                    <a href="/admin/members/MBR-100284/notify" class="rounded-lg p-2 hover:bg-amber-50">Send Notification</a><a href="/admin/members/MBR-100284/password/reset" class="rounded-lg p-2 hover:bg-amber-50">Reset Password</a>
+                    <button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Require Password Reset</button><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Require Email Verification</button>
+                    <button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Require Phone Verification</button><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Reactivate Account</button>
+                  </div>
+                  <div class="mt-2 grid grid-cols-2 gap-1 border-t border-slate-200 pt-2">
+                    <button type="button" class="rounded-lg p-2 text-left text-amber-700 hover:bg-amber-50">Restrict Account</button><button type="button" class="rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Suspend Account</button>
+                    <button type="button" class="rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Deactivate Account</button>
+                  </div>
+                </div>
+              </details>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" checked aria-label="Select Maya Chen" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-sky-200 font-black text-sky-900">MC</span><div><a href="/admin/members/MBR-100936" class="font-bold hover:text-amber-700">Maya Chen</a><p class="text-xs text-slate-500">@mayac</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">MBR-100936</td><td class="px-4 py-4"><p>maya.chen@example.com</p><p class="text-xs text-slate-500">+1 ••• ••• 6702</p></td>
+            <td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Free</span></td><td class="px-4 py-4"><p class="font-semibold text-amber-700">Email pending</p><p class="text-xs text-slate-500">Phone not added</p></td>
+            <td class="px-4 py-4 text-right">0</td><td class="px-4 py-4 text-right">$0.00</td><td class="px-4 py-4 text-right">100</td><td class="px-4 py-4">Sep 20, 2026</td><td class="px-4 py-4">12 minutes ago</td>
+            <td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Pending</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td>
+            <td class="px-4 py-4 text-right"><details class="relative inline-block"><summary class="cursor-pointer list-none rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Actions</summary><div class="absolute right-0 z-20 mt-2 w-52 rounded-xl border bg-white p-2 text-left shadow-xl"><a href="/admin/members/MBR-100936" class="block rounded-lg p-2 hover:bg-amber-50">View Profile</a><a href="/admin/members/MBR-100936/edit" class="block rounded-lg p-2 hover:bg-amber-50">Edit Member</a><a href="/admin/members/MBR-100936/verification" class="block rounded-lg p-2 hover:bg-amber-50">View Verification</a><button type="button" class="block w-full rounded-lg p-2 text-left hover:bg-amber-50">Require Email Verification</button><button type="button" class="block w-full rounded-lg p-2 text-left text-amber-700 hover:bg-amber-50">Restrict Account</button></div></details></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Gabriel Santos" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-violet-200 font-black text-violet-900">GS</span><div><a href="/admin/members/MBR-097412" class="font-bold hover:text-amber-700">Gabriel Santos</a><p class="text-xs text-slate-500">@gabrielshops</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">MBR-097412</td><td class="px-4 py-4"><p>gabriel@example.com</p><p class="text-xs text-slate-500">+1 ••• ••• 9921</p></td>
+            <td class="px-4 py-4"><span class="rounded-full bg-violet-100 px-2 py-1 text-xs font-bold text-violet-700">Golden Hive</span></td><td class="px-4 py-4"><p class="font-semibold text-emerald-700">Fully verified</p><p class="text-xs text-slate-500">2FA enabled</p></td>
+            <td class="px-4 py-4 text-right font-semibold">214</td><td class="px-4 py-4 text-right font-semibold">$31,482.70</td><td class="px-4 py-4 text-right font-semibold">18,920</td><td class="px-4 py-4">Jan 12, 2025</td><td class="px-4 py-4">3 minutes ago</td>
+            <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td>
+            <td class="px-4 py-4 text-right"><details class="relative inline-block"><summary class="cursor-pointer list-none rounded-lg border px-3 py-2 text-xs font-bold">Actions</summary><div class="absolute right-0 z-20 mt-2 w-52 rounded-xl border bg-white p-2 text-left shadow-xl"><a href="/admin/members/MBR-097412" class="block rounded-lg p-2 hover:bg-amber-50">View Profile</a><a href="/admin/members/MBR-097412/orders" class="block rounded-lg p-2 hover:bg-amber-50">View Orders</a><a href="/admin/members/MBR-097412/rewards" class="block rounded-lg p-2 hover:bg-amber-50">Manage Rewards</a><a href="/admin/members/MBR-097412/membership" class="block rounded-lg p-2 hover:bg-amber-50">Manage Membership</a><button type="button" class="block w-full rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Suspend Account</button></div></details></td>
+          </tr>
+
+          <tr class="bg-rose-50/30 hover:bg-rose-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Nina Brooks" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-rose-200 font-black text-rose-900">NB</span><div><a href="/admin/members/MBR-089522" class="font-bold hover:text-amber-700">Nina Brooks</a><p class="text-xs text-slate-500">@ninab</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">MBR-089522</td><td class="px-4 py-4"><p>nina.b@example.com</p><p class="text-xs text-slate-500">+1 ••• ••• 4419</p></td>
+            <td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">Honey</span></td><td class="px-4 py-4"><p class="font-semibold text-rose-700">Review required</p><p class="text-xs text-slate-500">ID mismatch</p></td>
+            <td class="px-4 py-4 text-right">17</td><td class="px-4 py-4 text-right">$2,186.14</td><td class="px-4 py-4 text-right">420</td><td class="px-4 py-4">Nov 2, 2024</td><td class="px-4 py-4">Sep 18</td>
+            <td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Suspended</span></td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">High</span></td>
+            <td class="px-4 py-4 text-right"><details class="relative inline-block"><summary class="cursor-pointer list-none rounded-lg border px-3 py-2 text-xs font-bold">Actions</summary><div class="absolute right-0 z-20 mt-2 w-52 rounded-xl border bg-white p-2 text-left shadow-xl"><a href="/admin/members/MBR-089522" class="block rounded-lg p-2 hover:bg-amber-50">View Profile</a><a href="/admin/members/MBR-089522/security" class="block rounded-lg p-2 hover:bg-amber-50">Security Alerts</a><a href="/admin/members/MBR-089522/verification" class="block rounded-lg p-2 hover:bg-amber-50">Verification</a><button type="button" class="block w-full rounded-lg p-2 text-left text-emerald-700 hover:bg-emerald-50">Reactivate Account</button><button type="button" class="block w-full rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Deactivate Account</button></div></details></td>
+          </tr>
+
+          <tr class="bg-amber-50/30 hover:bg-amber-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Omar Haddad" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-200 font-black text-orange-900">OH</span><div><a href="/admin/members/MBR-095334" class="font-bold hover:text-amber-700">Omar Haddad</a><p class="text-xs text-slate-500">@omarh</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">MBR-095334</td><td class="px-4 py-4"><p>omar.h@example.com</p><p class="text-xs text-slate-500">+1 ••• ••• 3112</p></td>
+            <td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Free</span></td><td class="px-4 py-4"><p class="font-semibold text-amber-700">Partially verified</p><p class="text-xs text-slate-500">Open dispute</p></td>
+            <td class="px-4 py-4 text-right">11</td><td class="px-4 py-4 text-right">$1,026.40</td><td class="px-4 py-4 text-right">190</td><td class="px-4 py-4">Mar 16, 2026</td><td class="px-4 py-4">Yesterday</td>
+            <td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Restricted</span></td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Medium</span></td>
+            <td class="px-4 py-4 text-right"><details class="relative inline-block"><summary class="cursor-pointer list-none rounded-lg border px-3 py-2 text-xs font-bold">Actions</summary><div class="absolute right-0 z-20 mt-2 w-52 rounded-xl border bg-white p-2 text-left shadow-xl"><a href="/admin/members/MBR-095334" class="block rounded-lg p-2 hover:bg-amber-50">View Profile</a><a href="/admin/disputes/DSP-442" class="block rounded-lg p-2 hover:bg-amber-50">View Dispute</a><a href="/admin/members/MBR-095334/activity" class="block rounded-lg p-2 hover:bg-amber-50">Activity Log</a><button type="button" class="block w-full rounded-lg p-2 text-left text-emerald-700 hover:bg-emerald-50">Remove Restriction</button><button type="button" class="block w-full rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Suspend Account</button></div></details></td>
+          </tr>
+
+          <tr class="text-slate-500 hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Linda Patel" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 font-black">LP</span><div><a href="/admin/members/MBR-077208" class="font-bold text-slate-700 hover:text-amber-700">Linda Patel</a><p class="text-xs">@lindap</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">MBR-077208</td><td class="px-4 py-4"><p>linda.p@example.com</p><p class="text-xs">+1 ••• ••• 8061</p></td>
+            <td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Free</span></td><td class="px-4 py-4">Verified</td><td class="px-4 py-4 text-right">6</td><td class="px-4 py-4 text-right">$318.50</td><td class="px-4 py-4 text-right">0</td><td class="px-4 py-4">Aug 20, 2023</td><td class="px-4 py-4">Jun 4, 2026</td>
+            <td class="px-4 py-4"><span class="rounded-full bg-slate-200 px-2 py-1 text-xs font-bold">Deactivated</span></td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Unavailable</span></td>
+            <td class="px-4 py-4 text-right"><details class="relative inline-block"><summary class="cursor-pointer list-none rounded-lg border px-3 py-2 text-xs font-bold">Actions</summary><div class="absolute right-0 z-20 mt-2 w-52 rounded-xl border bg-white p-2 text-left shadow-xl"><a href="/admin/members/MBR-077208" class="block rounded-lg p-2 hover:bg-amber-50">View Profile</a><a href="/admin/members/MBR-077208/activity" class="block rounded-lg p-2 hover:bg-amber-50">Activity Log</a><button type="button" class="block w-full rounded-lg p-2 text-left text-emerald-700 hover:bg-emerald-50">Reactivate Account</button><button type="button" class="block w-full rounded-lg p-2 text-left hover:bg-slate-50">Archive Account</button></div></details></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Aisha Johnson" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-fuchsia-200 font-black text-fuchsia-900">AJ</span><div><a href="/admin/members/MBR-100118" class="font-bold hover:text-amber-700">Aisha Johnson</a><p class="text-xs text-slate-500">@aishaj</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">MBR-100118</td><td class="px-4 py-4"><p>aisha.j@example.com</p><p class="text-xs text-slate-500">+1 ••• ••• 7420</p></td>
+            <td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Premium</span></td><td class="px-4 py-4"><p class="font-semibold text-amber-700">ID review pending</p><p class="text-xs text-slate-500">Email · Phone verified</p></td>
+            <td class="px-4 py-4 text-right">24</td><td class="px-4 py-4 text-right">$3,842.60</td><td class="px-4 py-4 text-right">3,680</td><td class="px-4 py-4">Aug 4, 2026</td><td class="px-4 py-4">42 minutes ago</td>
+            <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Medium</span></td>
+            <td class="px-4 py-4 text-right"><details class="relative inline-block"><summary class="cursor-pointer list-none rounded-lg border px-3 py-2 text-xs font-bold">Actions</summary><div class="absolute right-0 z-20 mt-2 w-52 rounded-xl border bg-white p-2 text-left shadow-xl"><a href="/admin/members/MBR-100118" class="block rounded-lg p-2 hover:bg-amber-50">View Profile</a><a href="/admin/members/MBR-100118/verification" class="block rounded-lg p-2 hover:bg-amber-50">Review Verification</a><button type="button" class="block w-full rounded-lg p-2 text-left hover:bg-emerald-50">Approve Verification</button><button type="button" class="block w-full rounded-lg p-2 text-left hover:bg-amber-50">Request Information</button><button type="button" class="block w-full rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Reject Verification</button></div></details></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Marcus Reed" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-teal-200 font-black text-teal-900">MR</span><div><a href="/admin/members/MBR-093470" class="font-bold hover:text-amber-700">Marcus Reed</a><p class="text-xs text-slate-500">@marcusreed</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">MBR-093470</td><td class="px-4 py-4"><p>marcus.r@example.com</p><p class="text-xs text-slate-500">+1 ••• ••• 2257</p></td>
+            <td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">Honey</span></td><td class="px-4 py-4"><p class="font-semibold text-emerald-700">Fully verified</p><p class="text-xs text-slate-500">2FA enabled</p></td>
+            <td class="px-4 py-4 text-right">63</td><td class="px-4 py-4 text-right">$8,720.15</td><td class="px-4 py-4 text-right">6,120</td><td class="px-4 py-4">Dec 19, 2025</td><td class="px-4 py-4">5 minutes ago</td>
+            <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td>
+            <td class="px-4 py-4 text-right"><details class="relative inline-block"><summary class="cursor-pointer list-none rounded-lg border px-3 py-2 text-xs font-bold">Actions</summary><div class="absolute right-0 z-20 mt-2 w-52 rounded-xl border bg-white p-2 text-left shadow-xl"><a href="/admin/members/MBR-093470" class="block rounded-lg p-2 hover:bg-amber-50">View Profile</a><a href="/admin/members/MBR-093470/orders" class="block rounded-lg p-2 hover:bg-amber-50">View Orders</a><a href="/admin/members/MBR-093470/logins" class="block rounded-lg p-2 hover:bg-amber-50">Login History</a><a href="/admin/members/MBR-093470/rewards" class="block rounded-lg p-2 hover:bg-amber-50">Manage Rewards</a><button type="button" class="block w-full rounded-lg p-2 text-left text-amber-700 hover:bg-amber-50">Restrict Account</button></div></details></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex flex-col gap-4 border-t border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex items-center gap-2 text-sm text-slate-600">
+        <span>Rows per page</span>
+        <label for="per-page" class="sr-only">Items per page</label>
+        <select id="per-page" class="rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>10</option><option selected>25</option><option>50</option><option>100</option></select>
+        <span>Showing 1–25 of 24,862</span>
+      </div>
+      <nav aria-label="Member table pagination" class="flex items-center gap-1">
+        <button type="button" disabled aria-label="First page" class="rounded-lg border px-3 py-2 text-sm text-slate-300">«</button>
+        <button type="button" disabled aria-label="Previous page" class="rounded-lg border px-3 py-2 text-sm text-slate-300">‹</button>
+        <a href="?page=1" aria-current="page" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white">1</a>
+        <a href="?page=2" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">2</a>
+        <a href="?page=3" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">3</a>
+        <span class="px-2">…</span>
+        <a href="?page=995" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">995</a>
+        <a href="?page=2" aria-label="Next page" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">›</a>
+        <a href="?page=995" aria-label="Last page" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">»</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Member Overview -->
+  <aside aria-labelledby="member-overview-heading" class="self-start rounded-2xl border border-slate-200 bg-white shadow-sm 2xl:sticky 2xl:top-6">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="member-overview-heading" class="text-lg font-bold text-slate-950">Member Overview</h2><p class="mt-1 text-xs text-slate-500">Selected member</p></div>
+    <div class="p-5 text-center">
+      <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-amber-400 text-2xl font-black text-slate-950 ring-4 ring-amber-100">JL</div>
+      <h3 class="mt-3 text-lg font-bold">Joey Lustre</h3><p class="text-sm text-slate-500">@joey-lustre · MBR-100284</p>
+      <div class="mt-3 flex flex-wrap justify-center gap-2"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">Honey Member</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span><span class="rounded-full bg-sky-100 px-2 py-1 text-xs font-bold text-sky-700">Verified</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low risk</span></div>
+    </div>
+
+    <dl class="grid grid-cols-2 gap-x-4 gap-y-3 border-y border-slate-200 px-5 py-4 text-sm">
+      <div><dt class="text-xs text-slate-500">Member since</dt><dd class="font-semibold">Jul 8, 2026</dd></div><div><dt class="text-xs text-slate-500">Last active</dt><dd class="font-semibold">Today, 9:17 PM</dd></div>
+      <div><dt class="text-xs text-slate-500">Location</dt><dd class="font-semibold">Burnaby, BC</dd></div><div><dt class="text-xs text-slate-500">Language</dt><dd class="font-semibold">English</dd></div>
+      <div><dt class="text-xs text-slate-500">Time zone</dt><dd class="font-semibold">Pacific Time</dd></div><div><dt class="text-xs text-slate-500">Email</dt><dd class="truncate font-semibold">joey@example.com</dd></div>
+      <div><dt class="text-xs text-slate-500">Phone</dt><dd class="font-semibold">+1 ••• ••• 0148</dd></div><div><dt class="text-xs text-slate-500">Completed orders</dt><dd class="font-semibold">38</dd></div>
+      <div><dt class="text-xs text-slate-500">Open orders</dt><dd class="font-semibold">3</dd></div><div><dt class="text-xs text-slate-500">Returns</dt><dd class="font-semibold">2</dd></div>
+      <div><dt class="text-xs text-slate-500">Lifetime spend</dt><dd class="font-semibold">$4,860.20</dd></div><div><dt class="text-xs text-slate-500">Reward points</dt><dd class="font-semibold">2,480</dd></div>
+      <div><dt class="text-xs text-slate-500">Referrals</dt><dd class="font-semibold">7</dd></div><div><dt class="text-xs text-slate-500">Reviews</dt><dd class="font-semibold">21</dd></div>
+      <div><dt class="text-xs text-slate-500">Support tickets</dt><dd class="font-semibold">1</dd></div><div><dt class="text-xs text-slate-500">Active disputes</dt><dd class="font-semibold">0</dd></div>
+      <div><dt class="text-xs text-slate-500">Addresses</dt><dd class="font-semibold">3</dd></div><div><dt class="text-xs text-slate-500">Payment methods</dt><dd class="font-semibold">2</dd></div>
+      <div><dt class="text-xs text-slate-500">Two-factor</dt><dd class="font-semibold text-amber-700">Not enabled</dd></div><div><dt class="text-xs text-slate-500">Active sessions</dt><dd class="font-semibold">2</dd></div>
+      <div class="col-span-2"><dt class="text-xs text-slate-500">Latest login</dt><dd class="font-semibold">Chrome · Windows · Vancouver, Canada</dd></div>
+    </dl>
+
+    <div class="grid grid-cols-2 gap-2 p-5">
+      <a href="/admin/members/MBR-100284" class="rounded-lg bg-slate-900 px-3 py-2 text-center text-xs font-bold text-white hover:bg-amber-500 hover:text-slate-950">View Full Profile</a>
+      <a href="/admin/members/MBR-100284/edit" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">Edit Member</a>
+      <a href="/admin/members/MBR-100284/messages" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">Send Message</a>
+      <a href="/admin/members/MBR-100284/orders" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">View Orders</a>
+      <a href="/admin/members/MBR-100284/manage" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">Manage Account</a>
+      <button type="button" class="rounded-lg border border-amber-300 px-3 py-2 text-xs font-bold text-amber-800 hover:bg-amber-50">Impersonate</button>
+      <p class="col-span-2 text-left text-[11px] leading-4 text-slate-500">Impersonation is logged and restricted to authorized administrators.</p>
+    </div>
+  </aside>
+</div>
+
+<!-- Administration Review Panels -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <!-- Administrative Notes -->
+  <section aria-labelledby="notes-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+      <div><h2 id="notes-heading" class="text-lg font-bold">Account review and notes</h2><p class="mt-1 text-xs text-slate-500">Internal notes are never shown to the member.</p></div>
+      <a href="/admin/audit?member=MBR-100284" class="text-sm font-bold text-amber-700 hover:underline">Audit Log</a>
+    </div>
+    <div class="space-y-5 p-5 sm:p-6">
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Assigned administrator</dt><dd class="font-semibold">Sarah Mitchell</dd></div>
+        <div><dt class="text-xs text-slate-500">Risk classification</dt><dd class="font-semibold text-emerald-700">Low</dd></div>
+        <div><dt class="text-xs text-slate-500">Review priority</dt><dd class="font-semibold">Normal</dd></div>
+        <div><dt class="text-xs text-slate-500">Last review</dt><dd class="font-semibold">September 12, 2026</dd></div>
+        <div><dt class="text-xs text-slate-500">Next review</dt><dd class="font-semibold">March 12, 2027</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2">
+        <span class="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold text-violet-700">VIP Customer</span>
+        <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">High Lifetime Value</span>
+        <span class="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-sky-700">Referral Partner</span>
+        <button type="button" class="rounded-full border border-dashed border-slate-400 px-3 py-1 text-xs font-bold">+ Add tag</button>
+      </div>
+      <article class="rounded-xl bg-slate-50 p-4">
+        <div class="flex justify-between gap-4"><p class="text-sm font-bold">Account reviewed—no concerns found.</p><time class="text-xs text-slate-400">Sep 12, 2026</time></div>
+        <p class="mt-2 text-sm text-slate-600">Purchase, referral, and login activity appear consistent with the member’s history.</p>
+        <p class="mt-2 text-xs font-semibold text-slate-500">Sarah Mitchell · Senior Member Administrator</p>
+      </article>
+      <div><label for="admin-note" class="block text-sm font-semibold">Add internal note</label><textarea id="admin-note" rows="3" placeholder="Document the reason, supporting evidence, and any follow-up required." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea></div>
+      <button type="button" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-amber-500 hover:text-slate-950">Add Note</button>
+    </div>
+  </section>
+
+  <!-- Verification -->
+  <section aria-labelledby="verification-review-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="verification-review-heading" class="text-lg font-bold">Verification and trust review</h2><p class="mt-1 text-xs text-slate-500">Review identity and marketplace trust signals.</p></div>
+    <div class="space-y-5 p-5 sm:p-6">
+      <dl class="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
+        <div><dt class="text-xs text-slate-500">Identity</dt><dd class="font-bold text-emerald-700">Approved</dd></div><div><dt class="text-xs text-slate-500">Email</dt><dd class="font-bold text-emerald-700">Verified</dd></div>
+        <div><dt class="text-xs text-slate-500">Phone</dt><dd class="font-bold text-emerald-700">Verified</dd></div><div><dt class="text-xs text-slate-500">Address</dt><dd class="font-bold text-amber-700">Partial</dd></div>
+        <div><dt class="text-xs text-slate-500">Payment method</dt><dd class="font-bold text-emerald-700">Verified</dd></div><div><dt class="text-xs text-slate-500">Buyer protection</dt><dd class="font-bold text-emerald-700">Eligible</dd></div>
+        <div><dt class="text-xs text-slate-500">Community standing</dt><dd class="font-bold text-emerald-700">Excellent</dd></div><div><dt class="text-xs text-slate-500">Trust score</dt><dd class="font-bold">88/100</dd></div>
+        <div><dt class="text-xs text-slate-500">Risk score</dt><dd class="font-bold text-emerald-700">12/100</dd></div><div><dt class="text-xs text-slate-500">Failed attempts</dt><dd class="font-bold">0</dd></div>
+        <div><dt class="text-xs text-slate-500">Documents</dt><dd class="font-bold">Passport</dd></div><div><dt class="text-xs text-slate-500">Document expiry</dt><dd class="font-bold">June 2031</dd></div>
+        <div><dt class="text-xs text-slate-500">Last reviewed</dt><dd class="font-bold">Sep 12, 2026</dd></div><div><dt class="text-xs text-slate-500">Reviewer</dt><dd class="font-bold">Sarah Mitchell</dd></div>
+      </dl>
+      <div class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900">Verification approvals and rejections must include a documented reason and supporting review evidence.</div>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/members/MBR-100284/verification/documents" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-slate-50">Review Documents</a>
+        <button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white hover:bg-emerald-700">Approve Verification</button>
+        <button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700 hover:bg-rose-50">Reject Verification</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Request More Information</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-slate-50">Reset Verification</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-slate-50">Add Review Note</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security -->
+  <section aria-labelledby="security-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="security-heading" class="text-lg font-bold">Security and risk</h2><p class="mt-1 text-xs text-slate-500">Authentication, sessions, login behavior, and fraud controls.</p></div>
+    <div class="space-y-5 p-5 sm:p-6">
+      <dl class="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
+        <div><dt class="text-xs text-slate-500">Two-factor</dt><dd class="font-bold text-amber-700">Not enabled</dd></div><div><dt class="text-xs text-slate-500">Password changed</dt><dd class="font-bold">Aug 12, 2026</dd></div>
+        <div><dt class="text-xs text-slate-500">Active sessions</dt><dd class="font-bold">2</dd></div><div><dt class="text-xs text-slate-500">Failed logins</dt><dd class="font-bold">1 in 30 days</dd></div>
+        <div><dt class="text-xs text-slate-500">Login locations</dt><dd class="font-bold">Vancouver · Burnaby</dd></div><div><dt class="text-xs text-slate-500">Known devices</dt><dd class="font-bold">3</dd></div>
+        <div><dt class="text-xs text-slate-500">Suspicious login</dt><dd class="font-bold text-emerald-700">None</dd></div><div><dt class="text-xs text-slate-500">IP risk</dt><dd class="font-bold text-emerald-700">Low</dd></div>
+        <div><dt class="text-xs text-slate-500">Account lock</dt><dd class="font-bold">Unlocked</dd></div><div><dt class="text-xs text-slate-500">Password resets</dt><dd class="font-bold">1 lifetime</dd></div>
+        <div><dt class="text-xs text-slate-500">Connected accounts</dt><dd class="font-bold">Google</dd></div><div><dt class="text-xs text-slate-500">Security alerts</dt><dd class="font-bold text-emerald-700">0 open</dd></div>
+        <div><dt class="text-xs text-slate-500">Fraud monitoring</dt><dd class="font-bold">Standard</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/members/MBR-100284/logins" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-slate-50">View Login History</a>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-slate-50">End All Sessions</button>
+        <button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700 hover:bg-rose-50">Lock Account</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold text-slate-400" disabled>Unlock Account</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Require Password Reset</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Require Two-Factor</button>
+        <a href="/admin/security/alerts?member=MBR-100284" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-slate-50">Review Security Alerts</a>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-slate-50">Add to Monitoring List</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marketplace Activity -->
+  <section aria-labelledby="marketplace-activity-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="marketplace-activity-heading" class="text-lg font-bold">Marketplace activity</h2><p class="mt-1 text-xs text-slate-500">Purchasing, service, community, and support activity.</p></div>
+    <div class="space-y-5 p-5 sm:p-6">
+      <dl class="grid grid-cols-2 gap-3 text-center sm:grid-cols-4">
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Orders placed</dt><dd class="mt-1 font-black">41</dd></div><div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Completed</dt><dd class="mt-1 font-black">38</dd></div>
+        <div class="rounded-xl bg-rose-50 p-3"><dt class="text-xs text-slate-500">Cancelled</dt><dd class="mt-1 font-black">1</dd></div><div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Returns</dt><dd class="mt-1 font-black">2</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Refunds</dt><dd class="mt-1 font-black">$86.40</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Total spending</dt><dd class="mt-1 font-black">$4,860</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Average order</dt><dd class="mt-1 font-black">$127.90</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Reviews</dt><dd class="mt-1 font-black">21</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Questions</dt><dd class="mt-1 font-black">8</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Vendors followed</dt><dd class="mt-1 font-black">17</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Wishlist</dt><dd class="mt-1 font-black">24</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Support tickets</dt><dd class="mt-1 font-black">1</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Disputes opened</dt><dd class="mt-1 font-black">0</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Resolved</dt><dd class="mt-1 font-black">0</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Coupons used</dt><dd class="mt-1 font-black">6</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Referrals</dt><dd class="mt-1 font-black">7</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/members/MBR-100284/orders" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Order History</a><a href="/admin/members/MBR-100284/transactions" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Transactions</a>
+        <a href="/admin/members/MBR-100284/returns" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Returns</a><a href="/admin/members/MBR-100284/reviews" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Reviews</a>
+        <a href="/admin/members/MBR-100284/messages" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Messages</a><a href="/admin/members/MBR-100284/support" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Support Tickets</a>
+        <a href="/admin/members/MBR-100284/disputes" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Disputes</a><a href="/admin/members/MBR-100284/activity" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Full Activity Log</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Membership, Rewards, Referrals -->
+<section aria-labelledby="membership-admin-heading" class="overflow-hidden rounded-2xl border border-amber-300 bg-gradient-to-r from-amber-100 via-yellow-50 to-white shadow-sm">
+  <div class="border-b border-amber-200 px-5 py-4 sm:px-6"><h2 id="membership-admin-heading" class="text-lg font-bold">Membership, rewards, and referrals</h2><p class="mt-1 text-xs text-slate-600">Review and administer member benefits and balances.</p></div>
+  <div class="grid gap-6 p-5 sm:p-6 xl:grid-cols-[1fr_0.9fr]">
+    <dl class="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3 lg:grid-cols-5">
+      <div><dt class="text-xs text-slate-500">Membership</dt><dd class="font-bold text-amber-800">Honey Member</dd></div><div><dt class="text-xs text-slate-500">Started</dt><dd class="font-bold">Jul 8, 2026</dd></div>
+      <div><dt class="text-xs text-slate-500">Renewal</dt><dd class="font-bold">Jul 8, 2027</dd></div><div><dt class="text-xs text-slate-500">Status</dt><dd class="font-bold text-emerald-700">Active</dd></div>
+      <div><dt class="text-xs text-slate-500">Points balance</dt><dd class="font-bold">2,480</dd></div><div><dt class="text-xs text-slate-500">Lifetime earned</dt><dd class="font-bold">5,820</dd></div>
+      <div><dt class="text-xs text-slate-500">Points redeemed</dt><dd class="font-bold">3,340</dd></div><div><dt class="text-xs text-slate-500">Coupons</dt><dd class="font-bold">4</dd></div>
+      <div><dt class="text-xs text-slate-500">Store credits</dt><dd class="font-bold">$14.75</dd></div><div><dt class="text-xs text-slate-500">Gift cards</dt><dd class="font-bold">$25.00</dd></div>
+      <div><dt class="text-xs text-slate-500">Referral code</dt><dd class="font-bold">JOEYBEE25</dd></div><div><dt class="text-xs text-slate-500">Successful referrals</dt><dd class="font-bold">7</dd></div>
+      <div><dt class="text-xs text-slate-500">Pending referrals</dt><dd class="font-bold">2</dd></div><div><dt class="text-xs text-slate-500">Referral credits</dt><dd class="font-bold">$70.00</dd></div>
+      <div><dt class="text-xs text-slate-500">Referral fraud</dt><dd class="font-bold text-emerald-700">No indicators</dd></div>
+    </dl>
+
+    <div class="space-y-4 rounded-2xl border border-amber-200 bg-white/80 p-4">
+      <div><label for="adjustment-reason" class="block text-sm font-bold">Reason for adjustment <span class="text-rose-600">*</span></label><textarea id="adjustment-reason" rows="2" required placeholder="A documented reason is required before any manual adjustment." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea></div>
+      <div class="flex flex-wrap gap-2">
+        <button type="button" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Change Membership</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Extend Membership</button>
+        <button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Cancel Membership</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Add Points</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Deduct Points</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Add Store Credit</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Revoke Coupon</button><a href="/admin/members/MBR-100284/rewards/history" class="rounded-lg border px-3 py-2 text-xs font-bold">Reward History</a>
+        <a href="/admin/members/MBR-100284/referrals" class="rounded-lg border px-3 py-2 text-xs font-bold">Referral Network</a><a href="/admin/members/MBR-100284/referrals/review" class="rounded-lg border px-3 py-2 text-xs font-bold">Review Referral Activity</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Recent Administrative Activity -->
+<section aria-labelledby="admin-activity-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6">
+    <div><h2 id="admin-activity-heading" class="text-lg font-bold">Recent administrative activity</h2><p class="mt-1 text-xs text-slate-500">Auditable actions affecting member accounts.</p></div>
+    <a href="/admin/audit/members" class="text-sm font-bold text-amber-700 hover:underline">View Complete Audit Log</a>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full min-w-[60rem] text-left text-sm">
+      <thead class="bg-slate-50 text-xs uppercase text-slate-500"><tr><th class="px-5 py-3">Action</th><th class="px-5 py-3">Member</th><th class="px-5 py-3">Administrator</th><th class="px-5 py-3">Date and time</th><th class="px-5 py-3">Reason</th><th class="px-5 py-3">Status</th><th class="px-5 py-3">Audit</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="px-5 py-4 font-semibold">Verification approved</td><td class="px-5 py-4">Joey Lustre</td><td class="px-5 py-4">Sarah Mitchell</td><td class="px-5 py-4">Sep 19, 4:18 PM</td><td class="px-5 py-4">Documents matched account information.</td><td class="px-5 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Completed</span></td><td class="px-5 py-4"><a href="/admin/audit/AUD-90218" class="font-bold text-amber-700 hover:underline">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Membership upgraded</td><td class="px-5 py-4">Gabriel Santos</td><td class="px-5 py-4">Daniel Kim</td><td class="px-5 py-4">Sep 19, 2:06 PM</td><td class="px-5 py-4">Annual Golden Hive purchase.</td><td class="px-5 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Completed</span></td><td class="px-5 py-4"><a href="/admin/audit/AUD-90211" class="font-bold text-amber-700 hover:underline">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Account suspended</td><td class="px-5 py-4">Nina Brooks</td><td class="px-5 py-4">Elena Cruz</td><td class="px-5 py-4">Sep 18, 11:40 AM</td><td class="px-5 py-4">Identity mismatch and suspicious login review.</td><td class="px-5 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Enforced</span></td><td class="px-5 py-4"><a href="/admin/audit/AUD-90188" class="font-bold text-amber-700 hover:underline">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Reward points adjusted</td><td class="px-5 py-4">Marcus Reed</td><td class="px-5 py-4">Sarah Mitchell</td><td class="px-5 py-4">Sep 18, 9:25 AM</td><td class="px-5 py-4">Service-recovery credit after delayed order.</td><td class="px-5 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Completed</span></td><td class="px-5 py-4"><a href="/admin/audit/AUD-90172" class="font-bold text-amber-700 hover:underline">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Password reset required</td><td class="px-5 py-4">Omar Haddad</td><td class="px-5 py-4">System Security</td><td class="px-5 py-4">Sep 17, 10:11 PM</td><td class="px-5 py-4">Risk threshold triggered by login pattern.</td><td class="px-5 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Pending member</span></td><td class="px-5 py-4"><a href="/admin/audit/AUD-90149" class="font-bold text-amber-700 hover:underline">View</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Member Status Actions -->
+<section aria-labelledby="status-actions-heading" class="rounded-2xl border border-rose-200 bg-white shadow-sm">
+  <div class="border-b border-rose-100 px-5 py-4 sm:px-6">
+    <h2 id="status-actions-heading" class="text-lg font-bold">Member status actions</h2>
+    <p class="mt-1 text-xs text-slate-500">Sensitive actions require a documented reason and confirmation.</p>
+  </div>
+  <form action="/admin/members/MBR-100284/status" method="post" class="grid gap-6 p-5 sm:p-6 xl:grid-cols-[0.7fr_1.3fr]">
+    <dl class="grid grid-cols-2 gap-3 text-sm">
+      <div><dt class="text-xs text-slate-500">Current status</dt><dd class="font-bold text-emerald-700">Active</dd></div><div><dt class="text-xs text-slate-500">Status changed</dt><dd class="font-bold">July 8, 2026</dd></div>
+      <div><dt class="text-xs text-slate-500">Restriction reason</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Suspension reason</dt><dd class="font-bold">None</dd></div>
+      <div><dt class="text-xs text-slate-500">Restricted features</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Changed by</dt><dd class="font-bold">System activation</dd></div>
+      <div class="col-span-2"><dt class="text-xs text-slate-500">Internal status note</dt><dd class="font-bold">Account in good standing.</dd></div>
+    </dl>
+    <div class="space-y-4">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div><label for="status-action" class="block text-sm font-semibold">Status action</label><select id="status-action" required class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option value="">Select an action</option><option>Activate Account</option><option>Restrict Account</option><option>Temporarily Suspend</option><option>Permanently Suspend</option><option>Deactivate Account</option><option>Restore Account</option><option>Archive Account</option></select></div>
+        <div><label for="confirmation" class="block text-sm font-semibold">Confirmation</label><input id="confirmation" required placeholder="Type member ID to confirm" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500"></div>
+        <div><label for="effective-date" class="block text-sm font-semibold">Effective date</label><input id="effective-date" type="datetime-local" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div><label for="expiration-date" class="block text-sm font-semibold">Optional expiration</label><input id="expiration-date" type="datetime-local" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div class="sm:col-span-2"><label for="status-reason" class="block text-sm font-semibold">Required reason</label><textarea id="status-reason" required rows="3" placeholder="Provide the policy basis, supporting evidence, and expected follow-up." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500"></textarea></div>
+      </div>
+      <label class="flex items-start gap-3 text-sm"><input type="checkbox" checked class="mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span>Notify the member about this status change and provide the applicable appeal information.</span></label>
+      <div class="flex flex-wrap items-center gap-3">
+        <button type="submit" class="rounded-xl border border-rose-300 bg-white px-4 py-2.5 text-sm font-bold text-rose-700 hover:bg-rose-50">Review and Apply Status Change</button>
+        <a href="/policies/account-enforcement" class="text-sm font-bold text-amber-700 hover:underline">View marketplace enforcement policy</a>
+      </div>
+    </div>
+  </form>
+</section>
+
+<!-- Member Administration Links -->
+<section aria-labelledby="member-administration-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-200 px-5 py-5 sm:px-6">
+    <h2 id="member-administration-heading" class="text-xl font-bold">Member Administration</h2>
+    <p class="mt-1 text-sm text-slate-500">Quick access to all member administration tools.</p>
+  </div>
+
+  <div class="grid gap-8 p-5 sm:p-6 lg:grid-cols-2 2xl:grid-cols-3">
+    <section aria-labelledby="management-links">
+      <h3 id="management-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Member management</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/members" class="rounded-lg border p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">All Members</a>
+        <a href="/admin/members/create" class="rounded-lg border p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Add Member</a>
+        <a href="/admin/members?status=active" class="rounded-lg border p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Active Members</a>
+        <a href="/admin/members?joined=this-month" class="rounded-lg border p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">New Members</a>
+        <a href="/admin/members?status=pending" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Pending Accounts <span class="rounded-full bg-amber-100 px-2 text-xs">126</span></a>
+        <a href="/admin/members?status=restricted" class="rounded-lg border p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Restricted Members</a>
+        <a href="/admin/members?status=suspended" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Suspended <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">73</span></a>
+        <a href="/admin/members?status=deactivated" class="rounded-lg border p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Deactivated</a>
+        <a href="/admin/members?status=archived" class="rounded-lg border p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Archived Members</a>
+        <a href="/admin/members/duplicates" class="rounded-lg border p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Duplicate Accounts</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="trust-links">
+      <h3 id="trust-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Verification and trust</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/verifications?status=pending" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending Verifications <span class="rounded-full bg-amber-100 px-2 text-xs">684</span></a>
+        <a href="/admin/verifications?status=approved" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Approved Verifications</a>
+        <a href="/admin/verifications?status=rejected" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Rejected Verifications</a>
+        <a href="/admin/verifications/documents" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Identity Documents</a>
+        <a href="/admin/verifications/rules" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Verification Rules</a>
+        <a href="/admin/trust/scores" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Trust Scores</a>
+        <a href="/admin/members?risk=high" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">High-Risk Members <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">19</span></a>
+        <a href="/admin/fraud" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Fraud Monitoring</a>
+        <a href="/admin/members/blocked" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Blocked Members</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="rewards-links">
+      <h3 id="rewards-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Membership and rewards</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/memberships/levels" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Membership Levels</a><a href="/admin/memberships/upgrades" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Membership Upgrades</a>
+        <a href="/admin/memberships/expiring" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Expiring Memberships</a><a href="/admin/rewards/accounts" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Reward Accounts</a>
+        <a href="/admin/rewards/adjustments" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Reward Adjustments</a><a href="/admin/coupons" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Coupons</a>
+        <a href="/admin/store-credits" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Store Credits</a><a href="/admin/gift-cards" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Gift Cards</a>
+        <a href="/admin/referrals" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Referral Program</a><a href="/admin/referrals/reviews" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Referral Reviews</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="activity-links">
+      <h3 id="activity-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Member activity</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/orders?type=member" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Member Orders</a><a href="/admin/transactions?type=member" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Member Transactions</a>
+        <a href="/admin/returns" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Returns and Refunds</a><a href="/admin/reviews" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Reviews and Ratings</a>
+        <a href="/admin/messages" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Messages</a><a href="/admin/support/tickets" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Support Tickets <span class="rounded-full bg-sky-100 px-2 text-xs">42</span></a>
+        <a href="/admin/disputes" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Disputes <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">17</span></a><a href="/admin/reports/members" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Reported Members</a>
+        <a href="/admin/community/activity" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Community Activity</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="compliance-links">
+      <h3 id="compliance-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Security and compliance</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/security/alerts" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Security Alerts</a><a href="/admin/security/logins" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Login History</a>
+        <a href="/admin/security/locked" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Locked Accounts</a><a href="/admin/security/password-resets" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Password Resets</a>
+        <a href="/admin/security/two-factor" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Two-Factor Authentication</a><a href="/admin/security/sessions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Active Sessions</a>
+        <a href="/admin/privacy/data-requests" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Data Requests <span class="rounded-full bg-amber-100 px-2 text-xs">8</span></a><a href="/admin/privacy/requests" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Privacy Requests</a>
+        <a href="/admin/privacy/deletions" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Deletion Requests <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">6</span></a><a href="/admin/compliance/consents" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Consent Records</a>
+        <a href="/admin/audit" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Audit Log</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="reporting-links">
+      <h3 id="reporting-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Communication and reporting</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/communications/announcements/create" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Send Announcement</a><a href="/admin/communications/campaigns" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Email Campaigns</a>
+        <a href="/admin/communications/templates" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Notification Templates</a><a href="/admin/members/segments" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Member Segments</a>
+        <a href="/admin/members/filters" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Saved Filters</a><a href="/admin/analytics/members" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Member Analytics</a>
+        <a href="/admin/reports/registrations" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Registration Reports</a><a href="/admin/reports/activity" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Activity Reports</a>
+        <a href="/admin/exports" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Export Center</a><a href="/admin/imports/history" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Import History</a>
+      </nav>
+    </section>
+  </div>
+</section>
+	
+</div> </main>

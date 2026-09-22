@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Country;
+use App\Models\CountryRegion;
 use App\Models\Store;
 use App\Support\StoreCompleteness;
 use Illuminate\Http\Request;
@@ -41,7 +43,11 @@ class StoreResource extends JsonResource
 
             'location' => [
                 'country' => $this->country,
+                // Codes are what is stored; names are resolved here so neither
+                // the profile form nor the storefront has to look them up.
+                'country_name' => $this->countryName(),
                 'state' => $this->state,
+                'state_name' => $this->regionName(),
                 'city' => $this->city,
                 'postal_code' => $this->postal_code,
                 'address_line' => $this->address_line,
@@ -98,5 +104,27 @@ class StoreResource extends JsonResource
             'settings' => $this->resolvedSettings(),
             'completeness' => StoreCompleteness::for($this->resource)->toArray(),
         ];
+    }
+
+    private function countryName(): ?string
+    {
+        return $this->country
+            ? Country::whereKey($this->country)->value('name') ?? $this->country
+            : null;
+    }
+
+    /**
+     * Falls back to the stored value: countries with no seeded subdivisions
+     * keep a free-text state, which is already the display name.
+     */
+    private function regionName(): ?string
+    {
+        if (blank($this->state)) {
+            return null;
+        }
+
+        return CountryRegion::where('country_code', $this->country)
+            ->where('code', $this->state)
+            ->value('name') ?? $this->state;
     }
 }

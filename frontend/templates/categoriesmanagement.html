@@ -1,0 +1,610 @@
+<main class="min-h-screen bg-amber-50/40 pb-28 text-slate-900 lg:pb-12"> <div class="mx-auto max-w-[1600px] space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+
+<!-- Page Header -->
+<header class="space-y-5">
+  <nav aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+      <li><a href="/admin" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Dashboard</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/admin/catalog" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Catalog</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="font-semibold text-slate-800" aria-current="page">Categories</li>
+    </ol>
+  </nav>
+
+  <div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+    <div class="flex items-start gap-3">
+      <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-400 text-slate-950 shadow-sm">
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M4 5h6v6H4zM14 5h6v6h-6zM4 15h6v6H4zM14 15h6v6h-6z"/>
+        </svg>
+      </span>
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Categories</h1>
+        <p class="mt-1 max-w-3xl text-sm leading-6 text-slate-600">Organize product and service discovery, hierarchy, attributes, vendor access, policies, commissions, and marketplace presentation.</p>
+      </div>
+    </div>
+
+    <div class="grid gap-2 sm:grid-cols-3">
+      <a href="/admin/categories/export" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v3h16v-3"/></svg>
+        Export Categories
+      </a>
+      <a href="/admin/categories/import" class="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-100 px-4 py-2.5 text-sm font-semibold text-amber-950 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 15V3m0 0L8 7m4-4 4 4M4 17v3h16v-3"/></svg>
+        Import Categories
+      </a>
+      <a href="/admin/categories/create" class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2.5 text-sm font-bold text-slate-950 shadow-sm hover:bg-amber-400 active:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Create Category
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Overview Statistics -->
+<section aria-labelledby="overview-heading">
+  <div class="mb-3 flex items-center justify-between">
+    <h2 id="overview-heading" class="text-lg font-bold">Category overview</h2>
+    <span class="text-xs font-medium text-slate-500">Updated 12 minutes ago</span>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+    <a href="/admin/categories" class="rounded-2xl border border-amber-100 bg-white p-4 shadow-sm hover:border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500"><div class="flex justify-between"><span class="rounded-xl bg-amber-100 p-2 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5h6v6H4zM14 5h6v6h-6zM4 15h6v6H4zM14 15h6v6h-6z"/></svg></span><span class="text-xs font-bold text-emerald-700">+18</span></div><p class="mt-3 text-xs font-semibold text-slate-500">Total categories</p><p class="mt-1 text-2xl font-bold">286</p><p class="mt-2 text-xs text-amber-700">View all →</p></a>
+    <a href="/admin/categories/products" class="rounded-2xl border border-amber-100 bg-white p-4 shadow-sm hover:border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500"><div class="flex justify-between"><span class="rounded-xl bg-orange-100 p-2 text-orange-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m4 7 8-4 8 4-8 4z"/><path d="M4 7v10l8 4 8-4V7"/></svg></span><span class="text-xs font-bold text-emerald-700">+9</span></div><p class="mt-3 text-xs font-semibold text-slate-500">Product categories</p><p class="mt-1 text-2xl font-bold">164</p><p class="mt-2 text-xs text-orange-700">Manage products →</p></a>
+    <a href="/admin/categories/services" class="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500"><div class="flex justify-between"><span class="rounded-xl bg-blue-100 p-2 text-blue-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m14 6 4-4 4 4-4 4"/><path d="M18 2v9a5 5 0 0 1-5 5H2"/><path d="m6 12-4 4 4 4"/></svg></span><span class="text-xs font-bold text-emerald-700">+9</span></div><p class="mt-3 text-xs font-semibold text-slate-500">Service categories</p><p class="mt-1 text-2xl font-bold">122</p><p class="mt-2 text-xs text-blue-700">Manage services →</p></a>
+    <a href="/admin/categories?level=0" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-amber-300"><p class="text-xs font-semibold text-slate-500">Parent categories</p><p class="mt-2 text-2xl font-bold">28</p><p class="mt-2 text-xs text-amber-700">Top-level structure →</p></a>
+    <a href="/admin/categories?type=subcategory" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-amber-300"><p class="text-xs font-semibold text-slate-500">Subcategories</p><p class="mt-2 text-2xl font-bold">258</p><p class="mt-2 text-xs text-amber-700">Browse hierarchy →</p></a>
+    <a href="/admin/categories?status=active" class="rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm hover:border-emerald-300"><p class="text-xs font-semibold text-slate-500">Active categories</p><p class="mt-2 text-2xl font-bold text-emerald-700">247</p><p class="mt-2 text-xs text-emerald-700">86.4% of catalog →</p></a>
+    <a href="/admin/categories?status=draft" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-amber-300"><p class="text-xs font-semibold text-slate-500">Draft categories</p><p class="mt-2 text-2xl font-bold">16</p><p class="mt-2 text-xs text-slate-600">Review drafts →</p></a>
+    <a href="/admin/categories?visibility=hidden" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-amber-300"><p class="text-xs font-semibold text-slate-500">Hidden categories</p><p class="mt-2 text-2xl font-bold">9</p><p class="mt-2 text-xs text-slate-600">Review visibility →</p></a>
+    <a href="/admin/categories?empty=true" class="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm hover:border-orange-300"><p class="text-xs font-semibold text-slate-500">Empty categories</p><p class="mt-2 text-2xl font-bold text-orange-700">11</p><p class="mt-2 text-xs text-orange-700">Add or reorganize →</p></a>
+    <a href="/admin/categories?review=true" class="rounded-2xl border border-rose-100 bg-white p-4 shadow-sm hover:border-rose-300"><p class="text-xs font-semibold text-slate-500">Needs review</p><p class="mt-2 text-2xl font-bold text-rose-700">14</p><p class="mt-2 text-xs text-rose-700">Resolve issues →</p></a>
+    <a href="/admin/products" class="rounded-2xl border border-amber-100 bg-white p-4 shadow-sm hover:border-amber-300"><p class="text-xs font-semibold text-slate-500">Products assigned</p><p class="mt-2 text-2xl font-bold">18,426</p><p class="mt-2 text-xs text-amber-700">View products →</p></a>
+    <a href="/admin/services" class="rounded-2xl border border-blue-100 bg-white p-4 shadow-sm hover:border-blue-300"><p class="text-xs font-semibold text-slate-500">Services assigned</p><p class="mt-2 text-2xl font-bold">6,842</p><p class="mt-2 text-xs text-blue-700">View services →</p></a>
+  </div>
+</section>
+
+<!-- Category Health -->
+<section aria-labelledby="health-heading" class="rounded-2xl border border-orange-200 bg-orange-50 p-5 shadow-sm">
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div class="max-w-xl">
+      <div class="flex items-center gap-2">
+        <svg class="h-5 w-5 text-orange-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="m12 3 9 16H3L12 3Z"/></svg>
+        <h2 id="health-heading" class="font-bold text-orange-950">Catalog health</h2>
+      </div>
+      <p class="mt-1 text-sm text-orange-900">Most categories are ready for marketplace discovery, but 32 configuration issues need attention.</p>
+      <div class="mt-4 flex items-center gap-3">
+        <div class="h-2.5 flex-1 overflow-hidden rounded-full bg-orange-200" role="progressbar" aria-label="Catalog health" aria-valuemin="0" aria-valuemax="100" aria-valuenow="88"><div class="h-full w-[88%] rounded-full bg-emerald-500"></div></div>
+        <span class="text-sm font-bold text-emerald-700">88%</span>
+      </div>
+    </div>
+    <a href="/admin/categories/health" class="text-sm font-bold text-orange-800 hover:text-orange-950">Open health report →</a>
+  </div>
+
+  <div class="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+    <a href="/admin/categories?issue=image" class="rounded-xl border border-orange-200 bg-white p-3 hover:border-orange-400"><div class="flex justify-between"><span class="text-xs font-bold text-orange-700">MISSING MEDIA</span><span class="rounded-full bg-orange-100 px-2 text-xs font-bold">8</span></div><p class="mt-1 font-semibold">Categories without images</p><p class="mt-1 text-xs text-slate-500">Furniture Repairs and seven others need thumbnails.</p></a>
+    <a href="/admin/categories?issue=seo" class="rounded-xl border border-orange-200 bg-white p-3 hover:border-orange-400"><div class="flex justify-between"><span class="text-xs font-bold text-orange-700">SEO INCOMPLETE</span><span class="rounded-full bg-orange-100 px-2 text-xs font-bold">11</span></div><p class="mt-1 font-semibold">Missing SEO metadata</p><p class="mt-1 text-xs text-slate-500">Mobile Detailing lacks a meta description.</p></a>
+    <a href="/admin/categories?empty=true" class="rounded-xl border border-rose-200 bg-white p-3 hover:border-rose-400"><div class="flex justify-between"><span class="text-xs font-bold text-rose-700">EMPTY CATEGORY</span><span class="rounded-full bg-rose-100 px-2 text-xs font-bold">11</span></div><p class="mt-1 font-semibold">No active listings or vendors</p><p class="mt-1 text-xs text-slate-500">Drone Repair has been empty for 47 days.</p></a>
+    <a href="/admin/categories?issue=commission" class="rounded-xl border border-rose-200 bg-white p-3 hover:border-rose-400"><div class="flex justify-between"><span class="text-xs font-bold text-rose-700">RULE CONFLICT</span><span class="rounded-full bg-rose-100 px-2 text-xs font-bold">2</span></div><p class="mt-1 font-semibold">Invalid commission inheritance</p><p class="mt-1 text-xs text-slate-500">Emergency Plumbing conflicts with its parent rule.</p></a>
+  </div>
+</section>
+
+<!-- Navigation -->
+<nav aria-label="Category types and statuses" class="overflow-x-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">
+  <div class="flex min-w-max gap-1">
+    <a href="/admin/categories" aria-current="page" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white">All Categories <span class="ml-1 rounded-full bg-white/20 px-2 py-0.5 text-xs">286</span></a>
+    <a href="/admin/categories/products" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-amber-50">Product Categories <span class="ml-1 text-xs">164</span></a>
+    <a href="/admin/categories/services" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-blue-50">Service Categories <span class="ml-1 text-xs">122</span></a>
+    <a href="/admin/categories?level=0" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Parent Categories <span class="ml-1 text-xs">28</span></a>
+    <a href="/admin/categories?type=subcategory" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Subcategories <span class="ml-1 text-xs">258</span></a>
+    <a href="/admin/categories?status=active" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-emerald-50">Active</a>
+    <a href="/admin/categories?status=draft" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Draft <span class="ml-1 text-xs">16</span></a>
+    <a href="/admin/categories?visibility=hidden" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Hidden <span class="ml-1 text-xs">9</span></a>
+    <a href="/admin/categories?status=archived" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50">Archived</a>
+    <a href="/admin/categories?review=true" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-rose-700 hover:bg-rose-50">Needs Review <span class="ml-1 rounded-full bg-rose-100 px-2 py-0.5 text-xs">14</span></a>
+  </div>
+</nav>
+
+<!-- Filters -->
+<section aria-labelledby="filters-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex flex-wrap items-start justify-between gap-3">
+    <div><h2 id="filters-heading" class="font-bold">Search and filters</h2><p class="mt-1 text-sm text-slate-500">Find categories by hierarchy, content, status, assignments, SEO, or configuration.</p></div>
+    <div class="flex gap-2"><button type="button" class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500">Reset Filters</button><button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Save Filter</button></div>
+  </div>
+
+  <form action="/admin/categories" method="get" class="mt-5 space-y-4">
+    <div>
+      <label for="category-search" class="sr-only">Search categories</label>
+      <div class="relative"><svg class="pointer-events-none absolute left-3 top-3 h-5 w-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="category-search" name="search" type="search" placeholder="Search category name, ID, slug, or parent category…" class="w-full rounded-xl border border-slate-300 py-2.5 pl-10 pr-4 text-sm placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"></div>
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+      <div><label for="category-type" class="mb-1 block text-xs font-semibold text-slate-600">Category type</label><select id="category-type" class="w-full rounded-lg border-slate-300 text-sm"><option>All types</option><option>Product</option><option>Service</option></select></div>
+      <div><label for="parent-category" class="mb-1 block text-xs font-semibold text-slate-600">Parent category</label><select id="parent-category" class="w-full rounded-lg border-slate-300 text-sm"><option>Any parent</option><option>Products</option><option>Services</option><option>Home Services</option><option>Electronics</option></select></div>
+      <div><label for="hierarchy-level" class="mb-1 block text-xs font-semibold text-slate-600">Hierarchy level</label><select id="hierarchy-level" class="w-full rounded-lg border-slate-300 text-sm"><option>All levels</option><option>Level 0</option><option>Level 1</option><option>Level 2</option><option>Level 3+</option></select></div>
+      <div><label for="category-status" class="mb-1 block text-xs font-semibold text-slate-600">Status</label><select id="category-status" class="w-full rounded-lg border-slate-300 text-sm"><option>All statuses</option><option>Active</option><option>Draft</option><option>Needs Review</option><option>Scheduled</option><option>Archived</option></select></div>
+      <div><label for="visibility" class="mb-1 block text-xs font-semibold text-slate-600">Visibility</label><select id="visibility" class="w-full rounded-lg border-slate-300 text-sm"><option>Any visibility</option><option>Public</option><option>Hidden</option><option>Vendor only</option></select></div>
+      <div><label for="featured" class="mb-1 block text-xs font-semibold text-slate-600">Featured</label><select id="featured" class="w-full rounded-lg border-slate-300 text-sm"><option>Any</option><option>Featured</option><option>Not featured</option></select></div>
+      <div><label for="vendor-eligibility" class="mb-1 block text-xs font-semibold text-slate-600">Vendor eligibility</label><select id="vendor-eligibility" class="w-full rounded-lg border-slate-300 text-sm"><option>Any access</option><option>Open</option><option>Approval required</option><option>Restricted</option></select></div>
+      <div><label for="commission-status" class="mb-1 block text-xs font-semibold text-slate-600">Commission rules</label><select id="commission-status" class="w-full rounded-lg border-slate-300 text-sm"><option>Any status</option><option>Valid</option><option>Inherited</option><option>Override</option><option>Conflict</option></select></div>
+      <div><label for="seo-status" class="mb-1 block text-xs font-semibold text-slate-600">SEO completeness</label><select id="seo-status" class="w-full rounded-lg border-slate-300 text-sm"><option>Any score</option><option>Complete</option><option>Needs improvement</option><option>Missing</option></select></div>
+      <div><label for="image-status" class="mb-1 block text-xs font-semibold text-slate-600">Image status</label><select id="image-status" class="w-full rounded-lg border-slate-300 text-sm"><option>Any image status</option><option>Complete</option><option>Missing thumbnail</option><option>Missing banner</option></select></div>
+      <div><label for="assignment-status" class="mb-1 block text-xs font-semibold text-slate-600">Assignments</label><select id="assignment-status" class="w-full rounded-lg border-slate-300 text-sm"><option>Any assignment</option><option>Has listings</option><option>Empty</option><option>No active vendors</option></select></div>
+      <div><label for="assigned-admin" class="mb-1 block text-xs font-semibold text-slate-600">Administrator</label><select id="assigned-admin" class="w-full rounded-lg border-slate-300 text-sm"><option>Anyone</option><option>Unassigned</option><option>Maya Chen</option><option>Daniel Reyes</option></select></div>
+      <div><label for="created-from" class="mb-1 block text-xs font-semibold text-slate-600">Created from</label><input id="created-from" type="date" class="w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="updated-since" class="mb-1 block text-xs font-semibold text-slate-600">Updated since</label><input id="updated-since" type="date" class="w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="min-products" class="mb-1 block text-xs font-semibold text-slate-600">Minimum products</label><input id="min-products" type="number" min="0" placeholder="0" class="w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="max-products" class="mb-1 block text-xs font-semibold text-slate-600">Maximum products</label><input id="max-products" type="number" min="0" placeholder="No maximum" class="w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="min-services" class="mb-1 block text-xs font-semibold text-slate-600">Minimum services</label><input id="min-services" type="number" min="0" placeholder="0" class="w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="max-services" class="mb-1 block text-xs font-semibold text-slate-600">Maximum services</label><input id="max-services" type="number" min="0" placeholder="No maximum" class="w-full rounded-lg border-slate-300 text-sm"></div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
+      <div class="flex flex-wrap gap-2" aria-label="Active filters">
+        <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">Status: Active <button type="button" aria-label="Remove active-status filter" class="rounded-full px-1 hover:bg-amber-200">×</button></span>
+        <span class="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-900">Type: All <button type="button" aria-label="Remove type filter" class="rounded-full px-1 hover:bg-blue-200">×</button></span>
+      </div>
+      <button type="submit" class="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">Apply Filters</button>
+    </div>
+  </form>
+</section>
+
+<!-- View Controls -->
+<section aria-label="Category view controls" class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm xl:flex-row xl:items-center xl:justify-between">
+  <div class="flex flex-wrap gap-1 rounded-xl bg-slate-100 p-1">
+    <button type="button" aria-pressed="true" class="inline-flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm font-bold shadow-sm"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4v16M4 8h5M9 8v5M9 13h5M14 13v5M14 18h6"/></svg>Hierarchy View</button>
+    <button type="button" aria-pressed="false" class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-white"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Table View</button>
+    <button type="button" aria-pressed="false" class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-white"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>Card View</button>
+  </div>
+  <div class="flex flex-wrap items-center gap-2">
+    <span class="text-sm text-slate-500">286 results</span>
+    <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Expand All</button>
+    <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Collapse All</button>
+    <label class="inline-flex items-center gap-2 text-sm"><input type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"> Empty</label>
+    <label class="inline-flex items-center gap-2 text-sm"><input type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"> Archived</label>
+    <label for="category-sort" class="sr-only">Sort categories</label>
+    <select id="category-sort" class="rounded-lg border-slate-300 text-sm"><option>Display order</option><option>Name A–Z</option><option>Most listings</option><option>Recently updated</option></select>
+  </div>
+</section>
+
+<!-- Hierarchy Tree -->
+<section aria-labelledby="hierarchy-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex items-center justify-between"><div><h2 id="hierarchy-heading" class="font-bold">Category hierarchy</h2><p class="mt-1 text-sm text-slate-500">Product and service categories organized by parent-child relationships.</p></div><a href="/admin/categories/hierarchy" class="text-sm font-bold text-amber-700">Manage Hierarchy</a></div>
+
+  <div class="mt-5 grid gap-6 xl:grid-cols-2">
+    <div>
+      <h3 class="mb-3 flex items-center gap-2 text-sm font-bold text-orange-800"><span class="rounded-lg bg-orange-100 p-2"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m4 7 8-4 8 4-8 4z"/><path d="M4 7v10l8 4 8-4V7"/></svg></span>Products</h3>
+      <ul class="space-y-2">
+        <li class="rounded-xl border border-slate-200">
+          <div class="flex items-center gap-2 p-3"><button type="button" aria-label="Collapse Home and Garden" class="rounded p-1 hover:bg-slate-100">⌄</button><span class="cursor-grab text-slate-400" aria-hidden="true">⠿</span><span class="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-amber-700">⌂</span><div class="min-w-0 flex-1"><p class="font-bold">Home &amp; Garden</p><p class="text-xs text-slate-500">2,846 products · 418 vendors</p></div><span class="rounded-full bg-orange-100 px-2 py-1 text-xs font-bold text-orange-700">Product</span><span class="text-xs font-bold text-emerald-700">● Active</span><a href="/admin/categories/home-garden/edit" class="text-xs font-bold text-amber-700">Edit</a><button type="button" aria-label="More actions for Home and Garden" class="rounded p-1 hover:bg-slate-100">•••</button></div>
+          <ul class="ml-8 border-l border-slate-200 pb-3 pl-4">
+            <li class="relative mt-2"><span class="absolute -left-4 top-4 w-4 border-t border-slate-200"></span><div class="flex items-center gap-2 rounded-lg bg-slate-50 p-2.5"><button type="button" aria-label="Expand Furniture">›</button><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="text-sm font-semibold">Furniture</p><p class="text-xs text-slate-500">824 products · 146 vendors</p></div><span class="text-xs text-emerald-700">Active</span><a href="/admin/categories/furniture/edit" class="text-xs font-bold text-amber-700">Edit</a></div></li>
+            <li class="relative mt-2"><span class="absolute -left-4 top-4 w-4 border-t border-slate-200"></span><div class="flex items-center gap-2 rounded-lg bg-slate-50 p-2.5"><button type="button" aria-label="Expand Kitchen and Dining">›</button><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="text-sm font-semibold">Kitchen &amp; Dining</p><p class="text-xs text-slate-500">918 products · 188 vendors</p></div><span class="text-xs text-emerald-700">Active</span><a href="/admin/categories/kitchen-dining/edit" class="text-xs font-bold text-amber-700">Edit</a></div></li>
+            <li class="relative mt-2"><span class="absolute -left-4 top-4 w-4 border-t border-slate-200"></span><div class="flex items-center gap-2 rounded-lg bg-slate-50 p-2.5"><span class="w-4"></span><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="text-sm font-semibold">Home Décor</p><p class="text-xs text-slate-500">706 products · 131 vendors</p></div><span class="text-xs text-emerald-700">Active</span><a href="/admin/categories/home-decor/edit" class="text-xs font-bold text-amber-700">Edit</a></div></li>
+            <li class="relative mt-2"><span class="absolute -left-4 top-4 w-4 border-t border-slate-200"></span><div class="flex items-center gap-2 rounded-lg bg-slate-50 p-2.5"><span class="w-4"></span><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="text-sm font-semibold">Garden Supplies</p><p class="text-xs text-slate-500">398 products · 76 vendors</p></div><span class="text-xs text-emerald-700">Active</span><a href="/admin/categories/garden-supplies/edit" class="text-xs font-bold text-amber-700">Edit</a></div></li>
+          </ul>
+        </li>
+
+        <li class="rounded-xl border border-slate-200">
+          <div class="flex items-center gap-2 p-3"><button type="button" aria-label="Expand Electronics">›</button><span class="cursor-grab text-slate-400">⠿</span><span class="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-amber-700">⌘</span><div class="flex-1"><p class="font-bold">Electronics</p><p class="text-xs text-slate-500">3,814 products · 532 vendors</p></div><span class="rounded-full bg-orange-100 px-2 py-1 text-xs font-bold text-orange-700">Product</span><span class="text-xs font-bold text-emerald-700">● Active</span><a href="/admin/categories/electronics/edit" class="text-xs font-bold text-amber-700">Edit</a></div>
+          <p class="px-12 pb-3 text-xs text-slate-500">Computers &amp; Accessories · Mobile Phones · Smart Home · Audio &amp; Video</p>
+        </li>
+
+        <li class="rounded-xl border border-slate-200">
+          <div class="flex items-center gap-2 p-3"><button type="button" aria-label="Expand remaining product categories">›</button><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="font-bold">Health &amp; Wellness</p><p class="text-xs text-slate-500">Vitamins · Personal Care · Fitness Equipment</p></div><span class="text-xs font-bold text-emerald-700">Active</span></div>
+        </li>
+        <li class="rounded-xl border border-slate-200"><div class="flex items-center gap-2 p-3"><button type="button" aria-label="Expand Fashion">›</button><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="font-bold">Fashion</p><p class="text-xs text-slate-500">Women · Men · Shoes · Accessories</p></div><span class="text-xs font-bold text-emerald-700">Active</span></div></li>
+        <li class="rounded-xl border border-slate-200"><div class="flex items-center gap-2 p-3"><button type="button" aria-label="Expand Food and Grocery">›</button><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="font-bold">Food &amp; Grocery</p><p class="text-xs text-slate-500">Pantry · Beverages · Organic Products</p></div><span class="text-xs font-bold text-emerald-700">Active</span></div></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="mb-3 flex items-center gap-2 text-sm font-bold text-blue-800"><span class="rounded-lg bg-blue-100 p-2"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m14 6 4-4 4 4-4 4"/><path d="M18 2v9a5 5 0 0 1-5 5H2"/></svg></span>Services</h3>
+      <ul class="space-y-2">
+        <li class="rounded-xl border-2 border-amber-400 bg-amber-50">
+          <div class="flex items-center gap-2 p-3"><button type="button" aria-label="Collapse Home Services" class="rounded p-1 hover:bg-amber-100">⌄</button><span class="cursor-grab text-slate-400">⠿</span><span class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 text-blue-700">⌂</span><div class="min-w-0 flex-1"><p class="font-bold">Home Services</p><p class="text-xs text-slate-500">1,284 services · 346 vendors</p></div><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Service</span><span class="text-xs font-bold text-emerald-700">● Active</span><a href="/admin/categories/home-services/edit" class="text-xs font-bold text-amber-700">Edit</a><button type="button" aria-label="More actions for Home Services">•••</button></div>
+          <ul class="ml-8 border-l border-amber-300 pb-3 pl-4">
+            <li class="relative mt-2"><span class="absolute -left-4 top-4 w-4 border-t border-amber-300"></span><div class="flex items-center gap-2 rounded-lg bg-white p-2.5"><button type="button" aria-label="Expand Cleaning">›</button><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="text-sm font-semibold">Cleaning</p><p class="text-xs text-slate-500">428 services · 118 vendors</p></div><span class="text-xs text-emerald-700">Active</span><a href="/admin/categories/cleaning/edit" class="text-xs font-bold text-amber-700">Edit</a></div></li>
+            <li class="relative mt-2"><span class="absolute -left-4 top-4 w-4 border-t border-amber-300"></span><div class="flex items-center gap-2 rounded-lg bg-white p-2.5"><button type="button" aria-label="Expand Plumbing">›</button><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="text-sm font-semibold">Plumbing</p><p class="text-xs text-slate-500">246 services · 84 vendors</p></div><span class="text-xs text-emerald-700">Active</span><a href="/admin/categories/plumbing/edit" class="text-xs font-bold text-amber-700">Edit</a></div></li>
+            <li class="relative mt-2"><span class="absolute -left-4 top-4 w-4 border-t border-amber-300"></span><div class="flex items-center gap-2 rounded-lg bg-white p-2.5"><span class="w-4"></span><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="text-sm font-semibold">Electrical</p><p class="text-xs text-slate-500">194 services · 62 vendors</p></div><span class="text-xs text-emerald-700">Active</span><a href="/admin/categories/electrical/edit" class="text-xs font-bold text-amber-700">Edit</a></div></li>
+            <li class="relative mt-2"><span class="absolute -left-4 top-4 w-4 border-t border-amber-300"></span><div class="flex items-center gap-2 rounded-lg bg-white p-2.5"><span class="w-4"></span><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="text-sm font-semibold">Appliance Repair</p><p class="text-xs text-slate-500">186 services · 51 vendors</p></div><span class="text-xs text-emerald-700">Active</span><a href="/admin/categories/appliance-repair/edit" class="text-xs font-bold text-amber-700">Edit</a></div></li>
+            <li class="relative mt-2"><span class="absolute -left-4 top-4 w-4 border-t border-amber-300"></span><div class="flex items-center gap-2 rounded-lg bg-white p-2.5"><span class="w-4"></span><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="text-sm font-semibold">Landscaping</p><p class="text-xs text-slate-500">230 services · 71 vendors</p></div><span class="text-xs text-emerald-700">Active</span><a href="/admin/categories/landscaping/edit" class="text-xs font-bold text-amber-700">Edit</a></div></li>
+          </ul>
+        </li>
+
+        <li class="rounded-xl border border-slate-200"><div class="flex items-center gap-2 p-3"><button type="button" aria-label="Expand Professional Services">›</button><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="font-bold">Professional Services</p><p class="text-xs text-slate-500">Business Consulting · Accounting · Legal · Marketing</p></div><span class="text-xs font-bold text-emerald-700">Active</span></div></li>
+        <li class="rounded-xl border border-slate-200"><div class="flex items-center gap-2 p-3"><button type="button" aria-label="Expand Beauty and Wellness">›</button><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="font-bold">Beauty &amp; Wellness</p><p class="text-xs text-slate-500">Hair · Massage · Skin Care · Personal Training</p></div><span class="text-xs font-bold text-emerald-700">Active</span></div></li>
+        <li class="rounded-xl border border-slate-200"><div class="flex items-center gap-2 p-3"><button type="button" aria-label="Expand Automotive Services">›</button><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="font-bold">Automotive Services</p><p class="text-xs text-slate-500">Maintenance · Detailing · Tire Services</p></div><span class="text-xs font-bold text-emerald-700">Active</span></div></li>
+        <li class="rounded-xl border border-slate-200"><div class="flex items-center gap-2 p-3"><button type="button" aria-label="Expand Lessons and Coaching">›</button><span class="cursor-grab text-slate-400">⠿</span><div class="flex-1"><p class="font-bold">Lessons &amp; Coaching</p><p class="text-xs text-slate-500">Tutoring · Music Lessons · Career Coaching</p></div><span class="text-xs font-bold text-emerald-700">Active</span></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Category Table -->
+<section aria-labelledby="table-heading" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex flex-col gap-3 border-b border-slate-200 p-5 xl:flex-row xl:items-center xl:justify-between">
+    <div><h2 id="table-heading" class="font-bold">Categories table</h2><p class="mt-1 text-sm text-slate-500">Showing 1–5 of 286 categories</p></div>
+    <div class="flex flex-wrap gap-2">
+      <label for="bulk-action" class="sr-only">Bulk action</label>
+      <select id="bulk-action" class="rounded-lg border-slate-300 text-sm"><option>Bulk actions</option><option>Change status</option><option>Change visibility</option><option>Assign parent</option><option>Set commission</option><option>Feature categories</option><option>Remove featured status</option><option>Export selected</option><option>Duplicate selected</option><option>Archive selected</option><option>Delete selected</option></select>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Apply</button>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-[1500px] w-full text-left text-sm">
+      <caption class="sr-only">Marketplace product and service categories</caption>
+      <thead class="bg-slate-50 text-xs uppercase text-slate-600">
+        <tr><th scope="col" class="px-4 py-3"><label for="select-all" class="sr-only">Select all categories</label><input id="select-all" type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></th><th scope="col" class="px-4 py-3">Category</th><th scope="col" class="px-4 py-3">Type</th><th scope="col" class="px-4 py-3">Parent</th><th scope="col" class="px-4 py-3">Level</th><th scope="col" class="px-4 py-3">Products</th><th scope="col" class="px-4 py-3">Services</th><th scope="col" class="px-4 py-3">Vendors</th><th scope="col" class="px-4 py-3">Commission</th><th scope="col" class="px-4 py-3">SEO</th><th scope="col" class="px-4 py-3">Visibility</th><th scope="col" class="px-4 py-3">Status</th><th scope="col" class="px-4 py-3">Updated</th><th scope="col" class="px-4 py-3 text-right">Actions</th></tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr class="bg-amber-50/50 hover:bg-amber-50"><td class="px-4 py-4"><input type="checkbox" checked aria-label="Select Home Services" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td><td class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-700">⌂</span><div><a href="/admin/categories/home-services/edit" class="font-bold hover:text-amber-700">Home Services</a><p class="text-xs text-slate-500">CAT-SRV-001 · /home-services</p><p class="text-xs text-slate-400">Services › Home Services</p></div></div></td><td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Service</span></td><td class="px-4 py-4">Services</td><td class="px-4 py-4">1</td><td class="px-4 py-4">0</td><td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold">1,284</span></td><td class="px-4 py-4">346</td><td class="px-4 py-4">16%</td><td class="px-4 py-4"><span class="font-bold text-emerald-700">94%</span></td><td class="px-4 py-4">Public</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-4 py-4">12 min ago</td><td class="px-4 py-4"><div class="flex justify-end gap-2"><a href="/admin/categories/home-services/edit" class="font-bold text-amber-700">Edit Category</a><button type="button" aria-label="More actions for Home Services">•••</button></div></td></tr>
+        <tr><td class="px-4 py-4"><input type="checkbox" aria-label="Select Electronics" class="rounded border-slate-300 text-amber-500"></td><td class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-700">⌘</span><div><a href="/admin/categories/electronics/edit" class="font-bold">Electronics</a><p class="text-xs text-slate-500">CAT-PRD-004 · /electronics</p></div></div></td><td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2 py-1 text-xs font-bold text-orange-700">Product</span></td><td class="px-4 py-4">Products</td><td class="px-4 py-4">1</td><td class="px-4 py-4">3,814</td><td class="px-4 py-4">0</td><td class="px-4 py-4">532</td><td class="px-4 py-4">14%</td><td class="px-4 py-4 text-emerald-700">98%</td><td class="px-4 py-4">Public</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-4 py-4">2 hours ago</td><td class="px-4 py-4 text-right"><a href="/admin/categories/electronics/edit" class="font-bold text-amber-700">Edit Category</a></td></tr>
+        <tr><td class="px-4 py-4"><input type="checkbox" aria-label="Select Mobile Detailing" class="rounded border-slate-300 text-amber-500"></td><td class="px-4 py-4"><div><a href="/admin/categories/mobile-detailing/edit" class="font-bold">Mobile Detailing</a><p class="text-xs text-slate-500">CAT-SRV-086 · /mobile-detailing</p></div></td><td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Service</span></td><td class="px-4 py-4">Automotive Services</td><td class="px-4 py-4">2</td><td class="px-4 py-4">0</td><td class="px-4 py-4">128</td><td class="px-4 py-4">42</td><td class="px-4 py-4">16%</td><td class="px-4 py-4 text-orange-700">62%</td><td class="px-4 py-4">Public</td><td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2 py-1 text-xs font-bold text-orange-700">Needs Review</span></td><td class="px-4 py-4">Yesterday</td><td class="px-4 py-4 text-right"><a href="/admin/categories/mobile-detailing/edit" class="font-bold text-amber-700">Edit Category</a></td></tr>
+        <tr><td class="px-4 py-4"><input type="checkbox" aria-label="Select Drone Repair" class="rounded border-slate-300 text-amber-500"></td><td class="px-4 py-4"><div><a href="/admin/categories/drone-repair/edit" class="font-bold">Drone Repair</a><p class="text-xs text-slate-500">CAT-SRV-114 · /drone-repair</p></div></td><td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Service</span></td><td class="px-4 py-4">Electronics Services</td><td class="px-4 py-4">2</td><td class="px-4 py-4">0</td><td class="px-4 py-4 text-rose-700">0</td><td class="px-4 py-4 text-rose-700">0</td><td class="px-4 py-4">Inherited</td><td class="px-4 py-4 text-orange-700">71%</td><td class="px-4 py-4">Hidden</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Draft</span></td><td class="px-4 py-4">3 days ago</td><td class="px-4 py-4 text-right"><a href="/admin/categories/drone-repair/edit" class="font-bold text-amber-700">Edit Category</a></td></tr>
+        <tr><td class="px-4 py-4"><input type="checkbox" aria-label="Select Seasonal Garden Decor" class="rounded border-slate-300 text-amber-500"></td><td class="px-4 py-4"><div><a href="/admin/categories/seasonal-garden-decor/edit" class="font-bold">Seasonal Garden Décor</a><p class="text-xs text-slate-500">CAT-PRD-148 · /seasonal-garden-decor</p></div></td><td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2 py-1 text-xs font-bold text-orange-700">Product</span></td><td class="px-4 py-4">Garden Supplies</td><td class="px-4 py-4">3</td><td class="px-4 py-4">164</td><td class="px-4 py-4">0</td><td class="px-4 py-4">36</td><td class="px-4 py-4">12% promo</td><td class="px-4 py-4 text-emerald-700">91%</td><td class="px-4 py-4">Public</td><td class="px-4 py-4"><span class="rounded-full bg-violet-100 px-2 py-1 text-xs font-bold text-violet-700">Scheduled</span></td><td class="px-4 py-4">Sep 17</td><td class="px-4 py-4 text-right"><a href="/admin/categories/seasonal-garden-decor/edit" class="font-bold text-amber-700">Edit Category</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex flex-col gap-3 border-t border-slate-200 p-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex items-center gap-2 text-sm"><label for="rows-per-page">Rows per page</label><select id="rows-per-page" class="rounded-lg border-slate-300 text-sm"><option>10</option><option>25</option><option>50</option><option>100</option></select></div>
+    <nav aria-label="Category pagination" class="flex gap-1"><a href="/admin/categories?page=1" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold">Previous</a><a href="/admin/categories?page=1" aria-current="page" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white">1</a><a href="/admin/categories?page=2" class="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-100">2</a><a href="/admin/categories?page=3" class="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-100">3</a><span class="px-2 py-2">…</span><a href="/admin/categories?page=29" class="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-100">29</a><a href="/admin/categories?page=2" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold">Next</a></nav>
+  </div>
+</section>
+
+<!-- Selected Category -->
+<section aria-labelledby="selected-heading" class="overflow-hidden rounded-2xl border border-amber-300 bg-white shadow-sm">
+  <div class="border-b border-amber-200 bg-gradient-to-r from-amber-100 via-amber-50 to-white p-5">
+    <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+      <div>
+        <div class="flex flex-wrap items-center gap-2"><h2 id="selected-heading" class="text-xl font-bold">Home Services</h2><span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">Service</span><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">Active</span><span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold">Public</span></div>
+        <p class="mt-2 text-sm text-slate-600">CAT-SRV-001 · Services › Home Services · /home-services</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <a href="/categories/home-services" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50">View Category</a>
+        <a href="/admin/categories/home-services/edit" class="rounded-lg bg-amber-500 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-400">Edit Category</a>
+        <a href="/admin/categories/create?parent=CAT-SRV-001" class="rounded-lg border border-blue-300 bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-100">Add Subcategory</a>
+        <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold">Duplicate</button>
+        <button type="button" class="rounded-lg border border-rose-300 bg-white px-3 py-2 text-sm font-semibold text-rose-700">Archive</button>
+        <button type="button" aria-label="More actions for Home Services" class="rounded-lg border border-slate-300 bg-white p-2">•••</button>
+      </div>
+    </div>
+  </div>
+  <dl class="grid gap-px bg-slate-200 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Hierarchy</dt><dd class="mt-1 font-semibold">Level 1 · Parent: Services</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Listings</dt><dd class="mt-1 font-semibold">1,284 services · 0 products</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Active vendors</dt><dd class="mt-1 font-semibold">346</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Monthly bookings</dt><dd class="mt-1 font-semibold">8,420</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Gross booking value</dt><dd class="mt-1 font-semibold">$684,260</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-bold uppercase text-slate-500">Administration</dt><dd class="mt-1 font-semibold">Maya Chen</dd><dd class="text-xs text-slate-500">Created Jul 8 · Updated today</dd></div>
+  </dl>
+</section>
+
+<!-- Basic Information and Media -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="basic-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm xl:col-span-2">
+    <h2 id="basic-heading" class="font-bold">Category basic information</h2>
+    <form class="mt-5 grid gap-4 sm:grid-cols-2">
+      <div><label for="category-name" class="block text-xs font-bold text-slate-600">Category name</label><input id="category-name" type="text" value="Home Services" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="internal-name" class="block text-xs font-bold text-slate-600">Internal name</label><input id="internal-name" type="text" value="Marketplace Home Services" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="category-id" class="block text-xs font-bold text-slate-600">Category ID</label><input id="category-id" type="text" value="CAT-SRV-001" readonly class="mt-1 w-full rounded-lg border-slate-300 bg-slate-50 text-sm"></div>
+      <div><label for="edit-category-type" class="block text-xs font-bold text-slate-600">Category type</label><select id="edit-category-type" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option selected>Service</option><option>Product</option></select></div>
+      <div><label for="edit-parent" class="block text-xs font-bold text-slate-600">Parent category</label><select id="edit-parent" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option selected>Services</option><option>No parent</option><option>Professional Services</option></select></div>
+      <div><label for="edit-level" class="block text-xs font-bold text-slate-600">Hierarchy level</label><input id="edit-level" type="number" value="1" readonly class="mt-1 w-full rounded-lg border-slate-300 bg-slate-50 text-sm"></div>
+      <div><label for="category-slug" class="block text-xs font-bold text-slate-600">URL slug</label><input id="category-slug" type="text" value="home-services" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="display-order" class="block text-xs font-bold text-slate-600">Display order</label><input id="display-order" type="number" value="1" min="0" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div class="sm:col-span-2"><label for="short-description" class="block text-xs font-bold text-slate-600">Short description</label><input id="short-description" type="text" value="Trusted local professionals for cleaning, repairs, maintenance, and improvements." class="mt-1 w-full rounded-lg border-slate-300 text-sm"><p class="mt-1 text-xs text-slate-500">Displayed in category cards and search results.</p></div>
+      <div class="sm:col-span-2"><label for="full-description" class="block text-xs font-bold text-slate-600">Full description</label><textarea id="full-description" rows="4" class="mt-1 w-full rounded-xl border-slate-300 text-sm">Find verified local professionals for cleaning, plumbing, electrical work, appliance repair, landscaping, and other essential home services.</textarea></div>
+      <div><label for="edit-status" class="block text-xs font-bold text-slate-600">Status</label><select id="edit-status" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option selected>Active</option><option>Draft</option><option>Scheduled</option><option>Archived</option></select></div>
+      <div><label for="edit-visibility" class="block text-xs font-bold text-slate-600">Visibility</label><select id="edit-visibility" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option selected>Public</option><option>Hidden</option><option>Vendor only</option></select></div>
+      <div class="sm:col-span-2 grid gap-2 sm:grid-cols-2">
+        <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Featured category</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></label>
+        <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Show in main navigation</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></label>
+        <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Show on marketplace homepage</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></label>
+        <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Allow vendor category requests</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></label>
+      </div>
+      <div class="sm:col-span-2 flex justify-end"><button type="submit" class="rounded-xl bg-amber-500 px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-amber-400">Save Information</button></div>
+    </form>
+  </section>
+
+  <section aria-labelledby="media-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="media-heading" class="font-bold">Category media</h2>
+    <div class="mt-5 space-y-4">
+      <div><p class="text-xs font-bold text-slate-600">Banner image</p><div class="mt-1 flex h-32 items-center justify-center rounded-xl bg-gradient-to-r from-amber-300 via-amber-100 to-blue-100 text-slate-700"><svg class="h-12 w-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 20h18M5 20V9l7-5 7 5v11M9 20v-6h6v6"/></svg></div><p class="mt-1 text-xs text-slate-500">Recommended: 1600×500px · JPG, PNG, or WebP</p><div class="mt-2 flex gap-2"><button type="button" class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-bold">Replace</button><button type="button" class="rounded-lg px-3 py-1.5 text-xs font-bold text-rose-700">Remove</button></div></div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><p class="text-xs font-bold text-slate-600">Thumbnail</p><div class="mt-1 flex aspect-square items-center justify-center rounded-xl bg-blue-100 text-blue-700"><svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 20h18M5 20V9l7-5 7 5v11"/></svg></div><button type="button" class="mt-2 text-xs font-bold text-amber-700">Replace</button></div>
+        <div><p class="text-xs font-bold text-slate-600">Mobile image</p><div class="mt-1 flex aspect-square items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-slate-50"><svg class="h-8 w-8 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div><button type="button" class="mt-2 text-xs font-bold text-amber-700">Upload</button></div>
+      </div>
+      <div><label for="image-alt" class="block text-xs font-bold text-slate-600">Image alt text</label><input id="image-alt" type="text" value="Professional home service provider assisting a homeowner" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="accent-color" class="block text-xs font-bold text-slate-600">Accent color</label><div class="mt-1 flex gap-2"><input id="accent-color" type="color" value="#f59e0b" class="h-10 w-12 rounded border border-slate-300 p-1"><input type="text" value="#F59E0B" aria-label="Accent color hex value" class="w-full rounded-lg border-slate-300 text-sm"></div></div>
+    </div>
+  </section>
+</div>
+
+<!-- SEO and Commissions -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="seo-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><div><h2 id="seo-heading" class="font-bold">SEO &amp; discoverability</h2><p class="mt-1 text-sm text-slate-500">Optimize search visibility inside and outside AsBeez.</p></div><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">94% complete</span></div>
+    <div class="mt-5 grid gap-4 sm:grid-cols-2">
+      <div class="sm:col-span-2"><label for="seo-title" class="block text-xs font-bold text-slate-600">SEO title</label><input id="seo-title" type="text" value="Home Services Near You | Verified Local Pros | AsBeez" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><p class="mt-1 text-xs text-slate-500">54 of 60 recommended characters</p></div>
+      <div class="sm:col-span-2"><label for="meta-description" class="block text-xs font-bold text-slate-600">Meta description</label><textarea id="meta-description" rows="3" class="mt-1 w-full rounded-xl border-slate-300 text-sm">Book trusted local professionals for cleaning, plumbing, electrical work, appliance repair, landscaping, and more through AsBeez.</textarea><p class="mt-1 text-xs text-slate-500">148 of 160 recommended characters</p></div>
+      <div><label for="canonical-url" class="block text-xs font-bold text-slate-600">Canonical URL</label><input id="canonical-url" type="url" value="https://asbeez.com/categories/home-services" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="search-boost" class="block text-xs font-bold text-slate-600">Search boost</label><input id="search-boost" type="number" value="20" min="0" max="100" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="keywords" class="block text-xs font-bold text-slate-600">Search keywords</label><input id="keywords" type="text" value="home services, repair, cleaning, local professionals" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="synonyms" class="block text-xs font-bold text-slate-600">Search synonyms</label><input id="synonyms" type="text" value="home help, handyman, home maintenance" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="robots" class="block text-xs font-bold text-slate-600">Robots indexing</label><select id="robots" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Index and follow</option><option>No index</option><option>No follow</option></select></div>
+      <div><label for="schema-type" class="block text-xs font-bold text-slate-600">Structured-data type</label><select id="schema-type" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Service</option><option>CollectionPage</option><option>Product</option></select></div>
+      <div><label for="og-title" class="block text-xs font-bold text-slate-600">Open Graph title</label><input id="og-title" type="text" value="Find Trusted Home Service Professionals" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="og-description" class="block text-xs font-bold text-slate-600">Open Graph description</label><input id="og-description" type="text" value="Book verified local home professionals with confidence." class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+    </div>
+    <div class="mt-5 rounded-xl border border-slate-200 p-4"><p class="text-xs text-slate-500">Search-result preview</p><p class="mt-2 text-lg font-semibold text-blue-700">Home Services Near You | Verified Local Pros | AsBeez</p><p class="text-sm text-emerald-700">https://asbeez.com/categories/home-services</p><p class="mt-1 text-sm text-slate-600">Book trusted local professionals for cleaning, plumbing, electrical work, appliance repair, landscaping, and more.</p></div>
+  </section>
+
+  <section aria-labelledby="commission-heading" class="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><div><h2 id="commission-heading" class="font-bold">Commission &amp; fee rules</h2><p class="mt-1 text-sm text-slate-500">Controls category-specific marketplace revenue.</p></div><span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">Parent override</span></div>
+    <div class="mt-4 rounded-xl border border-orange-200 bg-orange-50 p-3 text-sm text-orange-900"><span class="font-bold">Rule notice:</span> Emergency Plumbing uses a 19% child override, exceeding the parent’s configured maximum.</div>
+    <div class="mt-5 grid gap-4 sm:grid-cols-2">
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Inherit from parent</span><input type="checkbox" class="rounded border-slate-300 text-amber-500"></label>
+      <label class="flex items-center justify-between rounded-lg bg-amber-50 p-3 text-sm"><span>Override parent rules</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500"></label>
+      <div><label for="product-commission" class="block text-xs font-bold text-slate-600">Product commission</label><input id="product-commission" type="number" value="14" step="0.1" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="service-commission" class="block text-xs font-bold text-slate-600">Service commission</label><input id="service-commission" type="number" value="16" step="0.1" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="fixed-fee" class="block text-xs font-bold text-slate-600">Fixed transaction fee</label><input id="fixed-fee" type="number" value="0.30" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="booking-fee" class="block text-xs font-bold text-slate-600">Booking fee</label><input id="booking-fee" type="number" value="2.00" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="listing-fee" class="block text-xs font-bold text-slate-600">Listing fee</label><input id="listing-fee" type="number" value="0.00" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="promo-rate" class="block text-xs font-bold text-slate-600">Promotional commission</label><input id="promo-rate" type="number" value="12" step="0.1" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="minimum-commission" class="block text-xs font-bold text-slate-600">Minimum commission</label><input id="minimum-commission" type="number" value="1.00" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="maximum-commission" class="block text-xs font-bold text-slate-600">Maximum commission</label><input id="maximum-commission" type="number" value="250.00" step="0.01" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="tax-category" class="block text-xs font-bold text-slate-600">Tax category</label><select id="tax-category" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Professional and home services</option><option>General products</option><option>Digital services</option></select></div>
+      <div><label for="fee-date" class="block text-xs font-bold text-slate-600">Effective date</label><input id="fee-date" type="date" value="2026-10-01" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Advertising eligible</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500"></label>
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Vendor subscription required</span><input type="checkbox" class="rounded border-slate-300 text-amber-500"></label>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-3 text-sm font-bold"><a href="/admin/financials/settings" class="text-amber-700">Financial Settings</a><a href="/admin/categories/home-services/vendor-rates" class="text-amber-700">Vendor Exceptions</a><a href="/admin/categories/home-services/promotions" class="text-amber-700">Promotional Rates</a></div>
+  </section>
+</div>
+
+<!-- Attributes -->
+<section aria-labelledby="attributes-heading" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex flex-col gap-3 border-b border-slate-200 p-5 lg:flex-row lg:items-start lg:justify-between">
+    <div><h2 id="attributes-heading" class="font-bold">Category attributes &amp; filters</h2><p class="mt-1 text-sm text-slate-500">Fields used for listing details, marketplace filters, and search.</p></div>
+    <div class="flex flex-wrap gap-2"><button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold">Copy Attributes</button><button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold">Import</button><button type="button" class="rounded-lg border border-blue-300 bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700">Add Group</button><button type="button" class="rounded-lg bg-amber-500 px-3 py-2 text-sm font-bold text-slate-950">Add Attribute</button></div>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-[1100px] w-full text-sm">
+      <caption class="sr-only">Attributes assigned to Home Services</caption>
+      <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500"><tr><th scope="col" class="px-4 py-3">Order</th><th scope="col" class="px-4 py-3">Attribute</th><th scope="col" class="px-4 py-3">Type</th><th scope="col" class="px-4 py-3">Requirement</th><th scope="col" class="px-4 py-3">Filterable</th><th scope="col" class="px-4 py-3">Searchable</th><th scope="col" class="px-4 py-3">Vendor editable</th><th scope="col" class="px-4 py-3">Values</th><th scope="col" class="px-4 py-3">Status</th><th scope="col" class="px-4 py-3">Action</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="px-4 py-3 text-slate-400">⠿ 1</td><td class="px-4 py-3 font-semibold">Service area</td><td class="px-4 py-3">Location radius</td><td class="px-4 py-3 text-rose-700">Required</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Dynamic</td><td class="px-4 py-3 text-emerald-700">Active</td><td class="px-4 py-3"><a href="/admin/categories/attributes/service-area/edit" class="font-bold text-amber-700">Edit</a></td></tr>
+        <tr><td class="px-4 py-3 text-slate-400">⠿ 2</td><td class="px-4 py-3 font-semibold">Availability</td><td class="px-4 py-3">Schedule</td><td class="px-4 py-3">Required</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">No</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Weekly</td><td class="px-4 py-3 text-emerald-700">Active</td><td class="px-4 py-3"><a href="/admin/categories/attributes/availability/edit" class="font-bold text-amber-700">Edit</a></td></tr>
+        <tr><td class="px-4 py-3 text-slate-400">⠿ 3</td><td class="px-4 py-3 font-semibold">Booking type</td><td class="px-4 py-3">Multi-select</td><td class="px-4 py-3">Required</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">4</td><td class="px-4 py-3 text-emerald-700">Active</td><td class="px-4 py-3"><a href="/admin/categories/attributes/booking-type/edit" class="font-bold text-amber-700">Edit</a></td></tr>
+        <tr><td class="px-4 py-3 text-slate-400">⠿ 4</td><td class="px-4 py-3 font-semibold">Service duration</td><td class="px-4 py-3">Duration</td><td class="px-4 py-3">Required</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">No</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Custom</td><td class="px-4 py-3 text-emerald-700">Active</td><td class="px-4 py-3"><a href="/admin/categories/attributes/duration/edit" class="font-bold text-amber-700">Edit</a></td></tr>
+        <tr><td class="px-4 py-3 text-slate-400">⠿ 5</td><td class="px-4 py-3 font-semibold">Provider experience</td><td class="px-4 py-3">Number/range</td><td class="px-4 py-3">Optional</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">5 ranges</td><td class="px-4 py-3 text-emerald-700">Active</td><td class="px-4 py-3"><a href="/admin/categories/attributes/experience/edit" class="font-bold text-amber-700">Edit</a></td></tr>
+        <tr><td class="px-4 py-3 text-slate-400">⠿ 6</td><td class="px-4 py-3 font-semibold">Customer rating</td><td class="px-4 py-3">Rating</td><td class="px-4 py-3">System</td><td class="px-4 py-3">Yes</td><td class="px-4 py-3">No</td><td class="px-4 py-3">No</td><td class="px-4 py-3">1–5</td><td class="px-4 py-3 text-emerald-700">Active</td><td class="px-4 py-3"><a href="/admin/categories/attributes/rating/edit" class="font-bold text-amber-700">Edit</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Listing Fields and Vendor Eligibility -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="listing-fields-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><div><h2 id="listing-fields-heading" class="font-bold">Category-specific listing fields</h2><p class="mt-1 text-sm text-slate-500">Information vendors must provide when publishing a service.</p></div><button type="button" class="rounded-lg bg-amber-500 px-3 py-2 text-sm font-bold text-slate-950">Add Field</button></div>
+    <div class="mt-5 space-y-3">
+      <article class="rounded-xl border border-slate-200 p-3"><div class="flex justify-between"><div><p class="font-semibold">Service duration</p><p class="text-xs text-slate-500">Duration · Required · Minimum 15 minutes</p></div><span class="text-xs font-bold text-emerald-700">Vendor &amp; customer visible</span></div></article>
+      <article class="rounded-xl border border-slate-200 p-3"><div class="flex justify-between"><div><p class="font-semibold">Provider certification</p><p class="text-xs text-slate-500">Document upload · Conditional · PDF/JPG up to 10 MB</p></div><span class="text-xs font-bold text-blue-700">Vendor visible</span></div></article>
+      <article class="rounded-xl border border-slate-200 p-3"><div class="flex justify-between"><div><p class="font-semibold">Installation included</p><p class="text-xs text-slate-500">Boolean · Required · Default: No</p></div><span class="text-xs font-bold text-emerald-700">Public</span></div></article>
+      <article class="rounded-xl border border-slate-200 p-3"><div class="flex justify-between"><div><p class="font-semibold">Appointment lead time</p><p class="text-xs text-slate-500">Number · Required · 1–90 days</p></div><span class="text-xs font-bold text-emerald-700">Public</span></div></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="vendor-eligibility-heading" class="rounded-2xl border border-blue-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><div><h2 id="vendor-eligibility-heading" class="font-bold">Vendor eligibility &amp; requirements</h2><p class="mt-1 text-sm text-slate-500">Requirements for offering services in this category.</p></div><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Approval required</span></div>
+    <div class="mt-5 grid gap-2 sm:grid-cols-2">
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Open to all vendors</span><input type="checkbox" class="rounded border-slate-300 text-amber-500"></label>
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Admin approval required</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500"></label>
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Business verification</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500"></label>
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Identity verification</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500"></label>
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Professional license</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500"></label>
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Liability insurance</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500"></label>
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Background check</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500"></label>
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Annual renewal</span><input type="checkbox" checked class="rounded border-slate-300 text-amber-500"></label>
+    </div>
+    <div class="mt-4 grid gap-3 sm:grid-cols-3">
+      <div><label for="minimum-rating" class="block text-xs font-bold text-slate-600">Minimum rating</label><input id="minimum-rating" type="number" value="4.0" step="0.1" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="minimum-orders" class="block text-xs font-bold text-slate-600">Completed jobs</label><input id="minimum-orders" type="number" value="5" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="minimum-age" class="block text-xs font-bold text-slate-600">Account age</label><input id="minimum-age" type="number" value="30" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+    </div>
+    <div class="mt-4 flex flex-wrap gap-3 text-sm font-bold"><a href="/admin/categories/home-services/vendors" class="text-blue-700">Eligible Vendors</a><a href="/admin/categories/home-services/requests" class="text-blue-700">Pending Requests (18)</a><a href="/admin/categories/home-services/documents" class="text-blue-700">Required Documents</a></div>
+  </section>
+</div>
+
+<!-- Rules, Moderation and Service Settings -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="rules-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="rules-heading" class="font-bold">Content &amp; listing rules</h2>
+    <div class="mt-4 space-y-2">
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Price required</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Custom quotes allowed</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Video allowed</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Subscription listings</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Age restricted</span><input type="checkbox" class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Manual moderation</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+    </div>
+    <div class="mt-4 grid grid-cols-2 gap-3"><div><label for="minimum-images" class="text-xs font-bold text-slate-600">Minimum images</label><input id="minimum-images" type="number" value="3" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div><div><label for="maximum-images" class="text-xs font-bold text-slate-600">Maximum images</label><input id="maximum-images" type="number" value="15" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div><div><label for="description-minimum" class="text-xs font-bold text-slate-600">Description minimum</label><input id="description-minimum" type="number" value="150" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div><div><label for="title-maximum" class="text-xs font-bold text-slate-600">Title maximum</label><input id="title-maximum" type="number" value="80" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div></div>
+    <label for="listing-guidelines" class="mt-4 block text-xs font-bold text-slate-600">Listing guidelines</label><textarea id="listing-guidelines" rows="4" class="mt-1 w-full rounded-xl border-slate-300 text-sm">Describe the work included, service area, pricing basis, estimated duration, provider qualifications, exclusions, and customer preparation requirements.</textarea>
+  </section>
+
+  <section aria-labelledby="moderation-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="moderation-heading" class="font-bold">Moderation &amp; approval</h2>
+    <div class="mt-4 space-y-2">
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Auto-approve listings</span><input type="checkbox" class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Review first listing</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Keyword screening</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Image moderation</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Document verification</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Pricing anomaly detection</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Duplicate detection</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Prohibited-content scan</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+    </div>
+    <div class="mt-4 grid grid-cols-2 gap-3"><div><label for="moderation-team" class="text-xs font-bold text-slate-600">Moderation team</label><select id="moderation-team" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Services Review Team</option></select></div><div><label for="review-sla" class="text-xs font-bold text-slate-600">Review SLA</label><select id="review-sla" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>24 hours</option><option>48 hours</option></select></div></div>
+    <div class="mt-4 flex flex-wrap gap-3 text-xs font-bold"><a href="/admin/categories/moderation?category=home-services" class="text-amber-700">Awaiting Review (26)</a><a href="/admin/categories/home-services/rejected" class="text-rose-700">Rejected (8)</a><a href="/admin/categories/home-services/violations" class="text-rose-700">Violations (3)</a></div>
+  </section>
+
+  <section aria-labelledby="service-settings-heading" class="rounded-2xl border border-blue-200 bg-white p-5 shadow-sm">
+    <h2 id="service-settings-heading" class="font-bold">Booking &amp; service settings</h2>
+    <p class="mt-1 text-sm text-slate-500">Context-aware settings for this service category.</p>
+    <div class="mt-4 space-y-2">
+      <label class="flex justify-between rounded-lg bg-blue-50 p-2.5 text-sm"><span>Customer-location service</span><input type="checkbox" checked class="rounded text-blue-600"></label>
+      <label class="flex justify-between rounded-lg bg-blue-50 p-2.5 text-sm"><span>Provider-location service</span><input type="checkbox" checked class="rounded text-blue-600"></label>
+      <label class="flex justify-between rounded-lg bg-blue-50 p-2.5 text-sm"><span>Virtual service</span><input type="checkbox" class="rounded text-blue-600"></label>
+      <label class="flex justify-between rounded-lg bg-blue-50 p-2.5 text-sm"><span>Instant booking</span><input type="checkbox" checked class="rounded text-blue-600"></label>
+      <label class="flex justify-between rounded-lg bg-blue-50 p-2.5 text-sm"><span>Request to book</span><input type="checkbox" checked class="rounded text-blue-600"></label>
+      <label class="flex justify-between rounded-lg bg-blue-50 p-2.5 text-sm"><span>Recurring booking</span><input type="checkbox" checked class="rounded text-blue-600"></label>
+      <label class="flex justify-between rounded-lg bg-blue-50 p-2.5 text-sm"><span>Emergency booking</span><input type="checkbox" checked class="rounded text-blue-600"></label>
+      <label class="flex justify-between rounded-lg bg-blue-50 p-2.5 text-sm"><span>Service area required</span><input type="checkbox" checked class="rounded text-blue-600"></label>
+    </div>
+    <div class="mt-4 grid grid-cols-2 gap-3"><div><label for="lead-time" class="text-xs font-bold text-slate-600">Minimum lead time</label><select id="lead-time" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>2 hours</option><option>24 hours</option></select></div><div><label for="booking-window" class="text-xs font-bold text-slate-600">Maximum booking window</label><select id="booking-window" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>90 days</option><option>180 days</option></select></div></div>
+  </section>
+</div>
+
+<!-- Policies and Related Categories -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="policies-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="policies-heading" class="font-bold">Category policies &amp; compliance</h2>
+    <div class="mt-4 space-y-2 text-sm">
+      <div class="flex items-center justify-between rounded-lg bg-slate-50 p-3"><span>Return policy</span><span class="font-bold text-slate-600">Not applicable</span><a href="/admin/policies/returns" class="font-bold text-amber-700">Edit</a></div>
+      <div class="flex items-center justify-between rounded-lg bg-blue-50 p-3"><span>Refund policy</span><span class="font-bold text-blue-700">Marketplace default</span><a href="/admin/policies/refunds" class="font-bold text-amber-700">Edit</a></div>
+      <div class="flex items-center justify-between rounded-lg bg-amber-50 p-3"><span>Cancellation policy</span><span class="font-bold text-amber-700">Category override</span><a href="/admin/policies/cancellations/home-services" class="font-bold text-amber-700">Edit</a></div>
+      <div class="flex items-center justify-between rounded-lg bg-blue-50 p-3"><span>Safety policy</span><span class="font-bold text-blue-700">Inherited from Services</span><a href="/admin/policies/safety" class="font-bold text-amber-700">Edit</a></div>
+      <div class="flex items-center justify-between rounded-lg bg-orange-50 p-3"><span>Professional-services disclaimer</span><span class="font-bold text-orange-700">Needs review</span><a href="/admin/policies/disclaimers" class="font-bold text-amber-700">Edit</a></div>
+      <div class="flex items-center justify-between rounded-lg bg-blue-50 p-3"><span>Vendor conduct requirements</span><span class="font-bold text-blue-700">Marketplace default</span><a href="/admin/policies/vendor-conduct" class="font-bold text-amber-700">Edit</a></div>
+      <div class="flex items-center justify-between rounded-lg bg-emerald-50 p-3"><span>Customer acknowledgement</span><span class="font-bold text-emerald-700">Configured</span><a href="/admin/categories/home-services/acknowledgements" class="font-bold text-amber-700">Edit</a></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="related-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><div><h2 id="related-heading" class="font-bold">Related &amp; recommended categories</h2><p class="mt-1 text-sm text-slate-500">Improve discovery, cross-selling, and category navigation.</p></div><button type="button" class="rounded-lg bg-amber-500 px-3 py-2 text-sm font-bold text-slate-950">Add Related Category</button></div>
+    <div class="mt-5 space-y-3">
+      <article class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><span class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 text-blue-700">⌂</span><div class="min-w-0 flex-1"><p class="font-semibold">Home &amp; Garden</p><p class="text-xs text-slate-500">Frequently browsed together · Product · Active</p></div><span class="text-xs font-bold">Order 1</span><button type="button" aria-label="Remove Home and Garden relationship" class="text-rose-700">Remove</button></article>
+      <article class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><span class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 text-blue-700">✦</span><div class="min-w-0 flex-1"><p class="font-semibold">Professional Services</p><p class="text-xs text-slate-500">Alternative category · Service · Active</p></div><span class="text-xs font-bold">Order 2</span><button type="button" aria-label="Remove Professional Services relationship" class="text-rose-700">Remove</button></article>
+      <article class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><span class="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-100 text-amber-700">⌁</span><div class="min-w-0 flex-1"><p class="font-semibold">Garden Supplies</p><p class="text-xs text-slate-500">Cross-sell category · Product · Active</p></div><span class="text-xs font-bold">Order 3</span><button type="button" aria-label="Remove Garden Supplies relationship" class="text-rose-700">Remove</button></article>
+      <article class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><span class="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-100 text-violet-700">★</span><div class="min-w-0 flex-1"><p class="font-semibold">Spring Home Refresh</p><p class="text-xs text-slate-500">Seasonal group · Collection · Scheduled</p></div><span class="text-xs font-bold">Order 4</span><button type="button" aria-label="Remove Spring Home Refresh relationship" class="text-rose-700">Remove</button></article>
+    </div>
+  </section>
+</div>
+
+<!-- Merchandising Preview -->
+<section aria-labelledby="appearance-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between"><div><h2 id="appearance-heading" class="font-bold">Merchandising &amp; category appearance</h2><p class="mt-1 text-sm text-slate-500">Control category placement, promotional content, and storefront presentation.</p></div><a href="/admin/categories/home-services/appearance" class="text-sm font-bold text-amber-700">Open Appearance Editor →</a></div>
+  <div class="mt-5 grid gap-6 xl:grid-cols-2">
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="flex items-center justify-between rounded-lg bg-slate-50 p-3 text-sm"><span>Featured category</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <div><label for="homepage-placement" class="text-xs font-bold text-slate-600">Homepage placement</label><select id="homepage-placement" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Primary services grid</option><option>Secondary categories</option></select></div>
+      <div><label for="navigation-placement" class="text-xs font-bold text-slate-600">Navigation placement</label><select id="navigation-placement" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Services mega menu</option><option>More categories</option></select></div>
+      <div><label for="promotional-label" class="text-xs font-bold text-slate-600">Promotional label</label><input id="promotional-label" type="text" value="Popular near you" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="hero-headline" class="text-xs font-bold text-slate-600">Hero headline</label><input id="hero-headline" type="text" value="Trusted help for every home" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div><label for="hero-cta" class="text-xs font-bold text-slate-600">Call-to-action text</label><input id="hero-cta" type="text" value="Explore Home Services" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div class="sm:col-span-2"><label for="hero-description" class="text-xs font-bold text-slate-600">Hero description</label><textarea id="hero-description" rows="3" class="mt-1 w-full rounded-xl border-slate-300 text-sm">Book verified local professionals for cleaning, repairs, maintenance, landscaping, and more.</textarea></div>
+      <div class="sm:col-span-2"><label for="hero-url" class="text-xs font-bold text-slate-600">Call-to-action URL</label><input id="hero-url" type="url" value="https://asbeez.com/categories/home-services" class="mt-1 w-full rounded-lg border-slate-300 text-sm"></div>
+      <div class="sm:col-span-2 flex flex-wrap gap-3 text-sm font-bold"><a href="/admin/categories/home-services/featured-services" class="text-amber-700">Featured Services (8)</a><a href="/admin/categories/home-services/featured-vendors" class="text-amber-700">Featured Vendors (6)</a><a href="/admin/categories/home-services/collections" class="text-amber-700">Collections (4)</a></div>
+    </div>
+
+    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-amber-50">
+      <div class="flex min-h-52 items-center bg-gradient-to-br from-slate-900 via-slate-800 to-amber-900 p-6 text-white">
+        <div><span class="rounded-full bg-amber-400 px-3 py-1 text-xs font-bold text-slate-950">Popular near you</span><h3 class="mt-4 text-2xl font-bold">Trusted help for every home</h3><p class="mt-2 max-w-lg text-sm text-slate-200">Book verified local professionals for cleaning, repairs, maintenance, landscaping, and more.</p><a href="/categories/home-services" class="mt-4 inline-flex rounded-lg bg-amber-400 px-4 py-2 text-sm font-bold text-slate-950">Explore Home Services</a></div>
+      </div>
+      <div class="grid grid-cols-3 gap-3 p-4">
+        <div class="rounded-xl bg-white p-3 text-center shadow-sm"><span class="mx-auto flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100">⌂</span><p class="mt-2 text-xs font-bold">Cleaning</p></div>
+        <div class="rounded-xl bg-white p-3 text-center shadow-sm"><span class="mx-auto flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100">⌘</span><p class="mt-2 text-xs font-bold">Repairs</p></div>
+        <div class="rounded-xl bg-white p-3 text-center shadow-sm"><span class="mx-auto flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100">✿</span><p class="mt-2 text-xs font-bold">Landscaping</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Analytics -->
+<section aria-labelledby="analytics-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><h2 id="analytics-heading" class="font-bold">Category performance</h2><p class="mt-1 text-sm text-slate-500">Discovery, conversion, marketplace activity, and customer outcomes.</p></div><div class="flex rounded-xl bg-slate-100 p-1 text-xs font-bold"><button type="button" class="rounded-lg px-3 py-2">Today</button><button type="button" class="rounded-lg px-3 py-2">7 Days</button><button type="button" class="rounded-lg bg-white px-3 py-2 shadow-sm">30 Days</button><button type="button" class="rounded-lg px-3 py-2">Quarter</button><button type="button" class="rounded-lg px-3 py-2">Year</button></div></div>
+  <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+    <div class="rounded-xl bg-amber-50 p-4"><p class="text-xs text-slate-500">Category page views</p><p class="mt-1 text-xl font-bold">284,620</p><p class="mt-2 text-xs font-bold text-emerald-700">↑ 14.8%</p></div>
+    <div class="rounded-xl bg-blue-50 p-4"><p class="text-xs text-slate-500">Search impressions</p><p class="mt-1 text-xl font-bold">842,190</p><p class="mt-2 text-xs font-bold text-emerald-700">↑ 18.2%</p></div>
+    <div class="rounded-xl bg-violet-50 p-4"><p class="text-xs text-slate-500">Click-through rate</p><p class="mt-1 text-xl font-bold">11.4%</p><div class="mt-2 h-2 rounded-full bg-violet-100"><div class="h-2 w-[57%] rounded-full bg-violet-500"></div></div></div>
+    <div class="rounded-xl bg-emerald-50 p-4"><p class="text-xs text-slate-500">Conversion rate</p><p class="mt-1 text-xl font-bold">7.9%</p><p class="mt-2 text-xs font-bold text-emerald-700">↑ 0.8%</p></div>
+    <div class="rounded-xl bg-slate-50 p-4"><p class="text-xs text-slate-500">Gross booking value</p><p class="mt-1 text-xl font-bold">$684,260</p><p class="mt-2 text-xs text-slate-500">Avg. $81.27</p></div>
+    <div class="rounded-xl bg-blue-50 p-4"><p class="text-xs text-slate-500">Service views</p><p class="mt-1 text-xl font-bold">516,284</p></div>
+    <div class="rounded-xl bg-slate-50 p-4"><p class="text-xs text-slate-500">Active listings / vendors</p><p class="mt-1 text-xl font-bold">1,284 / 346</p></div>
+    <div class="rounded-xl bg-amber-50 p-4"><p class="text-xs text-slate-500">Bookings</p><p class="mt-1 text-xl font-bold">8,420</p></div>
+    <div class="rounded-xl bg-rose-50 p-4"><p class="text-xs text-slate-500">Refund / cancellation</p><p class="mt-1 text-xl font-bold">1.8% / 3.2%</p></div>
+    <div class="rounded-xl bg-orange-50 p-4"><p class="text-xs text-slate-500">Dispute rate</p><p class="mt-1 text-xl font-bold">0.7%</p></div>
+  </div>
+  <div class="mt-5 grid gap-4 lg:grid-cols-4">
+    <div class="rounded-xl border border-slate-200 p-4"><p class="text-xs font-bold uppercase text-slate-500">Top performing</p><ol class="mt-3 space-y-2 text-sm"><li class="flex justify-between"><span>Cleaning</span><span class="font-bold">$248K</span></li><li class="flex justify-between"><span>Plumbing</span><span class="font-bold">$164K</span></li><li class="flex justify-between"><span>Landscaping</span><span class="font-bold">$126K</span></li></ol></div>
+    <div class="rounded-xl border border-slate-200 p-4"><p class="text-xs font-bold uppercase text-slate-500">Fastest growing</p><ol class="mt-3 space-y-2 text-sm"><li class="flex justify-between"><span>Appliance Repair</span><span class="font-bold text-emerald-700">+31%</span></li><li class="flex justify-between"><span>Smart Home Setup</span><span class="font-bold text-emerald-700">+28%</span></li></ol></div>
+    <div class="rounded-xl border border-slate-200 p-4"><p class="text-xs font-bold uppercase text-slate-500">Declining activity</p><ol class="mt-3 space-y-2 text-sm"><li class="flex justify-between"><span>Window Washing</span><span class="font-bold text-rose-700">−12%</span></li><li class="flex justify-between"><span>Pool Winterizing</span><span class="font-bold text-rose-700">−9%</span></li></ol></div>
+    <div class="rounded-xl border border-slate-200 p-4"><p class="text-xs font-bold uppercase text-slate-500">High demand, low supply</p><ol class="mt-3 space-y-2 text-sm"><li class="flex justify-between"><span>Emergency Electrical</span><span class="font-bold text-orange-700">14 vendors</span></li><li class="flex justify-between"><span>Solar Maintenance</span><span class="font-bold text-orange-700">8 vendors</span></li></ol></div>
+  </div>
+</section>
+
+<!-- Migration, Import, Notes -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="migration-heading" class="rounded-2xl border border-rose-200 bg-white p-5 shadow-sm">
+    <h2 id="migration-heading" class="font-bold">Migration &amp; merge tools</h2>
+    <p class="mt-1 text-sm text-slate-500">Restructure categories while protecting listings and URLs.</p>
+    <div class="mt-4 space-y-3">
+      <div><label for="migration-action" class="block text-xs font-bold text-slate-600">Action</label><select id="migration-action" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Move category</option><option>Change parent</option><option>Merge categories</option><option>Copy settings</option></select></div>
+      <div><label for="migration-destination" class="block text-xs font-bold text-slate-600">Destination category</label><select id="migration-destination" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Select destination</option><option>Professional Services</option><option>Home &amp; Garden</option></select></div>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Move services</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Move vendors</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Redirect old URLs</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Preserve SEO metadata</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label class="flex justify-between rounded-lg bg-slate-50 p-2.5 text-sm"><span>Update related links</span><input type="checkbox" checked class="rounded text-amber-500"></label>
+      <label for="migration-note" class="block text-xs font-bold text-slate-600">Migration note</label><textarea id="migration-note" rows="3" class="w-full rounded-xl border-slate-300 text-sm" placeholder="Explain the planned category change…"></textarea>
+    </div>
+    <p class="mt-4 rounded-xl bg-rose-50 p-3 text-xs text-rose-900">Category changes may affect 1,284 listings, 346 vendors, URLs, search indexing, commission rules, policies, and historical reports.</p>
+    <div class="mt-4 flex flex-wrap gap-2"><button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold">Preview Migration</button><button type="button" class="rounded-lg bg-orange-600 px-3 py-2 text-sm font-bold text-white">Schedule</button><button type="button" class="rounded-lg border border-rose-300 px-3 py-2 text-sm font-semibold text-rose-700">Merge</button></div>
+  </section>
+
+  <section aria-labelledby="import-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="import-heading" class="font-bold">Import &amp; export</h2>
+    <p class="mt-1 text-sm text-slate-500">Bulk-manage category structure and configuration.</p>
+    <div class="mt-4 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-6 text-center">
+      <svg class="mx-auto h-8 w-8 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4M4 16v4h16v-4"/></svg>
+      <p class="mt-2 text-sm font-bold">Upload a category import file</p><p class="mt-1 text-xs text-slate-500">CSV or XLSX · Maximum 10 MB</p>
+      <label for="import-file" class="mt-3 inline-flex cursor-pointer rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold">Choose File<input id="import-file" type="file" accept=".csv,.xlsx" class="sr-only"></label>
+    </div>
+    <div class="mt-4"><label for="conflict-handling" class="block text-xs font-bold text-slate-600">Conflict handling</label><select id="conflict-handling" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Stop and report conflicts</option><option>Update matching categories</option><option>Skip matching categories</option></select></div>
+    <div class="mt-4 flex gap-2"><button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold">Validate File</button><button type="button" disabled class="cursor-not-allowed rounded-lg bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-400">Start Import</button></div>
+    <div class="mt-5 grid grid-cols-2 gap-2 text-xs font-bold"><a href="/admin/categories/import/template" class="rounded-lg bg-amber-50 p-2 text-amber-700">Download Template</a><a href="/admin/categories/export" class="rounded-lg bg-amber-50 p-2 text-amber-700">Export All</a><a href="/admin/categories/export/hierarchy" class="rounded-lg bg-amber-50 p-2 text-amber-700">Export Hierarchy</a><a href="/admin/categories/export/attributes" class="rounded-lg bg-amber-50 p-2 text-amber-700">Export Attributes</a><a href="/admin/categories/export/commissions" class="rounded-lg bg-amber-50 p-2 text-amber-700">Export Commissions</a><a href="/admin/categories/export/seo" class="rounded-lg bg-amber-50 p-2 text-amber-700">Export SEO</a></div>
+  </section>
+
+  <section aria-labelledby="audit-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex justify-between gap-2"><div><h2 id="audit-heading" class="font-bold">Notes &amp; audit log</h2><p class="mt-1 text-xs text-slate-500">Not visible to vendors or customers.</p></div><span class="rounded-full bg-slate-900 px-2 py-1 text-xs font-bold text-white">Admin only</span></div>
+    <label for="category-note" class="mt-4 block text-xs font-bold text-slate-600">Internal note</label><textarea id="category-note" rows="3" class="mt-1 w-full rounded-xl border-slate-300 text-sm" placeholder="Add category-management context…"></textarea>
+    <div class="mt-3 grid grid-cols-2 gap-2"><div><label for="note-visibility" class="text-xs font-bold text-slate-600">Visibility</label><select id="note-visibility" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>All admins</option><option>Catalog team</option></select></div><div><label for="note-priority" class="text-xs font-bold text-slate-600">Priority</label><select id="note-priority" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Normal</option><option>Important</option><option>Urgent</option></select></div></div>
+    <label class="mt-3 flex items-center gap-2 text-sm"><input type="checkbox" class="rounded text-amber-500"> Mention assigned administrator</label>
+    <label for="note-file" class="mt-3 block text-xs font-bold text-slate-600">Attachment</label><input id="note-file" type="file" class="mt-1 block w-full text-xs text-slate-500">
+    <button type="button" class="mt-3 rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white">Add Note</button>
+    <div class="mt-5 space-y-3 border-t border-slate-100 pt-4">
+      <article><div class="flex justify-between"><p class="text-sm font-bold">Maya Chen</p><time class="text-xs text-slate-400">Today, 10:42 AM</time></div><p class="mt-1 text-sm text-slate-600">Updated category SEO and enabled emergency booking.</p></article>
+      <article class="border-t border-slate-100 pt-3"><p class="text-xs font-bold text-slate-500">AUDIT · Today, 9:18 AM</p><p class="mt-1 text-sm text-slate-600">Service commission changed from 15% to 16%.</p></article>
+      <article class="border-t border-slate-100 pt-3"><p class="text-xs font-bold text-slate-500">AUDIT · Sep 18</p><p class="mt-1 text-sm text-slate-600">Provider certification attribute added by Daniel Reyes.</p></article>
+    </div>
+  </section>
+</div>
+
+<!-- Quick Links -->
+<section aria-labelledby="tools-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div><h2 id="tools-heading" class="text-lg font-bold">Category Management Tools</h2><p class="mt-1 text-sm text-slate-500">Quick access to category structure, listing configuration, moderation, merchandising, finance, and analytics.</p></div>
+  <div class="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-6">
+    <div><h3 class="border-b border-amber-200 pb-2 text-sm font-bold text-amber-800">Category Structure</h3><div class="mt-2 space-y-1"><a href="/admin/categories" class="block rounded-lg p-2 text-sm font-semibold hover:bg-amber-50">All Categories</a><a href="/admin/categories/products" class="block rounded-lg p-2 text-sm font-semibold hover:bg-amber-50">Product Categories</a><a href="/admin/categories/services" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Service Categories</a><a href="/admin/categories?level=0" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Parent Categories</a><a href="/admin/categories?type=subcategory" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Subcategories</a><a href="/admin/categories/hierarchy" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Category Hierarchy</a><a href="/admin/categories?empty=true" class="flex justify-between rounded-lg p-2 text-sm font-semibold hover:bg-orange-50"><span>Empty Categories</span><span class="rounded-full bg-orange-100 px-2 text-xs">11</span></a><a href="/admin/categories?status=archived" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Archived Categories</a></div></div>
+    <div><h3 class="border-b border-blue-200 pb-2 text-sm font-bold text-blue-800">Attributes &amp; Listings</h3><div class="mt-2 space-y-1"><a href="/admin/categories/attributes" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Category Attributes</a><a href="/admin/categories/attribute-groups" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Attribute Groups</a><a href="/admin/categories/listing-fields" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Listing Fields</a><a href="/admin/categories/product-filters" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Product Filters</a><a href="/admin/categories/service-filters" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Service Filters</a><a href="/admin/categories/templates" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Listing Templates</a><a href="/admin/categories/guidelines" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Listing Guidelines</a><a href="/admin/categories/documents" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Required Documents</a></div></div>
+    <div><h3 class="border-b border-rose-200 pb-2 text-sm font-bold text-rose-800">Vendors &amp; Moderation</h3><div class="mt-2 space-y-1"><a href="/admin/categories/vendor-requests" class="flex justify-between rounded-lg p-2 text-sm font-semibold hover:bg-blue-50"><span>Vendor Requests</span><span class="rounded-full bg-blue-100 px-2 text-xs">18</span></a><a href="/admin/categories/vendor-eligibility" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Vendor Eligibility</a><a href="/admin/categories/moderation" class="flex justify-between rounded-lg p-2 text-sm font-semibold hover:bg-orange-50"><span>Pending Listings</span><span class="rounded-full bg-orange-100 px-2 text-xs">26</span></a><a href="/admin/categories/rejected" class="block rounded-lg p-2 text-sm font-semibold hover:bg-rose-50">Rejected Listings</a><a href="/admin/categories/violations" class="block rounded-lg p-2 text-sm font-semibold hover:bg-rose-50">Policy Violations</a><a href="/admin/categories/restricted" class="block rounded-lg p-2 text-sm font-semibold hover:bg-rose-50">Restricted Categories</a><a href="/admin/categories/verifications" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Verification Requirements</a></div></div>
+    <div><h3 class="border-b border-violet-200 pb-2 text-sm font-bold text-violet-800">Merchandising</h3><div class="mt-2 space-y-1"><a href="/admin/categories/featured" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Featured Categories</a><a href="/admin/categories/homepage" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Homepage Categories</a><a href="/admin/categories/navigation" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Navigation Categories</a><a href="/admin/categories/related" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Related Categories</a><a href="/admin/categories/seasonal" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Seasonal Categories</a><a href="/admin/categories/collections" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Category Collections</a><a href="/admin/categories/featured-vendors" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Featured Vendors</a><a href="/admin/categories/appearance" class="block rounded-lg p-2 text-sm font-semibold hover:bg-violet-50">Category Appearance</a></div></div>
+    <div><h3 class="border-b border-emerald-200 pb-2 text-sm font-bold text-emerald-800">Finance &amp; Policies</h3><div class="mt-2 space-y-1"><a href="/admin/categories/commissions" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Commission Rules</a><a href="/admin/financials/fees" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Fee Schedules</a><a href="/admin/taxes/categories" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Tax Categories</a><a href="/admin/shipping/profiles" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Shipping Profiles</a><a href="/admin/bookings/rules" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Booking Rules</a><a href="/admin/policies/returns" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Return Policies</a><a href="/admin/policies/cancellations" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Cancellation Policies</a><a href="/admin/categories/compliance" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Compliance Requirements</a></div></div>
+    <div><h3 class="border-b border-slate-300 pb-2 text-sm font-bold text-slate-800">Analytics &amp; Settings</h3><div class="mt-2 space-y-1"><a href="/admin/categories/analytics" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Category Analytics</a><a href="/admin/categories/search-analytics" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Search Analytics</a><a href="/admin/categories/conversions" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Conversion Reports</a><a href="/admin/categories/health" class="flex justify-between rounded-lg p-2 text-sm font-semibold hover:bg-orange-50"><span>Category Health</span><span class="rounded-full bg-orange-100 px-2 text-xs">32</span></a><a href="/admin/categories/import" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Import Categories</a><a href="/admin/categories/export" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Export Categories</a><a href="/admin/categories/redirects" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Category Redirects</a><a href="/admin/categories/settings" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Category Settings</a></div></div>
+  </div>
+</section>
+</div> <!-- Sticky Mobile Action Bar --> <div class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-3 shadow-[0_-8px_24px_rgba(15,23,42,0.12)] backdrop-blur lg:hidden"> <div class="mx-auto flex max-w-3xl items-center gap-2"> <div class="min-w-0 flex-1"><p class="truncate text-xs font-bold">Home Services</p><p class="truncate text-xs font-semibold text-emerald-700">● Active · Public</p></div> <a href="/categories/home-services" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold hover:bg-slate-50">Preview</a> <a href="/admin/categories/create?parent=CAT-SRV-001" class="rounded-lg border border-blue-300 bg-blue-50 px-3 py-2 text-xs font-bold text-blue-700">Add Subcategory</a> <a href="/admin/categories/home-services/edit" class="rounded-lg bg-amber-500 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-400">Edit Category</a> </div> </div> </main>

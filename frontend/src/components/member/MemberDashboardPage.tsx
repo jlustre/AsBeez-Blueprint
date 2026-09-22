@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ComponentType } from 'react';
+import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
 import {
   ArrowRight,
   BadgeCheck,
@@ -20,6 +20,7 @@ import {
   Crown,
   EllipsisVertical,
   Globe,
+  Gift,
   Heart,
   Hexagon,
   LayoutDashboard,
@@ -49,108 +50,126 @@ import {
 } from 'lucide-react';
 
 import { useAuth } from '../../auth/AuthProvider';
+import { SidebarTooltip } from '../ui/SidebarTooltip';
+import { SUPPORTED_LOCALES, useTranslation, type MessageKey } from '../../i18n';
 import { handleMenuKeys } from '../../lib/menu';
+import { Avatar } from '../ui/Avatar';
+import { LanguageMenu } from '../ui/LanguageMenu';
 import { MenuCloseButton } from '../ui/MenuCloseButton';
 
 type Icon = ComponentType<{ className?: string }>;
 
 type NavLink = {
-  label: string;
+  label: MessageKey;
   icon: Icon;
+  href?: string;
+  /** Derived from the route hash at render time, never hard-coded. */
   active?: boolean;
   accent?: boolean;
   badge?: { text: string; tone: string };
-  submenu?: string[];
+  /** Each entry is a message key plus the count interpolated into it. */
+  submenu?: { label: MessageKey; count: number }[];
 };
 
-const navGroups: { title: string; links: NavLink[] }[] = [
+const navGroups: { title: MessageKey; links: NavLink[] }[] = [
   {
-    title: 'Main',
+    title: 'member.groupMain',
     links: [
-      { label: 'Dashboard', icon: LayoutDashboard, active: true },
-      { label: 'Discover', icon: Compass },
-      { label: 'Favorites', icon: Heart },
-      { label: 'Recently Viewed', icon: Clock },
+      { label: 'nav.dashboard', icon: LayoutDashboard, href: '#member-dashboard' },
+      { label: 'member.navDiscover', icon: Compass },
+      { label: 'member.navFavorites', icon: Heart },
+      { label: 'member.navRecentlyViewed', icon: Clock },
     ],
   },
   {
-    title: 'Transactions',
+    title: 'member.groupTransactions',
     links: [
-      { label: 'My Orders', icon: ShoppingBag },
-      { label: 'Service Bookings', icon: Calendar },
-      { label: 'Purchase History', icon: Receipt },
-      { label: 'Returns & Refunds', icon: RotateCcw },
-      { label: 'Payment Methods', icon: CreditCard },
+      { label: 'member.navMyOrders', icon: ShoppingBag },
+      { label: 'member.navServiceBookings', icon: Calendar },
+      { label: 'member.navPurchaseHistory', icon: Receipt },
+      { label: 'member.navReturns', icon: RotateCcw },
+      { label: 'member.navPaymentMethods', icon: CreditCard },
     ],
   },
   {
-    title: 'Marketplace',
+    title: 'member.groupMarketplace',
     links: [
       {
-        label: 'My Listings',
+        label: 'member.navMyListings',
         icon: Store,
         badge: { text: '5', tone: 'bg-honey/20 text-honey' },
-        submenu: ['Active Products (3)', 'Services Offered (2)', 'Drafts (1)'],
+        submenu: [
+          { label: 'member.subActiveProducts', count: 3 },
+          { label: 'member.subServicesOffered', count: 2 },
+          { label: 'member.subDrafts', count: 1 },
+        ],
       },
-      { label: 'Create a Listing', icon: CirclePlus, accent: true },
-      { label: 'Seller Dashboard', icon: ChartColumn },
-      { label: 'Provider Profile', icon: Briefcase },
-      { label: 'Reviews & Ratings', icon: Star },
+      { label: 'member.navCreateListing', icon: CirclePlus, accent: true },
+      { label: 'member.navSellerDashboard', icon: ChartColumn },
+      { label: 'member.navProviderProfile', icon: Briefcase },
+      { label: 'member.navReviews', icon: Star },
     ],
   },
   {
-    title: 'Communication',
+    title: 'member.groupCommunication',
     links: [
-      { label: 'Messages', icon: MessageSquare, badge: { text: '3', tone: 'bg-honey text-charcoal' } },
-      { label: 'Notifications', icon: Bell, badge: { text: '7', tone: 'bg-brandInfo text-white' } },
-      { label: 'Support Tickets', icon: LifeBuoy },
+      { label: 'member.navMessages', icon: MessageSquare, badge: { text: '3', tone: 'bg-honey text-charcoal' } },
+      { label: 'member.navNotifications', icon: Bell, badge: { text: '7', tone: 'bg-brandInfo text-white' } },
+      { label: 'member.navSupportTickets', icon: LifeBuoy },
     ],
   },
   {
-    title: 'Account',
+    title: 'member.groupAccount',
     links: [
-      { label: 'Profile', icon: User },
-      { label: 'Addresses', icon: MapPin },
-      { label: 'Security', icon: ShieldCheck },
-      { label: 'Preferences', icon: SlidersHorizontal },
-      { label: 'Membership & Billing', icon: Crown },
+      { label: 'member.navProfile', icon: User, href: '#member-profile' },
+      { label: 'member.navRewardPoints', icon: Gift, href: '#member-rewards' },
+      { label: 'member.navAddresses', icon: MapPin },
+      { label: 'member.navSecurity', icon: ShieldCheck },
+      { label: 'member.navPreferences', icon: SlidersHorizontal },
+      { label: 'member.navMembership', icon: Crown },
     ],
   },
 ];
 
+/*
+ * The rows below (orders, bookings, recommendations, conversations, activity,
+ * saved items, dropdown feeds) are demo data standing in for endpoints that do
+ * not exist yet, so their values carry no message keys: they will be replaced
+ * wholesale, not translated. Labels that outlive the fixtures do carry keys.
+ */
 const stats = [
   {
-    label: 'Active Orders',
+    label: 'member.statActiveOrders',
     value: '4',
     icon: ShoppingBag,
     tone: 'bg-honey/15 text-honey-amber',
     footIcon: Truck,
-    foot: '2 arriving this week',
+    foot: 'member.statActiveOrdersFoot',
     footTone: 'text-brandSuccess',
   },
   {
-    label: 'Upcoming Bookings',
+    label: 'member.statUpcomingBookings',
     value: '3',
     icon: Calendar,
     tone: 'bg-blue-50 text-brandInfo',
     footIcon: Clock,
-    foot: 'Next appt tomorrow',
+    foot: 'member.statUpcomingBookingsFoot',
     footTone: 'text-brandInfo',
   },
   {
-    label: 'Saved Items',
+    label: 'member.statSavedItems',
     value: '18',
     icon: Heart,
     tone: 'bg-red-50 text-red-500',
-    foot: '3 recently added',
+    foot: 'member.statSavedItemsFoot',
     footTone: 'text-brandMuted',
   },
   {
-    label: 'Unread Messages',
+    label: 'member.statUnreadMessages',
     value: '3',
     icon: MessageSquare,
     tone: 'bg-amber-50 text-honey-amber',
-    foot: 'From sellers & providers',
+    foot: 'member.statUnreadMessagesFoot',
     footTone: 'text-honey-amber',
   },
 ] as const;
@@ -354,33 +373,44 @@ const dropdownNotifications = [
   { icon: CheckCircle, tone: 'bg-green-100 text-brandSuccess', text: 'Booking confirmed with CleanBee Home Services.', when: '2 hours ago' },
 ] as const;
 
-const avatarUrl = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150';
-
-function greeting(hour: number): string {
+function greetingKey(hour: number): MessageKey {
   if (hour < 12) {
-    return 'Good morning';
+    return 'member.goodMorning';
   }
 
-  return hour < 18 ? 'Good afternoon' : 'Good evening';
+  return hour < 18 ? 'member.goodAfternoon' : 'member.goodEvening';
 }
 
-export function MemberDashboardPage() {
+type MemberMenu = 'language' | 'messages' | 'notifications' | 'profile';
+
+export function MemberDashboardPage({ mainContent }: { mainContent?: ReactNode } = {}) {
+  const { t, locale } = useTranslation();
   const { user, logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [listingsOpen, setListingsOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<'messages' | 'notifications' | 'profile' | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<MemberMenu | null>(null);
   const [alertVisible, setAlertVisible] = useState(true);
   const [messageCount, setMessageCount] = useState(3);
   const [notifCount, setNotifCount] = useState(7);
   const [favorites, setFavorites] = useState<string[]>([]);
   const [readConversations, setReadConversations] = useState<string[]>([]);
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const [routeHash, setRouteHash] = useState(() => window.location.hash || '#member-dashboard');
   const carousel = useRef<HTMLDivElement>(null);
   const topBar = useRef<HTMLDivElement>(null);
 
+  // The shell is shared by every member route, so the sidebar highlight and
+  // the breadcrumb have to follow the hash rather than assume the dashboard.
+  useEffect(() => {
+    const onHashChange = () => setRouteHash(window.location.hash || '#member-dashboard');
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  const onMemberProfile = routeHash === '#member-profile';
   const now = new Date();
-  const firstName = (user?.name ?? 'Member').split(' ')[0];
+  const firstName = (user?.name ?? t('member.member')).split(' ')[0];
 
   // Any click outside the top bar closes whichever dropdown is open.
   useEffect(() => {
@@ -411,7 +441,7 @@ export function MemberDashboardPage() {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
-  function toggleDropdown(name: 'messages' | 'notifications' | 'profile') {
+  function toggleDropdown(name: MemberMenu) {
     setOpenDropdown((current) => (current === name ? null : name));
   }
 
@@ -450,12 +480,12 @@ export function MemberDashboardPage() {
               </div>
               <div className={`transition-opacity duration-200 ${text}`}>
                 <span className="block text-xl font-bold leading-none tracking-tight text-white">As<span className="text-honey">Beez</span></span>
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-honey">Member Portal</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-honey">{t('member.portal')}</span>
               </div>
             </a>
             <button
               onClick={() => setCollapsed((value) => !value)}
-              aria-label="Toggle Sidebar"
+              aria-label={t('member.toggleSidebar')}
               className="hidden rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-charcoal-light hover:text-white focus:outline-none focus:ring-2 focus:ring-honey lg:flex"
             >
               <ChevronLeft className={`h-5 w-5 transition-transform duration-300 ${collapsed ? 'rotate-180' : ''}`} />
@@ -468,22 +498,22 @@ export function MemberDashboardPage() {
             <div className={`space-y-2.5 rounded-xl border border-white/5 bg-charcoal-light/60 p-3 ${text}`}>
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <img src={avatarUrl} alt={`${user?.name ?? 'Member'} Profile`} className="h-10 w-10 rounded-full object-cover ring-2 ring-honey" />
-                  <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-charcoal bg-brandSuccess" title="Online" />
+                  <Avatar user={user} className="h-10 w-10 rounded-full ring-2 ring-honey" fallbackTone="bg-honey text-charcoal" />
+                  <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-charcoal bg-brandSuccess" title={t('member.online')} />
                 </div>
                 <div className="overflow-hidden">
                   <div className="flex items-center gap-1.5">
-                    <h4 className="truncate text-sm font-semibold text-white">{user?.name ?? 'Member'}</h4>
+                    <h4 className="truncate text-sm font-semibold text-white">{user?.name ?? t('member.member')}</h4>
                     <BadgeCheck className="h-4 w-4 shrink-0 fill-honey/20 text-honey" />
                   </div>
                   <span className="block text-xs font-medium text-honey">
-                    {user?.email_verified_at ? 'Verified Member' : 'Unverified Member'}
+                    {user?.email_verified_at ? t('publicMember.verifiedMember') : t('member.unverifiedMember')}
                   </span>
                 </div>
               </div>
               <div className="space-y-1 pt-1">
                 <div className="flex justify-between text-[11px] text-gray-400">
-                  <span>Profile Status</span>
+                  <span>{t('member.profileStatus')}</span>
                   <span className="font-semibold text-honey">85%</span>
                 </div>
                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-charcoal">
@@ -493,29 +523,32 @@ export function MemberDashboardPage() {
             </div>
 
             {/* Navigation groups */}
-            <nav className="space-y-6" aria-label="Main Navigation">
+            <nav className="space-y-6" aria-label={t('nav.mainNavigation')}>
               {navGroups.map((group) => (
                 <div key={group.title}>
-                  <h5 className={`mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-gray-400 ${text}`}>{group.title}</h5>
+                  <h5 className={`mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-gray-400 ${text}`}>{t(group.title)}</h5>
                   <ul className="space-y-1">
                     {group.links.map((link) => {
                       const LinkIcon = link.icon;
+                      const active = link.href !== undefined && link.href === routeHash;
                       const base = 'flex w-full items-center justify-between rounded-xl px-3 py-2.5 transition-all focus:outline-none focus:ring-2 focus:ring-honey';
-                      const tone = link.active
+                      const tone = active
                         ? 'bg-honey text-charcoal font-medium shadow-sm'
                         : 'text-gray-300 hover:bg-charcoal-light hover:text-white';
 
                       if (link.submenu) {
                         return (
                           <li key={link.label}>
+                            <SidebarTooltip label={t(link.label)} enabled={collapsed}>
                             <button
                               onClick={() => setListingsOpen((value) => !value)}
                               aria-expanded={listingsOpen}
+                              aria-label={collapsed ? t(link.label) : undefined}
                               className={`${base} ${tone}`}
                             >
                               <div className="flex items-center gap-3">
                                 <LinkIcon className="h-5 w-5 shrink-0" />
-                                <span className={`text-sm font-medium ${text}`}>{link.label}</span>
+                                <span className={`text-sm font-medium ${text}`}>{t(link.label)}</span>
                               </div>
                               <div className={`flex items-center gap-2 ${text}`}>
                                 {link.badge && (
@@ -524,11 +557,12 @@ export function MemberDashboardPage() {
                                 <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${listingsOpen ? 'rotate-180' : ''}`} />
                               </div>
                             </button>
+                            </SidebarTooltip>
                             {listingsOpen && (
                               <ul className="space-y-1 py-1 pl-9 pr-2">
                                 {link.submenu.map((entry) => (
-                                  <li key={entry}>
-                                    <a href="#" className="block py-1.5 text-xs text-gray-400 transition-colors hover:text-white">{entry}</a>
+                                  <li key={entry.label}>
+                                    <a href="#" className="block py-1.5 text-xs text-gray-400 transition-colors hover:text-white">{t(entry.label, { count: entry.count })}</a>
                                   </li>
                                 ))}
                               </ul>
@@ -539,15 +573,23 @@ export function MemberDashboardPage() {
 
                       return (
                         <li key={link.label}>
-                          <a href="#" title={link.label} className={`${base} ${tone}`}>
+                          <SidebarTooltip label={t(link.label)} enabled={collapsed}>
+                          <a
+                            href={link.href ?? '#'}
+                            aria-current={active ? 'page' : undefined}
+                            aria-label={collapsed ? t(link.label) : undefined}
+                            onClick={() => setMobileOpen(false)}
+                            className={`${base} ${tone}`}
+                          >
                             <div className="flex items-center gap-3">
                               <LinkIcon className={`h-5 w-5 shrink-0 ${link.accent ? 'text-honey' : ''}`} />
-                              <span className={`text-sm ${link.accent ? 'font-medium text-honey' : ''} ${text}`}>{link.label}</span>
+                              <span className={`text-sm ${link.accent ? 'font-medium text-honey' : ''} ${text}`}>{t(link.label)}</span>
                             </div>
                             {link.badge && (
                               <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${link.badge.tone} ${text}`}>{link.badge.text}</span>
                             )}
                           </a>
+                          </SidebarTooltip>
                         </li>
                       );
                     })}
@@ -561,22 +603,25 @@ export function MemberDashboardPage() {
               <div className="mx-auto flex h-8 w-8 items-center justify-center rounded-full bg-honey font-bold text-charcoal">
                 <Sparkles className="h-4 w-4" />
               </div>
-              <h5 className="text-xs font-bold uppercase tracking-wide text-white">AsBeez Gold Member</h5>
-              <p className="text-[11px] text-gray-300">Enjoy 0% seller commission and priority service bookings.</p>
+              <h5 className="text-xs font-bold uppercase tracking-wide text-white">{t('member.goldMember')}</h5>
+              <p className="text-[11px] text-gray-300">{t('member.goldMemberBody')}</p>
               <button className="w-full rounded-lg bg-honey px-3 py-1.5 text-xs font-semibold text-charcoal transition-colors hover:bg-honey-hover focus:outline-none focus:ring-2 focus:ring-white">
-                Upgrade Now
+                {t('member.upgradeNow')}
               </button>
             </div>
           </div>
 
           <div className="border-t border-charcoal-light p-3">
+            <SidebarTooltip label={t('auth.signOut')} enabled={collapsed}>
             <button
               onClick={() => setLogoutOpen(true)}
+              aria-label={collapsed ? t('auth.signOut') : undefined}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300 focus:outline-none focus:ring-2 focus:ring-red-400"
             >
               <LogOut className="h-5 w-5 shrink-0" />
-              <span className={`text-sm font-medium ${text}`}>Sign Out</span>
+              <span className={`text-sm font-medium ${text}`}>{t('auth.signOut')}</span>
             </button>
+            </SidebarTooltip>
           </div>
         </aside>
 
@@ -590,52 +635,67 @@ export function MemberDashboardPage() {
               <div className="flex min-w-0 items-center gap-3">
                 <button
                   onClick={() => setMobileOpen(true)}
-                  aria-label="Open Mobile Drawer"
+                  aria-label={t('member.openDrawer')}
                   className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 hover:text-charcoal focus:outline-none focus:ring-2 focus:ring-honey lg:hidden"
                 >
                   <Menu className="h-6 w-6" />
                 </button>
-                <nav aria-label="Breadcrumb" className="hidden truncate sm:block">
+                <nav aria-label={t('nav.breadcrumb')} className="hidden truncate sm:block">
                   <ol className="flex items-center gap-2 text-xs text-brandMuted">
-                    <li><a href="#" className="transition-colors hover:text-charcoal">Home</a></li>
+                    <li><a href="#" className="transition-colors hover:text-charcoal">{t('nav.home')}</a></li>
                     <li><ChevronRight className="h-3.5 w-3.5" /></li>
-                    <li className="truncate font-semibold text-charcoal" aria-current="page">Member Dashboard</li>
+                    {onMemberProfile ? (
+                      <>
+                        <li><a href="#member-dashboard" className="transition-colors hover:text-charcoal">{t('member.dashboard')}</a></li>
+                        <li><ChevronRight className="h-3.5 w-3.5" /></li>
+                        <li className="truncate font-semibold text-charcoal" aria-current="page">{t('nav.memberProfile')}</li>
+                      </>
+                    ) : (
+                      <li className="truncate font-semibold text-charcoal" aria-current="page">{t('member.dashboard')}</li>
+                    )}
                   </ol>
                 </nav>
               </div>
 
               <div className="mx-2 hidden max-w-2xl flex-1 md:block">
                 <form onSubmit={(event) => event.preventDefault()} className="flex items-center overflow-hidden rounded-xl border border-gray-200 bg-gray-100 transition-all focus-within:border-honey focus-within:ring-2 focus-within:ring-honey/30">
-                  <select aria-label="Search category" className="cursor-pointer border-r border-gray-300 bg-transparent py-2.5 pl-3 pr-8 text-xs font-medium text-charcoal focus:outline-none">
-                    <option>All Categories</option>
-                    <option>Products</option>
-                    <option>Services</option>
-                    <option>Professionals</option>
+                  <select aria-label={t('nav.searchCategory')} className="cursor-pointer border-r border-gray-300 bg-transparent py-2.5 pl-3 pr-8 text-xs font-medium text-charcoal focus:outline-none">
+                    <option>{t('nav.allCategories')}</option>
+                    <option>{t('nav.products')}</option>
+                    <option>{t('nav.services')}</option>
+                    <option>{t('member.professionals')}</option>
                   </select>
                   <div className="relative flex flex-1 items-center">
                     <Search className="absolute left-3 h-4 w-4 text-brandMuted" />
                     <input
                       type="text"
-                      placeholder="Search products, services, professionals, and listings..."
+                      placeholder={t('member.searchPlaceholder')}
                       className="w-full bg-transparent py-2.5 pl-9 pr-3 text-xs text-charcoal placeholder:text-gray-400 focus:outline-none"
                     />
                   </div>
-                  <button type="submit" aria-label="Search" className="flex shrink-0 items-center gap-1.5 bg-honey px-4 py-2.5 text-xs font-semibold text-charcoal transition-colors hover:bg-honey-hover">
+                  <button type="submit" aria-label={t('common.search')} className="flex shrink-0 items-center gap-1.5 bg-honey px-4 py-2.5 text-xs font-semibold text-charcoal transition-colors hover:bg-honey-hover">
                     <Search className="h-4 w-4" />
-                    <span>Search</span>
+                    <span>{t('common.search')}</span>
                   </button>
                 </form>
               </div>
 
               <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
-                <button className="rounded-full p-2 text-gray-600 hover:bg-gray-100 hover:text-charcoal focus:outline-none focus:ring-2 focus:ring-honey md:hidden" aria-label="Search Marketplace">
+                <button className="rounded-full p-2 text-gray-600 hover:bg-gray-100 hover:text-charcoal focus:outline-none focus:ring-2 focus:ring-honey md:hidden" aria-label={t('member.searchMarketplace')}>
                   <Search className="h-5 w-5" />
                 </button>
 
                 <a href="#" className="hidden items-center gap-1.5 rounded-xl bg-honey px-3.5 py-2 text-xs font-bold text-charcoal shadow-sm transition-all hover:bg-honey-hover focus:outline-none focus:ring-2 focus:ring-honey xl:flex">
                   <Plus className="h-4 w-4" />
-                  <span>Create Listing</span>
+                  <span>{t('member.createListing')}</span>
                 </a>
+
+                <LanguageMenu
+                  open={openDropdown === 'language'}
+                  onToggle={() => toggleDropdown('language')}
+                  onClose={() => setOpenDropdown(null)}
+                  buttonClassName="flex items-center gap-1 rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100 hover:text-charcoal focus:outline-none focus:ring-2 focus:ring-honey"
+                />
 
                 {/* Messages dropdown */}
                 <div className="relative">
@@ -643,7 +703,7 @@ export function MemberDashboardPage() {
                     onClick={() => toggleDropdown('messages')}
                     aria-haspopup="menu"
                     aria-expanded={openDropdown === 'messages'}
-                    aria-label="Messages"
+                    aria-label={t('member.navMessages')}
                     className="relative rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100 hover:text-charcoal focus:outline-none focus:ring-2 focus:ring-honey"
                   >
                     <MessageSquare className="h-5 w-5" />
@@ -655,9 +715,9 @@ export function MemberDashboardPage() {
                   {openDropdown === 'messages' && (
                     <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-80 rounded-2xl border border-gray-200 bg-white py-2 shadow-2xl ring-1 ring-charcoal/10 sm:w-96">
                       <div className="flex items-center justify-between border-b border-gray-100 px-4 py-2">
-                        <h3 className="text-sm font-bold text-charcoal">Messages</h3>
+                        <h3 className="text-sm font-bold text-charcoal">{t('member.navMessages')}</h3>
                         <div className="flex items-center gap-2">
-                          <button onClick={() => setMessageCount(0)} className="text-xs font-medium text-honey-amber hover:underline">Mark as read</button>
+                          <button onClick={() => setMessageCount(0)} className="text-xs font-medium text-honey-amber hover:underline">{t('vendor.markAsRead')}</button>
                           <MenuCloseButton onClose={() => setOpenDropdown(null)} />
                         </div>
                       </div>
@@ -670,7 +730,7 @@ export function MemberDashboardPage() {
                             onClick={() => setOpenDropdown(null)}
                             className={`flex gap-3 p-3 transition-colors hover:bg-honey-cream/40 ${messageCount > 0 ? 'bg-honey-cream/20' : ''}`}
                           >
-                            <img src={message.avatar} className="h-10 w-10 shrink-0 rounded-full object-cover" alt="Avatar" />
+                            <img src={message.avatar} className="h-10 w-10 shrink-0 rounded-full object-cover" alt={t('member.avatarAlt', { name: message.name })} />
                             <div className="min-w-0 flex-1">
                               <div className="flex items-baseline justify-between">
                                 <h4 className="truncate text-xs font-bold text-charcoal">{message.name}</h4>
@@ -683,7 +743,7 @@ export function MemberDashboardPage() {
                         ))}
                       </div>
                       <div className="border-t border-gray-100 px-4 py-2 text-center">
-                        <a href="#" className="text-xs font-semibold text-charcoal hover:text-honey-amber">View All Messages</a>
+                        <a href="#" className="text-xs font-semibold text-charcoal hover:text-honey-amber">{t('member.viewAllMessages')}</a>
                       </div>
                     </div>
                   )}
@@ -695,7 +755,7 @@ export function MemberDashboardPage() {
                     onClick={() => toggleDropdown('notifications')}
                     aria-haspopup="menu"
                     aria-expanded={openDropdown === 'notifications'}
-                    aria-label="Notifications"
+                    aria-label={t('member.navNotifications')}
                     className="relative rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100 hover:text-charcoal focus:outline-none focus:ring-2 focus:ring-honey"
                   >
                     <Bell className="h-5 w-5" />
@@ -707,9 +767,9 @@ export function MemberDashboardPage() {
                   {openDropdown === 'notifications' && (
                     <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-80 rounded-2xl border border-gray-200 bg-white py-2 shadow-2xl ring-1 ring-charcoal/10 sm:w-96">
                       <div className="flex items-center justify-between border-b border-gray-100 px-4 py-2">
-                        <h3 className="text-sm font-bold text-charcoal">Notifications</h3>
+                        <h3 className="text-sm font-bold text-charcoal">{t('member.navNotifications')}</h3>
                         <div className="flex items-center gap-2">
-                          <button onClick={() => setNotifCount(0)} className="text-xs font-medium text-honey-amber hover:underline">Clear all</button>
+                          <button onClick={() => setNotifCount(0)} className="text-xs font-medium text-honey-amber hover:underline">{t('member.clearAll')}</button>
                           <MenuCloseButton onClose={() => setOpenDropdown(null)} />
                         </div>
                       </div>
@@ -732,13 +792,13 @@ export function MemberDashboardPage() {
                         ))}
                       </div>
                       <div className="border-t border-gray-100 px-4 py-2 text-center">
-                        <a href="#" className="text-xs font-semibold text-charcoal hover:text-honey-amber">View All Notifications</a>
+                        <a href="#" className="text-xs font-semibold text-charcoal hover:text-honey-amber">{t('member.viewAllNotifications')}</a>
                       </div>
                     </div>
                   )}
                 </div>
 
-                <a href="#" aria-label="Shopping Cart" className="relative rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100 hover:text-charcoal focus:outline-none focus:ring-2 focus:ring-honey">
+                <a href="#" aria-label={t('member.shoppingCart')} className="relative rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-100 hover:text-charcoal focus:outline-none focus:ring-2 focus:ring-honey">
                   <ShoppingCart className="h-5 w-5" />
                   <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-honey text-[10px] font-bold text-charcoal ring-2 ring-white">2</span>
                 </a>
@@ -751,10 +811,10 @@ export function MemberDashboardPage() {
                     onClick={() => toggleDropdown('profile')}
                     aria-haspopup="menu"
                     aria-expanded={openDropdown === 'profile'}
-                    aria-label="User Profile Menu"
+                    aria-label={t('member.profileMenu')}
                     className="flex items-center gap-2 rounded-full p-1 transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-honey"
                   >
-                    <img src={avatarUrl} alt={`${user?.name ?? 'Member'} Avatar`} className="h-8 w-8 rounded-full object-cover ring-2 ring-honey" />
+                    <Avatar user={user} className="h-8 w-8 rounded-full ring-2 ring-honey" fallbackTone="bg-honey text-charcoal" />
                     <ChevronDown className={`hidden h-4 w-4 text-gray-500 transition-transform sm:block ${openDropdown === 'profile' ? 'rotate-180' : ''}`} />
                   </button>
 
@@ -762,7 +822,7 @@ export function MemberDashboardPage() {
                     <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-56 rounded-2xl border border-gray-200 bg-white py-2 shadow-2xl ring-1 ring-charcoal/10">
                       <div className="flex items-start justify-between gap-2 border-b border-gray-100 px-4 py-2.5">
                         <div className="min-w-0">
-                          <p className="truncate text-xs font-bold text-charcoal">{user?.name ?? 'Member'}</p>
+                          <p className="truncate text-xs font-bold text-charcoal">{user?.name ?? t('member.member')}</p>
                           <p className="truncate text-[11px] text-brandMuted">{user?.email ?? ''}</p>
                         </div>
                         <MenuCloseButton onClose={() => setOpenDropdown(null)} />
@@ -774,15 +834,15 @@ export function MemberDashboardPage() {
                           onClick={() => setOpenDropdown(null)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 transition-colors hover:bg-honey-cream hover:text-charcoal"
                         >
-                          <Store className="h-4 w-4 text-honey-amber" /><span>Browse Marketplace</span>
+                          <Store className="h-4 w-4 text-honey-amber" /><span>{t('storefront.browseMarketplace')}</span>
                         </a>
                         <a
                           role="menuitem"
-                          href="#"
+                          href="#member-profile"
                           onClick={() => setOpenDropdown(null)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 transition-colors hover:bg-honey-cream hover:text-charcoal"
                         >
-                          <User className="h-4 w-4 text-brandMuted" /><span>View Profile</span>
+                          <User className="h-4 w-4 text-brandMuted" /><span>{t('admin.viewProfile')}</span>
                         </a>
                         <a
                           role="menuitem"
@@ -790,7 +850,7 @@ export function MemberDashboardPage() {
                           onClick={() => setOpenDropdown(null)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 transition-colors hover:bg-honey-cream hover:text-charcoal"
                         >
-                          <Settings className="h-4 w-4 text-brandMuted" /><span>Account Settings</span>
+                          <Settings className="h-4 w-4 text-brandMuted" /><span>{t('admin.accountSettings')}</span>
                         </a>
                         <a
                           role="menuitem"
@@ -798,7 +858,7 @@ export function MemberDashboardPage() {
                           onClick={() => setOpenDropdown(null)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 transition-colors hover:bg-honey-cream hover:text-charcoal"
                         >
-                          <Crown className="h-4 w-4 text-honey-amber" /><span>Membership</span>
+                          <Crown className="h-4 w-4 text-honey-amber" /><span>{t('member.membership')}</span>
                         </a>
                         <a
                           role="menuitem"
@@ -806,7 +866,7 @@ export function MemberDashboardPage() {
                           onClick={() => setOpenDropdown(null)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs text-gray-700 transition-colors hover:bg-honey-cream hover:text-charcoal"
                         >
-                          <CircleHelp className="h-4 w-4 text-brandMuted" /><span>Help Center</span>
+                          <CircleHelp className="h-4 w-4 text-brandMuted" /><span>{t('member.helpCenter')}</span>
                         </a>
                       </div>
                       <div className="border-t border-gray-100 pt-1">
@@ -815,7 +875,7 @@ export function MemberDashboardPage() {
                           onClick={() => { setOpenDropdown(null); setLogoutOpen(true); }}
                           className="flex w-full items-center gap-2.5 px-4 py-2 text-xs text-brandDanger transition-colors hover:bg-red-50"
                         >
-                          <LogOut className="h-4 w-4" /><span>Sign Out</span>
+                          <LogOut className="h-4 w-4" /><span>{t('auth.signOut')}</span>
                         </button>
                       </div>
                     </div>
@@ -827,31 +887,32 @@ export function MemberDashboardPage() {
 
           {/* ========== MAIN CONTENT ========== */}
           <main className="bg-honeycomb flex-1 space-y-8 p-4 sm:p-6 lg:p-8">
+            {mainContent ?? <>
 
             {/* ========== 3. WELCOME BANNER ========== */}
-            <section className="relative overflow-hidden rounded-3xl border border-charcoal-light bg-gradient-to-r from-charcoal via-charcoal-light to-charcoal p-6 text-white shadow-xl sm:p-8" aria-label="Welcome">
+            <section className="relative overflow-hidden rounded-3xl border border-charcoal-light bg-gradient-to-r from-charcoal via-charcoal-light to-charcoal p-6 text-white shadow-xl sm:p-8" aria-label={t('member.welcome')}>
               <div className="pointer-events-none absolute bottom-0 right-0 top-0 w-1/3 bg-honey/10 blur-2xl" />
               <div className="relative z-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
                 <div className="max-w-xl space-y-2">
                   <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-honey">
                     <Calendar className="h-4 w-4" />
-                    <span>{now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    <span>{now.toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' })}</span>
                   </div>
                   <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-                    {greeting(now.getHours())}, <span className="text-honey">{firstName}!</span> 🐝
+                    {t(greetingKey(now.getHours()))}, <span className="text-honey">{firstName}!</span> 🐝
                   </h1>
                   <p className="text-sm leading-relaxed text-gray-300">
-                    Here’s what’s happening in your AsBeez account today. You have 3 pending service bookings and 2 orders arriving soon.
+                    {t('member.welcomeIntro')}
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                   <a href="#" className="flex items-center gap-2 rounded-xl bg-honey px-5 py-3 text-xs font-bold text-charcoal shadow-lg shadow-honey/20 transition-all hover:bg-honey-hover focus:outline-none focus:ring-2 focus:ring-white sm:text-sm">
                     <CirclePlus className="h-4 w-4" />
-                    <span>Create a Listing</span>
+                    <span>{t('member.navCreateListing')}</span>
                   </a>
                   <a href="#marketplace" className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/10 px-5 py-3 text-xs font-medium text-white backdrop-blur-md transition-all hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-honey sm:text-sm">
                     <Store className="h-4 w-4 text-honey" />
-                    <span>Browse Marketplace</span>
+                    <span>{t('storefront.browseMarketplace')}</span>
                   </a>
                 </div>
               </div>
@@ -865,17 +926,17 @@ export function MemberDashboardPage() {
                     <Sparkles className="h-5 w-5" />
                   </div>
                   <p className="text-xs font-medium text-charcoal sm:text-sm">
-                    <span className="font-bold">AsBeez Spring Seller Promotion:</span> Enjoy reduced marketplace fees on all service bookings made this week!
+                    <span className="font-bold">{t('member.promoTitle')}</span> {t('member.promoBody')}
                   </p>
                 </div>
-                <button onClick={() => setAlertVisible(false)} aria-label="Dismiss Alert" className="rounded-lg p-1 text-gray-400 hover:text-charcoal focus:outline-none">
+                <button onClick={() => setAlertVisible(false)} aria-label={t('member.dismissAlert')} className="rounded-lg p-1 text-gray-400 hover:text-charcoal focus:outline-none">
                   <X className="h-5 w-5" />
                 </button>
               </div>
             )}
 
             {/* ========== 4. SUMMARY STAT CARDS ========== */}
-            <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" aria-label="Account Summary Metrics">
+            <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" aria-label={t('member.summaryMetrics')}>
               {stats.map((stat) => {
                 const StatIcon = stat.icon;
                 const FootIcon = 'footIcon' in stat ? stat.footIcon : null;
@@ -884,7 +945,7 @@ export function MemberDashboardPage() {
                   <div key={stat.label} className="group flex flex-col justify-between rounded-2xl border border-gray-200/80 bg-white p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
                     <div className="flex items-start justify-between">
                       <div>
-                        <span className="text-xs font-semibold uppercase tracking-wider text-brandMuted">{stat.label}</span>
+                        <span className="text-xs font-semibold uppercase tracking-wider text-brandMuted">{t(stat.label)}</span>
                         <h3 className="mt-1 text-3xl font-black text-charcoal">{stat.value}</h3>
                       </div>
                       <div className={`flex h-12 w-12 items-center justify-center rounded-2xl transition-transform group-hover:scale-110 ${stat.tone}`}>
@@ -893,10 +954,10 @@ export function MemberDashboardPage() {
                     </div>
                     <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-3 text-xs">
                       <span className={`flex items-center gap-1 font-medium ${stat.footTone}`}>
-                        {FootIcon && <FootIcon className="h-3.5 w-3.5" />} {stat.foot}
+                        {FootIcon && <FootIcon className="h-3.5 w-3.5" />} {t(stat.foot)}
                       </span>
                       <a href="#" className="flex items-center gap-0.5 font-bold text-charcoal hover:text-honey-amber group-hover:underline">
-                        View <ChevronRight className="h-3.5 w-3.5" />
+                        {t('member.view')} <ChevronRight className="h-3.5 w-3.5" />
                       </a>
                     </div>
                   </div>
@@ -913,11 +974,11 @@ export function MemberDashboardPage() {
                 <section className="space-y-4 rounded-3xl border border-gray-200/80 bg-white p-6 shadow-sm" aria-labelledby="orders-heading">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div>
-                      <h2 id="orders-heading" className="text-lg font-bold text-charcoal">Recent Marketplace Orders</h2>
-                      <p className="text-xs text-brandMuted">Track and manage your recent physical product purchases.</p>
+                      <h2 id="orders-heading" className="text-lg font-bold text-charcoal">{t('member.recentOrders')}</h2>
+                      <p className="text-xs text-brandMuted">{t('member.recentOrdersIntro')}</p>
                     </div>
                     <a href="#" className="flex items-center gap-1 text-xs font-bold text-honey-amber hover:underline">
-                      View All Orders <ArrowRight className="h-3.5 w-3.5" />
+                      {t('member.viewAllOrders')} <ArrowRight className="h-3.5 w-3.5" />
                     </a>
                   </div>
 
@@ -925,13 +986,13 @@ export function MemberDashboardPage() {
                     <table className="w-full text-left text-xs text-charcoal">
                       <thead className="border-y border-gray-100 bg-gray-50 font-semibold uppercase tracking-wider text-brandMuted">
                         <tr>
-                          <th className="px-3 py-3">Order ID</th>
-                          <th className="px-3 py-3">Item</th>
-                          <th className="px-3 py-3">Seller</th>
-                          <th className="px-3 py-3">Date</th>
-                          <th className="px-3 py-3">Total</th>
-                          <th className="px-3 py-3">Status</th>
-                          <th className="px-3 py-3 text-right">Action</th>
+                          <th className="px-3 py-3">{t('member.colOrderId')}</th>
+                          <th className="px-3 py-3">{t('member.colItem')}</th>
+                          <th className="px-3 py-3">{t('member.colSeller')}</th>
+                          <th className="px-3 py-3">{t('vendor.colDate')}</th>
+                          <th className="px-3 py-3">{t('member.colTotal')}</th>
+                          <th className="px-3 py-3">{t('member.colStatus')}</th>
+                          <th className="px-3 py-3 text-right">{t('member.colAction')}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100">
@@ -950,7 +1011,7 @@ export function MemberDashboardPage() {
                             <td className="px-3 py-3.5 text-right">
                               <div className="flex items-center justify-end gap-2">
                                 <button className={`rounded-lg px-2.5 py-1 transition-colors ${order.actionTone}`}>{order.action}</button>
-                                <button className="rounded-md p-1 text-gray-400 hover:text-charcoal" title="More Options">
+                                <button className="rounded-md p-1 text-gray-400 hover:text-charcoal" title={t('member.moreOptions')}>
                                   <EllipsisVertical className="h-4 w-4" />
                                 </button>
                               </div>
@@ -970,7 +1031,7 @@ export function MemberDashboardPage() {
                         </div>
                         <h4 className="text-xs font-semibold text-charcoal">{order.item}</h4>
                         <div className="flex items-center justify-between text-[11px] text-brandMuted">
-                          <span>Seller: {order.seller}</span>
+                          <span>{t('member.sellerPrefix', { name: order.seller })}</span>
                           <span className="font-bold text-charcoal">{order.total}</span>
                         </div>
                         <div className="flex justify-end gap-2 border-t border-gray-200/50 pt-2">
@@ -987,11 +1048,11 @@ export function MemberDashboardPage() {
                 <section className="space-y-4 rounded-3xl border border-gray-200/80 bg-white p-6 shadow-sm" aria-labelledby="bookings-heading">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div>
-                      <h2 id="bookings-heading" className="text-lg font-bold text-charcoal">Upcoming Service Bookings</h2>
-                      <p className="text-xs text-brandMuted">Manage your scheduled sessions and hired professionals.</p>
+                      <h2 id="bookings-heading" className="text-lg font-bold text-charcoal">{t('member.upcomingBookingsTitle')}</h2>
+                      <p className="text-xs text-brandMuted">{t('member.upcomingBookingsIntro')}</p>
                     </div>
                     <a href="#" className="flex items-center gap-1 text-xs font-bold text-honey-amber hover:underline">
-                      Manage Calendar <ArrowRight className="h-3.5 w-3.5" />
+                      {t('member.manageCalendar')} <ArrowRight className="h-3.5 w-3.5" />
                     </a>
                   </div>
 
@@ -1031,8 +1092,8 @@ export function MemberDashboardPage() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2 pt-2">
-                            <button className="flex-1 rounded-lg bg-gray-100 py-1.5 text-xs font-semibold text-charcoal transition-colors hover:bg-gray-200">Details</button>
-                            <button className="rounded-lg border border-gray-200 p-1.5 text-charcoal transition-colors hover:bg-honey-cream" title="Message Provider">
+                            <button className="flex-1 rounded-lg bg-gray-100 py-1.5 text-xs font-semibold text-charcoal transition-colors hover:bg-gray-200">{t('member.details')}</button>
+                            <button className="rounded-lg border border-gray-200 p-1.5 text-charcoal transition-colors hover:bg-honey-cream" title={t('member.messageProvider')}>
                               <MessageSquare className="h-4 w-4" />
                             </button>
                           </div>
@@ -1046,14 +1107,14 @@ export function MemberDashboardPage() {
                 <section className="space-y-4 rounded-3xl border border-gray-200/80 bg-white p-6 shadow-sm" aria-labelledby="recommendations-heading">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h2 id="recommendations-heading" className="text-lg font-bold text-charcoal">Recommended For You</h2>
-                      <p className="text-xs text-brandMuted">Handpicked products and local services based on your activity.</p>
+                      <h2 id="recommendations-heading" className="text-lg font-bold text-charcoal">{t('member.recommended')}</h2>
+                      <p className="text-xs text-brandMuted">{t('member.recommendedIntro')}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <button onClick={() => scrollCarousel(-280)} aria-label="Scroll Left" className="rounded-full border border-gray-200 p-2 text-charcoal transition-colors hover:bg-honey-cream focus:outline-none focus:ring-2 focus:ring-honey">
+                      <button onClick={() => scrollCarousel(-280)} aria-label={t('member.scrollLeft')} className="rounded-full border border-gray-200 p-2 text-charcoal transition-colors hover:bg-honey-cream focus:outline-none focus:ring-2 focus:ring-honey">
                         <ChevronLeft className="h-4 w-4" />
                       </button>
-                      <button onClick={() => scrollCarousel(280)} aria-label="Scroll Right" className="rounded-full border border-gray-200 p-2 text-charcoal transition-colors hover:bg-honey-cream focus:outline-none focus:ring-2 focus:ring-honey">
+                      <button onClick={() => scrollCarousel(280)} aria-label={t('member.scrollRight')} className="rounded-full border border-gray-200 p-2 text-charcoal transition-colors hover:bg-honey-cream focus:outline-none focus:ring-2 focus:ring-honey">
                         <ChevronRight className="h-4 w-4" />
                       </button>
                     </div>
@@ -1069,7 +1130,7 @@ export function MemberDashboardPage() {
                           </span>
                           <button
                             onClick={() => toggleFavorite(item.title)}
-                            aria-label="Save to favorites"
+                            aria-label={t('member.saveToFavorites')}
                             aria-pressed={favorites.includes(item.title)}
                             className="absolute right-2 top-2 rounded-full bg-white/80 p-1.5 text-gray-600 transition-colors hover:bg-white"
                           >
@@ -1100,11 +1161,11 @@ export function MemberDashboardPage() {
                 <section className="space-y-4 rounded-3xl border border-gray-200/80 bg-white p-6 shadow-sm" aria-labelledby="messages-heading">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h2 id="messages-heading" className="text-lg font-bold text-charcoal">Recent Conversations</h2>
-                      <p className="text-xs text-brandMuted">Direct messaging with marketplace sellers and clients.</p>
+                      <h2 id="messages-heading" className="text-lg font-bold text-charcoal">{t('member.recentConversations')}</h2>
+                      <p className="text-xs text-brandMuted">{t('member.recentConversationsIntro')}</p>
                     </div>
                     <a href="#" className="flex items-center gap-1 text-xs font-bold text-honey-amber hover:underline">
-                      Open Inbox <ArrowRight className="h-3.5 w-3.5" />
+                      {t('member.openInbox')} <ArrowRight className="h-3.5 w-3.5" />
                     </a>
                   </div>
 
@@ -1144,8 +1205,8 @@ export function MemberDashboardPage() {
                 {/* ========== 9. ACTIVITY TIMELINE ========== */}
                 <section className="space-y-4 rounded-3xl border border-gray-200/80 bg-white p-6 shadow-sm" aria-labelledby="activity-heading">
                   <div className="flex items-center justify-between">
-                    <h2 id="activity-heading" className="text-base font-bold text-charcoal">Recent Activity</h2>
-                    <button onClick={() => setNotifCount(0)} className="text-xs font-semibold text-honey-amber hover:underline">Mark all read</button>
+                    <h2 id="activity-heading" className="text-base font-bold text-charcoal">{t('member.recentActivity')}</h2>
+                    <button onClick={() => setNotifCount(0)} className="text-xs font-semibold text-honey-amber hover:underline">{t('member.markAllRead')}</button>
                   </div>
 
                   <div className="relative space-y-4 before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-gray-100">
@@ -1166,8 +1227,8 @@ export function MemberDashboardPage() {
                 {/* ========== 10. SAVED ITEMS ========== */}
                 <section className="space-y-4 rounded-3xl border border-gray-200/80 bg-white p-6 shadow-sm" aria-labelledby="saved-heading">
                   <div className="flex items-center justify-between">
-                    <h2 id="saved-heading" className="text-base font-bold text-charcoal">Saved Items (4)</h2>
-                    <a href="#" className="text-xs font-semibold text-honey-amber hover:underline">View All</a>
+                    <h2 id="saved-heading" className="text-base font-bold text-charcoal">{t('member.savedItemsCount', { count: 4 })}</h2>
+                    <a href="#" className="text-xs font-semibold text-honey-amber hover:underline">{t('common.viewAll')}</a>
                   </div>
 
                   <div className="space-y-3">
@@ -1180,7 +1241,7 @@ export function MemberDashboardPage() {
                             <p className="text-[11px] font-bold text-honey-amber">{item.price}</p>
                           </div>
                         </div>
-                        <button className="shrink-0 rounded-lg bg-honey px-2.5 py-1 text-xs font-bold text-charcoal transition-colors hover:bg-honey-hover">Add to Cart</button>
+                        <button className="shrink-0 rounded-lg bg-honey px-2.5 py-1 text-xs font-bold text-charcoal transition-colors hover:bg-honey-hover">{t('member.addToCart')}</button>
                       </div>
                     ))}
                   </div>
@@ -1190,15 +1251,15 @@ export function MemberDashboardPage() {
                 <section className="space-y-4 rounded-3xl border border-gray-200/80 bg-white p-6 shadow-sm">
                   <h2 className="flex items-center gap-2 text-base font-bold text-charcoal">
                     <ShieldCheck className="h-5 w-5 text-brandSuccess" />
-                    Account &amp; Profile Health
+                    {t('member.accountHealth')}
                   </h2>
 
                   <div className="space-y-2 text-xs">
                     {[
-                      { label: 'Email Verification', ok: Boolean(user?.email_verified_at), okText: 'Verified', badText: 'Pending' },
-                      { label: 'Phone Verification', ok: true, okText: 'Verified', badText: 'Pending' },
-                      { label: 'Default Shipping Address', ok: false, okText: 'Set', badText: 'Missing' },
-                      { label: 'Two-Factor Auth (2FA)', ok: false, okText: 'Enabled', badText: 'Disabled' },
+                      { label: t('member.healthEmail'), ok: Boolean(user?.email_verified_at), okText: t('verify.verified'), badText: t('verify.pending') },
+                      { label: t('member.healthPhone'), ok: true, okText: t('verify.verified'), badText: t('verify.pending') },
+                      { label: t('member.healthShipping'), ok: false, okText: t('member.statusSet'), badText: t('member.statusMissing') },
+                      { label: t('member.healthTwoFactor'), ok: false, okText: t('member.statusEnabled'), badText: t('member.statusDisabled') },
                     ].map((row) => (
                       <div key={row.label} className="flex items-center justify-between text-gray-700">
                         <span className="flex items-center gap-2">
@@ -1216,7 +1277,7 @@ export function MemberDashboardPage() {
 
                   <div className="pt-2">
                     <button className="w-full rounded-xl bg-gray-100 py-2 text-xs font-semibold text-charcoal transition-colors hover:bg-gray-200">
-                      Complete My Profile (85%)
+                      {t('member.completeProfile', { percent: 85 })}
                     </button>
                   </div>
                 </section>
@@ -1224,16 +1285,16 @@ export function MemberDashboardPage() {
                 {/* ========== 13. WALLET WIDGET ========== */}
                 <section className="space-y-4 rounded-3xl bg-gradient-to-br from-charcoal to-charcoal-light p-6 text-white shadow-lg">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">AsBeez Balance</span>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">{t('member.balance')}</span>
                     <Wallet className="h-5 w-5 text-honey" />
                   </div>
                   <div>
                     <h3 className="text-3xl font-black text-honey">$240.50</h3>
-                    <p className="text-[11px] text-gray-300">Marketplace Store Credits &amp; Earnings</p>
+                    <p className="text-[11px] text-gray-300">{t('member.balanceCaption')}</p>
                   </div>
                   <div className="flex gap-2 pt-2">
-                    <button className="flex-1 rounded-lg bg-honey py-1.5 text-xs font-bold text-charcoal transition-colors hover:bg-honey-hover">Withdraw</button>
-                    <button className="flex-1 rounded-lg bg-white/10 py-1.5 text-xs font-medium text-white transition-colors hover:bg-white/20">Add Funds</button>
+                    <button className="flex-1 rounded-lg bg-honey py-1.5 text-xs font-bold text-charcoal transition-colors hover:bg-honey-hover">{t('member.withdraw')}</button>
+                    <button className="flex-1 rounded-lg bg-white/10 py-1.5 text-xs font-medium text-white transition-colors hover:bg-white/20">{t('member.addFunds')}</button>
                   </div>
                 </section>
               </div>
@@ -1245,19 +1306,20 @@ export function MemberDashboardPage() {
                 <div className="flex h-6 w-6 items-center justify-center rounded-md bg-honey font-bold text-charcoal">
                   <Hexagon className="h-4 w-4" />
                 </div>
-                <span>&copy; 2026 AsBeez Inc. All rights reserved.</span>
+                <span>{t('member.copyright', { year: new Date().getFullYear() })}</span>
               </div>
               <div className="flex flex-wrap items-center gap-4">
-                <a href="#" className="transition-colors hover:text-charcoal">Privacy Policy</a>
-                <a href="#" className="transition-colors hover:text-charcoal">Terms of Service</a>
-                <a href="#" className="transition-colors hover:text-charcoal">Help Center</a>
-                <a href="#" className="transition-colors hover:text-charcoal">Accessibility</a>
+                <a href="#" className="transition-colors hover:text-charcoal">{t('vendor.privacyPolicy')}</a>
+                <a href="#" className="transition-colors hover:text-charcoal">{t('member.termsOfService')}</a>
+                <a href="#" className="transition-colors hover:text-charcoal">{t('member.helpCenter')}</a>
+                <a href="#" className="transition-colors hover:text-charcoal">{t('member.accessibility')}</a>
                 <div className="flex items-center gap-1 font-semibold text-charcoal">
                   <Globe className="h-3.5 w-3.5" />
-                  <span>English (US)</span>
+                  <span>{SUPPORTED_LOCALES.find((l) => l.code === locale)?.native ?? locale}</span>
                 </div>
               </div>
             </footer>
+            </>}
           </main>
         </div>
       </div>
@@ -1276,12 +1338,12 @@ export function MemberDashboardPage() {
               <LogOut className="h-6 w-6" />
             </div>
             <div className="space-y-1 text-center">
-              <h3 id="logout-title" className="text-base font-bold text-charcoal">Sign out of AsBeez?</h3>
-              <p className="text-xs text-brandMuted">Are you sure you want to sign out of your member portal account?</p>
+              <h3 id="logout-title" className="text-base font-bold text-charcoal">{t('member.signOutTitle')}</h3>
+              <p className="text-xs text-brandMuted">{t('member.signOutBody')}</p>
             </div>
             <div className="flex gap-3 pt-2">
-              <button onClick={() => setLogoutOpen(false)} className="flex-1 rounded-xl bg-gray-100 py-2.5 text-xs font-semibold text-charcoal transition-colors hover:bg-gray-200">Cancel</button>
-              <button onClick={() => void logout()} className="flex-1 rounded-xl bg-brandDanger py-2.5 text-xs font-bold text-white transition-colors hover:bg-red-700">Sign Out</button>
+              <button onClick={() => setLogoutOpen(false)} className="flex-1 rounded-xl bg-gray-100 py-2.5 text-xs font-semibold text-charcoal transition-colors hover:bg-gray-200">{t('common.cancel')}</button>
+              <button onClick={() => void logout()} className="flex-1 rounded-xl bg-brandDanger py-2.5 text-xs font-bold text-white transition-colors hover:bg-red-700">{t('auth.signOut')}</button>
             </div>
           </div>
         </div>

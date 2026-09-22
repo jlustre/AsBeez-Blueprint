@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Vendor;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StoreResource;
 use App\Http\Resources\StoreSummaryResource;
+use App\Models\CountryRegion;
 use App\Models\Store;
 use App\Support\StoreCompleteness;
 use Illuminate\Http\JsonResponse;
@@ -73,7 +74,7 @@ class StoreController extends Controller
         // Soft delete: the row and its content stay recoverable.
         $store->delete();
 
-        return response()->json(['message' => 'Store archived.']);
+        return response()->json(['message' => __('app.store.archived')]);
     }
 
     /** Broken out so the page can refresh the panel without refetching everything. */
@@ -105,8 +106,11 @@ class StoreController extends Controller
             'public_phone' => ['sometimes', 'nullable', 'string', 'max:50'],
             'website' => ['sometimes', 'nullable', 'url', 'max:255'],
 
-            'country' => ['sometimes', 'nullable', 'string', 'size:2'],
-            'state' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'country' => [
+                'sometimes', 'nullable', 'string', 'size:2',
+                Rule::exists('countries', 'code')->where('is_active', true),
+            ],
+            'state' => ['sometimes', 'nullable', 'string', 'max:255', $this->regionRule()],
             'city' => ['sometimes', 'nullable', 'string', 'max:255'],
             'postal_code' => ['sometimes', 'nullable', 'string', 'max:20'],
             'address_line' => ['sometimes', 'nullable', 'string', 'max:255'],
@@ -124,6 +128,32 @@ class StoreController extends Controller
             // why that value is not offered here.
             'status' => ['sometimes', Rule::in([Store::STATUS_DRAFT, Store::STATUS_ACTIVE, Store::STATUS_PAUSED])],
         ];
+    }
+
+    /**
+     * A country with seeded subdivisions only accepts one of them; a country
+     * with none keeps free text, because plenty of countries have no
+     * meaningful "state" to pick from.
+     */
+    private function regionRule(): \Closure
+    {
+        return function (string $attribute, mixed $value, \Closure $fail) {
+            $country = request()->input('country');
+
+            if (blank($value) || blank($country)) {
+                return;
+            }
+
+            $available = CountryRegion::where('country_code', $country);
+
+            if (! $available->exists()) {
+                return;
+            }
+
+            if (! (clone $available)->where('code', $value)->exists()) {
+                $fail(__('app.location.region_mismatch'));
+            }
+        };
     }
 
     private function uniqueSlug(string $name): string

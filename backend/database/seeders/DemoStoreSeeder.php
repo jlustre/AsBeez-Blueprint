@@ -42,8 +42,151 @@ class DemoStoreSeeder extends Seeder
 
         $store = $this->seedGoldenHive($vendor);
         $this->seedSecondStore($vendor);
+        $this->seedDirectoryFixtures();
 
         $this->command?->info("Seeded store \"{$store->name}\" (/{$store->slug}) for {$vendor->email}.");
+    }
+
+    /**
+     * Extra vendor rows so the admin directory is not a single account after
+     * a fresh seed. These are fixtures, not sign-in targets.
+     */
+    private function seedDirectoryFixtures(): void
+    {
+        $fixtures = [
+            [
+                'email' => 'maya@pacificpixel.test',
+                'name' => 'Maya Chen',
+                'status' => User::STATUS_PENDING,
+                'verified' => false,
+                'store' => [
+                    'name' => 'Pacific Pixel Studio',
+                    'slug' => 'pacific-pixel',
+                    'status' => Store::STATUS_DRAFT,
+                    'city' => 'Vancouver',
+                    'state' => 'BC',
+                    'country' => 'CA',
+                    'public_email' => 'maya@pacificpixel.ca',
+                    'categories' => ['electronics', 'digital-products'],
+                ],
+            ],
+            [
+                'email' => 'sales@northernpro.test',
+                'name' => 'Gabriel Santos',
+                'status' => User::STATUS_ACTIVE,
+                'verified' => true,
+                'store' => [
+                    'name' => 'Northern Pro Supply',
+                    'slug' => 'northern-pro',
+                    'status' => Store::STATUS_ACTIVE,
+                    'city' => 'Calgary',
+                    'state' => 'AB',
+                    'country' => 'CA',
+                    'public_email' => 'sales@northernpro.com',
+                    'verified' => true,
+                    'categories' => ['home-living'],
+                ],
+            ],
+            [
+                'email' => 'omar@urbantool.test',
+                'name' => 'Omar Haddad',
+                'status' => User::STATUS_RESTRICTED,
+                'verified' => true,
+                'status_reason' => 'Open marketplace dispute.',
+                'store' => [
+                    'name' => 'Urban Tool Exchange',
+                    'slug' => 'urban-tool',
+                    'status' => Store::STATUS_PAUSED,
+                    'city' => 'Toronto',
+                    'state' => 'ON',
+                    'country' => 'CA',
+                    'public_email' => 'omar@urbantool.com',
+                    'categories' => ['local-services'],
+                ],
+            ],
+            [
+                'email' => 'nina@novastyle.test',
+                'name' => 'Nina Brooks',
+                'status' => User::STATUS_SUSPENDED,
+                'verified' => true,
+                'status_reason' => 'Compliance review.',
+                'store' => [
+                    'name' => 'Nova Style Depot',
+                    'slug' => 'nova-style',
+                    'status' => Store::STATUS_SUSPENDED,
+                    'city' => 'Seattle',
+                    'state' => 'WA',
+                    'country' => 'US',
+                    'public_email' => 'nina@novastyle.com',
+                    'categories' => ['health-beauty'],
+                ],
+            ],
+            [
+                'email' => 'linda@mapledigital.test',
+                'name' => 'Linda Patel',
+                'status' => User::STATUS_DEACTIVATED,
+                'verified' => true,
+                'status_reason' => 'Vendor requested deactivation.',
+                'store' => [
+                    'name' => 'Maple Digital Works',
+                    'slug' => 'maple-digital',
+                    'status' => Store::STATUS_DRAFT,
+                    'city' => 'Burnaby',
+                    'state' => 'BC',
+                    'country' => 'CA',
+                    'public_email' => 'linda@mapledigital.ca',
+                    'categories' => ['electronics', 'digital-products'],
+                ],
+            ],
+        ];
+
+        foreach ($fixtures as $index => $fixture) {
+            $account = User::updateOrCreate(
+                ['email' => $fixture['email']],
+                [
+                    'name' => $fixture['name'],
+                    'role' => User::ROLE_VENDOR,
+                    'password' => UserSeeder::PASSWORD,
+                ],
+            );
+
+            $account->forceFill([
+                'status' => $fixture['status'],
+                'status_reason' => $fixture['status_reason'] ?? null,
+                'status_changed_at' => now()->subHours(8),
+                'email_verified_at' => $fixture['verified'] ? now()->subDays(4) : null,
+                'last_active_at' => now()->subHours(2),
+            ])->save();
+
+            $storeData = $fixture['store'];
+            $store = Store::updateOrCreate(
+                ['slug' => $storeData['slug']],
+                [
+                    'owner_id' => $account->getKey(),
+                    'name' => $storeData['name'],
+                    'status' => $storeData['status'],
+                    'city' => $storeData['city'],
+                    'state' => $storeData['state'],
+                    'country' => $storeData['country'],
+                    'public_email' => $storeData['public_email'],
+                    'timezone' => 'America/Vancouver',
+                    'verified_at' => ($storeData['verified'] ?? false) ? now() : null,
+                ],
+            );
+
+            $this->seedCategories($store, $storeData['categories']);
+            $this->seedMedia($store, $index + 2, $storeData['slug']);
+
+            if ($account->email === 'maya@pacificpixel.test') {
+                StoreVerification::updateOrCreate(
+                    ['store_id' => $store->getKey(), 'kind' => 'business'],
+                    [
+                        'status' => StoreVerification::STATUS_PENDING,
+                        'reference' => 'Business documents uploaded',
+                    ],
+                );
+            }
+        }
     }
 
     private function seedGoldenHive(User $vendor): Store

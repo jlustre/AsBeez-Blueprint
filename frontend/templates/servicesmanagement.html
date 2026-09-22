@@ -1,0 +1,702 @@
+<main class="min-h-screen bg-amber-50/60 px-4 py-6 text-slate-800 sm:px-6 lg:px-8"> <div class="mx-auto max-w-[100rem] space-y-6">
+<!-- Page Header -->
+<header class="space-y-5">
+  <nav aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+      <li><a href="/admin" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Admin</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/admin/catalog" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Catalog Management</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="font-semibold text-slate-800" aria-current="page">Services</li>
+    </ol>
+  </nav>
+
+  <div class="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+    <div>
+      <div class="flex flex-wrap items-center gap-3">
+        <h1 class="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Services Management</h1>
+        <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">36,842 services</span>
+      </div>
+      <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">Manage service listings, providers, bookings, scheduling, pricing, service areas, customer outcomes, and compliance.</p>
+    </div>
+
+    <div class="grid gap-2 sm:flex">
+      <a href="/admin/services/export" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold shadow-sm hover:border-amber-400 hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14"/></svg>
+        Export Services
+      </a>
+      <a href="/admin/services/import" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold shadow-sm hover:border-amber-400 hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 16V4m0 0 4 4m-4-4L8 8M5 20h14"/></svg>
+        Import Services
+      </a>
+      <a href="/admin/services/create" class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-amber-500 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+        Add Service
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Service Statistics -->
+<section aria-labelledby="service-statistics-heading">
+  <h2 id="service-statistics-heading" class="sr-only">Service statistics</h2>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-8">
+    <a href="/admin/services" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-400 hover:shadow-md">
+      <div class="flex justify-between"><span class="rounded-xl bg-slate-100 p-2"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 20h16M6 20V9l6-5 6 5v11M9 20v-6h6v6"/></svg></span><span class="text-xs font-bold text-emerald-600">+9.2%</span></div><p class="mt-4 text-2xl font-black">36,842</p><p class="text-xs text-slate-500">Total services</p>
+    </a>
+    <a href="/admin/services?status=published" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-emerald-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-emerald-100 p-2 text-emerald-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="m5 12 4 4L19 6"/></svg></span><span class="text-xs font-bold text-emerald-600">+7.4%</span></div><p class="mt-4 text-2xl font-black">31,486</p><p class="text-xs text-slate-500">Published</p>
+    </a>
+    <a href="/admin/services?status=draft" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-amber-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-amber-100 p-2 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 20h4l11-11-4-4L4 16v4Z"/></svg></span><span class="text-xs font-bold text-slate-500">+68</span></div><p class="mt-4 text-2xl font-black">2,764</p><p class="text-xs text-slate-500">Drafts</p>
+    </a>
+    <a href="/admin/services?status=pending" class="rounded-2xl border border-amber-200 bg-white p-4 shadow-sm hover:border-amber-500">
+      <div class="flex justify-between"><span class="rounded-xl bg-amber-100 p-2 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-width="2" d="M12 7v5l3 2"/></svg></span><span class="text-xs font-bold text-rose-600">+42</span></div><p class="mt-4 text-2xl font-black">1,186</p><p class="text-xs text-slate-500">Pending approval</p>
+    </a>
+    <a href="/admin/services?status=flagged" class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm hover:border-rose-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-rose-100 p-2 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M6 21V4m0 1h11l-2 4 2 4H6"/></svg></span><span class="text-xs font-bold text-rose-600">+7</span></div><p class="mt-4 text-2xl font-black">148</p><p class="text-xs text-slate-500">Flagged</p>
+    </a>
+    <a href="/admin/services?status=rejected" class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm hover:border-rose-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-rose-100 p-2 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-width="2" d="m8 8 8 8m0-8-8 8"/></svg></span><span class="text-xs font-bold text-emerald-600">-3.1%</span></div><p class="mt-4 text-2xl font-black">236</p><p class="text-xs text-slate-500">Rejected</p>
+    </a>
+    <a href="/admin/services?availability=unavailable" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-slate-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-slate-100 p-2 text-slate-600"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M5 12h14"/></svg></span><span class="text-xs font-bold text-rose-600">+26</span></div><p class="mt-4 text-2xl font-black">864</p><p class="text-xs text-slate-500">Paused or unavailable</p>
+    </a>
+    <a href="/admin/services/compliance?status=alert" class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm hover:border-rose-500">
+      <div class="flex justify-between"><span class="rounded-xl bg-rose-100 p-2 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 3 2 21h20L12 3Zm0 6v5m0 3h.01"/></svg></span><span class="text-xs font-bold text-rose-600">+4</span></div><p class="mt-4 text-2xl font-black">58</p><p class="text-xs text-slate-500">Compliance alerts</p>
+    </a>
+  </div>
+</section>
+
+<!-- Marketplace Performance -->
+<section aria-labelledby="performance-overview-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div><h2 id="performance-overview-heading" class="text-lg font-bold">Service marketplace performance</h2><p class="mt-1 text-sm text-slate-500">Listing growth, bookings, revenue, moderation, and customer outcomes.</p></div>
+    <div class="flex flex-wrap gap-2">
+      <label for="performance-range" class="sr-only">Performance range</label>
+      <select id="performance-range" class="rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Last 7 days</option><option selected>Last 30 days</option><option>Last 90 days</option><option>This year</option><option>Custom range</option></select>
+      <a href="/admin/analytics/services" class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-bold hover:border-amber-400 hover:bg-amber-50">View Services Analytics</a>
+    </div>
+  </div>
+
+  <div class="mt-6 grid gap-5 xl:grid-cols-[1.2fr_0.8fr]">
+    <dl class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div class="rounded-xl bg-sky-50 p-4"><dt class="text-xs text-slate-500">New services</dt><dd class="mt-1 text-xl font-black">2,186</dd></div><div class="rounded-xl bg-emerald-50 p-4"><dt class="text-xs text-slate-500">Approved</dt><dd class="mt-1 text-xl font-black text-emerald-700">1,842</dd></div>
+      <div class="rounded-xl bg-rose-50 p-4"><dt class="text-xs text-slate-500">Rejected</dt><dd class="mt-1 text-xl font-black text-rose-700">118</dd></div><div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Archived</dt><dd class="mt-1 text-xl font-black">142</dd></div>
+      <div class="rounded-xl bg-amber-50 p-4"><dt class="text-xs text-slate-500">Bookings created</dt><dd class="mt-1 text-xl font-black">184K</dd></div><div class="rounded-xl bg-emerald-50 p-4"><dt class="text-xs text-slate-500">Completed</dt><dd class="mt-1 text-xl font-black">162K</dd></div>
+      <div class="rounded-xl bg-violet-50 p-4"><dt class="text-xs text-slate-500">Gross booking value</dt><dd class="mt-1 text-xl font-black text-violet-700">$18.4M</dd></div><div class="rounded-xl bg-amber-50 p-4"><dt class="text-xs text-slate-500">Commission</dt><dd class="mt-1 text-xl font-black text-amber-700">$1.52M</dd></div>
+      <div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Conversion</dt><dd class="mt-1 text-xl font-black">5.8%</dd></div><div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Average rating</dt><dd class="mt-1 text-xl font-black">4.72</dd></div>
+      <div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Approval time</dt><dd class="mt-1 text-xl font-black">10.2 hrs</dd></div><div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Cancellation / Dispute</dt><dd class="mt-1 text-xl font-black">3.2% / 0.4%</dd></div>
+    </dl>
+    <div class="flex h-48 items-end gap-2 rounded-xl border border-slate-100 bg-gradient-to-b from-white to-amber-50 p-4" aria-label="Services performance chart">
+      <div class="h-[30%] flex-1 rounded-t bg-amber-200"></div><div class="h-[42%] flex-1 rounded-t bg-amber-300"></div><div class="h-[38%] flex-1 rounded-t bg-amber-300"></div><div class="h-[55%] flex-1 rounded-t bg-amber-400"></div>
+      <div class="h-[50%] flex-1 rounded-t bg-amber-300"></div><div class="h-[68%] flex-1 rounded-t bg-amber-400"></div><div class="h-[62%] flex-1 rounded-t bg-amber-400"></div><div class="h-[78%] flex-1 rounded-t bg-amber-500"></div>
+      <div class="h-[72%] flex-1 rounded-t bg-amber-500"></div><div class="h-[88%] flex-1 rounded-t bg-slate-800"></div><div class="h-[82%] flex-1 rounded-t bg-amber-500"></div><div class="h-full flex-1 rounded-t bg-slate-950"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Search and Filters -->
+<form action="/admin/services" method="get" aria-labelledby="service-filter-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-200 px-5 py-4 sm:px-6"><h2 id="service-filter-heading" class="text-lg font-bold">Search and filter services</h2></div>
+  <div class="space-y-4 p-5 sm:p-6">
+    <div class="relative">
+      <svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke-width="2"/><path stroke-width="2" d="m20 20-4-4"/></svg>
+      <label for="service-search" class="sr-only">Search services</label>
+      <input id="service-search" name="search" type="search" placeholder="Search service, ID, code, vendor, store, provider, category, license, certification, or moderation case" class="w-full rounded-xl border-slate-300 py-3 pl-12 pr-4 text-sm shadow-sm focus:border-amber-500 focus:ring-amber-500">
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-6">
+      <div><label for="service-status" class="block text-xs font-bold text-slate-600">Service status</label><select id="service-status" name="status" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All statuses</option><option>Published</option><option>Draft</option><option>Pending approval</option><option>Changes requested</option><option>Rejected</option><option>Paused</option><option>Hidden</option><option>Suspended</option><option>Archived</option><option>Deleted</option></select></div>
+      <div><label for="service-type" class="block text-xs font-bold text-slate-600">Service type</label><select id="service-type" name="type" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All types</option><option>In-person</option><option>Remote</option><option>On-demand</option><option>Scheduled appointment</option><option>Consultation</option><option>Subscription</option><option>Class or workshop</option><option>Event service</option><option>Home service</option><option>Professional service</option><option>Custom quote</option></select></div>
+      <div><label for="booking-model" class="block text-xs font-bold text-slate-600">Booking model</label><select id="booking-model" name="booking_model" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any booking model</option><option>Instant booking</option><option>Request to book</option><option>Quote required</option><option>Contact provider</option><option>Recurring booking</option><option>No online booking</option></select></div>
+      <div><label for="delivery-method" class="block text-xs font-bold text-slate-600">Delivery method</label><select id="delivery-method" name="delivery" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any delivery method</option><option>Customer location</option><option>Provider location</option><option>Remote or virtual</option><option>Mobile service</option><option>Hybrid</option></select></div>
+      <div><label for="moderation-filter" class="block text-xs font-bold text-slate-600">Moderation</label><select id="moderation-filter" name="moderation" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All moderation</option><option>Not reviewed</option><option>Pending review</option><option>Approved</option><option>Changes requested</option><option>Rejected</option><option>Escalated</option><option>Under investigation</option></select></div>
+      <div><label for="availability-filter" class="block text-xs font-bold text-slate-600">Availability</label><select id="availability-filter" name="availability" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any availability</option><option>Available</option><option>Limited</option><option>Fully booked</option><option>Temporarily unavailable</option><option>Seasonal</option><option>Paused</option><option>No schedule</option></select></div>
+      <div><label for="vendor-filter" class="block text-xs font-bold text-slate-600">Vendor</label><select id="vendor-filter" name="vendor" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All vendors</option><option>BrightNest Home Services</option><option>Pacific Wellness Collective</option><option>Northstar Consulting</option><option>Golden Lens Studio</option></select></div>
+      <div><label for="provider-filter" class="block text-xs font-bold text-slate-600">Provider</label><input id="provider-filter" name="provider" placeholder="Any provider" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="category-filter" class="block text-xs font-bold text-slate-600">Category</label><select id="category-filter" name="category" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All categories</option><option>Home Services</option><option>Health &amp; Wellness</option><option>Professional Services</option><option>Photography</option><option>Education</option></select></div>
+      <div><label for="service-area-filter" class="block text-xs font-bold text-slate-600">Service area</label><input id="service-area-filter" name="service_area" placeholder="City, region, or postal code" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="risk-filter" class="block text-xs font-bold text-slate-600">Risk</label><select id="risk-filter" name="risk" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All risk levels</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div>
+      <div><label for="service-sort" class="block text-xs font-bold text-slate-600">Sort by</label><select id="service-sort" name="sort" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Newest services</option><option>Oldest services</option><option>Name A–Z</option><option>Most booked</option><option>Highest booking value</option><option>Highest rating</option><option>Highest cancellation rate</option><option>Most reported</option><option>Highest risk</option><option>Pending longest</option></select></div>
+    </div>
+
+    <div class="flex flex-col gap-3 border-t border-slate-100 pt-4 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex flex-wrap gap-2">
+        <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Published <button type="button" aria-label="Remove Published filter">×</button></span>
+        <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Available <button type="button" aria-label="Remove Available filter">×</button></span>
+        <button type="button" class="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-bold hover:bg-slate-50">Saved Filters</button>
+        <button type="button" class="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-bold hover:bg-slate-50">More Filters</button>
+      </div>
+      <div class="flex gap-2"><a href="/admin/services" class="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100">Clear Filters</a><button type="submit" class="rounded-xl bg-amber-400 px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500">Apply Filters</button></div>
+    </div>
+  </div>
+</form>
+
+<!-- Services Directory -->
+<div class="grid gap-6 2xl:grid-cols-[minmax(0,1fr)_22rem]">
+  <section aria-labelledby="services-table-heading" class="min-w-0 rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div><h2 id="services-table-heading" class="text-lg font-bold">Service directory</h2><p class="mt-1 text-sm text-slate-500">Showing 1–25 of 36,842 services</p></div>
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="inline-flex items-center gap-2 text-sm font-semibold"><input type="checkbox" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"> Select page</label>
+        <button type="button" aria-label="Table view" class="rounded-lg bg-slate-900 p-2 text-white"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 5h16v14H4zm0 5h16M9 5v14"/></svg></button>
+        <button type="button" aria-label="Grid view" class="rounded-lg border p-2 hover:bg-amber-50"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z"/></svg></button>
+        <select aria-label="Table density" class="rounded-lg border-slate-300 text-xs"><option>Comfortable</option><option>Compact</option></select>
+      </div>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="border-b border-amber-200 bg-amber-50 px-5 py-3">
+      <div class="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+        <p class="text-sm font-bold text-amber-900">2 services selected</p>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold">Approve</button><button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold">Request Changes</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Assign Category</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Assign Moderator</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Assign Reviewer</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Publish</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Unpublish</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Pause</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Tags</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Collection</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Booking Model</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Cancellation Policy</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Feature</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Run Audit</button>
+          <button type="button" class="rounded-lg border border-orange-200 bg-white px-3 py-2 text-xs font-bold text-orange-700">Hide</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Archive</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Export</button><button type="button" class="px-2 py-2 text-xs font-bold text-slate-500">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services Table -->
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[122rem] text-left text-sm">
+        <caption class="sr-only">AsBeez marketplace services</caption>
+        <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+          <tr>
+            <th scope="col" class="px-4 py-3"><input type="checkbox" aria-label="Select displayed services" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></th>
+            <th scope="col" class="px-4 py-3">Service</th><th scope="col" class="px-4 py-3">ID and code</th><th scope="col" class="px-4 py-3">Vendor and store</th><th scope="col" class="px-4 py-3">Provider</th>
+            <th scope="col" class="px-4 py-3">Category</th><th scope="col" class="px-4 py-3">Type</th><th scope="col" class="px-4 py-3 text-right">Pricing</th><th scope="col" class="px-4 py-3">Duration</th>
+            <th scope="col" class="px-4 py-3">Availability</th><th scope="col" class="px-4 py-3 text-right">Bookings</th><th scope="col" class="px-4 py-3 text-right">Booking value</th><th scope="col" class="px-4 py-3">Rating</th>
+            <th scope="col" class="px-4 py-3">Moderation</th><th scope="col" class="px-4 py-3">Status</th><th scope="col" class="px-4 py-3">Updated</th><th scope="col" class="px-4 py-3">Risk</th><th scope="col" class="px-4 py-3 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr class="bg-amber-50/40 hover:bg-amber-50">
+            <td class="px-4 py-4"><input type="checkbox" checked aria-label="Select Complete Home Deep Cleaning" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-amber-200 to-yellow-400 text-amber-900"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="m4 18 8-14 8 14M7 14h10M9 18v3m6-3v3"/></svg></div><div><a href="/admin/services/SRV-100284" class="font-bold text-slate-950 hover:text-amber-700">Complete Home Deep Cleaning</a><p class="text-xs text-slate-500">Basic, Standard, Premium · 8 add-ons</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">SRV-100284</p><p class="text-xs text-slate-500">BHS-CLEAN-DEEP</p></td><td class="px-4 py-4"><p class="font-semibold">BrightNest Services Ltd.</p><p class="text-xs text-slate-500">BrightNest Home Services</p></td><td class="px-4 py-4"><p class="font-semibold">Maria Santos</p><p class="text-xs text-emerald-700">Verified provider</p></td>
+            <td class="px-4 py-4">Home Services</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Home service</span></td><td class="px-4 py-4 text-right"><p class="font-bold">From $149</p><p class="text-xs text-slate-500">$50 deposit</p></td><td class="px-4 py-4">3–6 hours</td>
+            <td class="px-4 py-4"><span class="font-semibold text-emerald-700">Available</span><p class="text-xs text-slate-500">Next: Tomorrow</p></td><td class="px-4 py-4 text-right font-semibold">2,846</td><td class="px-4 py-4 text-right font-semibold">$482K</td><td class="px-4 py-4"><p class="font-semibold text-amber-600">4.9 ★</p><p class="text-xs text-slate-500">1,842 reviews</p></td>
+            <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Approved</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span></td><td class="px-4 py-4">Sep 19, 2026</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td>
+            <td class="px-4 py-4 text-right">
+              <details class="relative inline-block text-left">
+                <summary class="cursor-pointer list-none rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold hover:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">Actions</summary>
+                <div class="absolute right-0 z-30 mt-2 w-80 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
+                  <div class="grid grid-cols-2 gap-1 text-xs">
+                    <a href="/admin/services/SRV-100284" class="rounded-lg p-2 hover:bg-amber-50">View Service</a><a href="/services/home-deep-cleaning" class="rounded-lg p-2 hover:bg-amber-50">Preview Listing</a>
+                    <a href="/admin/services/SRV-100284/edit" class="rounded-lg p-2 hover:bg-amber-50">Edit Service</a><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Duplicate Service</button>
+                    <a href="/admin/vendors/VND-101842" class="rounded-lg p-2 hover:bg-amber-50">View Vendor</a><a href="/store/brightnest" class="rounded-lg p-2 hover:bg-amber-50">View Store</a>
+                    <a href="/admin/providers/PRV-10482" class="rounded-lg p-2 hover:bg-amber-50">View Provider</a><a href="/admin/services/SRV-100284/packages" class="rounded-lg p-2 hover:bg-amber-50">Packages</a>
+                    <a href="/admin/services/SRV-100284/add-ons" class="rounded-lg p-2 hover:bg-amber-50">Add-ons</a><a href="/admin/services/SRV-100284/availability" class="rounded-lg p-2 hover:bg-amber-50">Availability</a>
+                    <a href="/admin/services/SRV-100284/calendar" class="rounded-lg p-2 hover:bg-amber-50">Calendar</a><a href="/admin/services/SRV-100284/areas" class="rounded-lg p-2 hover:bg-amber-50">Service Areas</a>
+                    <a href="/admin/services/SRV-100284/bookings" class="rounded-lg p-2 hover:bg-amber-50">Bookings</a><a href="/admin/services/SRV-100284/transactions" class="rounded-lg p-2 hover:bg-amber-50">Transactions</a>
+                    <a href="/admin/services/SRV-100284/payouts" class="rounded-lg p-2 hover:bg-amber-50">Payouts</a><a href="/admin/services/SRV-100284/analytics" class="rounded-lg p-2 hover:bg-amber-50">Sales Analytics</a>
+                    <a href="/admin/services/SRV-100284/reviews" class="rounded-lg p-2 hover:bg-amber-50">Reviews</a><a href="/admin/services/SRV-100284/questions" class="rounded-lg p-2 hover:bg-amber-50">Questions</a>
+                    <a href="/admin/services/SRV-100284/reports" class="rounded-lg p-2 hover:bg-amber-50">Reports</a><a href="/admin/services/SRV-100284/disputes" class="rounded-lg p-2 hover:bg-amber-50">Disputes</a>
+                    <a href="/admin/services/SRV-100284/moderation" class="rounded-lg p-2 hover:bg-amber-50">Moderation History</a><a href="/admin/services/SRV-100284/compliance" class="rounded-lg p-2 hover:bg-amber-50">Compliance</a>
+                    <a href="/admin/services/SRV-100284/changes" class="rounded-lg p-2 hover:bg-amber-50">Change History</a><a href="/admin/services/SRV-100284/activity" class="rounded-lg p-2 hover:bg-amber-50">Activity Log</a>
+                    <button type="button" class="rounded-lg p-2 text-left hover:bg-emerald-50">Approve Service</button><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Request Changes</button>
+                    <button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Publish / Feature</button><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Add Note</button>
+                    <button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Assign Moderator</button><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Run Audit</button>
+                  </div>
+                  <div class="mt-2 grid grid-cols-2 gap-1 border-t pt-2 text-xs"><button type="button" class="rounded-lg p-2 text-left text-orange-700 hover:bg-orange-50">Pause / Hide</button><button type="button" class="rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Reject Service</button><button type="button" class="rounded-lg p-2 text-left text-slate-700 hover:bg-slate-50">Archive / Restore</button><button type="button" class="rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Remove Service</button></div>
+                </div>
+              </details>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" checked aria-label="Select Small Business Strategy Consultation" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-100 text-blue-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 20h16V8H4zM8 8V5h8v3M8 13h8"/></svg></div><div><a href="/admin/services/SRV-100936" class="font-bold hover:text-amber-700">Small Business Strategy Consultation</a><p class="text-xs text-slate-500">Discovery and 90-minute strategy session</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">SRV-100936</p><p class="text-xs text-slate-500">NSC-STRATEGY-90</p></td><td class="px-4 py-4"><p>Northstar Consulting Inc.</p><p class="text-xs text-slate-500">Northstar Advisory</p></td><td class="px-4 py-4"><p>David Kim</p><p class="text-xs text-amber-700">Credential review</p></td><td class="px-4 py-4">Professional Services</td><td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Remote consultation</span></td><td class="px-4 py-4 text-right font-bold">$225</td><td class="px-4 py-4">90 min.</td><td class="px-4 py-4 text-emerald-700">Available</td><td class="px-4 py-4 text-right">0</td><td class="px-4 py-4 text-right">$0</td><td class="px-4 py-4 text-slate-400">No reviews</td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Pending review</span></td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Pending</span></td><td class="px-4 py-4">Today</td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Medium</span></td><td class="px-4 py-4 text-right"><a href="/admin/services/SRV-100936/moderate" class="rounded-lg border border-amber-300 px-3 py-2 text-xs font-bold text-amber-800">Review</a></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Weekly Home Cleaning" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="m5 20 5-15h4l5 15M8 14h8"/></svg></div><div><a href="/admin/services/SRV-087421" class="font-bold hover:text-amber-700">Weekly Home Cleaning Plan</a><p class="text-xs text-slate-500">Recurring subscription · 4 visits/month</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">SRV-087421</p><p class="text-xs text-slate-500">BHS-WEEKLY-4</p></td><td class="px-4 py-4"><p>BrightNest Services Ltd.</p><p class="text-xs text-slate-500">BrightNest Home Services</p></td><td class="px-4 py-4">Team assignment</td><td class="px-4 py-4">Home Services</td><td class="px-4 py-4"><span class="rounded-full bg-violet-100 px-2 py-1 text-xs font-bold text-violet-700">Subscription</span></td><td class="px-4 py-4 text-right font-bold">$399/mo.</td><td class="px-4 py-4">2 hrs/visit</td><td class="px-4 py-4 text-emerald-700">Available</td><td class="px-4 py-4 text-right font-semibold">8,428</td><td class="px-4 py-4 text-right font-semibold">$2.84M</td><td class="px-4 py-4">4.8 ★</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Approved</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span></td><td class="px-4 py-4">Sep 18</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td><td class="px-4 py-4 text-right"><a href="/admin/services/SRV-087421" class="rounded-lg border px-3 py-2 text-xs font-bold">Manage</a></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Family Photography Session" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-fuchsia-100 text-fuchsia-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 7h4l2-2h4l2 2h4v12H4z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg></div><div><a href="/admin/services/SRV-099824" class="font-bold hover:text-amber-700">Family Photography Session</a><p class="text-xs text-slate-500">3 packages · 5 location options</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">SRV-099824</p><p class="text-xs text-slate-500">GLS-FAMILY</p></td><td class="px-4 py-4"><p>Golden Lens Studio</p><p class="text-xs text-slate-500">Golden Lens</p></td><td class="px-4 py-4">Olivia Reyes</td><td class="px-4 py-4">Photography</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Scheduled</span></td><td class="px-4 py-4 text-right font-bold">From $280</td><td class="px-4 py-4">60–180 min.</td><td class="px-4 py-4"><span class="text-amber-700">Limited</span><p class="text-xs text-slate-500">3 slots this month</p></td><td class="px-4 py-4 text-right">846</td><td class="px-4 py-4 text-right">$286K</td><td class="px-4 py-4">4.9 ★</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Approved</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span></td><td class="px-4 py-4">Sep 17</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td><td class="px-4 py-4 text-right"><a href="/admin/services/SRV-099824/calendar" class="rounded-lg border px-3 py-2 text-xs font-bold">Calendar</a></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Therapeutic Massage" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-teal-100 text-teal-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 21s-7-4-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 7-7 11-7 11Z"/></svg></div><div><a href="/admin/services/SRV-098322" class="font-bold hover:text-amber-700">Therapeutic Massage Session</a><p class="text-xs text-slate-500">60 or 90 minutes</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">SRV-098322</p><p class="text-xs text-slate-500">PWC-MASSAGE</p></td><td class="px-4 py-4"><p>Pacific Wellness Collective</p><p class="text-xs text-slate-500">Pacific Wellness</p></td><td class="px-4 py-4">Emma Clarke, RMT</td><td class="px-4 py-4">Health &amp; Wellness</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">In-person</span></td><td class="px-4 py-4 text-right font-bold">From $120</td><td class="px-4 py-4">60–90 min.</td><td class="px-4 py-4"><span class="text-rose-700">Fully booked</span><p class="text-xs text-slate-500">Next: Oct 12</p></td><td class="px-4 py-4 text-right">1,208</td><td class="px-4 py-4 text-right">$182K</td><td class="px-4 py-4">5.0 ★</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Approved</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span></td><td class="px-4 py-4">Sep 16</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td><td class="px-4 py-4 text-right"><a href="/admin/services/SRV-098322/availability" class="rounded-lg border border-amber-300 px-3 py-2 text-xs font-bold text-amber-800">Availability</a></td>
+          </tr>
+
+          <tr class="bg-rose-50/40 hover:bg-rose-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Guaranteed Investment Coaching" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-rose-100 text-rose-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 18 9 9l4 5 3-8 4 12"/></svg></div><div><a href="/admin/services/SRV-089522" class="font-bold hover:text-rose-700">Guaranteed Investment Returns Coaching</a><p class="text-xs text-rose-600">Misleading financial claims reported</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">SRV-089522</p><p class="text-xs text-slate-500">WFS-INVEST-01</p></td><td class="px-4 py-4"><p>Westline Financial Success</p><p class="text-xs text-slate-500">Westline Success</p></td><td class="px-4 py-4">Nina Brooks</td><td class="px-4 py-4">Financial Services</td><td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Remote coaching</span></td><td class="px-4 py-4 text-right font-bold">$499</td><td class="px-4 py-4">2 hours</td><td class="px-4 py-4 text-slate-500">Unavailable</td><td class="px-4 py-4 text-right">28</td><td class="px-4 py-4 text-right">$13,972</td><td class="px-4 py-4">2.9 ★</td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Investigation</span></td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Hidden</span></td><td class="px-4 py-4">Sep 19</td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">High</span></td><td class="px-4 py-4 text-right"><a href="/admin/services/SRV-089522/investigation" class="rounded-lg border border-rose-300 px-3 py-2 text-xs font-bold text-rose-700">Investigate</a></td>
+          </tr>
+
+          <tr class="bg-rose-50/20 hover:bg-rose-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Unlicensed Electrical Repair" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-red-100 text-red-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="m13 2-7 12h6l-1 8 7-12h-6l1-8Z"/></svg></div><div><a href="/admin/services/SRV-088117" class="font-bold hover:text-rose-700">Same-Day Electrical Panel Repair</a><p class="text-xs text-rose-600">Required license not provided</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">SRV-088117</p><p class="text-xs text-slate-500">UHS-ELECTRIC</p></td><td class="px-4 py-4"><p>Urban Home Solutions</p><p class="text-xs text-slate-500">Urban Home</p></td><td class="px-4 py-4">Unverified provider</td><td class="px-4 py-4">Electrical</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Home service</span></td><td class="px-4 py-4 text-right font-bold">From $180</td><td class="px-4 py-4">Quote</td><td class="px-4 py-4">Unavailable</td><td class="px-4 py-4 text-right">0</td><td class="px-4 py-4 text-right">$0</td><td class="px-4 py-4 text-slate-400">No reviews</td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Rejected</span></td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Rejected</span></td><td class="px-4 py-4">Sep 14</td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Critical</span></td><td class="px-4 py-4 text-right"><a href="/admin/services/SRV-088117/moderation" class="rounded-lg border border-rose-300 px-3 py-2 text-xs font-bold text-rose-700">View Decision</a></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Website Accessibility Review" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-100 text-blue-700"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M3 5h18v12H3zM8 21h8M12 17v4"/></svg></div><div><a href="/admin/services/SRV-092816" class="font-bold hover:text-amber-700">Website Accessibility Review</a><p class="text-xs text-slate-500">Remote audit · written report included</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">SRV-092816</p><p class="text-xs text-slate-500">PP-WCAG-AUDIT</p></td><td class="px-4 py-4"><p>Pacific Pixel Studio</p><p class="text-xs text-slate-500">Pacific Pixel</p></td><td class="px-4 py-4">Maya Chen</td><td class="px-4 py-4">Web Services</td><td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Remote</span></td><td class="px-4 py-4 text-right font-bold">From $450</td><td class="px-4 py-4">5 business days</td><td class="px-4 py-4 text-emerald-700">Available</td><td class="px-4 py-4 text-right">486</td><td class="px-4 py-4 text-right">$238K</td><td class="px-4 py-4">4.8 ★</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Approved</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span></td><td class="px-4 py-4">Sep 18</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td><td class="px-4 py-4 text-right"><a href="/admin/services/SRV-092816" class="rounded-lg border px-3 py-2 text-xs font-bold">Manage</a></td>
+          </tr>
+
+          <tr class="text-slate-500 hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Holiday Event Photography" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><div class="flex h-14 w-14 items-center justify-center rounded-xl bg-slate-200 text-slate-600"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M5 8h14v12H5zM8 8V5m8 3V5M5 12h14"/></svg></div><div><a href="/admin/services/SRV-074210" class="font-bold text-slate-700 hover:text-amber-700">Holiday Event Photography</a><p class="text-xs">Seasonal · 4 packages</p></div></div></th>
+            <td class="px-4 py-4"><p class="font-mono text-xs">SRV-074210</p><p class="text-xs">GLS-HOLIDAY</p></td><td class="px-4 py-4"><p>Golden Lens Studio</p><p class="text-xs">Golden Lens</p></td><td class="px-4 py-4">Photography team</td><td class="px-4 py-4">Event Services</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Seasonal</span></td><td class="px-4 py-4 text-right font-bold">From $650</td><td class="px-4 py-4">4–8 hrs</td><td class="px-4 py-4">Season closed</td><td class="px-4 py-4 text-right">128</td><td class="px-4 py-4 text-right">$98K</td><td class="px-4 py-4">4.9 ★</td><td class="px-4 py-4">Approved</td><td class="px-4 py-4"><span class="rounded-full bg-slate-200 px-2 py-1 text-xs font-bold">Archived</span></td><td class="px-4 py-4">Jan 12</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Low</span></td><td class="px-4 py-4 text-right"><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold text-emerald-700">Restore</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex flex-col gap-4 border-t border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex items-center gap-2 text-sm text-slate-600"><span>Rows</span><select aria-label="Services per page" class="rounded-lg border-slate-300 text-sm"><option>10</option><option selected>25</option><option>50</option><option>100</option></select><span>Showing 1–25 of 36,842</span></div>
+      <nav aria-label="Service pagination" class="flex items-center gap-1"><button type="button" disabled aria-label="First page" class="rounded-lg border px-3 py-2 text-slate-300">«</button><button type="button" disabled aria-label="Previous page" class="rounded-lg border px-3 py-2 text-slate-300">‹</button><a href="?page=1" aria-current="page" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white">1</a><a href="?page=2" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">2</a><a href="?page=3" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">3</a><span class="px-2">…</span><a href="?page=1474" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">1474</a><a href="?page=2" aria-label="Next page" class="rounded-lg border px-3 py-2">›</a><a href="?page=1474" aria-label="Last page" class="rounded-lg border px-3 py-2">»</a></nav>
+    </div>
+  </section>
+
+  <!-- Service Overview -->
+  <aside aria-labelledby="service-overview-heading" class="self-start rounded-2xl border border-slate-200 bg-white shadow-sm 2xl:sticky 2xl:top-6">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="service-overview-heading" class="text-lg font-bold">Service Overview</h2><p class="mt-1 text-xs text-slate-500">Selected service</p></div>
+    <div class="p-5 text-center">
+      <div class="mx-auto flex h-40 w-full items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-yellow-300"><svg class="h-16 w-16 text-amber-900" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.5" d="m4 18 8-14 8 14M7 14h10M9 18v3m6-3v3"/></svg></div>
+      <h3 class="mt-4 text-lg font-bold">Complete Home Deep Cleaning</h3><p class="text-xs text-slate-500">SRV-100284 · BHS-CLEAN-DEEP</p>
+      <div class="mt-3 flex flex-wrap justify-center gap-2"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Published</span><span class="rounded-full bg-sky-100 px-2 py-1 text-xs font-bold text-sky-700">Approved</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Compliant</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low risk</span></div>
+    </div>
+
+    <dl class="grid grid-cols-2 gap-x-4 gap-y-3 border-y border-slate-200 px-5 py-4 text-sm">
+      <div><dt class="text-xs text-slate-500">Vendor</dt><dd class="font-semibold">BrightNest Services</dd></div><div><dt class="text-xs text-slate-500">Provider</dt><dd class="font-semibold">Maria Santos</dd></div>
+      <div><dt class="text-xs text-slate-500">Category</dt><dd class="font-semibold">Home Cleaning</dd></div><div><dt class="text-xs text-slate-500">Type</dt><dd class="font-semibold">Home service</dd></div>
+      <div><dt class="text-xs text-slate-500">Delivery</dt><dd class="font-semibold">Customer location</dd></div><div><dt class="text-xs text-slate-500">Booking</dt><dd class="font-semibold">Instant booking</dd></div>
+      <div><dt class="text-xs text-slate-500">Starting price</dt><dd class="font-semibold">$149</dd></div><div><dt class="text-xs text-slate-500">Provider payout</dt><dd class="font-semibold">$134.10</dd></div>
+      <div><dt class="text-xs text-slate-500">Commission</dt><dd class="font-semibold">10%</dd></div><div><dt class="text-xs text-slate-500">Duration</dt><dd class="font-semibold">3–6 hours</dd></div>
+      <div><dt class="text-xs text-slate-500">Buffer</dt><dd class="font-semibold">30 minutes</dd></div><div><dt class="text-xs text-slate-500">Advance notice</dt><dd class="font-semibold">24 hours</dd></div>
+      <div><dt class="text-xs text-slate-500">Cancellation window</dt><dd class="font-semibold">24 hours</dd></div><div><dt class="text-xs text-slate-500">Availability</dt><dd class="font-semibold text-emerald-700">Available</dd></div>
+      <div><dt class="text-xs text-slate-500">Completed bookings</dt><dd class="font-semibold">2,846</dd></div><div><dt class="text-xs text-slate-500">Upcoming</dt><dd class="font-semibold">42</dd></div>
+      <div><dt class="text-xs text-slate-500">Gross booking value</dt><dd class="font-semibold">$482K</dd></div><div><dt class="text-xs text-slate-500">Refund / Cancellation</dt><dd class="font-semibold">1.1% / 2.2%</dd></div>
+      <div><dt class="text-xs text-slate-500">Completion / Conversion</dt><dd class="font-semibold">98.4% / 7.2%</dd></div><div><dt class="text-xs text-slate-500">Rating</dt><dd class="font-semibold text-amber-600">4.9 ★</dd></div>
+      <div><dt class="text-xs text-slate-500">Reviews</dt><dd class="font-semibold">1,842</dd></div><div><dt class="text-xs text-slate-500">Questions / Reports</dt><dd class="font-semibold">26 / 1</dd></div>
+      <div><dt class="text-xs text-slate-500">Created / Published</dt><dd class="font-semibold">Jul 10 / Jul 11</dd></div><div><dt class="text-xs text-slate-500">Moderator</dt><dd class="font-semibold">Sarah Mitchell</dd></div>
+    </dl>
+
+    <div class="grid grid-cols-2 gap-2 p-5">
+      <a href="/admin/services/SRV-100284" class="rounded-lg bg-slate-900 px-3 py-2 text-center text-xs font-bold text-white">View Service</a><a href="/services/home-deep-cleaning" class="rounded-lg border px-3 py-2 text-center text-xs font-bold">Preview Listing</a>
+      <a href="/admin/services/SRV-100284/edit" class="rounded-lg border px-3 py-2 text-center text-xs font-bold">Edit Service</a><a href="/admin/vendors/VND-101842" class="rounded-lg border px-3 py-2 text-center text-xs font-bold">View Vendor</a>
+      <a href="/admin/providers/PRV-10482" class="rounded-lg border px-3 py-2 text-center text-xs font-bold">View Provider</a><a href="/admin/services/SRV-100284/bookings" class="rounded-lg border px-3 py-2 text-center text-xs font-bold">View Bookings</a>
+      <a href="/admin/services/SRV-100284/moderate" class="col-span-2 rounded-lg border border-amber-300 px-3 py-2 text-center text-xs font-bold text-amber-800">Moderate Service</a>
+    </div>
+  </aside>
+</div>
+
+<!-- Content, Pricing, Scheduling -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="quality-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="quality-heading" class="text-lg font-bold">Content and listing quality</h2></div>
+    <div class="space-y-5 p-5">
+      <div class="rounded-2xl bg-gradient-to-r from-slate-900 to-amber-800 p-5 text-white"><div class="flex items-end justify-between"><div><p class="text-xs text-amber-200">Service quality score</p><p class="text-3xl font-black">95/100</p></div><span class="rounded-full bg-emerald-400/20 px-3 py-1 text-xs font-bold text-emerald-200">Excellent</span></div><div class="mt-3 h-2 rounded-full bg-white/20"><div class="h-full w-[95%] rounded-full bg-amber-400"></div></div></div>
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Title / Short description</dt><dd class="font-bold text-emerald-700">Excellent</dd></div><div><dt class="text-xs text-slate-500">Full description</dt><dd class="font-bold text-emerald-700">Complete</dd></div>
+        <div><dt class="text-xs text-slate-500">Images / Resolution</dt><dd class="font-bold">10 · Pass</dd></div><div><dt class="text-xs text-slate-500">Video</dt><dd class="font-bold">1 available</dd></div>
+        <div><dt class="text-xs text-slate-500">Inclusions / Exclusions</dt><dd class="font-bold text-emerald-700">Complete</dd></div><div><dt class="text-xs text-slate-500">Customer requirements</dt><dd class="font-bold text-emerald-700">Complete</dd></div>
+        <div><dt class="text-xs text-slate-500">Provider qualifications</dt><dd class="font-bold text-emerald-700">Visible</dd></div><div><dt class="text-xs text-slate-500">Packages / Add-ons</dt><dd class="font-bold text-emerald-700">Complete</dd></div>
+        <div><dt class="text-xs text-slate-500">Category / Keywords</dt><dd class="font-bold text-emerald-700">Accurate</dd></div><div><dt class="text-xs text-slate-500">SEO</dt><dd class="font-bold text-emerald-700">Complete</dd></div>
+        <div><dt class="text-xs text-slate-500">Alt text</dt><dd class="font-bold text-amber-700">9 of 10</dd></div><div><dt class="text-xs text-slate-500">Pricing / Duration</dt><dd class="font-bold text-emerald-700">Clear</dd></div>
+        <div><dt class="text-xs text-slate-500">Service area</dt><dd class="font-bold text-emerald-700">Clear</dd></div><div><dt class="text-xs text-slate-500">Cancellation / Refund</dt><dd class="font-bold text-emerald-700">Visible</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2"><a href="/services/home-deep-cleaning" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Preview</a><a href="/admin/services/SRV-100284/edit" class="rounded-lg border px-3 py-2 text-xs font-bold">Edit Content</a><a href="/admin/services/SRV-100284/images" class="rounded-lg border px-3 py-2 text-xs font-bold">Images</a><a href="/admin/services/SRV-100284/packages" class="rounded-lg border px-3 py-2 text-xs font-bold">Packages</a><a href="/admin/services/SRV-100284/add-ons" class="rounded-lg border px-3 py-2 text-xs font-bold">Add-ons</a><a href="/admin/services/SRV-100284/seo" class="rounded-lg border px-3 py-2 text-xs font-bold">SEO</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Request Improvements</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Run Audit</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="pricing-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="pricing-heading" class="text-lg font-bold">Pricing, packages, and promotions</h2></div>
+    <div class="space-y-5 p-5">
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Base / Starting price</dt><dd class="font-bold">$149</dd></div><div><dt class="text-xs text-slate-500">Hourly rate</dt><dd class="font-bold">$52</dd></div>
+        <div><dt class="text-xs text-slate-500">Minimum booking</dt><dd class="font-bold">$149</dd></div><div><dt class="text-xs text-slate-500">Deposit</dt><dd class="font-bold">$50</dd></div>
+        <div><dt class="text-xs text-slate-500">Travel fee</dt><dd class="font-bold">$0–$35</dd></div><div><dt class="text-xs text-slate-500">Weekend surcharge</dt><dd class="font-bold">15%</dd></div>
+        <div><dt class="text-xs text-slate-500">Emergency surcharge</dt><dd class="font-bold">Not offered</dd></div><div><dt class="text-xs text-slate-500">Overtime rate</dt><dd class="font-bold">$48/hr.</dd></div>
+        <div><dt class="text-xs text-slate-500">Package range</dt><dd class="font-bold">$149–$349</dd></div><div><dt class="text-xs text-slate-500">Add-on range</dt><dd class="font-bold">$15–$80</dd></div>
+        <div><dt class="text-xs text-slate-500">Provider payout</dt><dd class="font-bold">90%</dd></div><div><dt class="text-xs text-slate-500">Commission</dt><dd class="font-bold">10%</dd></div>
+        <div><dt class="text-xs text-slate-500">30-day low / high</dt><dd class="font-bold">$139 / $169</dd></div><div><dt class="text-xs text-slate-500">Active discount</dt><dd class="font-bold text-rose-700">10%</dd></div>
+        <div><dt class="text-xs text-slate-500">Coupon eligible</dt><dd class="font-bold text-emerald-700">Yes</dd></div><div><dt class="text-xs text-slate-500">Featured</dt><dd class="font-bold text-amber-700">Homepage</dd></div>
+        <div><dt class="text-xs text-slate-500">Promotion period</dt><dd class="font-bold">Sep 15–30</dd></div><div><dt class="text-xs text-slate-500">Suspicious change</dt><dd class="font-bold text-emerald-700">None</dd></div>
+      </dl>
+      <div><label for="pricing-reason" class="block text-sm font-semibold">Reason for pricing or promotion adjustment</label><textarea id="pricing-reason" rows="2" placeholder="Required before manually changing pricing or promotion status." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea></div>
+      <div class="flex flex-wrap gap-2"><a href="/admin/services/SRV-100284/pricing/history" class="rounded-lg border px-3 py-2 text-xs font-bold">Price History</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Edit Pricing</button><a href="/admin/services/SRV-100284/packages" class="rounded-lg border px-3 py-2 text-xs font-bold">Packages</a><a href="/admin/services/SRV-100284/add-ons" class="rounded-lg border px-3 py-2 text-xs font-bold">Add-ons</a><button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white">Approve Promotion</button><button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Reject</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">End Promotion</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Feature Service</button><button type="button" class="rounded-lg border border-amber-300 px-3 py-2 text-xs font-bold text-amber-800">Flag Pricing</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="scheduling-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="scheduling-heading" class="text-lg font-bold">Availability and scheduling</h2></div>
+    <div class="space-y-5 p-5">
+      <div class="grid grid-cols-7 gap-1 text-center text-xs">
+        <div class="rounded-lg bg-emerald-100 p-2"><strong>M</strong><span class="mt-1 block text-emerald-700">9–6</span></div><div class="rounded-lg bg-emerald-100 p-2"><strong>T</strong><span class="mt-1 block text-emerald-700">9–6</span></div>
+        <div class="rounded-lg bg-emerald-100 p-2"><strong>W</strong><span class="mt-1 block text-emerald-700">9–6</span></div><div class="rounded-lg bg-emerald-100 p-2"><strong>T</strong><span class="mt-1 block text-emerald-700">9–6</span></div>
+        <div class="rounded-lg bg-emerald-100 p-2"><strong>F</strong><span class="mt-1 block text-emerald-700">9–5</span></div><div class="rounded-lg bg-amber-100 p-2"><strong>S</strong><span class="mt-1 block text-amber-700">10–3</span></div>
+        <div class="rounded-lg bg-slate-100 p-2"><strong>S</strong><span class="mt-1 block text-slate-500">Closed</span></div>
+      </div>
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Time zone</dt><dd class="font-bold">Pacific Time</dd></div><div><dt class="text-xs text-slate-500">Duration</dt><dd class="font-bold">3–6 hours</dd></div>
+        <div><dt class="text-xs text-slate-500">Buffer</dt><dd class="font-bold">30 min. after</dd></div><div><dt class="text-xs text-slate-500">Advance notice</dt><dd class="font-bold">24 hours</dd></div>
+        <div><dt class="text-xs text-slate-500">Booking window</dt><dd class="font-bold">90 days</dd></div><div><dt class="text-xs text-slate-500">Same day</dt><dd class="font-bold">Disabled</dd></div>
+        <div><dt class="text-xs text-slate-500">Recurring booking</dt><dd class="font-bold text-emerald-700">Enabled</dd></div><div><dt class="text-xs text-slate-500">Capacity</dt><dd class="font-bold">3 per slot</dd></div>
+        <div><dt class="text-xs text-slate-500">Concurrent limit</dt><dd class="font-bold">3 teams</dd></div><div><dt class="text-xs text-slate-500">Blackout dates</dt><dd class="font-bold">4 upcoming</dd></div>
+        <div><dt class="text-xs text-slate-500">Fully booked</dt><dd class="font-bold">Sep 22–23</dd></div><div><dt class="text-xs text-slate-500">Staff availability</dt><dd class="font-bold">8 active</dd></div>
+        <div><dt class="text-xs text-slate-500">Calendar sync</dt><dd class="font-bold text-emerald-700">Connected</dd></div><div><dt class="text-xs text-slate-500">Last sync</dt><dd class="font-bold">6 min. ago</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2"><a href="/admin/services/SRV-100284/calendar" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Calendar</a><a href="/admin/services/SRV-100284/availability" class="rounded-lg border px-3 py-2 text-xs font-bold">Edit Availability</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Blackout Date</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Holiday Hours</button><a href="/admin/services/SRV-100284/staff" class="rounded-lg border px-3 py-2 text-xs font-bold">Staff Schedules</a><a href="/admin/services/SRV-100284/resources" class="rounded-lg border px-3 py-2 text-xs font-bold">Resources</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Recurring Bookings</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Force Sync</button><a href="/admin/schedules/conflicts?service=SRV-100284" class="rounded-lg border border-amber-300 px-3 py-2 text-xs font-bold text-amber-800">Conflicts</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- Service Areas, Packages, Providers -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="areas-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="areas-heading" class="text-lg font-bold">Service areas and fulfillment</h2></div>
+    <div class="space-y-5 p-5">
+      <div class="relative flex h-48 items-center justify-center overflow-hidden rounded-xl border bg-slate-100">
+        <div class="absolute h-28 w-28 rounded-full border-8 border-amber-300/60 bg-amber-200/40"></div><div class="absolute h-16 w-16 rounded-full border-4 border-amber-500/70"></div>
+        <span class="relative flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-white shadow"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 21s7-6 7-12a7 7 0 1 0-14 0c0 6 7 12 7 12Z"/><circle cx="12" cy="9" r="2" stroke-width="2"/></svg></span>
+      </div>
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Primary location</dt><dd class="font-bold">Burnaby, BC</dd></div><div><dt class="text-xs text-slate-500">Service radius</dt><dd class="font-bold">30 km</dd></div>
+        <div><dt class="text-xs text-slate-500">Provider location</dt><dd class="font-bold">No</dd></div><div><dt class="text-xs text-slate-500">Customer location</dt><dd class="font-bold text-emerald-700">Yes</dd></div>
+        <div><dt class="text-xs text-slate-500">Remote</dt><dd class="font-bold">No</dd></div><div><dt class="text-xs text-slate-500">Mobile service</dt><dd class="font-bold text-emerald-700">Enabled</dd></div>
+        <div><dt class="text-xs text-slate-500">Travel zones</dt><dd class="font-bold">3</dd></div><div><dt class="text-xs text-slate-500">Travel fee</dt><dd class="font-bold">$0–$35</dd></div>
+        <div><dt class="text-xs text-slate-500">Included areas</dt><dd class="font-bold">18 postal zones</dd></div><div><dt class="text-xs text-slate-500">Excluded areas</dt><dd class="font-bold">2 remote zones</dd></div>
+        <div><dt class="text-xs text-slate-500">Preparation</dt><dd class="font-bold">Access and declutter</dd></div><div><dt class="text-xs text-slate-500">Equipment</dt><dd class="font-bold">Provider supplied</dd></div>
+        <div><dt class="text-xs text-slate-500">Accessibility</dt><dd class="font-bold">Contact for accommodations</dd></div><div><dt class="text-xs text-slate-500">Weather restrictions</dt><dd class="font-bold">Severe weather only</dd></div>
+        <div><dt class="text-xs text-slate-500">Cross-border</dt><dd class="font-bold">No</dd></div><div><dt class="text-xs text-slate-500">Estimated travel</dt><dd class="font-bold">15–60 min.</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2"><a href="/admin/services/SRV-100284/areas/map" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Area Map</a><a href="/admin/services/SRV-100284/areas" class="rounded-lg border px-3 py-2 text-xs font-bold">Edit Areas</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Travel Zones</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Travel Fees</button><a href="/admin/services/SRV-100284/fulfillment" class="rounded-lg border px-3 py-2 text-xs font-bold">Instructions</a><a href="/admin/services/SRV-100284/accessibility" class="rounded-lg border px-3 py-2 text-xs font-bold">Accessibility</a><button type="button" class="rounded-lg border border-orange-200 px-3 py-2 text-xs font-bold text-orange-700">Regional Restriction</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="packages-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="packages-heading" class="text-lg font-bold">Packages, options, and add-ons</h2><p class="mt-1 text-xs text-slate-500">3 packages · 8 optional add-ons</p></div>
+    <div class="overflow-x-auto p-5">
+      <table class="w-full min-w-[34rem] text-left text-sm">
+        <thead class="border-b text-xs uppercase text-slate-500"><tr><th class="pb-3">Package</th><th class="pb-3">Duration</th><th class="pb-3">Price</th><th class="pb-3">Status</th><th class="pb-3">Action</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="py-3"><p class="font-bold">Basic</p><p class="text-xs text-slate-500">Kitchen, bathrooms, floors</p></td><td class="py-3">3 hrs</td><td class="py-3">$149</td><td class="py-3 text-emerald-700">Active</td><td class="py-3"><a href="/admin/services/SRV-100284/packages/basic" class="font-bold text-amber-700">View</a></td></tr>
+          <tr><td class="py-3"><p class="font-bold">Standard</p><p class="text-xs text-slate-500">Full home plus appliances</p></td><td class="py-3">4.5 hrs</td><td class="py-3">$239</td><td class="py-3 text-emerald-700">Active</td><td class="py-3"><a href="/admin/services/SRV-100284/packages/standard/edit" class="font-bold text-amber-700">Edit</a></td></tr>
+          <tr><td class="py-3"><p class="font-bold">Premium</p><p class="text-xs text-slate-500">Complete deep clean and organization</p></td><td class="py-3">6 hrs</td><td class="py-3">$349</td><td class="py-3 text-emerald-700">Active</td><td class="py-3"><button type="button" class="font-bold text-orange-700">Disable</button></td></tr>
+        </tbody>
+      </table>
+      <dl class="mt-5 grid grid-cols-2 gap-3 text-sm"><div><dt class="text-xs text-slate-500">Add-on range</dt><dd class="font-bold">$15–$80</dd></div><div><dt class="text-xs text-slate-500">Added duration</dt><dd class="font-bold">15–90 min.</dd></div><div><dt class="text-xs text-slate-500">Customization</dt><dd class="font-bold">Room priorities</dd></div><div><dt class="text-xs text-slate-500">Group size</dt><dd class="font-bold">1–3 providers</dd></div><div><dt class="text-xs text-slate-500">Recurring options</dt><dd class="font-bold">Weekly, biweekly, monthly</dd></div><div><dt class="text-xs text-slate-500">Subscription</dt><dd class="font-bold text-emerald-700">Available</dd></div></dl>
+      <div class="mt-4 flex flex-wrap gap-2"><a href="/admin/services/SRV-100284/packages" class="rounded-lg border px-3 py-2 text-xs font-bold">Review Packages</a><a href="/admin/services/SRV-100284/add-ons" class="rounded-lg border px-3 py-2 text-xs font-bold">Review Add-ons</a><a href="/admin/services/SRV-100284/customization" class="rounded-lg border px-3 py-2 text-xs font-bold">Customization</a><a href="/admin/services/SRV-100284/recurring" class="rounded-lg border px-3 py-2 text-xs font-bold">Recurring Plans</a></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="provider-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="provider-heading" class="text-lg font-bold">Provider and staff qualifications</h2></div>
+    <div class="space-y-5 p-5">
+      <div class="flex items-center gap-3"><span class="flex h-14 w-14 items-center justify-center rounded-full bg-amber-400 text-lg font-black">MS</span><div><h3 class="font-bold">Maria Santos</h3><p class="text-sm text-slate-500">Primary provider · PRV-10482</p></div></div>
+      <div class="flex flex-wrap gap-2"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Verified</span><span class="rounded-full bg-sky-100 px-2 py-1 text-xs font-bold text-sky-700">Background checked</span><span class="rounded-full bg-violet-100 px-2 py-1 text-xs font-bold text-violet-700">Insured</span></div>
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Assigned staff</dt><dd class="font-bold">8 active</dd></div><div><dt class="text-xs text-slate-500">Identity</dt><dd class="font-bold text-emerald-700">Verified</dd></div>
+        <div><dt class="text-xs text-slate-500">Background check</dt><dd class="font-bold text-emerald-700">Clear</dd></div><div><dt class="text-xs text-slate-500">Professional license</dt><dd class="font-bold">Not required</dd></div>
+        <div><dt class="text-xs text-slate-500">Certification</dt><dd class="font-bold">Professional Cleaning</dd></div><div><dt class="text-xs text-slate-500">Certification expiry</dt><dd class="font-bold">May 2028</dd></div>
+        <div><dt class="text-xs text-slate-500">Insurance</dt><dd class="font-bold text-emerald-700">Active · ••••8821</dd></div><div><dt class="text-xs text-slate-500">Insurance expiry</dt><dd class="font-bold">Jan 2027</dd></div>
+        <div><dt class="text-xs text-slate-500">Experience</dt><dd class="font-bold">9 years</dd></div><div><dt class="text-xs text-slate-500">Languages</dt><dd class="font-bold">English, Filipino</dd></div>
+        <div><dt class="text-xs text-slate-500">AsBeez training</dt><dd class="font-bold text-emerald-700">Completed</dd></div><div><dt class="text-xs text-slate-500">Provider rating</dt><dd class="font-bold text-amber-600">4.9 ★</dd></div>
+        <div><dt class="text-xs text-slate-500">Cancellation rate</dt><dd class="font-bold">0.7%</dd></div><div><dt class="text-xs text-slate-500">Complaints</dt><dd class="font-bold">1 resolved</dd></div>
+        <div><dt class="text-xs text-slate-500">Disciplinary actions</dt><dd class="font-bold text-emerald-700">None</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2"><a href="/admin/providers/PRV-10482" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Provider Profile</a><a href="/admin/providers/PRV-10482/credentials" class="rounded-lg border px-3 py-2 text-xs font-bold">Credentials</a><a href="/admin/providers/PRV-10482/background" class="rounded-lg border px-3 py-2 text-xs font-bold">Background Check</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Request Documents</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold text-emerald-700">Approve Provider</button><button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Suspend Assignment</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Assign Staff</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Add Note</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- Performance and Booking Operations -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="booking-performance-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4"><div><h2 id="booking-performance-heading" class="text-lg font-bold">Booking and fulfillment performance</h2><p class="mt-1 text-xs text-slate-500">Last 30 days</p></div><select aria-label="Booking performance period" class="rounded-lg border-slate-300 text-xs"><option>30 days</option><option>90 days</option><option>1 year</option></select></div>
+    <div class="space-y-5 p-5">
+      <div class="flex h-32 items-end gap-2 rounded-xl bg-slate-50 p-3"><div class="h-[32%] flex-1 rounded-t bg-amber-200"></div><div class="h-[48%] flex-1 rounded-t bg-amber-300"></div><div class="h-[43%] flex-1 rounded-t bg-amber-300"></div><div class="h-[62%] flex-1 rounded-t bg-amber-400"></div><div class="h-[56%] flex-1 rounded-t bg-amber-400"></div><div class="h-[76%] flex-1 rounded-t bg-amber-500"></div><div class="h-[68%] flex-1 rounded-t bg-amber-400"></div><div class="h-[88%] flex-1 rounded-t bg-slate-800"></div><div class="h-full flex-1 rounded-t bg-slate-950"></div></div>
+      <dl class="grid grid-cols-2 gap-3 text-center sm:grid-cols-4">
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Views</dt><dd class="font-black">64,820</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Unique visitors</dt><dd class="font-black">48,284</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Booking page visits</dt><dd class="font-black">18,420</dd></div><div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Requests</dt><dd class="font-black">3,842</dd></div>
+        <div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Confirmed</dt><dd class="font-black">3,428</dd></div><div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Completed</dt><dd class="font-black">3,186</dd></div>
+        <div class="rounded-xl bg-rose-50 p-3"><dt class="text-xs text-slate-500">Cancelled / No-show</dt><dd class="font-black">76 / 18</dd></div><div class="rounded-xl bg-sky-50 p-3"><dt class="text-xs text-slate-500">Rescheduled</dt><dd class="font-black">142</dd></div>
+        <div class="rounded-xl bg-violet-50 p-3"><dt class="text-xs text-slate-500">Gross value</dt><dd class="font-black">$568K</dd></div><div class="rounded-xl bg-violet-50 p-3"><dt class="text-xs text-slate-500">Net value</dt><dd class="font-black">$512K</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Conversion</dt><dd class="font-black">7.2%</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Acceptance</dt><dd class="font-black">98.6%</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Completion</dt><dd class="font-black">98.4%</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Customer / Provider cancels</dt><dd class="font-black">1.5% / 0.7%</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">No-show rate</dt><dd class="font-black">0.5%</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Refunds / Disputes</dt><dd class="font-black">28 / 4</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Repeat customers</dt><dd class="font-black">46%</dd></div><div class="rounded-xl bg-sky-50 p-3"><dt class="text-xs text-slate-500">Ad ROAS</dt><dd class="font-black">7.1×</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2"><a href="/admin/services/SRV-100284/analytics" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Service Analytics</a><a href="/admin/services/SRV-100284/bookings" class="rounded-lg border px-3 py-2 text-xs font-bold">Bookings</a><a href="/admin/services/SRV-100284/transactions" class="rounded-lg border px-3 py-2 text-xs font-bold">Transactions</a><a href="/admin/services/SRV-100284/traffic" class="rounded-lg border px-3 py-2 text-xs font-bold">Traffic Sources</a><a href="/admin/services/SRV-100284/advertising" class="rounded-lg border px-3 py-2 text-xs font-bold">Advertising</a></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="booking-operations-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="booking-operations-heading" class="text-lg font-bold">Bookings and customer-service operations</h2></div>
+    <div class="space-y-5 p-5">
+      <dl class="grid grid-cols-2 gap-3 text-center sm:grid-cols-3 lg:grid-cols-4">
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Upcoming</dt><dd class="font-black">42</dd></div><div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Pending requests</dt><dd class="font-black">8</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Awaiting provider</dt><dd class="font-black">3</dd></div><div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Confirmed</dt><dd class="font-black">34</dd></div>
+        <div class="rounded-xl bg-sky-50 p-3"><dt class="text-xs text-slate-500">In progress</dt><dd class="font-black">2</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Completed</dt><dd class="font-black">2,846</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Reschedule requests</dt><dd class="font-black">4</dd></div><div class="rounded-xl bg-rose-50 p-3"><dt class="text-xs text-slate-500">Cancellation requests</dt><dd class="font-black">2</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Refund requests</dt><dd class="font-black">1</dd></div><div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Messages</dt><dd class="font-black">6</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Support tickets</dt><dd class="font-black">1</dd></div><div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Open disputes</dt><dd class="font-black">0</dd></div>
+        <div class="rounded-xl bg-rose-50 p-3"><dt class="text-xs text-slate-500">Overdue responses</dt><dd class="font-black">1</dd></div><div class="rounded-xl bg-sky-50 p-3"><dt class="text-xs text-slate-500">Next 24 hours</dt><dd class="font-black">9</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Unassigned</dt><dd class="font-black">2</dd></div><div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Schedule conflicts</dt><dd class="font-black">0</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2"><a href="/admin/services/SRV-100284/bookings" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">All Bookings</a><a href="/admin/bookings?status=pending&amp;service=SRV-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Pending</a><a href="/admin/bookings?status=upcoming&amp;service=SRV-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Upcoming</a><a href="/admin/bookings?status=progress&amp;service=SRV-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">In Progress</a><a href="/admin/bookings?status=completed&amp;service=SRV-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Completed</a><a href="/admin/bookings/reschedules?service=SRV-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Reschedules</a><a href="/admin/bookings/cancellations?service=SRV-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Cancellations</a><a href="/admin/bookings/refunds?service=SRV-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Refunds</a><a href="/admin/services/SRV-100284/messages" class="rounded-lg border px-3 py-2 text-xs font-bold">Messages</a><a href="/admin/services/SRV-100284/support" class="rounded-lg border px-3 py-2 text-xs font-bold">Support</a><a href="/admin/services/SRV-100284/disputes" class="rounded-lg border px-3 py-2 text-xs font-bold">Disputes</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Contact Provider</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- Feedback, Compliance, Vendor -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="feedback-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="feedback-heading" class="text-lg font-bold">Reviews, questions, complaints, and reports</h2></div>
+    <div class="space-y-5 p-5">
+      <div class="flex items-center gap-5 rounded-xl bg-amber-50 p-4"><div><p class="text-3xl font-black">4.9</p><p class="text-sm text-amber-600">★★★★★</p><p class="text-xs text-slate-500">1,842 reviews</p></div><div class="flex-1 space-y-1 text-xs"><div class="flex gap-2"><span>5</span><div class="h-2 flex-1 rounded bg-white"><div class="h-full w-[90%] rounded bg-amber-400"></div></div><span>90%</span></div><div class="flex gap-2"><span>4</span><div class="h-2 flex-1 rounded bg-white"><div class="h-full w-[8%] rounded bg-amber-400"></div></div><span>8%</span></div><div class="flex gap-2"><span>1–3</span><div class="h-2 flex-1 rounded bg-white"><div class="h-full w-[2%] rounded bg-amber-400"></div></div><span>2%</span></div></div></div>
+      <dl class="grid grid-cols-2 gap-3 text-sm"><div><dt class="text-xs text-slate-500">Verified bookings</dt><dd class="font-bold">1,794</dd></div><div><dt class="text-xs text-slate-500">Pending moderation</dt><dd class="font-bold">6</dd></div><div><dt class="text-xs text-slate-500">Reported reviews</dt><dd class="font-bold">1</dd></div><div><dt class="text-xs text-slate-500">Provider responses</dt><dd class="font-bold">1,664</dd></div><div><dt class="text-xs text-slate-500">Awaiting response</dt><dd class="font-bold">14</dd></div><div><dt class="text-xs text-slate-500">Questions</dt><dd class="font-bold">26</dd></div><div><dt class="text-xs text-slate-500">Answered / Unanswered</dt><dd class="font-bold">24 / 2</dd></div><div><dt class="text-xs text-slate-500">Service reports</dt><dd class="font-bold">1 resolved</dd></div><div><dt class="text-xs text-slate-500">Safety / License</dt><dd class="font-bold">0 / 0</dd></div><div><dt class="text-xs text-slate-500">Conduct / Quality</dt><dd class="font-bold">1 / 3</dd></div><div><dt class="text-xs text-slate-500">No-show complaints</dt><dd class="font-bold">2</dd></div><div><dt class="text-xs text-slate-500">Open complaints</dt><dd class="font-bold">1</dd></div></dl>
+      <div class="flex flex-wrap gap-2"><a href="/admin/services/SRV-100284/reviews" class="rounded-lg border px-3 py-2 text-xs font-bold">Reviews</a><a href="/admin/reviews/pending?service=SRV-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Moderate</a><a href="/admin/services/SRV-100284/questions" class="rounded-lg border px-3 py-2 text-xs font-bold">Questions</a><a href="/admin/questions?status=unanswered&amp;service=SRV-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Unanswered</a><a href="/admin/services/SRV-100284/reports" class="rounded-lg border px-3 py-2 text-xs font-bold">Reports</a><a href="/admin/services/SRV-100284/complaints" class="rounded-lg border px-3 py-2 text-xs font-bold">Complaints</a><a href="/admin/no-shows?service=SRV-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">No-Shows</a><button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Escalate</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="compliance-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="compliance-heading" class="text-lg font-bold">Compliance, licensing, and safety</h2></div>
+    <div class="space-y-5 p-5">
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Service policy</dt><dd class="font-bold text-emerald-700">Compliant</dd></div><div><dt class="text-xs text-slate-500">Prohibited screening</dt><dd class="font-bold text-emerald-700">Passed</dd></div>
+        <div><dt class="text-xs text-slate-500">Restricted screening</dt><dd class="font-bold text-emerald-700">Passed</dd></div><div><dt class="text-xs text-slate-500">Business license</dt><dd class="font-bold text-emerald-700">Current</dd></div>
+        <div><dt class="text-xs text-slate-500">Professional license</dt><dd class="font-bold">Not required</dd></div><div><dt class="text-xs text-slate-500">Certification</dt><dd class="font-bold text-emerald-700">Current</dd></div>
+        <div><dt class="text-xs text-slate-500">Background check</dt><dd class="font-bold text-emerald-700">Clear</dd></div><div><dt class="text-xs text-slate-500">Liability insurance</dt><dd class="font-bold text-emerald-700">Current</dd></div>
+        <div><dt class="text-xs text-slate-500">Bonding</dt><dd class="font-bold">Not required</dd></div><div><dt class="text-xs text-slate-500">Health and safety</dt><dd class="font-bold text-emerald-700">Complete</dd></div>
+        <div><dt class="text-xs text-slate-500">Age restriction</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Consent / Waiver</dt><dd class="font-bold">Booking consent</dd></div>
+        <div><dt class="text-xs text-slate-500">Privacy</dt><dd class="font-bold text-emerald-700">Compliant</dd></div><div><dt class="text-xs text-slate-500">Accessibility</dt><dd class="font-bold text-amber-700">Review requested</dd></div>
+        <div><dt class="text-xs text-slate-500">Regional restrictions</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Tax class</dt><dd class="font-bold">Standard service</dd></div>
+        <div><dt class="text-xs text-slate-500">Compliance / Risk</dt><dd class="font-bold">94 / 8</dd></div><div><dt class="text-xs text-slate-500">Prior violations</dt><dd class="font-bold">0</dd></div>
+        <div><dt class="text-xs text-slate-500">Last review</dt><dd class="font-bold">Sep 12, 2026</dd></div><div><dt class="text-xs text-slate-500">Next review</dt><dd class="font-bold">Mar 12, 2027</dd></div>
+      </dl>
+      <div class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">Compliance decisions require documented evidence and a review reason.</div>
+      <div class="flex flex-wrap gap-2"><a href="/admin/services/SRV-100284/documents" class="rounded-lg border px-3 py-2 text-xs font-bold">Review Documents</a><button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white">Approve</button><button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Reject</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Request Documents</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Compliance Note</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Schedule Review</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Restricted Scan</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">License Check</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Insurance Check</button><button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Escalate</button></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="vendor-context-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="vendor-context-heading" class="text-lg font-bold">Vendor and store context</h2></div>
+    <div class="space-y-5 p-5">
+      <div class="flex items-center gap-3"><span class="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-400 text-lg font-black">BN</span><div><h3 class="font-bold">BrightNest Services Ltd.</h3><p class="text-sm text-slate-500">BrightNest Home Services · VND-101842</p></div></div>
+      <div class="flex flex-wrap gap-2"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Professional</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span><span class="rounded-full bg-sky-100 px-2 py-1 text-xs font-bold text-sky-700">Verified</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low risk</span></div>
+      <dl class="grid grid-cols-2 gap-3 text-sm"><div><dt class="text-xs text-slate-500">Store health</dt><dd class="font-bold">96/100</dd></div><div><dt class="text-xs text-slate-500">Store rating</dt><dd class="font-bold text-amber-600">4.9 ★</dd></div><div><dt class="text-xs text-slate-500">Lifetime booking value</dt><dd class="font-bold">$3.84M</dd></div><div><dt class="text-xs text-slate-500">Refund rate</dt><dd class="font-bold">1.2%</dd></div><div><dt class="text-xs text-slate-500">Cancellation rate</dt><dd class="font-bold">2.1%</dd></div><div><dt class="text-xs text-slate-500">Policy violations</dt><dd class="font-bold">0 open</dd></div><div><dt class="text-xs text-slate-500">Other flagged services</dt><dd class="font-bold">0</dd></div><div><dt class="text-xs text-slate-500">Open disputes</dt><dd class="font-bold">1</dd></div><div><dt class="text-xs text-slate-500">Account manager</dt><dd class="font-bold">Sarah Mitchell</dd></div></dl>
+      <div class="flex flex-wrap gap-2"><a href="/admin/vendors/VND-101842" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Vendor Profile</a><a href="/store/brightnest" class="rounded-lg border px-3 py-2 text-xs font-bold">Live Store</a><a href="/admin/vendors/VND-101842/services" class="rounded-lg border px-3 py-2 text-xs font-bold">Vendor Services</a><a href="/admin/vendors/VND-101842/compliance" class="rounded-lg border px-3 py-2 text-xs font-bold">Compliance</a><a href="/admin/vendors/VND-101842/payouts" class="rounded-lg border px-3 py-2 text-xs font-bold">Payouts</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Contact Vendor</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Add Vendor Note</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- Internal Notes -->
+<section aria-labelledby="internal-notes-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6"><div><h2 id="internal-notes-heading" class="text-lg font-bold">Internal notes and moderation ownership</h2><p class="mt-1 text-xs text-slate-500">Internal notes are never visible to vendors, providers, or customers.</p></div><a href="/admin/services/SRV-100284/audit" class="text-sm font-bold text-amber-700 hover:underline">Service Audit Log</a></div>
+  <div class="grid gap-6 p-5 sm:p-6 xl:grid-cols-[0.8fr_1.2fr]">
+    <div><dl class="grid grid-cols-2 gap-3 text-sm"><div><dt class="text-xs text-slate-500">Moderator</dt><dd class="font-bold">Sarah Mitchell</dd></div><div><dt class="text-xs text-slate-500">Compliance reviewer</dt><dd class="font-bold">Elena Cruz</dd></div><div><dt class="text-xs text-slate-500">Category manager</dt><dd class="font-bold">Daniel Kim</dd></div><div><dt class="text-xs text-slate-500">Provider reviewer</dt><dd class="font-bold">Angela Chen</dd></div><div><dt class="text-xs text-slate-500">Priority / Risk</dt><dd class="font-bold text-emerald-700">Normal / Low</dd></div><div><dt class="text-xs text-slate-500">Case reference</dt><dd class="font-bold">No active case</dd></div><div><dt class="text-xs text-slate-500">Last review</dt><dd class="font-bold">Sep 12, 2026</dd></div><div><dt class="text-xs text-slate-500">Next review</dt><dd class="font-bold">Mar 12, 2027</dd></div></dl><div class="mt-4 flex flex-wrap gap-2"><span class="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold text-violet-700">Top Service</span><span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">High Revenue</span><span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">Featured</span><span class="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-sky-700">High Demand</span></div></div>
+    <div class="space-y-4">
+      <article class="rounded-xl bg-slate-50 p-4"><div class="flex justify-between gap-3"><p class="text-sm font-bold">Service and provider review completed.</p><time class="text-xs text-slate-400">Sep 12, 2026</time></div><p class="mt-2 text-sm text-slate-600">Listing, credentials, insurance, schedule, and fulfillment metrics are in good standing.</p><p class="mt-2 text-xs font-semibold text-slate-500">Sarah Mitchell · Senior Services Moderator</p></article>
+      <div><label for="service-note" class="block text-sm font-semibold">Add internal note</label><textarea id="service-note" rows="3" placeholder="Document evidence, decisions, and follow-up." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea></div>
+      <div class="flex flex-wrap gap-2"><button type="button" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Add Note</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Add Tag</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Assign Moderator</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Assign Compliance Reviewer</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Assign Provider Reviewer</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Set Priority</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Schedule Follow-Up</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- Recent Activity -->
+<section aria-labelledby="activity-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6"><div><h2 id="activity-heading" class="text-lg font-bold">Recent service activity</h2><p class="mt-1 text-xs text-slate-500">Auditable catalog, scheduling, provider, and moderation events.</p></div><a href="/admin/services/audit" class="text-sm font-bold text-amber-700 hover:underline">View Complete Service Audit Log</a></div>
+  <div class="overflow-x-auto">
+    <table class="w-full min-w-[72rem] text-left text-sm">
+      <thead class="bg-slate-50 text-xs uppercase text-slate-500"><tr><th class="px-5 py-3">Action</th><th class="px-5 py-3">Service</th><th class="px-5 py-3">Vendor</th><th class="px-5 py-3">Provider</th><th class="px-5 py-3">Actor</th><th class="px-5 py-3">Date</th><th class="px-5 py-3">Reason</th><th class="px-5 py-3">Status</th><th class="px-5 py-3">Audit</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="px-5 py-4 font-semibold">Service approved</td><td class="px-5 py-4">Complete Home Deep Cleaning</td><td class="px-5 py-4">BrightNest</td><td class="px-5 py-4">Maria Santos</td><td class="px-5 py-4">Sarah Mitchell</td><td class="px-5 py-4">Sep 19, 4:18 PM</td><td class="px-5 py-4">Content, provider, and compliance checks passed.</td><td class="px-5 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Completed</span></td><td class="px-5 py-4"><a href="/admin/audit/SA-90218" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Availability changed</td><td class="px-5 py-4">Therapeutic Massage</td><td class="px-5 py-4">Pacific Wellness</td><td class="px-5 py-4">Emma Clarke</td><td class="px-5 py-4">Provider</td><td class="px-5 py-4">Sep 19, 2:06 PM</td><td class="px-5 py-4">October calendar updated.</td><td class="px-5 py-4"><span class="rounded-full bg-sky-100 px-2 py-1 text-xs font-bold text-sky-700">Recorded</span></td><td class="px-5 py-4"><a href="/admin/audit/SA-90211" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Service hidden</td><td class="px-5 py-4">Investment Returns Coaching</td><td class="px-5 py-4">Westline Success</td><td class="px-5 py-4">Nina Brooks</td><td class="px-5 py-4">Elena Cruz</td><td class="px-5 py-4">Sep 18, 11:40 AM</td><td class="px-5 py-4">Misleading financial claims under investigation.</td><td class="px-5 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Enforced</span></td><td class="px-5 py-4"><a href="/admin/audit/SA-90188" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Service rejected</td><td class="px-5 py-4">Electrical Panel Repair</td><td class="px-5 py-4">Urban Home</td><td class="px-5 py-4">Unverified</td><td class="px-5 py-4">Daniel Kim</td><td class="px-5 py-4">Sep 18, 9:25 AM</td><td class="px-5 py-4">Required professional license not provided.</td><td class="px-5 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Rejected</span></td><td class="px-5 py-4"><a href="/admin/audit/SA-90172" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Provider assigned</td><td class="px-5 py-4">Family Photography</td><td class="px-5 py-4">Golden Lens</td><td class="px-5 py-4">Olivia Reyes</td><td class="px-5 py-4">Vendor admin</td><td class="px-5 py-4">Sep 17, 10:11 PM</td><td class="px-5 py-4">Primary photographer updated.</td><td class="px-5 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Completed</span></td><td class="px-5 py-4"><a href="/admin/audit/SA-90149" class="font-bold text-amber-700">View</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Moderation and Enforcement -->
+<section aria-labelledby="enforcement-heading" class="rounded-2xl border border-rose-200 bg-white shadow-sm">
+  <div class="border-b border-rose-100 px-5 py-4 sm:px-6"><h2 id="enforcement-heading" class="text-lg font-bold">Service moderation and enforcement</h2><p class="mt-1 text-xs text-slate-500">Sensitive actions require evidence, confirmation, and a documented reason.</p></div>
+  <form action="/admin/services/SRV-100284/enforcement" method="post" class="grid gap-6 p-5 sm:p-6 xl:grid-cols-[0.75fr_1.25fr]">
+    <dl class="grid grid-cols-2 gap-3 text-sm">
+      <div><dt class="text-xs text-slate-500">Service status</dt><dd class="font-bold text-emerald-700">Published</dd></div><div><dt class="text-xs text-slate-500">Moderation</dt><dd class="font-bold text-emerald-700">Approved</dd></div>
+      <div><dt class="text-xs text-slate-500">Compliance</dt><dd class="font-bold text-emerald-700">Compliant</dd></div><div><dt class="text-xs text-slate-500">Provider status</dt><dd class="font-bold text-emerald-700">Approved</dd></div>
+      <div><dt class="text-xs text-slate-500">Restriction reason</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Rejection reason</dt><dd class="font-bold">None</dd></div>
+      <div><dt class="text-xs text-slate-500">Hidden reason</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Provider suspension</dt><dd class="font-bold">None</dd></div>
+      <div><dt class="text-xs text-slate-500">Affected regions</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Restricted booking methods</dt><dd class="font-bold">None</dd></div>
+      <div><dt class="text-xs text-slate-500">Enforcement period</dt><dd class="font-bold">Not applicable</dd></div><div><dt class="text-xs text-slate-500">Moderator / Case</dt><dd class="font-bold">Not applicable</dd></div>
+      <div><dt class="text-xs text-slate-500">Vendor appeal</dt><dd class="font-bold">No appeal</dd></div><div class="col-span-2"><dt class="text-xs text-slate-500">Internal notes</dt><dd class="font-bold">Service is in good standing.</dd></div>
+    </dl>
+
+    <div class="space-y-4">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div><label for="moderation-action" class="block text-sm font-semibold">Moderation action</label><select id="moderation-action" required class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option value="">Select action</option><option>Approve Service</option><option>Publish Service</option><option>Request Changes</option><option>Reject Service</option><option>Unpublish Service</option><option>Pause Service</option><option>Hide Service</option><option>Restrict by Region</option><option>Restrict by Age</option><option>Restrict Booking Method</option><option>Suspend Service</option><option>Suspend Provider Assignment</option><option>Remove Service</option><option>Archive Service</option><option>Restore Service</option><option>Place on Monitoring List</option><option>Cancel Upcoming Bookings</option><option>Initiate Customer Notification</option></select></div>
+        <div><label for="policy-category" class="block text-sm font-semibold">Policy category</label><select id="policy-category" required class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option value="">Select category</option><option>Service content</option><option>Prohibited service</option><option>Safety or regulatory</option><option>Licensing</option><option>Insurance</option><option>Provider conduct</option><option>Misleading pricing</option><option>Customer harm</option></select></div>
+        <div><label for="case-reference" class="block text-sm font-semibold">Evidence or case reference</label><input id="case-reference" placeholder="CASE-000000" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div><label for="service-confirmation" class="block text-sm font-semibold">Confirmation</label><input id="service-confirmation" required placeholder="Type SRV-100284 to confirm" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500"></div>
+        <div><label for="affected-regions" class="block text-sm font-semibold">Affected regions</label><input id="affected-regions" placeholder="Global or selected regions" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div><label for="affected-booking-methods" class="block text-sm font-semibold">Affected booking methods</label><input id="affected-booking-methods" placeholder="Instant, request, recurring, or all" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div><label for="effective-date" class="block text-sm font-semibold">Effective date</label><input id="effective-date" type="datetime-local" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div><label for="expiration-date" class="block text-sm font-semibold">Optional expiration</label><input id="expiration-date" type="datetime-local" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div class="sm:col-span-2"><label for="enforcement-reason" class="block text-sm font-semibold">Required documented reason</label><textarea id="enforcement-reason" required rows="3" placeholder="Provide the policy basis, evidence, affected bookings or customers, and required remediation." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500"></textarea></div>
+      </div>
+      <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-5"><label class="flex gap-2 text-sm"><input type="checkbox" checked class="rounded text-amber-600"><span>Notify vendor</span></label><label class="flex gap-2 text-sm"><input type="checkbox" checked class="rounded text-amber-600"><span>Notify provider</span></label><label class="flex gap-2 text-sm"><input type="checkbox" class="rounded text-amber-600"><span>Notify customers</span></label><label class="flex gap-2 text-sm"><input type="checkbox" class="rounded text-amber-600"><span>Review refunds</span></label><label class="flex gap-2 text-sm"><input type="checkbox" checked class="rounded text-amber-600"><span>Include appeal</span></label></div>
+      <div class="flex flex-wrap items-center gap-3"><button type="submit" class="rounded-xl border border-rose-300 bg-white px-4 py-2.5 text-sm font-bold text-rose-700 hover:bg-rose-50">Review and Apply Action</button><a href="/policies/services" class="text-sm font-bold text-amber-700 hover:underline">View service policy</a></div>
+    </div>
+  </form>
+</section>
+
+<!-- Service Administration -->
+<section aria-labelledby="administration-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-200 px-5 py-5 sm:px-6"><h2 id="administration-heading" class="text-xl font-bold">Service Administration</h2><p class="mt-1 text-sm text-slate-500">Quick access to service marketplace administration tools.</p></div>
+  <div class="grid gap-8 p-5 sm:p-6 lg:grid-cols-2 2xl:grid-cols-3">
+
+    <section aria-labelledby="management-links">
+      <h3 id="management-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Service management</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/services" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">All Services</a><a href="/admin/services/create" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Add Service</a>
+        <a href="/admin/services?status=published" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Published</a><a href="/admin/services?status=draft" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Draft Services</a>
+        <a href="/admin/services?status=pending" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending <span class="rounded-full bg-amber-100 px-2 text-xs">1,186</span></a><a href="/admin/services?status=changes-requested" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Changes Requested</a>
+        <a href="/admin/services?status=rejected" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Rejected <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">236</span></a><a href="/admin/services?status=paused" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Paused</a>
+        <a href="/admin/services?status=hidden" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Hidden</a><a href="/admin/services?status=suspended" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Suspended</a>
+        <a href="/admin/services?status=archived" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Archived</a><a href="/admin/services?status=deleted" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Deleted</a>
+        <a href="/admin/services/duplicates" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Duplicate Services</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="moderation-links">
+      <h3 id="moderation-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Moderation and approval</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/services/moderation" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Moderation Queue</a><a href="/admin/services?moderation=unreviewed" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Unreviewed</a>
+        <a href="/admin/services?moderator=me" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Assigned to Me</a><a href="/admin/services?moderation=escalated" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Escalated Reviews</a>
+        <a href="/admin/services/appeals" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Service Appeals</a><a href="/admin/services/vendor-responses" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Responses</a>
+        <a href="/admin/providers/documents/pending" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Provider Documents</a><a href="/admin/services/audit" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Service Audit History</a>
+        <a href="/admin/services/moderation/rules" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Moderation Rules</a><a href="/admin/services/moderation/automation" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Automated Moderation</a>
+        <a href="/admin/services/quality-audits" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Quality Audits</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="catalog-links">
+      <h3 id="catalog-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Service catalog organization</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/service-categories" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Categories</a><a href="/admin/service-subcategories" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Subcategories</a>
+        <a href="/admin/service-types" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Service Types</a><a href="/admin/service-attributes" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Attributes</a>
+        <a href="/admin/service-packages" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Packages</a><a href="/admin/service-add-ons" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Add-ons</a>
+        <a href="/admin/service-tags" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Tags</a><a href="/admin/service-collections" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Collections</a>
+        <a href="/admin/booking-models" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Booking Models</a><a href="/admin/delivery-methods" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Delivery Methods</a>
+        <a href="/admin/duration-options" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Duration Options</a><a href="/admin/cancellation-policies" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Cancellation Policies</a>
+        <a href="/admin/refund-policies" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Refund Policies</a><a href="/admin/service-tax-classes" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Tax Classes</a>
+        <a href="/admin/service-commissions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Commission Categories</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="scheduling-links">
+      <h3 id="scheduling-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Scheduling and availability</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/availability" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Availability Overview</a><a href="/admin/provider-calendars" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Provider Calendars</a>
+        <a href="/admin/staff-schedules" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Staff Schedules</a><a href="/admin/blackout-dates" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Blackout Dates</a>
+        <a href="/admin/holiday-hours" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Holiday Hours</a><a href="/admin/services?availability=full" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Fully Booked <span class="rounded-full bg-amber-100 px-2 text-xs">462</span></a>
+        <a href="/admin/services?availability=unavailable" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Unavailable Services</a><a href="/admin/schedules/conflicts" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Schedule Conflicts</a>
+        <a href="/admin/bookings?assignment=none" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Unassigned Bookings</a><a href="/admin/calendar-integrations" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Calendar Integrations</a>
+        <a href="/admin/calendar-sync-errors" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Sync Errors <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">38</span></a><a href="/admin/resources" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Resource Management</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="booking-links">
+      <h3 id="booking-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Bookings and fulfillment</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/bookings" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">All Bookings</a><a href="/admin/bookings?status=pending" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending Requests <span class="rounded-full bg-amber-100 px-2 text-xs">842</span></a>
+        <a href="/admin/bookings?status=upcoming" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Upcoming</a><a href="/admin/bookings?status=confirmed" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Confirmed</a>
+        <a href="/admin/bookings?status=in-progress" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">In Progress</a><a href="/admin/bookings?status=completed" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Completed</a>
+        <a href="/admin/bookings/reschedules" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Reschedule Requests</a><a href="/admin/bookings/cancellations" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Cancellation Requests <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">126</span></a>
+        <a href="/admin/bookings/no-shows" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">No-Show Bookings</a><a href="/admin/bookings/refunds" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Refund Requests</a>
+        <a href="/admin/booking-disputes" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Booking Disputes <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">34</span></a><a href="/admin/reports/bookings" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Booking Reports</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="provider-links">
+      <h3 id="provider-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Providers and credentials</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/providers" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">All Providers</a><a href="/admin/providers?verification=pending" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending Verification <span class="rounded-full bg-amber-100 px-2 text-xs">92</span></a>
+        <a href="/admin/providers/identity-documents" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Identity Documents</a><a href="/admin/providers/background-checks" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Background Checks</a>
+        <a href="/admin/providers/licenses" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Professional Licenses</a><a href="/admin/providers/certifications" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Certifications</a>
+        <a href="/admin/providers/insurance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Insurance Documents</a><a href="/admin/providers/credentials?status=expiring" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Expiring Credentials <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">68</span></a>
+        <a href="/admin/providers?status=suspended" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Suspended Providers</a><a href="/admin/providers/performance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Provider Performance</a>
+        <a href="/admin/providers/complaints" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Provider Complaints</a><a href="/admin/providers/audit" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Credential Audit Log</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="pricing-links">
+      <h3 id="pricing-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Pricing and promotions</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/service-prices" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Service Prices</a><a href="/admin/service-prices/hourly" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Hourly Rates</a>
+        <a href="/admin/service-prices/packages" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Package Pricing</a><a href="/admin/service-prices/add-ons" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Add-on Pricing</a>
+        <a href="/admin/service-prices/history" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Price History</a><a href="/admin/service-prices/suspicious" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Suspicious Pricing</a>
+        <a href="/admin/service-promotions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Service Promotions</a><a href="/admin/services/featured" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Featured Services</a>
+        <a href="/admin/service-promotions/flash" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Flash Promotions</a><a href="/admin/coupons?type=service" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Coupons</a>
+        <a href="/admin/services/subscriptions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Subscription Services</a><a href="/admin/service-commissions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Commission Rules</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="feedback-links">
+      <h3 id="feedback-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Reviews and customer feedback</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/service-reviews" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Service Reviews</a><a href="/admin/service-reviews?status=pending" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending Reviews <span class="rounded-full bg-amber-100 px-2 text-xs">214</span></a>
+        <a href="/admin/service-reviews?status=reported" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Reported Reviews</a><a href="/admin/service-questions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Service Questions</a>
+        <a href="/admin/service-questions?status=unanswered" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Unanswered <span class="rounded-full bg-amber-100 px-2 text-xs">386</span></a>
+        <a href="/admin/service-reports" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Service Reports <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">74</span></a>
+        <a href="/admin/complaints/services" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Customer Complaints</a><a href="/admin/service-reports?type=safety" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Safety Reports <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">12</span></a>
+        <a href="/admin/service-reports?type=license" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Licensing Complaints <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">18</span></a>
+        <a href="/admin/service-reports?type=misrepresentation" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Misrepresentation</a><a href="/admin/no-show-reports" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">No-Show Reports</a><a href="/admin/provider-conduct-reports" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Provider Conduct</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="compliance-links">
+      <h3 id="compliance-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Compliance and safety</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/services/compliance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Compliance Reviews</a><a href="/admin/services?status=flagged" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Flagged Services <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">148</span></a>
+        <a href="/admin/services/prohibited" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Prohibited Services</a><a href="/admin/services/restricted" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Restricted Services</a>
+        <a href="/admin/providers/licenses" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">License Verification</a><a href="/admin/providers/insurance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Insurance Verification</a>
+        <a href="/admin/providers/background-checks" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Background Checks</a><a href="/admin/services/safety-documents" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Safety Documentation</a>
+        <a href="/admin/services/certifications" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Regulatory Certifications</a><a href="/admin/services/regional-restrictions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Regional Restrictions</a>
+        <a href="/admin/service-notices" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Service Notices</a><a href="/admin/services/compliance/rules" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Compliance Rules</a>
+        <a href="/admin/services/audit" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Service Audit Log</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="reporting-links" class="lg:col-span-2 2xl:col-span-3">
+      <h3 id="reporting-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Reporting and service operations</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="/admin/analytics/services" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Services Analytics</a><a href="/admin/reports/bookings" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Booking Reports</a>
+        <a href="/admin/reports/service-revenue" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Revenue Reports</a><a href="/admin/reports/provider-performance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Provider Performance</a>
+        <a href="/admin/reports/cancellations" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Cancellation Reports</a><a href="/admin/reports/no-shows" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">No-Show Reports</a>
+        <a href="/admin/reports/service-refunds" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Refund Reports</a><a href="/admin/reports/service-disputes" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Dispute Reports</a>
+        <a href="/admin/reports/service-compliance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Compliance Reports</a><a href="/admin/reports/vendor-services" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Service Reports</a>
+        <a href="/admin/services/exports" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Export Center</a><a href="/admin/services/imports" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Import History</a>
+        <a href="/admin/services/imports?status=failed" class="rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Failed Imports</a><a href="/admin/services/bulk-history" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Bulk Editing History</a>
+      </nav>
+    </section>
+  </div>
+</section>
+
+</div> </main>

@@ -6,6 +6,9 @@ export type User = {
     email: string;
     role: UserRole;
     email_verified_at: string | null;
+    /** Null until the member uploads one; shells fall back to `initials`. */
+    avatar_url: string | null;
+    initials: string;
 };
 
 type AuthResponse = {
@@ -35,6 +38,8 @@ export class ApiError extends Error {
         return this.errors[field]?.[0];
     }
 }
+
+import { getActiveLocale } from '../i18n';
 
 const apiBaseUrl = (import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api/v1').replace(/\/$/, '');
 const tokenKey = 'asbeez_auth_token';
@@ -72,6 +77,9 @@ export async function apiRequest<T>(path: string, options: RequestInit = {}, aut
     const headers = new Headers(options.headers);
 
     headers.set('Accept', 'application/json');
+
+    // Validation errors and server messages come back in this language.
+    headers.set('Accept-Language', getActiveLocale());
 
     // FormData must set its own multipart Content-Type, boundary included —
     // forcing application/json here would corrupt every upload.

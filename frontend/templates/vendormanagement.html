@@ -1,0 +1,770 @@
+<main class="min-h-screen bg-amber-50/60 px-4 py-6 text-slate-800 sm:px-6 lg:px-8"> <div class="mx-auto max-w-[100rem] space-y-6">
+<!-- Page Header -->
+<header class="space-y-5">
+  <nav aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+      <li><a href="/admin" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Admin</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/admin/vendors" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Vendor Management</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="font-semibold text-slate-800" aria-current="page">Vendors</li>
+    </ol>
+  </nav>
+
+  <div class="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+    <div>
+      <div class="flex flex-wrap items-center gap-3">
+        <h1 class="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Vendor Management</h1>
+        <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">4,286 vendors</span>
+      </div>
+      <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+        Manage vendor onboarding, storefronts, compliance, products, sales, commissions, payouts, and marketplace access.
+      </p>
+    </div>
+
+    <div class="grid gap-2 sm:flex">
+      <a href="/admin/vendors/export" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold shadow-sm hover:border-amber-400 hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14"/></svg>
+        Export Vendors
+      </a>
+      <a href="/admin/vendors/import" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold shadow-sm hover:border-amber-400 hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 16V4m0 0 4 4m-4-4L8 8M5 20h14"/></svg>
+        Import Vendors
+      </a>
+      <a href="/admin/vendors/create" class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-amber-500 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-width="2" stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+        Add Vendor
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Vendor Statistics -->
+<section aria-labelledby="vendor-statistics-heading">
+  <h2 id="vendor-statistics-heading" class="sr-only">Vendor statistics</h2>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-8">
+    <a href="/admin/vendors" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-400 hover:shadow-md">
+      <div class="flex items-center justify-between"><span class="rounded-xl bg-slate-100 p-2 text-slate-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M4 21V9l8-5 8 5v12M8 21v-7h8v7"/></svg></span><span class="text-xs font-bold text-emerald-600">+7.8%</span></div>
+      <p class="mt-4 text-2xl font-black text-slate-950">4,286</p><p class="text-xs text-slate-500">Total vendors</p>
+    </a>
+    <a href="/admin/vendors?status=active" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-emerald-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-emerald-100 p-2 text-emerald-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="m5 12 4 4L19 6"/></svg></span><span class="text-xs font-bold text-emerald-600">+5.4%</span></div>
+      <p class="mt-4 text-2xl font-black">3,742</p><p class="text-xs text-slate-500">Active vendors</p>
+    </a>
+    <a href="/admin/vendors?joined=this-month" class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm hover:border-sky-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-sky-100 p-2 text-sky-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 5v14M5 12h14"/></svg></span><span class="text-xs font-bold text-emerald-600">+11.2%</span></div>
+      <p class="mt-4 text-2xl font-black">186</p><p class="text-xs text-slate-500">New this month</p>
+    </a>
+    <a href="/admin/vendors/applications?status=pending" class="rounded-2xl border border-amber-200 bg-white p-4 shadow-sm hover:border-amber-500">
+      <div class="flex justify-between"><span class="rounded-xl bg-amber-100 p-2 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M6 3h12v18H6zM9 8h6m-6 4h6"/></svg></span><span class="text-xs font-bold text-rose-600">+14</span></div>
+      <p class="mt-4 text-2xl font-black">94</p><p class="text-xs text-slate-500">Pending applications</p>
+    </a>
+    <a href="/admin/vendors?verification=pending" class="rounded-2xl border border-amber-200 bg-white p-4 shadow-sm hover:border-amber-500">
+      <div class="flex justify-between"><span class="rounded-xl bg-amber-100 p-2 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-width="2" d="M12 7v5l3 2"/></svg></span><span class="text-xs font-bold text-emerald-600">-9</span></div>
+      <p class="mt-4 text-2xl font-black">127</p><p class="text-xs text-slate-500">Pending verification</p>
+    </a>
+    <a href="/admin/vendors?status=restricted" class="rounded-2xl border border-orange-200 bg-white p-4 shadow-sm hover:border-orange-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-orange-100 p-2 text-orange-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M5 12h14"/></svg></span><span class="text-xs font-bold text-rose-600">+4</span></div>
+      <p class="mt-4 text-2xl font-black">38</p><p class="text-xs text-slate-500">Restricted</p>
+    </a>
+    <a href="/admin/vendors?status=suspended" class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm hover:border-rose-400">
+      <div class="flex justify-between"><span class="rounded-xl bg-rose-100 p-2 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9" stroke-width="2"/><path stroke-width="2" d="m8 8 8 8"/></svg></span><span class="text-xs font-bold text-emerald-600">-2</span></div>
+      <p class="mt-4 text-2xl font-black">21</p><p class="text-xs text-slate-500">Suspended</p>
+    </a>
+    <a href="/admin/vendors/alerts" class="rounded-2xl border border-rose-200 bg-white p-4 shadow-sm hover:border-rose-500">
+      <div class="flex justify-between"><span class="rounded-xl bg-rose-100 p-2 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 3 2 21h20L12 3Zm0 6v5m0 3h.01"/></svg></span><span class="text-xs font-bold text-rose-600">+3</span></div>
+      <p class="mt-4 text-2xl font-black">16</p><p class="text-xs text-slate-500">Compliance alerts</p>
+    </a>
+  </div>
+</section>
+
+<!-- Vendor Growth Overview -->
+<section aria-labelledby="growth-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div>
+      <h2 id="growth-heading" class="text-lg font-bold text-slate-950">Vendor growth and marketplace overview</h2>
+      <p class="mt-1 text-sm text-slate-500">Vendor acquisition, activation, retention, and marketplace value for the last 30 days.</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <label for="analytics-range" class="sr-only">Analytics range</label>
+      <select id="analytics-range" class="rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        <option>Last 7 days</option><option selected>Last 30 days</option><option>Last 90 days</option><option>This year</option><option>Custom range</option>
+      </select>
+      <a href="/admin/analytics/vendors" class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-bold hover:border-amber-400 hover:bg-amber-50">View Vendor Analytics</a>
+    </div>
+  </div>
+
+  <div class="mt-6 grid gap-5 xl:grid-cols-[1fr_0.8fr]">
+    <dl class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div class="rounded-xl bg-sky-50 p-4"><dt class="text-xs text-slate-500">Registrations</dt><dd class="mt-1 text-xl font-black">186</dd></div>
+      <div class="rounded-xl bg-emerald-50 p-4"><dt class="text-xs text-slate-500">Approved</dt><dd class="mt-1 text-xl font-black text-emerald-700">142</dd></div>
+      <div class="rounded-xl bg-rose-50 p-4"><dt class="text-xs text-slate-500">Rejected</dt><dd class="mt-1 text-xl font-black text-rose-700">11</dd></div>
+      <div class="rounded-xl bg-amber-50 p-4"><dt class="text-xs text-slate-500">Stores activated</dt><dd class="mt-1 text-xl font-black text-amber-700">129</dd></div>
+      <div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Retention</dt><dd class="mt-1 text-xl font-black">96.4%</dd></div>
+      <div class="rounded-xl bg-slate-50 p-4"><dt class="text-xs text-slate-500">Avg. onboarding</dt><dd class="mt-1 text-xl font-black">3.8 days</dd></div>
+      <div class="rounded-xl bg-violet-50 p-4"><dt class="text-xs text-slate-500">Vendor GMV</dt><dd class="mt-1 text-xl font-black text-violet-700">$8.42M</dd></div>
+      <div class="rounded-xl bg-amber-50 p-4"><dt class="text-xs text-slate-500">Commission</dt><dd class="mt-1 text-xl font-black text-amber-700">$684K</dd></div>
+    </dl>
+
+    <div class="flex h-44 items-end gap-2 rounded-xl border border-slate-100 bg-gradient-to-b from-white to-amber-50 p-4" aria-label="Vendor growth chart">
+      <div class="h-[32%] flex-1 rounded-t bg-amber-200"></div><div class="h-[44%] flex-1 rounded-t bg-amber-300"></div>
+      <div class="h-[40%] flex-1 rounded-t bg-amber-300"></div><div class="h-[58%] flex-1 rounded-t bg-amber-400"></div>
+      <div class="h-[51%] flex-1 rounded-t bg-amber-300"></div><div class="h-[66%] flex-1 rounded-t bg-amber-400"></div>
+      <div class="h-[62%] flex-1 rounded-t bg-amber-400"></div><div class="h-[79%] flex-1 rounded-t bg-amber-500"></div>
+      <div class="h-[71%] flex-1 rounded-t bg-amber-500"></div><div class="h-[88%] flex-1 rounded-t bg-slate-800"></div>
+      <div class="h-[82%] flex-1 rounded-t bg-amber-500"></div><div class="h-full flex-1 rounded-t bg-slate-950"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Search and Filters -->
+<form action="/admin/vendors" method="get" aria-labelledby="filter-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-200 px-5 py-4 sm:px-6">
+    <h2 id="filter-heading" class="text-lg font-bold">Search and filter vendors</h2>
+  </div>
+
+  <div class="space-y-4 p-5 sm:p-6">
+    <div class="relative">
+      <svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke-width="2"/><path stroke-width="2" d="m20 20-4-4"/></svg>
+      <label for="vendor-search" class="sr-only">Search vendors</label>
+      <input id="vendor-search" name="search" type="search" placeholder="Search business, store, vendor ID, owner, email, phone, tax ID, registration, or payout reference" class="w-full rounded-xl border-slate-300 py-3 pl-12 pr-4 text-sm shadow-sm focus:border-amber-500 focus:ring-amber-500">
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-6">
+      <div><label for="vendor-status" class="block text-xs font-bold text-slate-600">Vendor status</label><select id="vendor-status" name="status" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All statuses</option><option>Application submitted</option><option>Pending review</option><option>Approved</option><option>Active</option><option>Restricted</option><option>Suspended</option><option>Deactivated</option><option>Rejected</option><option>Archived</option></select></div>
+      <div><label for="verification-status" class="block text-xs font-bold text-slate-600">Verification</label><select id="verification-status" name="verification" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All verification</option><option>Fully verified</option><option>Partially verified</option><option>Business pending</option><option>Identity pending</option><option>Tax pending</option><option>Banking pending</option><option>Rejected</option><option>Not submitted</option></select></div>
+      <div><label for="vendor-plan" class="block text-xs font-bold text-slate-600">Vendor plan</label><select id="vendor-plan" name="plan" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All plans</option><option>Starter</option><option>Growth</option><option>Professional</option><option>Enterprise</option><option>Custom</option></select></div>
+      <div><label for="store-category" class="block text-xs font-bold text-slate-600">Store category</label><select id="store-category" name="category" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All categories</option><option>Products</option><option>Services</option><option>Products and services</option><option>Local business</option><option>Digital goods</option><option>Professional services</option></select></div>
+      <div><label for="vendor-region" class="block text-xs font-bold text-slate-600">Country or region</label><select id="vendor-region" name="region" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All regions</option><option>Canada</option><option>United States</option><option>United Kingdom</option><option>Philippines</option></select></div>
+      <div><label for="vendor-risk" class="block text-xs font-bold text-slate-600">Risk level</label><select id="vendor-risk" name="risk" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All risk levels</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div>
+      <div><label for="compliance-status" class="block text-xs font-bold text-slate-600">Compliance</label><select id="compliance-status" name="compliance" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All compliance states</option><option>Compliant</option><option>Review required</option><option>Violation open</option><option>Monitoring</option></select></div>
+      <div><label for="payout-status" class="block text-xs font-bold text-slate-600">Payout status</label><select id="payout-status" name="payout" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any payout status</option><option>Ready</option><option>Pending</option><option>On hold</option><option>Banking incomplete</option></select></div>
+      <div><label for="assigned-admin" class="block text-xs font-bold text-slate-600">Assigned administrator</label><select id="assigned-admin" name="administrator" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All administrators</option><option>Sarah Mitchell</option><option>Daniel Kim</option><option>Elena Cruz</option><option>Unassigned</option></select></div>
+      <div><label for="registered-from" class="block text-xs font-bold text-slate-600">Registered from</label><input id="registered-from" name="registered_from" type="date" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="registered-to" class="block text-xs font-bold text-slate-600">Registered to</label><input id="registered-to" name="registered_to" type="date" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="vendor-sort" class="block text-xs font-bold text-slate-600">Sort by</label><select id="vendor-sort" name="sort" class="mt-1.5 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Newest vendors</option><option>Oldest vendors</option><option>Business name A–Z</option><option>Business name Z–A</option><option>Highest sales</option><option>Most orders</option><option>Highest rating</option><option>Most complaints</option><option>Highest risk</option><option>Pending longest</option></select></div>
+    </div>
+
+    <div class="flex flex-col gap-3 border-t border-slate-100 pt-4 lg:flex-row lg:items-center lg:justify-between">
+      <div class="flex flex-wrap gap-2">
+        <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Active <button type="button" aria-label="Remove Active filter">×</button></span>
+        <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Canada <button type="button" aria-label="Remove Canada filter">×</button></span>
+        <button type="button" class="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-bold hover:bg-slate-50">Saved Filters</button>
+        <button type="button" class="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-bold hover:bg-slate-50">More Filters</button>
+      </div>
+      <div class="flex gap-2">
+        <a href="/admin/vendors" class="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100">Clear Filters</a>
+        <button type="submit" class="rounded-xl bg-amber-400 px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Vendor Directory and Selected Vendor -->
+<div class="grid gap-6 2xl:grid-cols-[minmax(0,1fr)_22rem]">
+  <section aria-labelledby="vendor-directory-heading" class="min-w-0 rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div><h2 id="vendor-directory-heading" class="text-lg font-bold">Vendor directory</h2><p class="mt-1 text-sm text-slate-500">Showing 1–25 of 4,286 vendors</p></div>
+      <label class="inline-flex items-center gap-2 text-sm font-semibold"><input type="checkbox" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"> Select all vendors on this page</label>
+    </div>
+
+    <!-- Bulk Actions -->
+    <div class="border-b border-amber-200 bg-amber-50 px-5 py-3">
+      <div class="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+        <p class="text-sm font-bold text-amber-900">2 vendors selected</p>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold hover:bg-amber-100">Approve Applications</button>
+          <button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold hover:bg-amber-100">Request Information</button>
+          <button type="button" class="rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold hover:bg-amber-100">Approve Verification</button>
+          <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold hover:bg-slate-50">Assign Admin</button>
+          <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold hover:bg-slate-50">Assign Plan</button>
+          <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold hover:bg-slate-50">Change Commission</button>
+          <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold hover:bg-slate-50">Send Notification</button>
+          <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold hover:bg-slate-50">Add Note</button>
+          <button type="button" class="rounded-lg border border-orange-200 bg-white px-3 py-2 text-xs font-bold text-orange-700 hover:bg-orange-50">Restrict Stores</button>
+          <button type="button" class="rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs font-bold text-rose-700 hover:bg-rose-50">Suspend</button>
+          <button type="button" class="rounded-lg border border-emerald-200 bg-white px-3 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-50">Reactivate</button>
+          <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold">Export</button>
+          <button type="button" class="px-2 py-2 text-xs font-bold text-slate-500">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vendors Table -->
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[116rem] text-left text-sm">
+        <caption class="sr-only">AsBeez vendor accounts</caption>
+        <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
+          <tr>
+            <th scope="col" class="px-4 py-3"><input type="checkbox" aria-label="Select all displayed vendors" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></th>
+            <th scope="col" class="px-4 py-3">Vendor and store</th><th scope="col" class="px-4 py-3">Vendor ID</th><th scope="col" class="px-4 py-3">Owner and contact</th>
+            <th scope="col" class="px-4 py-3">Category</th><th scope="col" class="px-4 py-3">Plan</th><th scope="col" class="px-4 py-3">Verification</th>
+            <th scope="col" class="px-4 py-3 text-right">Listings</th><th scope="col" class="px-4 py-3 text-right">Orders</th><th scope="col" class="px-4 py-3 text-right">Gross sales</th>
+            <th scope="col" class="px-4 py-3 text-right">Available payout</th><th scope="col" class="px-4 py-3">Rating</th><th scope="col" class="px-4 py-3">Joined</th>
+            <th scope="col" class="px-4 py-3">Last active</th><th scope="col" class="px-4 py-3">Status</th><th scope="col" class="px-4 py-3">Risk</th><th scope="col" class="px-4 py-3 text-right">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-slate-100">
+          <tr class="bg-amber-50/40 hover:bg-amber-50">
+            <td class="px-4 py-4"><input type="checkbox" checked aria-label="Select Honeycomb Home Market" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4">
+              <div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-400 font-black text-slate-950">HH</span><div><a href="/admin/vendors/VND-100284" class="font-bold text-slate-950 hover:text-amber-700">Honeycomb Home Ltd.</a><p class="text-xs text-slate-500">Honeycomb Home Market · /honeycomb-home</p></div></div>
+            </th>
+            <td class="px-4 py-4 font-mono text-xs">VND-100284</td><td class="px-4 py-4"><p class="font-semibold">Joey Lustre</p><p class="text-xs text-slate-500">hello@honeycombhome.ca</p><p class="text-xs text-slate-500">+1 ••• ••• 0186</p></td>
+            <td class="px-4 py-4">Home &amp; Living</td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">Growth</span></td>
+            <td class="px-4 py-4"><p class="font-semibold text-emerald-700">Fully verified</p><p class="text-xs text-slate-500">Business · ID · Tax · Bank</p></td>
+            <td class="px-4 py-4 text-right">48 products</td><td class="px-4 py-4 text-right font-semibold">386</td><td class="px-4 py-4 text-right font-semibold">$48,620</td><td class="px-4 py-4 text-right font-semibold">$3,842</td>
+            <td class="px-4 py-4"><p class="font-semibold text-amber-600">4.9 ★</p><p class="text-xs text-slate-500">286 reviews</p></td><td class="px-4 py-4">Jul 8, 2026</td><td class="px-4 py-4">Today, 9:17 PM</td>
+            <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td>
+            <td class="px-4 py-4 text-right">
+              <details class="relative inline-block text-left">
+                <summary class="cursor-pointer list-none rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold hover:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">Actions</summary>
+                <div class="absolute right-0 z-30 mt-2 w-80 rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
+                  <div class="grid grid-cols-2 gap-1 text-xs">
+                    <a href="/admin/vendors/VND-100284" class="rounded-lg p-2 hover:bg-amber-50">View Vendor Profile</a><a href="/store/honeycomb-home" class="rounded-lg p-2 hover:bg-amber-50">View Live Store</a>
+                    <a href="/admin/vendors/VND-100284/edit" class="rounded-lg p-2 hover:bg-amber-50">Edit Vendor</a><a href="/admin/vendors/VND-100284/store" class="rounded-lg p-2 hover:bg-amber-50">Store Settings</a>
+                    <a href="/admin/vendors/VND-100284/products" class="rounded-lg p-2 hover:bg-amber-50">Products</a><a href="/admin/vendors/VND-100284/services" class="rounded-lg p-2 hover:bg-amber-50">Services</a>
+                    <a href="/admin/vendors/VND-100284/inventory" class="rounded-lg p-2 hover:bg-amber-50">Inventory</a><a href="/admin/vendors/VND-100284/orders" class="rounded-lg p-2 hover:bg-amber-50">Orders</a>
+                    <a href="/admin/vendors/VND-100284/transactions" class="rounded-lg p-2 hover:bg-amber-50">Transactions</a><a href="/admin/vendors/VND-100284/payouts" class="rounded-lg p-2 hover:bg-amber-50">Payouts</a>
+                    <a href="/admin/vendors/VND-100284/commissions" class="rounded-lg p-2 hover:bg-amber-50">Commission History</a><a href="/admin/vendors/VND-100284/reviews" class="rounded-lg p-2 hover:bg-amber-50">Reviews</a>
+                    <a href="/admin/vendors/VND-100284/messages" class="rounded-lg p-2 hover:bg-amber-50">Messages</a><a href="/admin/vendors/VND-100284/support" class="rounded-lg p-2 hover:bg-amber-50">Support Tickets</a>
+                    <a href="/admin/vendors/VND-100284/returns" class="rounded-lg p-2 hover:bg-amber-50">Returns</a><a href="/admin/vendors/VND-100284/disputes" class="rounded-lg p-2 hover:bg-amber-50">Disputes</a>
+                    <a href="/admin/vendors/VND-100284/verification" class="rounded-lg p-2 hover:bg-amber-50">Verification</a><a href="/admin/vendors/VND-100284/compliance" class="rounded-lg p-2 hover:bg-amber-50">Compliance Record</a>
+                    <a href="/admin/vendors/VND-100284/logins" class="rounded-lg p-2 hover:bg-amber-50">Login History</a><a href="/admin/vendors/VND-100284/activity" class="rounded-lg p-2 hover:bg-amber-50">Activity Log</a>
+                    <a href="/admin/vendors/VND-100284/subscription" class="rounded-lg p-2 hover:bg-amber-50">Subscription</a><a href="/admin/vendors/VND-100284/fees" class="rounded-lg p-2 hover:bg-amber-50">Vendor Fees</a>
+                    <button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Send Notification</button><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Request Information</button>
+                    <button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Require Password Reset</button><button type="button" class="rounded-lg p-2 text-left hover:bg-amber-50">Require Reverification</button>
+                  </div>
+                  <div class="mt-2 grid grid-cols-2 gap-1 border-t border-slate-200 pt-2 text-xs">
+                    <button type="button" class="rounded-lg p-2 text-left text-orange-700 hover:bg-orange-50">Restrict Store</button><button type="button" class="rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Suspend Vendor</button>
+                    <button type="button" class="rounded-lg p-2 text-left text-emerald-700 hover:bg-emerald-50">Reactivate Vendor</button><button type="button" class="rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Deactivate Vendor</button>
+                  </div>
+                </div>
+              </details>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" checked aria-label="Select Pacific Pixel Studio" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-200 font-black text-sky-900">PP</span><div><a href="/admin/vendors/VND-100936" class="font-bold hover:text-amber-700">Pacific Pixel Studio</a><p class="text-xs text-slate-500">Pacific Pixel · /pacific-pixel</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">VND-100936</td><td class="px-4 py-4"><p>Maya Chen</p><p class="text-xs text-slate-500">maya@pacificpixel.ca</p><p class="text-xs text-slate-500">+1 ••• ••• 6702</p></td>
+            <td class="px-4 py-4">Digital Goods</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Starter</span></td><td class="px-4 py-4"><p class="font-semibold text-amber-700">Application review</p><p class="text-xs text-slate-500">Bank not submitted</p></td>
+            <td class="px-4 py-4 text-right">0</td><td class="px-4 py-4 text-right">0</td><td class="px-4 py-4 text-right">$0</td><td class="px-4 py-4 text-right">$0</td><td class="px-4 py-4 text-slate-400">No reviews</td>
+            <td class="px-4 py-4">Sep 20, 2026</td><td class="px-4 py-4">18 minutes ago</td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Pending review</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td>
+            <td class="px-4 py-4 text-right"><details class="relative inline-block"><summary class="cursor-pointer list-none rounded-lg border px-3 py-2 text-xs font-bold">Actions</summary><div class="absolute right-0 z-20 mt-2 w-56 rounded-xl border bg-white p-2 text-left shadow-xl"><a href="/admin/vendors/VND-100936" class="block rounded-lg p-2 hover:bg-amber-50">Review Application</a><a href="/admin/vendors/VND-100936/verification" class="block rounded-lg p-2 hover:bg-amber-50">Verification</a><button type="button" class="block w-full rounded-lg p-2 text-left text-emerald-700 hover:bg-emerald-50">Approve Application</button><button type="button" class="block w-full rounded-lg p-2 text-left hover:bg-amber-50">Request Information</button><button type="button" class="block w-full rounded-lg p-2 text-left text-rose-700 hover:bg-rose-50">Reject Application</button></div></details></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Northern Pro Supply" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-200 font-black text-violet-900">NP</span><div><a href="/admin/vendors/VND-087421" class="font-bold hover:text-amber-700">Northern Pro Supply Inc.</a><p class="text-xs text-slate-500">Northern Pro Supply · /northern-pro</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">VND-087421</td><td class="px-4 py-4"><p>Gabriel Santos</p><p class="text-xs text-slate-500">sales@northernpro.com</p><p class="text-xs text-slate-500">+1 ••• ••• 9921</p></td>
+            <td class="px-4 py-4">Business Supplies</td><td class="px-4 py-4"><span class="rounded-full bg-violet-100 px-2 py-1 text-xs font-bold text-violet-700">Professional</span></td><td class="px-4 py-4"><p class="font-semibold text-emerald-700">Fully verified</p><p class="text-xs text-slate-500">Enhanced review passed</p></td>
+            <td class="px-4 py-4 text-right">1,248 products</td><td class="px-4 py-4 text-right font-semibold">12,842</td><td class="px-4 py-4 text-right font-semibold">$2.84M</td><td class="px-4 py-4 text-right font-semibold">$184K</td><td class="px-4 py-4"><p class="font-semibold text-amber-600">4.8 ★</p><p class="text-xs text-slate-500">8,420 reviews</p></td>
+            <td class="px-4 py-4">Jan 12, 2024</td><td class="px-4 py-4">3 minutes ago</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td>
+            <td class="px-4 py-4 text-right"><a href="/admin/vendors/VND-087421" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Manage</a></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Verdant Wellness" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-200 font-black text-emerald-900">VW</span><div><a href="/admin/vendors/VND-100118" class="font-bold hover:text-amber-700">Verdant Wellness Co.</a><p class="text-xs text-slate-500">Verdant Wellness · /verdant-wellness</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">VND-100118</td><td class="px-4 py-4"><p>Aisha Johnson</p><p class="text-xs text-slate-500">admin@verdantwellness.ca</p><p class="text-xs text-slate-500">+1 ••• ••• 7420</p></td>
+            <td class="px-4 py-4">Health &amp; Wellness</td><td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Professional</span></td><td class="px-4 py-4"><p class="font-semibold text-amber-700">Business pending</p><p class="text-xs text-slate-500">ID · Tax · Bank verified</p></td>
+            <td class="px-4 py-4 text-right">86 products</td><td class="px-4 py-4 text-right">214</td><td class="px-4 py-4 text-right">$36,842</td><td class="px-4 py-4 text-right">$2,106</td><td class="px-4 py-4"><p class="font-semibold text-amber-600">4.7 ★</p><p class="text-xs text-slate-500">148 reviews</p></td>
+            <td class="px-4 py-4">Aug 4, 2026</td><td class="px-4 py-4">42 minutes ago</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Medium</span></td>
+            <td class="px-4 py-4 text-right"><a href="/admin/vendors/VND-100118/verification" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Review</a></td>
+          </tr>
+
+          <tr class="bg-orange-50/40 hover:bg-orange-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Urban Tool Exchange" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-200 font-black text-orange-900">UT</span><div><a href="/admin/vendors/VND-095334" class="font-bold hover:text-amber-700">Urban Tool Exchange</a><p class="text-xs text-slate-500">Urban Tool · /urban-tool</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">VND-095334</td><td class="px-4 py-4"><p>Omar Haddad</p><p class="text-xs text-slate-500">omar@urbantool.com</p><p class="text-xs text-slate-500">+1 ••• ••• 3112</p></td>
+            <td class="px-4 py-4">Tools &amp; Equipment</td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">Growth</span></td><td class="px-4 py-4"><p class="font-semibold text-amber-700">Partially verified</p><p class="text-xs text-rose-600">Open dispute</p></td>
+            <td class="px-4 py-4 text-right">64 products</td><td class="px-4 py-4 text-right">118</td><td class="px-4 py-4 text-right">$18,026</td><td class="px-4 py-4 text-right">$0 on hold</td><td class="px-4 py-4"><p class="font-semibold text-amber-600">4.1 ★</p><p class="text-xs text-slate-500">92 reviews</p></td>
+            <td class="px-4 py-4">Mar 16, 2026</td><td class="px-4 py-4">Yesterday</td><td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2 py-1 text-xs font-bold text-orange-700">Restricted</span></td><td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Medium</span></td>
+            <td class="px-4 py-4 text-right"><a href="/admin/vendors/VND-095334" class="rounded-lg border border-orange-300 px-3 py-2 text-xs font-bold text-orange-700 hover:bg-orange-50">Review</a></td>
+          </tr>
+
+          <tr class="bg-rose-50/40 hover:bg-rose-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Nova Style Depot" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-200 font-black text-rose-900">NS</span><div><a href="/admin/vendors/VND-089522" class="font-bold hover:text-amber-700">Nova Style Depot</a><p class="text-xs text-slate-500">Nova Style · /nova-style</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">VND-089522</td><td class="px-4 py-4"><p>Nina Brooks</p><p class="text-xs text-slate-500">nina@novastyle.com</p><p class="text-xs text-slate-500">+1 ••• ••• 4419</p></td>
+            <td class="px-4 py-4">Fashion</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Starter</span></td><td class="px-4 py-4"><p class="font-semibold text-rose-700">Review required</p><p class="text-xs text-rose-600">Compliance warning</p></td>
+            <td class="px-4 py-4 text-right">42 products</td><td class="px-4 py-4 text-right">89</td><td class="px-4 py-4 text-right">$12,184</td><td class="px-4 py-4 text-right">$0 on hold</td><td class="px-4 py-4"><p class="font-semibold text-rose-600">3.2 ★</p><p class="text-xs text-slate-500">76 reviews</p></td>
+            <td class="px-4 py-4">Nov 2, 2025</td><td class="px-4 py-4">Sep 18</td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Suspended</span></td><td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">High</span></td>
+            <td class="px-4 py-4 text-right"><a href="/admin/vendors/VND-089522/compliance" class="rounded-lg border border-rose-300 px-3 py-2 text-xs font-bold text-rose-700 hover:bg-rose-50">Investigate</a></td>
+          </tr>
+
+          <tr class="text-slate-500 hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Maple Digital Works" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-200 font-black">MD</span><div><a href="/admin/vendors/VND-077208" class="font-bold text-slate-700 hover:text-amber-700">Maple Digital Works</a><p class="text-xs">Maple Digital · /maple-digital</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">VND-077208</td><td class="px-4 py-4"><p>Linda Patel</p><p class="text-xs">linda@mapledigital.ca</p><p class="text-xs">+1 ••• ••• 8061</p></td>
+            <td class="px-4 py-4">Digital Goods</td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Starter</span></td><td class="px-4 py-4">Previously verified</td>
+            <td class="px-4 py-4 text-right">18 products</td><td class="px-4 py-4 text-right">46</td><td class="px-4 py-4 text-right">$4,318</td><td class="px-4 py-4 text-right">$0</td><td class="px-4 py-4">4.6 ★</td>
+            <td class="px-4 py-4">Aug 20, 2024</td><td class="px-4 py-4">Jun 4, 2026</td><td class="px-4 py-4"><span class="rounded-full bg-slate-200 px-2 py-1 text-xs font-bold">Deactivated</span></td><td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-bold">Unavailable</span></td>
+            <td class="px-4 py-4 text-right"><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-50">Reactivate</button></td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-4"><input type="checkbox" aria-label="Select Harbour Local Foods" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"></td>
+            <th scope="row" class="px-4 py-4"><div class="flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-200 font-black text-teal-900">HF</span><div><a href="/admin/vendors/VND-093470" class="font-bold hover:text-amber-700">Harbour Local Foods</a><p class="text-xs text-slate-500">Harbour Foods · /harbour-foods</p></div></div></th>
+            <td class="px-4 py-4 font-mono text-xs">VND-093470</td><td class="px-4 py-4"><p>Marcus Reed</p><p class="text-xs text-slate-500">team@harbourfoods.ca</p><p class="text-xs text-slate-500">+1 ••• ••• 2257</p></td>
+            <td class="px-4 py-4">Food &amp; Grocery</td><td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2 py-1 text-xs font-bold text-blue-700">Professional</span></td><td class="px-4 py-4"><p class="font-semibold text-emerald-700">Fully verified</p><p class="text-xs text-slate-500">2FA enabled</p></td>
+            <td class="px-4 py-4 text-right">224 products</td><td class="px-4 py-4 text-right">2,864</td><td class="px-4 py-4 text-right">$384K</td><td class="px-4 py-4 text-right">$26,120</td><td class="px-4 py-4"><p class="font-semibold text-amber-600">5.0 ★</p><p class="text-xs text-slate-500">1,948 reviews</p></td>
+            <td class="px-4 py-4">Dec 19, 2024</td><td class="px-4 py-4">5 minutes ago</td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span></td><td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low</span></td>
+            <td class="px-4 py-4 text-right"><a href="/admin/vendors/VND-093470" class="rounded-lg border px-3 py-2 text-xs font-bold hover:bg-amber-50">Manage</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex flex-col gap-4 border-t border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex items-center gap-2 text-sm text-slate-600">
+        <span>Rows</span><label for="vendors-per-page" class="sr-only">Vendors per page</label>
+        <select id="vendors-per-page" class="rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>10</option><option selected>25</option><option>50</option><option>100</option></select>
+        <span>Showing 1–25 of 4,286</span>
+      </div>
+      <nav aria-label="Vendor pagination" class="flex items-center gap-1">
+        <button type="button" disabled aria-label="First page" class="rounded-lg border px-3 py-2 text-slate-300">«</button><button type="button" disabled aria-label="Previous page" class="rounded-lg border px-3 py-2 text-slate-300">‹</button>
+        <a href="?page=1" aria-current="page" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white">1</a><a href="?page=2" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">2</a><a href="?page=3" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">3</a><span class="px-2">…</span><a href="?page=172" class="rounded-lg border px-3 py-2 text-sm font-bold hover:bg-amber-50">172</a>
+        <a href="?page=2" aria-label="Next page" class="rounded-lg border px-3 py-2 hover:bg-amber-50">›</a><a href="?page=172" aria-label="Last page" class="rounded-lg border px-3 py-2 hover:bg-amber-50">»</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Vendor Overview -->
+  <aside aria-labelledby="vendor-overview-heading" class="self-start rounded-2xl border border-slate-200 bg-white shadow-sm 2xl:sticky 2xl:top-6">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="vendor-overview-heading" class="text-lg font-bold">Vendor Overview</h2><p class="mt-1 text-xs text-slate-500">Selected vendor</p></div>
+    <div class="p-5 text-center">
+      <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-amber-400 text-2xl font-black text-slate-950 ring-4 ring-amber-100">HH</div>
+      <h3 class="mt-3 text-lg font-bold">Honeycomb Home Ltd.</h3><p class="text-sm text-slate-500">Honeycomb Home Market</p><p class="text-xs text-slate-400">VND-100284 · /honeycomb-home</p>
+      <div class="mt-3 flex flex-wrap justify-center gap-2"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-800">Growth</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Active</span><span class="rounded-full bg-sky-100 px-2 py-1 text-xs font-bold text-sky-700">Verified</span><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Low risk</span></div>
+    </div>
+
+    <dl class="grid grid-cols-2 gap-x-4 gap-y-3 border-y border-slate-200 px-5 py-4 text-sm">
+      <div><dt class="text-xs text-slate-500">Owner</dt><dd class="font-semibold">Joey Lustre</dd></div><div><dt class="text-xs text-slate-500">Joined</dt><dd class="font-semibold">Jul 8, 2026</dd></div>
+      <div><dt class="text-xs text-slate-500">Last active</dt><dd class="font-semibold">Today, 9:17 PM</dd></div><div><dt class="text-xs text-slate-500">Location</dt><dd class="font-semibold">Burnaby, BC</dd></div>
+      <div><dt class="text-xs text-slate-500">Service area</dt><dd class="font-semibold">Metro Vancouver</dd></div><div><dt class="text-xs text-slate-500">Category</dt><dd class="font-semibold">Home &amp; Living</dd></div>
+      <div class="col-span-2"><dt class="text-xs text-slate-500">Contact</dt><dd class="font-semibold">hello@honeycombhome.ca</dd><dd class="text-xs text-slate-500">+1 ••• ••• 0186 · honeycombhome.ca</dd></div>
+      <div><dt class="text-xs text-slate-500">Products</dt><dd class="font-semibold">48</dd></div><div><dt class="text-xs text-slate-500">Services</dt><dd class="font-semibold">6</dd></div>
+      <div><dt class="text-xs text-slate-500">Active orders</dt><dd class="font-semibold">12</dd></div><div><dt class="text-xs text-slate-500">Completed</dt><dd class="font-semibold">386</dd></div>
+      <div><dt class="text-xs text-slate-500">Gross sales</dt><dd class="font-semibold">$48,620</dd></div><div><dt class="text-xs text-slate-500">Refund rate</dt><dd class="font-semibold">1.4%</dd></div>
+      <div><dt class="text-xs text-slate-500">Rating</dt><dd class="font-semibold text-amber-600">4.9 ★</dd></div><div><dt class="text-xs text-slate-500">Followers</dt><dd class="font-semibold">1,842</dd></div>
+      <div><dt class="text-xs text-slate-500">Support tickets</dt><dd class="font-semibold">1</dd></div><div><dt class="text-xs text-slate-500">Open disputes</dt><dd class="font-semibold">0</dd></div>
+      <div><dt class="text-xs text-slate-500">Available payout</dt><dd class="font-semibold">$3,842</dd></div><div><dt class="text-xs text-slate-500">Pending payout</dt><dd class="font-semibold">$1,186</dd></div>
+      <div><dt class="text-xs text-slate-500">Commission</dt><dd class="font-semibold">8%</dd></div><div><dt class="text-xs text-slate-500">Two-factor</dt><dd class="font-semibold text-amber-700">Not enabled</dd></div>
+      <div><dt class="text-xs text-slate-500">Sessions</dt><dd class="font-semibold">2 active</dd></div><div><dt class="text-xs text-slate-500">Latest login</dt><dd class="font-semibold">Chrome · Vancouver</dd></div>
+    </dl>
+
+    <div class="grid grid-cols-2 gap-2 p-5">
+      <a href="/admin/vendors/VND-100284" class="rounded-lg bg-slate-900 px-3 py-2 text-center text-xs font-bold text-white hover:bg-amber-500 hover:text-slate-950">Full Profile</a>
+      <a href="/store/honeycomb-home" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">Live Store</a>
+      <a href="/admin/vendors/VND-100284/edit" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">Edit Vendor</a>
+      <a href="/admin/vendors/VND-100284/messages" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">Send Message</a>
+      <a href="/admin/vendors/VND-100284/orders" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">View Orders</a>
+      <a href="/admin/vendors/VND-100284/manage" class="rounded-lg border px-3 py-2 text-center text-xs font-bold hover:bg-amber-50">Manage Account</a>
+      <button type="button" class="col-span-2 rounded-lg border border-amber-300 px-3 py-2 text-xs font-bold text-amber-800 hover:bg-amber-50">Impersonate Vendor</button>
+      <p class="col-span-2 text-left text-[11px] leading-4 text-slate-500">Impersonation is restricted, logged, and auditable.</p>
+    </div>
+  </aside>
+</div>
+
+<!-- Application, Verification, and Store Health -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="application-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="application-heading" class="text-lg font-bold">Application and onboarding</h2><p class="mt-1 text-xs text-slate-500">Application details and onboarding progress.</p></div>
+    <div class="space-y-5 p-5">
+      <div><div class="flex justify-between text-xs font-bold"><span>Onboarding completion</span><span>92%</span></div><div class="mt-2 h-2.5 rounded-full bg-slate-100"><div class="h-full w-[92%] rounded-full bg-amber-400"></div></div></div>
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Application</dt><dd class="font-bold text-emerald-700">Approved</dd></div><div><dt class="text-xs text-slate-500">Submitted</dt><dd class="font-bold">Jul 8, 2026</dd></div>
+        <div><dt class="text-xs text-slate-500">Business type</dt><dd class="font-bold">Corporation</dd></div><div><dt class="text-xs text-slate-500">Legal name</dt><dd class="font-bold">Honeycomb Home Ltd.</dd></div>
+        <div><dt class="text-xs text-slate-500">Registration</dt><dd class="font-bold">BC••••2841</dd></div><div><dt class="text-xs text-slate-500">Tax number</dt><dd class="font-bold">•••••••RT0001</dd></div>
+        <div><dt class="text-xs text-slate-500">Representative</dt><dd class="font-bold">Joey Lustre</dd></div><div><dt class="text-xs text-slate-500">Employees</dt><dd class="font-bold">8</dd></div>
+        <div><dt class="text-xs text-slate-500">Expected sales</dt><dd class="font-bold">$25K–$50K/mo.</dd></div><div><dt class="text-xs text-slate-500">Category</dt><dd class="font-bold">Products &amp; services</dd></div>
+        <div><dt class="text-xs text-slate-500">Agreements</dt><dd class="font-bold text-emerald-700">Accepted</dd></div><div><dt class="text-xs text-slate-500">Policies</dt><dd class="font-bold text-emerald-700">Accepted</dd></div>
+        <div><dt class="text-xs text-slate-500">Reviewer</dt><dd class="font-bold">Sarah Mitchell</dd></div><div><dt class="text-xs text-slate-500">Review deadline</dt><dd class="font-bold">Completed</dd></div>
+      </dl>
+      <div class="rounded-xl bg-amber-50 p-3 text-xs text-amber-900"><strong>Missing:</strong> Two-factor authentication and final accessibility checklist.</div>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/vendors/VND-100284/application" class="rounded-lg border px-3 py-2 text-xs font-bold">Review Application</a><button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white">Approve</button>
+        <button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Reject</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Request Information</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Assign Reviewer</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Add Note</button>
+        <a href="/admin/vendors/VND-100284/application/history" class="rounded-lg border px-3 py-2 text-xs font-bold">History</a>
+      </div>
+      <label for="rejection-reason" class="block text-xs font-bold">Documented rejection reason</label><textarea id="rejection-reason" rows="2" placeholder="Required before rejecting an application." class="w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500"></textarea>
+    </div>
+  </section>
+
+  <section aria-labelledby="verification-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="verification-heading" class="text-lg font-bold">Verification and compliance</h2><p class="mt-1 text-xs text-slate-500">Business, ownership, policy, and risk review.</p></div>
+    <div class="space-y-5 p-5">
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Owner identity</dt><dd class="font-bold text-emerald-700">Verified</dd></div><div><dt class="text-xs text-slate-500">Business registration</dt><dd class="font-bold text-emerald-700">Verified</dd></div>
+        <div><dt class="text-xs text-slate-500">Business address</dt><dd class="font-bold text-emerald-700">Verified</dd></div><div><dt class="text-xs text-slate-500">Tax information</dt><dd class="font-bold text-emerald-700">Verified</dd></div>
+        <div><dt class="text-xs text-slate-500">Payout account</dt><dd class="font-bold text-emerald-700">Verified</dd></div><div><dt class="text-xs text-slate-500">Email and phone</dt><dd class="font-bold text-emerald-700">Verified</dd></div>
+        <div><dt class="text-xs text-slate-500">Beneficial ownership</dt><dd class="font-bold">Confirmed</dd></div><div><dt class="text-xs text-slate-500">Representative</dt><dd class="font-bold">Authorized</dd></div>
+        <div><dt class="text-xs text-slate-500">Product policies</dt><dd class="font-bold text-emerald-700">Compliant</dd></div><div><dt class="text-xs text-slate-500">Prohibited items</dt><dd class="font-bold text-emerald-700">Passed</dd></div>
+        <div><dt class="text-xs text-slate-500">Licensing</dt><dd class="font-bold">Not required</dd></div><div><dt class="text-xs text-slate-500">Insurance</dt><dd class="font-bold text-emerald-700">Current</dd></div>
+        <div><dt class="text-xs text-slate-500">Privacy</dt><dd class="font-bold text-emerald-700">Compliant</dd></div><div><dt class="text-xs text-slate-500">Accessibility</dt><dd class="font-bold text-amber-700">Checklist due</dd></div>
+        <div><dt class="text-xs text-slate-500">Sanctions screening</dt><dd class="font-bold text-emerald-700">Clear</dd></div><div><dt class="text-xs text-slate-500">Trust / Risk</dt><dd class="font-bold">91 / 9</dd></div>
+        <div><dt class="text-xs text-slate-500">Failed attempts</dt><dd class="font-bold">0</dd></div><div><dt class="text-xs text-slate-500">Prior violations</dt><dd class="font-bold">0</dd></div>
+        <div><dt class="text-xs text-slate-500">Last review</dt><dd class="font-bold">Sep 12, 2026</dd></div><div><dt class="text-xs text-slate-500">Next review</dt><dd class="font-bold">Mar 12, 2027</dd></div>
+      </dl>
+      <div class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900">Verification and compliance decisions require a documented reason and supporting evidence.</div>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/vendors/VND-100284/documents" class="rounded-lg border px-3 py-2 text-xs font-bold">Review Documents</a><button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white">Approve</button>
+        <button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Reject</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Request Documents</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Reset Verification</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Compliance Note</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Schedule Review</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Monitor</button>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="store-health-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="store-health-heading" class="text-lg font-bold">Storefront health and quality</h2><p class="mt-1 text-xs text-slate-500">Customer-facing completeness and performance.</p></div>
+    <div class="space-y-5 p-5">
+      <div class="rounded-2xl bg-gradient-to-r from-slate-900 to-amber-800 p-5 text-white"><div class="flex items-end justify-between"><div><p class="text-xs text-amber-200">Store health score</p><p class="text-3xl font-black">94/100</p></div><span class="rounded-full bg-emerald-400/20 px-3 py-1 text-xs font-bold text-emerald-200">Excellent</span></div><div class="mt-3 h-2 rounded-full bg-white/20"><div class="h-full w-[94%] rounded-full bg-amber-400"></div></div></div>
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Profile completion</dt><dd class="font-bold">96%</dd></div><div><dt class="text-xs text-slate-500">Storefront</dt><dd class="font-bold text-emerald-700">Live</dd></div>
+        <div><dt class="text-xs text-slate-500">Custom domain</dt><dd class="font-bold text-emerald-700">Connected</dd></div><div><dt class="text-xs text-slate-500">Logo and banner</dt><dd class="font-bold text-emerald-700">Complete</dd></div>
+        <div><dt class="text-xs text-slate-500">Description</dt><dd class="font-bold text-emerald-700">High quality</dd></div><div><dt class="text-xs text-slate-500">Contact and hours</dt><dd class="font-bold text-emerald-700">Complete</dd></div>
+        <div><dt class="text-xs text-slate-500">Shipping</dt><dd class="font-bold text-emerald-700">Configured</dd></div><div><dt class="text-xs text-slate-500">Policies</dt><dd class="font-bold text-amber-700">Warranty missing</dd></div>
+        <div><dt class="text-xs text-slate-500">Product images</dt><dd class="font-bold">92%</dd></div><div><dt class="text-xs text-slate-500">Descriptions</dt><dd class="font-bold">96%</dd></div>
+        <div><dt class="text-xs text-slate-500">Out of stock</dt><dd class="font-bold">4.2%</dd></div><div><dt class="text-xs text-slate-500">Cancellation rate</dt><dd class="font-bold">0.8%</dd></div>
+        <div><dt class="text-xs text-slate-500">Late shipment</dt><dd class="font-bold">1.1%</dd></div><div><dt class="text-xs text-slate-500">Response time</dt><dd class="font-bold">42 minutes</dd></div>
+        <div><dt class="text-xs text-slate-500">Rating</dt><dd class="font-bold text-amber-600">4.9 ★</dd></div><div><dt class="text-xs text-slate-500">Review response</dt><dd class="font-bold">88%</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2">
+        <a href="/store/honeycomb-home" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Live Store</a><a href="/admin/vendors/VND-100284/store/preview" class="rounded-lg border px-3 py-2 text-xs font-bold">Preview</a>
+        <a href="/admin/vendors/VND-100284/store/edit" class="rounded-lg border px-3 py-2 text-xs font-bold">Edit Profile</a><a href="/admin/vendors/VND-100284/policies" class="rounded-lg border px-3 py-2 text-xs font-bold">Store Policies</a>
+        <a href="/admin/vendors/VND-100284/quality" class="rounded-lg border px-3 py-2 text-xs font-bold">Product Quality</a><a href="/admin/vendors/VND-100284/health" class="rounded-lg border px-3 py-2 text-xs font-bold">Health Report</a>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Improvement Request</button><button type="button" class="rounded-lg border border-orange-200 px-3 py-2 text-xs font-bold text-orange-700">Hide Store</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Operations -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="catalog-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="catalog-heading" class="text-lg font-bold">Products, services, and inventory</h2><p class="mt-1 text-xs text-slate-500">Catalog volume, stock, and policy quality.</p></div>
+    <div class="space-y-5 p-5 sm:p-6">
+      <dl class="grid grid-cols-2 gap-3 text-center sm:grid-cols-3 lg:grid-cols-5">
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Products</dt><dd class="mt-1 font-black">52</dd></div><div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Published</dt><dd class="mt-1 font-black">48</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Drafts</dt><dd class="mt-1 font-black">3</dd></div><div class="rounded-xl bg-rose-50 p-3"><dt class="text-xs text-slate-500">Rejected</dt><dd class="mt-1 font-black">0</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Flagged</dt><dd class="mt-1 font-black">1</dd></div><div class="rounded-xl bg-rose-50 p-3"><dt class="text-xs text-slate-500">Out of stock</dt><dd class="mt-1 font-black">2</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Low stock</dt><dd class="mt-1 font-black">6</dd></div><div class="rounded-xl bg-sky-50 p-3"><dt class="text-xs text-slate-500">Services</dt><dd class="mt-1 font-black">6</dd></div>
+        <div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Active services</dt><dd class="mt-1 font-black">5</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Paused</dt><dd class="mt-1 font-black">1</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Digital items</dt><dd class="mt-1 font-black">4</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Categories</dt><dd class="mt-1 font-black">8</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Collections</dt><dd class="mt-1 font-black">7</dd></div><div class="rounded-xl bg-violet-50 p-3"><dt class="text-xs text-slate-500">Inventory value</dt><dd class="mt-1 font-black">$28,420</dd></div>
+        <div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Policy violations</dt><dd class="mt-1 font-black">0 open</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/vendors/VND-100284/products" class="rounded-lg border px-3 py-2 text-xs font-bold">All Products</a><a href="/admin/products?status=pending&amp;vendor=VND-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Pending Products</a>
+        <a href="/admin/products?status=flagged&amp;vendor=VND-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Flagged Products</a><a href="/admin/products?status=rejected&amp;vendor=VND-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Rejected Products</a>
+        <a href="/admin/vendors/VND-100284/inventory" class="rounded-lg border px-3 py-2 text-xs font-bold">Inventory</a><a href="/admin/vendors/VND-100284/services" class="rounded-lg border px-3 py-2 text-xs font-bold">Services</a>
+        <a href="/admin/vendors/VND-100284/categories" class="rounded-lg border px-3 py-2 text-xs font-bold">Categories</a><a href="/admin/vendors/VND-100284/collections" class="rounded-lg border px-3 py-2 text-xs font-bold">Collections</a>
+        <button type="button" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Run Product Audit</button>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="orders-performance-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="orders-performance-heading" class="text-lg font-bold">Orders and customer-service performance</h2><p class="mt-1 text-xs text-slate-500">Fulfillment and customer-support performance.</p></div>
+    <div class="space-y-5 p-5 sm:p-6">
+      <dl class="grid grid-cols-2 gap-3 text-center sm:grid-cols-3 lg:grid-cols-5">
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Total orders</dt><dd class="mt-1 font-black">412</dd></div><div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Open</dt><dd class="mt-1 font-black">12</dd></div>
+        <div class="rounded-xl bg-sky-50 p-3"><dt class="text-xs text-slate-500">Processing</dt><dd class="mt-1 font-black">5</dd></div><div class="rounded-xl bg-violet-50 p-3"><dt class="text-xs text-slate-500">Shipped</dt><dd class="mt-1 font-black">7</dd></div>
+        <div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Completed</dt><dd class="mt-1 font-black">386</dd></div><div class="rounded-xl bg-rose-50 p-3"><dt class="text-xs text-slate-500">Cancelled</dt><dd class="mt-1 font-black">3</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Returned</dt><dd class="mt-1 font-black">6</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Refunded</dt><dd class="mt-1 font-black">5</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Gross sales</dt><dd class="mt-1 font-black">$48,620</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Net sales</dt><dd class="mt-1 font-black">$43,918</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Avg. order</dt><dd class="mt-1 font-black">$126</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Fulfillment</dt><dd class="mt-1 font-black">1.4 days</dd></div>
+        <div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">On time</dt><dd class="mt-1 font-black">98.9%</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Cancel / Return</dt><dd class="mt-1 font-black">0.8% / 1.5%</dd></div>
+        <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Refund rate</dt><dd class="mt-1 font-black">1.4%</dd></div><div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Response time</dt><dd class="mt-1 font-black">42 min.</dd></div>
+        <div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Satisfaction</dt><dd class="mt-1 font-black">97%</dd></div><div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Messages</dt><dd class="mt-1 font-black">5 open</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Tickets</dt><dd class="mt-1 font-black">1 open</dd></div><div class="rounded-xl bg-emerald-50 p-3"><dt class="text-xs text-slate-500">Disputes</dt><dd class="mt-1 font-black">0 open</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/vendors/VND-100284/orders" class="rounded-lg border px-3 py-2 text-xs font-bold">Orders</a><a href="/admin/vendors/VND-100284/returns" class="rounded-lg border px-3 py-2 text-xs font-bold">Returns</a>
+        <a href="/admin/vendors/VND-100284/refunds" class="rounded-lg border px-3 py-2 text-xs font-bold">Refunds</a><a href="/admin/vendors/VND-100284/messages" class="rounded-lg border px-3 py-2 text-xs font-bold">Messages</a>
+        <a href="/admin/vendors/VND-100284/support" class="rounded-lg border px-3 py-2 text-xs font-bold">Support Tickets</a><a href="/admin/vendors/VND-100284/disputes" class="rounded-lg border px-3 py-2 text-xs font-bold">Disputes</a>
+        <a href="/admin/vendors/VND-100284/performance" class="rounded-lg border px-3 py-2 text-xs font-bold">Performance Report</a><button type="button" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Contact Vendor</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Financial and Subscription -->
+<div class="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+  <section aria-labelledby="financial-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="financial-heading" class="text-lg font-bold">Financial, commission, and payout review</h2><p class="mt-1 text-xs text-slate-500">Earnings, marketplace fees, reserves, and payout administration.</p></div>
+    <div class="grid gap-6 p-5 sm:p-6 lg:grid-cols-[1fr_0.8fr]">
+      <dl class="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
+        <div><dt class="text-xs text-slate-500">GMV</dt><dd class="font-bold">$52,860</dd></div><div><dt class="text-xs text-slate-500">Gross sales</dt><dd class="font-bold">$48,620</dd></div>
+        <div><dt class="text-xs text-slate-500">Discounts</dt><dd class="font-bold">$1,240</dd></div><div><dt class="text-xs text-slate-500">Refunds</dt><dd class="font-bold">$680</dd></div>
+        <div><dt class="text-xs text-slate-500">Chargebacks</dt><dd class="font-bold">$0</dd></div><div><dt class="text-xs text-slate-500">Taxes collected</dt><dd class="font-bold">$3,420</dd></div>
+        <div><dt class="text-xs text-slate-500">Shipping collected</dt><dd class="font-bold">$2,186</dd></div><div><dt class="text-xs text-slate-500">Commission</dt><dd class="font-bold">$3,890</dd></div>
+        <div><dt class="text-xs text-slate-500">Processing fees</dt><dd class="font-bold">$1,412</dd></div><div><dt class="text-xs text-slate-500">Subscription fees</dt><dd class="font-bold">$594</dd></div>
+        <div><dt class="text-xs text-slate-500">Other fees</dt><dd class="font-bold">$86</dd></div><div><dt class="text-xs text-slate-500">Net earnings</dt><dd class="font-bold text-emerald-700">$42,638</dd></div>
+        <div><dt class="text-xs text-slate-500">Available payout</dt><dd class="font-bold text-emerald-700">$3,842</dd></div><div><dt class="text-xs text-slate-500">Pending payout</dt><dd class="font-bold">$1,186</dd></div>
+        <div><dt class="text-xs text-slate-500">Reserve balance</dt><dd class="font-bold">$680</dd></div><div><dt class="text-xs text-slate-500">Withheld</dt><dd class="font-bold">$0</dd></div>
+        <div><dt class="text-xs text-slate-500">Next payout</dt><dd class="font-bold">Sep 25, 2026</dd></div><div><dt class="text-xs text-slate-500">Schedule</dt><dd class="font-bold">Weekly</dd></div>
+        <div><dt class="text-xs text-slate-500">Payout method</dt><dd class="font-bold">Bank •••• 2841</dd></div><div><dt class="text-xs text-slate-500">Bank verification</dt><dd class="font-bold text-emerald-700">Verified</dd></div>
+        <div><dt class="text-xs text-slate-500">Commission rate</dt><dd class="font-bold">8%</dd></div><div><dt class="text-xs text-slate-500">Custom rules</dt><dd class="font-bold">1 active</dd></div>
+        <div><dt class="text-xs text-slate-500">Outstanding balance</dt><dd class="font-bold">$0</dd></div><div><dt class="text-xs text-slate-500">Financial hold</dt><dd class="font-bold text-emerald-700">None</dd></div>
+      </dl>
+
+      <div class="space-y-4 rounded-2xl border border-amber-200 bg-amber-50/60 p-4">
+        <div><label for="financial-reason" class="block text-sm font-bold">Reason for financial adjustment <span class="text-rose-600">*</span></label><textarea id="financial-reason" required rows="3" placeholder="Document the reason before changing a balance, fee, commission, or payout." class="mt-2 w-full rounded-xl border-slate-300 bg-white text-sm focus:border-amber-500 focus:ring-amber-500"></textarea></div>
+        <div class="flex flex-wrap gap-2">
+          <a href="/admin/vendors/VND-100284/transactions" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Transactions</a><a href="/admin/vendors/VND-100284/commissions" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Commission History</a>
+          <a href="/admin/vendors/VND-100284/payouts" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Payout History</a><button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white">Release Payout</button>
+          <button type="button" class="rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs font-bold text-rose-700">Hold Payout</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Adjust Balance</button>
+          <button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Add Credit</button><button type="button" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Change Commission</button>
+          <a href="/admin/vendors/VND-100284/fees" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Vendor Fees</a><a href="/admin/vendors/VND-100284/statements/latest" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Download Statement</a>
+          <a href="/admin/vendors/VND-100284/tax-documents" class="rounded-lg border bg-white px-3 py-2 text-xs font-bold">Tax Documents</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="subscription-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="subscription-heading" class="text-lg font-bold">Subscription and vendor plan</h2><p class="mt-1 text-xs text-slate-500">Plan entitlements, billing, and overrides.</p></div>
+    <div class="space-y-5 p-5 sm:p-6">
+      <div class="rounded-2xl bg-gradient-to-br from-amber-300 to-amber-100 p-5"><p class="text-xs font-black uppercase tracking-widest text-amber-900">Current plan</p><div class="mt-1 flex items-end justify-between"><h3 class="text-2xl font-black">Growth</h3><p class="font-bold">$49/month</p></div></div>
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Billing cycle</dt><dd class="font-bold">Monthly</dd></div><div><dt class="text-xs text-slate-500">Plan start</dt><dd class="font-bold">Jul 8, 2026</dd></div>
+        <div><dt class="text-xs text-slate-500">Renewal</dt><dd class="font-bold">Oct 8, 2026</dd></div><div><dt class="text-xs text-slate-500">Status</dt><dd class="font-bold text-emerald-700">Active</dd></div>
+        <div><dt class="text-xs text-slate-500">Product limit</dt><dd class="font-bold">500</dd></div><div><dt class="text-xs text-slate-500">Staff accounts</dt><dd class="font-bold">5</dd></div>
+        <div><dt class="text-xs text-slate-500">Storage</dt><dd class="font-bold">50 GB</dd></div><div><dt class="text-xs text-slate-500">Commission discount</dt><dd class="font-bold">2%</dd></div>
+        <div><dt class="text-xs text-slate-500">Trial</dt><dd class="font-bold">Completed</dd></div><div><dt class="text-xs text-slate-500">Payment status</dt><dd class="font-bold text-emerald-700">Current</dd></div>
+        <div><dt class="text-xs text-slate-500">Past-due invoices</dt><dd class="font-bold">0</dd></div><div><dt class="text-xs text-slate-500">Overrides</dt><dd class="font-bold">Custom domain</dd></div>
+      </dl>
+      <div><label for="discount-reason" class="block text-sm font-semibold">Reason for discount or fee waiver</label><input id="discount-reason" placeholder="Required for manual discounts or waivers" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div class="flex flex-wrap gap-2">
+        <button type="button" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Change Plan</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Upgrade</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Downgrade</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Extend Trial</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Apply Discount</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Waive Fee</button>
+        <button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Cancel Subscription</button><a href="/admin/vendors/VND-100284/billing" class="rounded-lg border px-3 py-2 text-xs font-bold">Billing History</a>
+        <a href="/admin/vendors/VND-100284/invoices" class="rounded-lg border px-3 py-2 text-xs font-bold">Invoices</a><a href="/admin/vendors/VND-100284/features" class="rounded-lg border px-3 py-2 text-xs font-bold">Feature Overrides</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Trust and Security -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="complaints-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="complaints-heading" class="text-lg font-bold">Reviews, complaints, and disputes</h2></div>
+    <div class="space-y-5 p-5">
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Store rating</dt><dd class="font-bold text-amber-600">4.9 ★</dd></div><div><dt class="text-xs text-slate-500">Total reviews</dt><dd class="font-bold">286</dd></div>
+        <div><dt class="text-xs text-slate-500">Positive reviews</dt><dd class="font-bold text-emerald-700">97.2%</dd></div><div><dt class="text-xs text-slate-500">Negative reviews</dt><dd class="font-bold">8</dd></div>
+        <div><dt class="text-xs text-slate-500">Awaiting response</dt><dd class="font-bold">4</dd></div><div><dt class="text-xs text-slate-500">Reported reviews</dt><dd class="font-bold">1</dd></div>
+        <div><dt class="text-xs text-slate-500">Customer complaints</dt><dd class="font-bold">3 lifetime</dd></div><div><dt class="text-xs text-slate-500">Product complaints</dt><dd class="font-bold">1</dd></div>
+        <div><dt class="text-xs text-slate-500">IP complaints</dt><dd class="font-bold">0</dd></div><div><dt class="text-xs text-slate-500">Open disputes</dt><dd class="font-bold text-emerald-700">0</dd></div>
+        <div><dt class="text-xs text-slate-500">Resolved disputes</dt><dd class="font-bold">2</dd></div><div><dt class="text-xs text-slate-500">Chargebacks</dt><dd class="font-bold">0</dd></div>
+        <div><dt class="text-xs text-slate-500">Policy violations</dt><dd class="font-bold">0 open</dd></div><div><dt class="text-xs text-slate-500">Warnings</dt><dd class="font-bold">1 expired</dd></div>
+        <div><dt class="text-xs text-slate-500">Previous suspensions</dt><dd class="font-bold">0</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/vendors/VND-100284/reviews" class="rounded-lg border px-3 py-2 text-xs font-bold">Reviews</a><a href="/admin/reviews/reported?vendor=VND-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Reported Reviews</a>
+        <a href="/admin/vendors/VND-100284/complaints" class="rounded-lg border px-3 py-2 text-xs font-bold">Complaints</a><a href="/admin/vendors/VND-100284/disputes" class="rounded-lg border px-3 py-2 text-xs font-bold">Disputes</a>
+        <a href="/admin/vendors/VND-100284/chargebacks" class="rounded-lg border px-3 py-2 text-xs font-bold">Chargebacks</a><a href="/admin/vendors/VND-100284/violations" class="rounded-lg border px-3 py-2 text-xs font-bold">Violations</a>
+        <button type="button" class="rounded-lg border border-amber-300 px-3 py-2 text-xs font-bold text-amber-800">Issue Warning</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Corrective Action</button><button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Escalate</button>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="security-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4"><h2 id="security-heading" class="text-lg font-bold">Security and fraud risk</h2></div>
+    <div class="space-y-5 p-5">
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Two-factor</dt><dd class="font-bold text-amber-700">Not enabled</dd></div><div><dt class="text-xs text-slate-500">Password changed</dt><dd class="font-bold">Aug 12, 2026</dd></div>
+        <div><dt class="text-xs text-slate-500">Active sessions</dt><dd class="font-bold">2</dd></div><div><dt class="text-xs text-slate-500">Failed logins</dt><dd class="font-bold">1 in 30 days</dd></div>
+        <div><dt class="text-xs text-slate-500">Login locations</dt><dd class="font-bold">Vancouver · Burnaby</dd></div><div><dt class="text-xs text-slate-500">Known devices</dt><dd class="font-bold">3</dd></div>
+        <div><dt class="text-xs text-slate-500">Suspicious login</dt><dd class="font-bold text-emerald-700">None</dd></div><div><dt class="text-xs text-slate-500">IP risk</dt><dd class="font-bold text-emerald-700">Low</dd></div>
+        <div><dt class="text-xs text-slate-500">Account lock</dt><dd class="font-bold">Unlocked</dd></div><div><dt class="text-xs text-slate-500">Password resets</dt><dd class="font-bold">1 lifetime</dd></div>
+        <div><dt class="text-xs text-slate-500">Connected accounts</dt><dd class="font-bold">Google</dd></div><div><dt class="text-xs text-slate-500">Security alerts</dt><dd class="font-bold text-emerald-700">0 open</dd></div>
+        <div><dt class="text-xs text-slate-500">Fraud monitoring</dt><dd class="font-bold">Standard</dd></div><div><dt class="text-xs text-slate-500">Unusual orders</dt><dd class="font-bold text-emerald-700">None</dd></div>
+        <div><dt class="text-xs text-slate-500">Unusual payouts</dt><dd class="font-bold text-emerald-700">None</dd></div><div><dt class="text-xs text-slate-500">Multiple accounts</dt><dd class="font-bold">No match</dd></div>
+        <div><dt class="text-xs text-slate-500">Referral abuse</dt><dd class="font-bold text-emerald-700">None</dd></div><div><dt class="text-xs text-slate-500">Chargeback risk</dt><dd class="font-bold text-emerald-700">Low</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/vendors/VND-100284/logins" class="rounded-lg border px-3 py-2 text-xs font-bold">Login History</a><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">End Sessions</button>
+        <button type="button" class="rounded-lg border border-rose-200 px-3 py-2 text-xs font-bold text-rose-700">Lock Account</button><button type="button" disabled class="rounded-lg border px-3 py-2 text-xs font-bold text-slate-400">Unlock</button>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Require Password Reset</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Require 2FA</button>
+        <a href="/admin/security/alerts?vendor=VND-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Security Alerts</a><a href="/admin/fraud?vendor=VND-100284" class="rounded-lg border px-3 py-2 text-xs font-bold">Fraud Signals</a>
+        <button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Monitor</button>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="notes-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4"><div><h2 id="notes-heading" class="text-lg font-bold">Internal notes and ownership</h2><p class="mt-1 text-xs text-slate-500">Never visible to the vendor.</p></div><a href="/admin/audit?vendor=VND-100284" class="text-xs font-bold text-amber-700 hover:underline">Audit Log</a></div>
+    <div class="space-y-5 p-5">
+      <dl class="grid grid-cols-2 gap-3 text-sm">
+        <div><dt class="text-xs text-slate-500">Account manager</dt><dd class="font-bold">Sarah Mitchell</dd></div><div><dt class="text-xs text-slate-500">Compliance reviewer</dt><dd class="font-bold">Elena Cruz</dd></div>
+        <div><dt class="text-xs text-slate-500">Support specialist</dt><dd class="font-bold">Daniel Kim</dd></div><div><dt class="text-xs text-slate-500">Risk</dt><dd class="font-bold text-emerald-700">Low</dd></div>
+        <div><dt class="text-xs text-slate-500">Priority</dt><dd class="font-bold">Normal</dd></div><div><dt class="text-xs text-slate-500">Last review</dt><dd class="font-bold">Sep 12, 2026</dd></div>
+        <div><dt class="text-xs text-slate-500">Next review</dt><dd class="font-bold">Mar 12, 2027</dd></div>
+      </dl>
+      <div class="flex flex-wrap gap-2"><span class="rounded-full bg-violet-100 px-3 py-1 text-xs font-bold text-violet-700">Strategic Vendor</span><span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-700">High Growth</span><span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">Custom Commission</span></div>
+      <article class="rounded-xl bg-slate-50 p-4"><div class="flex justify-between gap-3"><p class="text-sm font-bold">Quarterly review completed.</p><time class="text-xs text-slate-400">Sep 12</time></div><p class="mt-2 text-xs leading-5 text-slate-600">Strong fulfillment and customer satisfaction. Follow up on two-factor authentication.</p><p class="mt-2 text-xs font-semibold text-slate-500">Sarah Mitchell</p></article>
+      <div><label for="vendor-note" class="block text-sm font-semibold">Add internal note</label><textarea id="vendor-note" rows="3" placeholder="Document evidence and any follow-up required." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea></div>
+      <div class="flex flex-wrap gap-2"><button type="button" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Add Note</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Add Tag</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Assign Administrator</button><button type="button" class="rounded-lg border px-3 py-2 text-xs font-bold">Schedule Follow-Up</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- Recent Administrative Activity -->
+<section aria-labelledby="activity-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6">
+    <div><h2 id="activity-heading" class="text-lg font-bold">Recent administrative activity</h2><p class="mt-1 text-xs text-slate-500">Auditable actions affecting vendor accounts and stores.</p></div>
+    <a href="/admin/audit/vendors" class="text-sm font-bold text-amber-700 hover:underline">View Complete Vendor Audit Log</a>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full min-w-[64rem] text-left text-sm">
+      <thead class="bg-slate-50 text-xs uppercase text-slate-500"><tr><th class="px-5 py-3">Action</th><th class="px-5 py-3">Vendor</th><th class="px-5 py-3">Administrator</th><th class="px-5 py-3">Date and time</th><th class="px-5 py-3">Documented reason</th><th class="px-5 py-3">Status</th><th class="px-5 py-3">Audit</th></tr></thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr><td class="px-5 py-4 font-semibold">Application approved</td><td class="px-5 py-4">Honeycomb Home Market</td><td class="px-5 py-4">Sarah Mitchell</td><td class="px-5 py-4">Sep 19, 4:18 PM</td><td class="px-5 py-4">Application and ownership documents validated.</td><td class="px-5 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Completed</span></td><td class="px-5 py-4"><a href="/admin/audit/AUD-V90218" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Commission changed</td><td class="px-5 py-4">Northern Pro Supply</td><td class="px-5 py-4">Daniel Kim</td><td class="px-5 py-4">Sep 19, 2:06 PM</td><td class="px-5 py-4">Professional volume agreement approved.</td><td class="px-5 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Completed</span></td><td class="px-5 py-4"><a href="/admin/audit/AUD-V90211" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Payout placed on hold</td><td class="px-5 py-4">Urban Tool Exchange</td><td class="px-5 py-4">Elena Cruz</td><td class="px-5 py-4">Sep 18, 11:40 AM</td><td class="px-5 py-4">Open dispute requires financial review.</td><td class="px-5 py-4"><span class="rounded-full bg-amber-100 px-2 py-1 text-xs font-bold text-amber-700">Enforced</span></td><td class="px-5 py-4"><a href="/admin/audit/AUD-V90188" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Vendor suspended</td><td class="px-5 py-4">Nova Style Depot</td><td class="px-5 py-4">Elena Cruz</td><td class="px-5 py-4">Sep 18, 9:25 AM</td><td class="px-5 py-4">Repeated prohibited-product policy violations.</td><td class="px-5 py-4"><span class="rounded-full bg-rose-100 px-2 py-1 text-xs font-bold text-rose-700">Suspended</span></td><td class="px-5 py-4"><a href="/admin/audit/AUD-V90172" class="font-bold text-amber-700">View</a></td></tr>
+        <tr><td class="px-5 py-4 font-semibold">Security alert reviewed</td><td class="px-5 py-4">Verdant Wellness</td><td class="px-5 py-4">System Security</td><td class="px-5 py-4">Sep 17, 10:11 PM</td><td class="px-5 py-4">New location verified by account owner.</td><td class="px-5 py-4"><span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">Resolved</span></td><td class="px-5 py-4"><a href="/admin/audit/AUD-V90149" class="font-bold text-amber-700">View</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Vendor Enforcement -->
+<section aria-labelledby="enforcement-heading" class="rounded-2xl border border-rose-200 bg-white shadow-sm">
+  <div class="border-b border-rose-100 px-5 py-4 sm:px-6"><h2 id="enforcement-heading" class="text-lg font-bold">Vendor enforcement actions</h2><p class="mt-1 text-xs text-slate-500">Sensitive account, storefront, publishing, ordering, and payout controls.</p></div>
+  <form action="/admin/vendors/VND-100284/enforcement" method="post" class="grid gap-6 p-5 sm:p-6 xl:grid-cols-[0.75fr_1.25fr]">
+    <dl class="grid grid-cols-2 gap-3 text-sm">
+      <div><dt class="text-xs text-slate-500">Vendor status</dt><dd class="font-bold text-emerald-700">Active</dd></div><div><dt class="text-xs text-slate-500">Storefront status</dt><dd class="font-bold text-emerald-700">Live</dd></div>
+      <div><dt class="text-xs text-slate-500">Restriction reason</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Suspension reason</dt><dd class="font-bold">None</dd></div>
+      <div><dt class="text-xs text-slate-500">Restricted features</dt><dd class="font-bold">None</dd></div><div><dt class="text-xs text-slate-500">Financial hold</dt><dd class="font-bold text-emerald-700">None</dd></div>
+      <div><dt class="text-xs text-slate-500">Enforcement start</dt><dd class="font-bold">Not applicable</dd></div><div><dt class="text-xs text-slate-500">Expiration</dt><dd class="font-bold">Not applicable</dd></div>
+      <div><dt class="text-xs text-slate-500">Applied by</dt><dd class="font-bold">Not applicable</dd></div><div><dt class="text-xs text-slate-500">Appeal status</dt><dd class="font-bold">No appeal</dd></div>
+      <div class="col-span-2"><dt class="text-xs text-slate-500">Internal enforcement notes</dt><dd class="font-bold">Vendor is in good standing.</dd></div>
+    </dl>
+
+    <div class="space-y-4">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div><label for="enforcement-action" class="block text-sm font-semibold">Enforcement action</label><select id="enforcement-action" required class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option value="">Select an action</option><option>Approve Vendor</option><option>Activate Vendor</option><option>Activate Store</option><option>Restrict Store</option><option>Temporarily Hide Store</option><option>Restrict Product Publishing</option><option>Restrict Order Acceptance</option><option>Place Payout Hold</option><option>Temporarily Suspend Vendor</option><option>Permanently Suspend Vendor</option><option>Deactivate Vendor</option><option>Restore Vendor</option><option>Archive Vendor</option></select></div>
+        <div><label for="policy-category" class="block text-sm font-semibold">Policy category</label><select id="policy-category" required class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option value="">Select category</option><option>Product policy</option><option>Customer service</option><option>Fraud or security</option><option>Financial risk</option><option>Verification failure</option><option>Intellectual property</option><option>Marketplace conduct</option></select></div>
+        <div><label for="case-reference" class="block text-sm font-semibold">Evidence or case reference</label><input id="case-reference" placeholder="CASE-000000" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div><label for="vendor-confirmation" class="block text-sm font-semibold">Confirmation</label><input id="vendor-confirmation" required placeholder="Type VND-100284 to confirm" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500"></div>
+        <div><label for="enforcement-start" class="block text-sm font-semibold">Effective date</label><input id="enforcement-start" type="datetime-local" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div><label for="enforcement-expiration" class="block text-sm font-semibold">Optional expiration</label><input id="enforcement-expiration" type="datetime-local" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+        <div class="sm:col-span-2"><label for="enforcement-reason" class="block text-sm font-semibold">Required documented reason</label><textarea id="enforcement-reason" required rows="3" placeholder="Provide the policy basis, evidence reviewed, affected features, and remediation required." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-rose-500 focus:ring-rose-500"></textarea></div>
+      </div>
+      <div class="grid gap-2 sm:grid-cols-2">
+        <label class="flex items-start gap-3 text-sm"><input type="checkbox" checked class="mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span>Notify the vendor about the enforcement action.</span></label>
+        <label class="flex items-start gap-3 text-sm"><input type="checkbox" checked class="mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span>Include appeal and remediation instructions.</span></label>
+      </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <button type="submit" class="rounded-xl border border-rose-300 bg-white px-4 py-2.5 text-sm font-bold text-rose-700 hover:bg-rose-50">Review and Apply Action</button>
+        <a href="/policies/vendor-enforcement" class="text-sm font-bold text-amber-700 hover:underline">View marketplace enforcement policy</a>
+      </div>
+    </div>
+  </form>
+</section>
+
+<!-- Vendor Administration -->
+<section aria-labelledby="vendor-administration-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-200 px-5 py-5 sm:px-6"><h2 id="vendor-administration-heading" class="text-xl font-bold">Vendor Administration</h2><p class="mt-1 text-sm text-slate-500">Quick access to vendor administration tools and reports.</p></div>
+  <div class="grid gap-8 p-5 sm:p-6 lg:grid-cols-2 2xl:grid-cols-3">
+
+    <section aria-labelledby="management-links">
+      <h3 id="management-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Vendor management</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/vendors" class="rounded-lg border p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">All Vendors</a><a href="/admin/vendors/create" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Add Vendor</a>
+        <a href="/admin/vendors?status=active" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Active Vendors</a><a href="/admin/vendors?joined=this-month" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">New Vendors</a>
+        <a href="/admin/vendors/applications?status=pending" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending Applications <span class="rounded-full bg-amber-100 px-2 text-xs">94</span></a>
+        <a href="/admin/vendors?status=approved" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Approved Vendors</a>
+        <a href="/admin/vendors?status=restricted" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Restricted Vendors</a><a href="/admin/vendors?status=suspended" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Suspended <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">21</span></a>
+        <a href="/admin/vendors?status=deactivated" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Deactivated</a><a href="/admin/vendors/applications?status=rejected" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Rejected Applications</a>
+        <a href="/admin/vendors?status=archived" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Archived Vendors</a><a href="/admin/vendors/duplicates" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Duplicate Accounts</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="onboarding-links">
+      <h3 id="onboarding-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Onboarding and verification</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/vendors/applications" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Applications</a><a href="/admin/vendors/reviews" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending Reviews</a>
+        <a href="/admin/vendors/verifications?status=pending" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending Verifications <span class="rounded-full bg-amber-100 px-2 text-xs">127</span></a>
+        <a href="/admin/vendors/verifications?status=approved" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Approved Verifications</a>
+        <a href="/admin/vendors/verifications?status=rejected" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Rejected Verifications</a><a href="/admin/vendors/documents/identity" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Identity Documents</a>
+        <a href="/admin/vendors/documents/business" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Business Documents</a><a href="/admin/vendors/documents/tax" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Tax Documents</a>
+        <a href="/admin/vendors/banking" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Banking Verification</a><a href="/admin/vendors/verification-rules" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Verification Rules</a>
+        <a href="/admin/vendors/onboarding/settings" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Onboarding Configuration</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="store-links">
+      <h3 id="store-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Storefront and catalog</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/stores" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">All Stores</a><a href="/admin/stores?status=active" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Active Stores</a>
+        <a href="/admin/stores?status=hidden" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Hidden Stores</a><a href="/admin/stores/health" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Store Health</a>
+        <a href="/admin/products?status=pending" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending Products</a><a href="/admin/products?status=flagged" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Flagged Products <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">38</span></a>
+        <a href="/admin/products?status=rejected" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Rejected Products</a><a href="/admin/products/audits" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Product Audits</a>
+        <a href="/admin/services" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Services</a><a href="/admin/inventory/alerts" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Inventory Alerts <span class="rounded-full bg-amber-100 px-2 text-xs">214</span></a>
+        <a href="/admin/categories" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Categories</a><a href="/admin/collections" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Collections</a>
+        <a href="/admin/vendors/violations" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Policy Violations</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="service-links">
+      <h3 id="service-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Orders and customer service</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/orders?vendor=true" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Orders</a><a href="/admin/returns" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Returns and Refunds</a>
+        <a href="/admin/vendor-messages" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Messages</a><a href="/admin/support/vendor-tickets" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Support Tickets <span class="rounded-full bg-sky-100 px-2 text-xs">46</span></a>
+        <a href="/admin/complaints/vendors" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Customer Complaints</a><a href="/admin/disputes?vendor=true" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Disputes <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">17</span></a>
+        <a href="/admin/chargebacks" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Chargebacks</a><a href="/admin/vendors/reported" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Reported Vendors</a>
+        <a href="/admin/reviews?vendor=true" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Reviews and Ratings</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="finance-links">
+      <h3 id="finance-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Finance and subscriptions</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/vendor-transactions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Transactions</a><a href="/admin/commissions/rules" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Commission Rules</a>
+        <a href="/admin/commissions/history" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Commission History</a><a href="/admin/payouts/vendors" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Payouts</a>
+        <a href="/admin/payouts?status=pending" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Pending Payouts <span class="rounded-full bg-amber-100 px-2 text-xs">83</span></a>
+        <a href="/admin/payouts?status=hold" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Payout Holds <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">12</span></a>
+        <a href="/admin/vendors/balances" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Balances</a><a href="/admin/vendors/adjustments" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Financial Adjustments</a>
+        <a href="/admin/vendor-plans" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Subscription Plans</a><a href="/admin/vendor-billing" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Billing</a>
+        <a href="/admin/vendor-invoices" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Invoices</a><a href="/admin/tax-reporting/vendors" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Tax Reporting</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="risk-links">
+      <h3 id="risk-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Risk and compliance</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2">
+        <a href="/admin/vendors/compliance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Compliance Reviews</a><a href="/admin/security/vendor-alerts" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Security Alerts</a>
+        <a href="/admin/vendors?risk=high" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">High-Risk Vendors <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">16</span></a>
+        <a href="/admin/fraud/vendors" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Fraud Monitoring</a>
+        <a href="/admin/fraud/orders" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Suspicious Orders</a><a href="/admin/fraud/payouts" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Suspicious Payouts</a>
+        <a href="/admin/compliance/sanctions" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Sanctions Screening</a><a href="/admin/security/locked-vendors" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Locked Accounts</a>
+        <a href="/admin/privacy/vendor-data-requests" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Data Requests</a><a href="/admin/privacy/vendor-requests" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Privacy Requests</a>
+        <a href="/admin/privacy/vendor-deletions" class="flex justify-between rounded-lg border p-3 text-sm font-semibold hover:bg-rose-50">Deletion Requests <span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">3</span></a>
+        <a href="/admin/compliance/vendor-consents" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Consent Records</a><a href="/admin/audit/vendors" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Audit Log</a>
+      </nav>
+    </section>
+
+    <section aria-labelledby="reporting-links" class="lg:col-span-2 2xl:col-span-3">
+      <h3 id="reporting-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Communication and reporting</h3>
+      <nav class="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="/admin/vendor-communications/announcements/create" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Send Vendor Announcement</a><a href="/admin/vendor-communications/campaigns" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Email Campaigns</a>
+        <a href="/admin/vendor-communications/templates" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Notification Templates</a><a href="/admin/vendors/segments" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Segments</a>
+        <a href="/admin/vendors/filters" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Saved Filters</a><a href="/admin/analytics/vendors" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Vendor Analytics</a>
+        <a href="/admin/reports/vendor-sales" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Sales Reports</a><a href="/admin/reports/vendor-performance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Performance Reports</a>
+        <a href="/admin/reports/vendor-compliance" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Compliance Reports</a><a href="/admin/reports/vendor-registrations" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Registration Reports</a>
+        <a href="/admin/exports/vendors" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Export Center</a><a href="/admin/imports/vendors" class="rounded-lg border p-3 text-sm font-semibold hover:bg-amber-50">Import History</a>
+      </nav>
+    </section>
+  </div>
+</section>
+</div> </main>

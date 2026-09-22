@@ -1,0 +1,697 @@
+<main class="min-h-screen bg-amber-50/60 px-4 py-6 text-slate-800 sm:px-6 lg:px-8"> <div class="mx-auto max-w-7xl space-y-6 pb-24 lg:pb-8">
+
+<!-- Page Header -->
+<header class="space-y-5">
+  <nav aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+      <li><a href="/member/dashboard" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Dashboard</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/member/account" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Account</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="font-medium text-slate-800" aria-current="page">Member Profile</li>
+    </ol>
+  </nav>
+
+  <div class="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+    <div>
+      <div class="flex flex-wrap items-center gap-2">
+        <h1 class="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Member Profile</h1>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">
+          <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+          Active Member
+        </span>
+        <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">Honey Member</span>
+      </div>
+      <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+        Manage your personal details, public marketplace profile, shopping activity, privacy, security, and communication preferences.
+      </p>
+    </div>
+
+    <div class="grid gap-2 sm:flex">
+      <a href="/members/joey-lustre" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-amber-400 hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+        View Public Profile
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5h5v5m0-5-9 9M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>
+        </svg>
+      </a>
+      <button type="submit" form="member-profile-form" class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-amber-500 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+        Save Changes
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Profile Completion -->
+<section aria-labelledby="completion-heading" class="overflow-hidden rounded-2xl border border-amber-200 bg-gradient-to-r from-amber-100 via-yellow-50 to-white shadow-sm">
+  <div class="grid gap-6 p-5 lg:grid-cols-[0.8fr_1.2fr] lg:p-6">
+    <div>
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-amber-700">Account setup</p>
+          <h2 id="completion-heading" class="mt-1 text-xl font-bold text-slate-950">Your profile is 78% complete</h2>
+        </div>
+        <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-8 border-amber-400 bg-white text-sm font-black text-slate-950 shadow-sm">78%</div>
+      </div>
+      <p class="mt-3 text-sm leading-6 text-slate-600">Complete your profile to improve security, personalize recommendations, and make checkout faster.</p>
+      <div class="mt-4 h-2.5 overflow-hidden rounded-full bg-white ring-1 ring-amber-200" role="progressbar" aria-label="Profile completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="78">
+        <div class="h-full w-[78%] rounded-full bg-gradient-to-r from-amber-500 to-yellow-400"></div>
+      </div>
+    </div>
+
+    <ul class="grid gap-2 sm:grid-cols-2">
+      <li class="flex items-center justify-between rounded-xl border border-emerald-200 bg-white/80 p-3"><span class="text-sm font-medium">Upload profile photo</span><span class="text-xs font-bold text-emerald-700">Completed</span></li>
+      <li class="flex items-center justify-between rounded-xl border border-emerald-200 bg-white/80 p-3"><span class="text-sm font-medium">Add a short biography</span><span class="text-xs font-bold text-emerald-700">Completed</span></li>
+      <li class="flex items-center justify-between rounded-xl border border-emerald-200 bg-white/80 p-3"><span class="text-sm font-medium">Verify email address</span><span class="text-xs font-bold text-emerald-700">Verified</span></li>
+      <li class="flex items-center justify-between rounded-xl border border-amber-200 bg-white/80 p-3"><span class="text-sm font-medium">Verify phone number</span><a href="/member/security/phone" class="text-xs font-bold text-amber-700 hover:underline">Verify</a></li>
+      <li class="flex items-center justify-between rounded-xl border border-emerald-200 bg-white/80 p-3"><span class="text-sm font-medium">Add delivery address</span><span class="text-xs font-bold text-emerald-700">Completed</span></li>
+      <li class="flex items-center justify-between rounded-xl border border-emerald-200 bg-white/80 p-3"><span class="text-sm font-medium">Add payment method</span><span class="text-xs font-bold text-emerald-700">Completed</span></li>
+      <li class="flex items-center justify-between rounded-xl border border-amber-200 bg-white/80 p-3"><span class="text-sm font-medium">Enable two-factor authentication</span><a href="/member/security/two-factor" class="text-xs font-bold text-amber-700 hover:underline">Enable</a></li>
+      <li class="flex items-center justify-between rounded-xl border border-amber-200 bg-white/80 p-3"><span class="text-sm font-medium">Select marketplace interests</span><a href="#interests" class="text-xs font-bold text-amber-700 hover:underline">Choose</a></li>
+    </ul>
+  </div>
+</section>
+
+<form id="member-profile-form" action="#" method="post" class="space-y-6">
+  <div class="grid gap-6 xl:grid-cols-[1fr_20rem]">
+
+    <!-- Personal Information -->
+    <section aria-labelledby="personal-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div class="border-b border-slate-200 px-5 py-4 sm:px-6">
+        <h2 id="personal-heading" class="text-lg font-bold text-slate-950">Personal information</h2>
+        <p class="mt-1 text-sm text-slate-500">Keep your contact information accurate for orders and account recovery.</p>
+      </div>
+
+      <div class="grid gap-4 p-5 sm:grid-cols-2 sm:p-6 lg:grid-cols-3">
+        <div>
+          <label for="first-name" class="block text-sm font-semibold">First name</label>
+          <input id="first-name" name="first_name" type="text" value="Joey" autocomplete="given-name" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        </div>
+        <div>
+          <label for="middle-name" class="block text-sm font-semibold">Middle name</label>
+          <input id="middle-name" name="middle_name" type="text" value="M." autocomplete="additional-name" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        </div>
+        <div>
+          <label for="last-name" class="block text-sm font-semibold">Last name</label>
+          <input id="last-name" name="last_name" type="text" value="Lustre" autocomplete="family-name" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        </div>
+        <div>
+          <label for="display-name" class="block text-sm font-semibold">Display name</label>
+          <input id="display-name" name="display_name" type="text" value="Joey L." class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+          <p class="mt-1 text-xs text-slate-500">Shown on reviews and public activity.</p>
+        </div>
+        <div>
+          <label for="username" class="block text-sm font-semibold">Username</label>
+          <div class="mt-2 flex rounded-xl shadow-sm">
+            <span class="inline-flex items-center rounded-l-xl border border-r-0 border-slate-300 bg-slate-50 px-3 text-xs text-slate-500">asbeez.com/members/</span>
+            <input id="username" name="username" type="text" value="joey-lustre" class="min-w-0 flex-1 rounded-r-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+          </div>
+        </div>
+        <div>
+          <label for="birth-date" class="block text-sm font-semibold">Date of birth</label>
+          <input id="birth-date" name="birth_date" type="date" value="1960-06-15" autocomplete="bday" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+          <p class="mt-1 text-xs text-slate-500">Not displayed publicly.</p>
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-semibold">Email address</label>
+          <input id="email" name="email" type="email" value="joey@example.com" autocomplete="email" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        </div>
+        <div>
+          <label for="phone" class="block text-sm font-semibold">Phone number</label>
+          <input id="phone" name="phone" type="tel" value="+1 (604) 555-0148" autocomplete="tel" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        </div>
+        <div>
+          <label for="gender" class="block text-sm font-semibold">Gender</label>
+          <select id="gender" name="gender" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+            <option>Male</option>
+            <option>Female</option>
+            <option>Non-binary</option>
+            <option>Prefer not to say</option>
+            <option>Self-describe</option>
+          </select>
+        </div>
+        <div>
+          <label for="pronouns" class="block text-sm font-semibold">Preferred pronouns</label>
+          <input id="pronouns" name="pronouns" type="text" value="He/Him" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        </div>
+        <div>
+          <label for="occupation" class="block text-sm font-semibold">Occupation</label>
+          <input id="occupation" name="occupation" type="text" value="IT Director and Web Developer" autocomplete="organization-title" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        </div>
+        <div>
+          <label for="company" class="block text-sm font-semibold">Company or organization</label>
+          <input id="company" name="company" type="text" value="AsBeez Marketplace" autocomplete="organization" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        </div>
+        <div class="sm:col-span-2 lg:col-span-3">
+          <label for="website" class="block text-sm font-semibold">Personal website</label>
+          <input id="website" name="website" type="url" value="https://joeylustre.com" autocomplete="url" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        </div>
+        <div class="sm:col-span-2 lg:col-span-3">
+          <label for="bio" class="block text-sm font-semibold">Short biography</label>
+          <textarea id="bio" name="bio" rows="4" maxlength="500" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">Technology professional, entrepreneur, and community supporter who enjoys discovering dependable local businesses and thoughtfully made products.</textarea>
+          <p class="mt-1 text-right text-xs text-slate-500">142 / 500 characters</p>
+        </div>
+        <div>
+          <label for="language" class="block text-sm font-semibold">Preferred language</label>
+          <select id="language" name="language" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+            <option>English</option>
+            <option>French</option>
+            <option>Spanish</option>
+            <option>Filipino</option>
+          </select>
+        </div>
+        <div class="sm:col-span-1 lg:col-span-2">
+          <label for="timezone" class="block text-sm font-semibold">Time zone</label>
+          <select id="timezone" name="timezone" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+            <option>Pacific Time — Vancouver (UTC−08:00)</option>
+            <option>Mountain Time (UTC−07:00)</option>
+            <option>Central Time (UTC−06:00)</option>
+            <option>Eastern Time (UTC−05:00)</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile Summary -->
+    <aside aria-labelledby="summary-heading" class="self-start rounded-2xl border border-slate-200 bg-white p-5 text-center shadow-sm xl:sticky xl:top-6">
+      <h2 id="summary-heading" class="sr-only">Profile summary</h2>
+      <div class="mx-auto flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-amber-300 to-amber-500 text-3xl font-black text-slate-950 ring-4 ring-amber-100">JL</div>
+      <div class="mt-4 flex justify-center gap-2">
+        <label for="avatar-upload" class="cursor-pointer rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold hover:border-amber-400 hover:bg-amber-50 focus-within:ring-2 focus-within:ring-amber-500">
+          Edit Avatar
+          <input id="avatar-upload" name="avatar" type="file" accept="image/*" class="sr-only">
+        </label>
+        <button type="button" class="rounded-lg px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 focus:outline-none focus:ring-2 focus:ring-rose-500">Remove</button>
+      </div>
+
+      <h3 class="mt-4 text-xl font-bold text-slate-950">Joey Lustre</h3>
+      <p class="text-sm text-slate-500">@joey-lustre</p>
+      <div class="mt-3 flex flex-wrap justify-center gap-2">
+        <span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-800">Honey Member</span>
+        <span class="rounded-full bg-sky-100 px-2.5 py-1 text-xs font-bold text-sky-700">Verified</span>
+      </div>
+
+      <dl class="mt-5 space-y-3 border-y border-slate-200 py-4 text-sm">
+        <div class="flex justify-between gap-4"><dt class="text-slate-500">Member since</dt><dd class="font-semibold">July 2026</dd></div>
+        <div class="flex justify-between gap-4"><dt class="text-slate-500">Location</dt><dd class="font-semibold">Burnaby, BC</dd></div>
+        <div class="flex justify-between gap-4"><dt class="text-slate-500">Purchases</dt><dd class="font-semibold">38</dd></div>
+        <div class="flex justify-between gap-4"><dt class="text-slate-500">Reviews</dt><dd class="font-semibold">21</dd></div>
+        <div class="flex justify-between gap-4"><dt class="text-slate-500">Followed stores</dt><dd class="font-semibold">17</dd></div>
+        <div class="flex justify-between gap-4"><dt class="text-slate-500">Reward points</dt><dd class="font-semibold text-amber-700">2,480</dd></div>
+        <div class="flex justify-between gap-4"><dt class="text-slate-500">Public profile</dt><dd class="font-semibold text-emerald-700">Visible</dd></div>
+      </dl>
+
+      <a href="/members/joey-lustre" class="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-amber-500 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500">View Public Profile</a>
+    </aside>
+  </div>
+
+  <!-- Public Profile Preview -->
+  <section aria-labelledby="public-profile-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4 sm:px-6">
+      <h2 id="public-profile-heading" class="text-lg font-bold text-slate-950">Public Profile Preview</h2>
+      <p class="mt-1 text-sm text-slate-500">Preview what other AsBeez members and vendors can see.</p>
+    </div>
+
+    <div class="grid gap-6 p-5 sm:p-6 lg:grid-cols-[1fr_0.9fr]">
+      <article class="overflow-hidden rounded-2xl border border-slate-200">
+        <div class="h-24 bg-gradient-to-r from-slate-900 via-slate-800 to-amber-800"></div>
+        <div class="px-5 pb-5">
+          <div class="-mt-10 flex h-20 w-20 items-center justify-center rounded-full border-4 border-white bg-amber-400 text-2xl font-black text-slate-950 shadow">JL</div>
+          <div class="mt-4 flex flex-wrap items-center gap-2">
+            <h3 class="text-xl font-bold text-slate-950">Joey L.</h3>
+            <span class="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-bold text-sky-700">Verified Member</span>
+          </div>
+          <p class="mt-1 text-sm text-slate-500">Burnaby, British Columbia · Member since July 2026</p>
+          <p class="mt-4 text-sm leading-6 text-slate-600">Technology professional, entrepreneur, and community supporter who enjoys discovering dependable local businesses and thoughtfully made products.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">Home &amp; Garden</span>
+            <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">Technology</span>
+            <span class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">Local Services</span>
+          </div>
+          <div class="mt-5 grid grid-cols-3 gap-3 border-t border-slate-200 pt-4 text-center">
+            <div><p class="font-bold text-slate-950">21</p><p class="text-xs text-slate-500">Reviews</p></div>
+            <div><p class="font-bold text-slate-950">17</p><p class="text-xs text-slate-500">Stores followed</p></div>
+            <div><p class="font-bold text-slate-950">8</p><p class="text-xs text-slate-500">Helpful votes</p></div>
+          </div>
+          <div class="mt-4 rounded-xl bg-slate-50 p-4">
+            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Recent public activity</p>
+            <p class="mt-2 text-sm font-medium">Reviewed Honeycomb Home Market</p>
+            <p class="mt-1 text-xs text-slate-500">“Excellent service and careful packaging.”</p>
+          </div>
+        </div>
+      </article>
+
+      <div>
+        <h3 class="text-sm font-bold text-slate-950">Profile visibility</h3>
+        <div class="mt-3 grid gap-2 sm:grid-cols-2">
+          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><input type="checkbox" name="show_full_name" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span class="text-sm">Show full name</span></label>
+          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><input type="checkbox" name="show_photo" checked class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span class="text-sm">Show profile photo</span></label>
+          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><input type="checkbox" name="show_location" checked class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span class="text-sm">Show city and province</span></label>
+          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><input type="checkbox" name="show_bio" checked class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span class="text-sm">Show biography</span></label>
+          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><input type="checkbox" name="show_interests" checked class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span class="text-sm">Show interests</span></label>
+          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><input type="checkbox" name="show_reviews" checked class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span class="text-sm">Show reviews</span></label>
+          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><input type="checkbox" name="show_stores" checked class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span class="text-sm">Show followed stores</span></label>
+          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-3"><input type="checkbox" name="show_activity" checked class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span class="text-sm">Show public activity</span></label>
+          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-3 sm:col-span-2"><input type="checkbox" name="allow_followers" checked class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span class="text-sm">Allow other members to follow my profile</span></label>
+          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-3 sm:col-span-2"><input type="checkbox" name="allow_vendor_contact" class="rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span class="text-sm">Allow verified vendors to contact me</span></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interests -->
+  <section id="interests" aria-labelledby="interests-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4 sm:px-6">
+      <h2 id="interests-heading" class="text-lg font-bold text-slate-950">Interests and marketplace preferences</h2>
+      <p class="mt-1 text-sm text-slate-500">Help AsBeez personalize products, services, and nearby recommendations.</p>
+    </div>
+
+    <div class="space-y-6 p-5 sm:p-6">
+      <div>
+        <label for="add-interest" class="block text-sm font-semibold">Shopping interests</label>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Home and Garden <button type="button" aria-label="Remove Home and Garden" class="rounded-full hover:text-rose-600">×</button></span>
+          <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Electronics <button type="button" aria-label="Remove Electronics" class="rounded-full hover:text-rose-600">×</button></span>
+          <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Health and Wellness <button type="button" aria-label="Remove Health and Wellness" class="rounded-full hover:text-rose-600">×</button></span>
+          <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Handmade Goods <button type="button" aria-label="Remove Handmade Goods" class="rounded-full hover:text-rose-600">×</button></span>
+          <span class="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-semibold text-amber-900">Local Services <button type="button" aria-label="Remove Local Services" class="rounded-full hover:text-rose-600">×</button></span>
+        </div>
+        <div class="mt-3 flex max-w-md gap-2">
+          <input id="add-interest" name="new_interest" type="text" placeholder="Add another interest" class="min-w-0 flex-1 rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+          <button type="button" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-bold text-white hover:bg-amber-500 hover:text-slate-950">Add Interest</button>
+        </div>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div>
+          <label for="categories" class="block text-sm font-semibold">Favorite categories</label>
+          <select id="categories" name="favorite_category" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Home and Garden</option><option>Food and Grocery</option><option>Clothing and Accessories</option></select>
+        </div>
+        <div>
+          <label for="services" class="block text-sm font-semibold">Preferred services</label>
+          <select id="services" name="preferred_service" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Professional Services</option><option>Home Services</option><option>Health Services</option></select>
+        </div>
+        <div>
+          <label for="favorite-business" class="block text-sm font-semibold">Favorite local business</label>
+          <input id="favorite-business" name="favorite_business" type="text" value="Honeycomb Home Market" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        </div>
+        <div>
+          <label for="shopping-radius" class="block text-sm font-semibold">Shopping radius</label>
+          <select id="shopping-radius" name="shopping_radius" class="mt-2 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>25 km</option><option>10 km</option><option>50 km</option><option>Anywhere</option></select>
+        </div>
+      </div>
+
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <label class="flex items-start gap-3 rounded-xl border border-slate-200 p-4"><input type="checkbox" checked class="mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span><span class="block text-sm font-semibold">Local pickup</span><span class="text-xs text-slate-500">Prioritize nearby pickup options.</span></span></label>
+        <label class="flex items-start gap-3 rounded-xl border border-slate-200 p-4"><input type="checkbox" checked class="mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span><span class="block text-sm font-semibold">Home delivery</span><span class="text-xs text-slate-500">Show deliverable products first.</span></span></label>
+        <label class="flex items-start gap-3 rounded-xl border border-slate-200 p-4"><input type="checkbox" checked class="mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span><span class="block text-sm font-semibold">Sustainable products</span><span class="text-xs text-slate-500">Highlight eco-conscious products.</span></span></label>
+        <label class="flex items-start gap-3 rounded-xl border border-slate-200 p-4"><input type="checkbox" checked class="mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span><span class="block text-sm font-semibold">Handmade products</span><span class="text-xs text-slate-500">Highlight goods from independent makers.</span></span></label>
+        <label class="flex items-start gap-3 rounded-xl border border-slate-200 p-4"><input type="checkbox" checked class="mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span><span class="block text-sm font-semibold">New product alerts</span><span class="text-xs text-slate-500">Notify me about matching products.</span></span></label>
+        <label class="flex items-start gap-3 rounded-xl border border-slate-200 p-4"><input type="checkbox" class="mt-0.5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"><span><span class="block text-sm font-semibold">Store promotions</span><span class="text-xs text-slate-500">Notify me about vendor offers.</span></span></label>
+      </div>
+    </div>
+  </section>
+</form>
+
+<!-- Address Book -->
+<section aria-labelledby="address-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <div>
+      <h2 id="address-heading" class="text-lg font-bold text-slate-950">Address book</h2>
+      <p class="mt-1 text-sm text-slate-500">Manage delivery, billing, and pickup locations.</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <a href="/member/addresses/create" class="rounded-xl bg-amber-400 px-4 py-2 text-sm font-bold text-slate-950 hover:bg-amber-300">Add New Address</a>
+      <a href="/member/addresses" class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-bold hover:border-amber-400 hover:bg-amber-50">Manage Address Book</a>
+    </div>
+  </div>
+
+  <div class="grid gap-4 p-5 sm:p-6 md:grid-cols-2 xl:grid-cols-4">
+    <article class="rounded-2xl border-2 border-amber-300 bg-amber-50/50 p-4">
+      <div class="flex items-center justify-between gap-2"><h3 class="font-bold">Home</h3><span class="rounded-full bg-amber-200 px-2 py-0.5 text-xs font-bold">Default shipping</span></div>
+      <address class="mt-3 text-sm not-italic leading-6 text-slate-600">Joey Lustre<br>4567 Beechnut Avenue<br>Burnaby, BC V5G 3H2<br>Canada<br>+1 (604) 555-0148</address>
+      <div class="mt-4 flex gap-3 text-xs font-bold"><a href="/member/addresses/1/edit" class="text-amber-700 hover:underline">Edit</a><button type="button" class="text-rose-600 hover:underline">Delete</button></div>
+    </article>
+
+    <article class="rounded-2xl border border-slate-200 p-4">
+      <div class="flex items-center justify-between gap-2"><h3 class="font-bold">Billing</h3><span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-bold">Default billing</span></div>
+      <address class="mt-3 text-sm not-italic leading-6 text-slate-600">Joey Lustre<br>4567 Beechnut Avenue<br>Burnaby, BC V5G 3H2<br>Canada<br>+1 (604) 555-0148</address>
+      <div class="mt-4 flex gap-3 text-xs font-bold"><a href="/member/addresses/2/edit" class="text-amber-700 hover:underline">Edit</a><button type="button" class="text-rose-600 hover:underline">Delete</button></div>
+    </article>
+
+    <article class="rounded-2xl border border-slate-200 p-4">
+      <h3 class="font-bold">Family</h3>
+      <address class="mt-3 text-sm not-italic leading-6 text-slate-600">Family Recipient<br>1820 Maple Street<br>Vancouver, BC V6B 2W2<br>Canada<br>+1 (604) 555-0194</address>
+      <div class="mt-4 flex flex-wrap gap-3 text-xs font-bold"><a href="/member/addresses/3/edit" class="text-amber-700 hover:underline">Edit</a><button type="button" class="text-slate-600 hover:underline">Set as Default</button><button type="button" class="text-rose-600 hover:underline">Delete</button></div>
+    </article>
+
+    <article class="rounded-2xl border border-slate-200 p-4">
+      <h3 class="font-bold">Preferred pickup</h3>
+      <p class="mt-3 text-sm leading-6 text-slate-600">Metrotown Community Pickup<br>4700 Kingsway<br>Burnaby, BC V5H 4M1<br>Pickup radius: 10 km</p>
+      <div class="mt-4 flex gap-3 text-xs font-bold"><a href="/member/addresses/pickup" class="text-amber-700 hover:underline">Change location</a></div>
+    </article>
+  </div>
+</section>
+
+<!-- Payments and Rewards -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="payments-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6">
+      <div>
+        <h2 id="payments-heading" class="text-lg font-bold text-slate-950">Payments and wallet</h2>
+        <p class="mt-1 text-sm text-slate-500">Securely manage payment options and balances.</p>
+      </div>
+      <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">Verified</span>
+    </div>
+
+    <div class="space-y-4 p-5 sm:p-6">
+      <article class="rounded-2xl bg-gradient-to-br from-slate-900 to-slate-700 p-5 text-white shadow">
+        <div class="flex items-start justify-between"><div><p class="text-xs uppercase tracking-widest text-slate-300">Default payment</p><p class="mt-4 text-lg font-bold tracking-widest">•••• •••• •••• 4821</p></div><span class="rounded-lg bg-white px-2 py-1 text-xs font-black text-blue-700">VISA</span></div>
+        <div class="mt-5 flex justify-between text-xs text-slate-300"><span>Expires 08/29</span><span>Billing: Home</span></div>
+      </article>
+
+      <article class="flex items-center justify-between rounded-xl border border-slate-200 p-4">
+        <div><p class="text-sm font-bold">Mastercard ending in 1946</p><p class="mt-1 text-xs text-slate-500">Expires 11/28 · Billing: Home</p></div>
+        <a href="/member/payments" class="text-xs font-bold text-amber-700 hover:underline">Manage</a>
+      </article>
+
+      <dl class="grid grid-cols-3 gap-3 text-center">
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Wallet</dt><dd class="mt-1 font-bold">$68.40</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Gift cards</dt><dd class="mt-1 font-bold">$25.00</dd></div>
+        <div class="rounded-xl bg-amber-50 p-3"><dt class="text-xs text-slate-500">Store credits</dt><dd class="mt-1 font-bold">$14.75</dd></div>
+      </dl>
+
+      <div class="flex flex-wrap gap-2">
+        <a href="/member/payments/create" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white hover:bg-amber-500 hover:text-slate-950">Add Payment Method</a>
+        <a href="/member/payments" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold hover:bg-slate-50">Manage Payment Methods</a>
+        <a href="/member/wallet" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold hover:bg-slate-50">View Wallet</a>
+        <a href="/member/gift-cards/redeem" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold hover:bg-slate-50">Redeem Gift Card</a>
+        <a href="/member/transactions" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold hover:bg-slate-50">View Transactions</a>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="rewards-heading" class="overflow-hidden rounded-2xl border border-amber-300 bg-gradient-to-br from-amber-400 via-yellow-300 to-amber-100 shadow-sm">
+    <div class="p-5 sm:p-6">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-xs font-black uppercase tracking-widest text-amber-900">AsBeez Rewards</p>
+          <h2 id="rewards-heading" class="mt-1 text-2xl font-black text-slate-950">Honey Member</h2>
+          <p class="mt-1 text-sm text-amber-950">Membership renews July 8, 2027</p>
+        </div>
+        <div class="rounded-2xl bg-slate-900 px-4 py-3 text-center text-white shadow">
+          <p class="text-2xl font-black">2,480</p>
+          <p class="text-xs text-slate-300">points</p>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <div class="flex justify-between text-xs font-bold text-slate-800"><span>520 points to Golden Hive</span><span>83%</span></div>
+        <div class="mt-2 h-2.5 overflow-hidden rounded-full bg-white/70"><div class="h-full w-[83%] rounded-full bg-slate-900"></div></div>
+      </div>
+
+      <dl class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div class="rounded-xl bg-white/70 p-3"><dt class="text-xs text-slate-600">Rewards</dt><dd class="mt-1 font-black">3</dd></div>
+        <div class="rounded-xl bg-white/70 p-3"><dt class="text-xs text-slate-600">Coupons</dt><dd class="mt-1 font-black">4</dd></div>
+        <div class="rounded-xl bg-white/70 p-3"><dt class="text-xs text-slate-600">Referrals</dt><dd class="mt-1 font-black">7</dd></div>
+        <div class="rounded-xl bg-white/70 p-3"><dt class="text-xs text-slate-600">Credits earned</dt><dd class="mt-1 font-black">$70</dd></div>
+      </dl>
+
+      <div class="mt-5">
+        <label for="referral-code" class="text-xs font-bold text-slate-700">Referral code</label>
+        <div class="mt-1 flex gap-2">
+          <input id="referral-code" readonly value="JOEYBEE25" class="min-w-0 flex-1 rounded-xl border-0 bg-white/80 text-sm font-bold">
+          <button type="button" class="rounded-xl bg-slate-900 px-4 text-xs font-bold text-white" aria-label="Copy referral code">Copy</button>
+        </div>
+        <div class="mt-2 flex gap-2">
+          <input aria-label="Referral link" readonly value="https://asbeez.com/refer/JOEYBEE25" class="min-w-0 flex-1 rounded-xl border-0 bg-white/80 text-xs">
+          <button type="button" class="rounded-xl bg-white/80 px-4 text-xs font-bold" aria-label="Copy referral link">Copy</button>
+        </div>
+      </div>
+
+      <div class="mt-5 flex flex-wrap gap-2">
+        <a href="/member/rewards" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">View Rewards</a>
+        <a href="/member/rewards/redeem" class="rounded-lg bg-white/80 px-3 py-2 text-xs font-bold">Redeem Points</a>
+        <a href="/member/coupons" class="rounded-lg bg-white/80 px-3 py-2 text-xs font-bold">View Coupons</a>
+        <a href="/member/referrals" class="rounded-lg bg-white/80 px-3 py-2 text-xs font-bold">Refer a Friend</a>
+        <a href="/member/referrals/history" class="rounded-lg bg-white/80 px-3 py-2 text-xs font-bold">Referral History</a>
+        <a href="/member/membership/benefits" class="rounded-lg bg-white/80 px-3 py-2 text-xs font-bold">Membership Benefits</a>
+        <a href="/member/membership/upgrade" class="rounded-lg bg-white/80 px-3 py-2 text-xs font-bold">Upgrade Membership</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Activity and Communication -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="activity-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6">
+      <div><h2 id="activity-heading" class="text-lg font-bold text-slate-950">Recent account activity</h2><p class="mt-1 text-sm text-slate-500">Your latest shopping and security events.</p></div>
+      <a href="/member/activity" class="text-sm font-bold text-amber-700 hover:underline">View All Activity</a>
+    </div>
+    <ol class="divide-y divide-slate-100 px-5 sm:px-6">
+      <li class="flex gap-3 py-4"><span class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M5 8h14l-1 12H6L5 8Zm3 0a4 4 0 0 1 8 0"/></svg></span><div class="min-w-0 flex-1"><div class="flex justify-between gap-3"><p class="text-sm font-bold">Order placed</p><span class="text-xs text-slate-400">Today, 10:42 AM</span></div><p class="mt-1 text-xs text-slate-500">Order #AB-10482 at Honeycomb Home Market.</p><a href="/member/orders/AB-10482" class="mt-1 inline-block text-xs font-bold text-amber-700 hover:underline">View order</a></div></li>
+      <li class="flex gap-3 py-4"><span class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="m5 12 4 4L19 6"/></svg></span><div class="min-w-0 flex-1"><div class="flex justify-between gap-3"><p class="text-sm font-bold">Order delivered</p><span class="text-xs text-slate-400">Yesterday</span></div><p class="mt-1 text-xs text-slate-500">Order #AB-10397 was delivered successfully.</p><a href="/member/reviews/create?order=AB-10397" class="mt-1 inline-block text-xs font-bold text-amber-700 hover:underline">Write a review</a></div></li>
+      <li class="flex gap-3 py-4"><span class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sky-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 3 9.3 8.5 3 9.4l4.5 4.4-1 6.2 5.5-2.9 5.5 2.9-1-6.2L21 9.4l-6.3-.9L12 3Z"/></svg></span><div class="min-w-0 flex-1"><div class="flex justify-between gap-3"><p class="text-sm font-bold">Review submitted</p><span class="text-xs text-slate-400">Sep 16</span></div><p class="mt-1 text-xs text-slate-500">You rated Honeycomb Home Market five stars.</p><span class="mt-1 inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-700">Published</span></div></li>
+      <li class="flex gap-3 py-4"><span class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-100 text-violet-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 21s-8-4.6-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.4-8 11-8 11Z"/></svg></span><div class="min-w-0 flex-1"><div class="flex justify-between gap-3"><p class="text-sm font-bold">Store followed</p><span class="text-xs text-slate-400">Sep 14</span></div><p class="mt-1 text-xs text-slate-500">You followed Pacific Wellness Collective.</p></div></li>
+      <li class="flex gap-3 py-4"><span class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-rose-100 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="2" d="M12 3a4 4 0 0 0-4 4v3H6v10h12V10h-2V7a4 4 0 0 0-4-4Z"/></svg></span><div class="min-w-0 flex-1"><div class="flex justify-between gap-3"><p class="text-sm font-bold">New login detected</p><span class="text-xs text-slate-400">Sep 13</span></div><p class="mt-1 text-xs text-slate-500">Chrome on Windows · Vancouver, Canada.</p><a href="/member/security/sessions" class="mt-1 inline-block text-xs font-bold text-amber-700 hover:underline">Review session</a></div></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="communication-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="border-b border-slate-200 px-5 py-4 sm:px-6">
+      <h2 id="communication-heading" class="text-lg font-bold text-slate-950">Communication preferences</h2>
+      <p class="mt-1 text-sm text-slate-500">Choose which notifications you receive and where.</p>
+    </div>
+
+    <div class="overflow-x-auto p-5 sm:p-6">
+      <table class="w-full min-w-[36rem] text-left text-sm">
+        <thead>
+          <tr class="border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
+            <th class="pb-3 font-bold">Notification</th>
+            <th class="pb-3 text-center font-bold">Email</th>
+            <th class="pb-3 text-center font-bold">SMS</th>
+            <th class="pb-3 text-center font-bold">Push</th>
+            <th class="pb-3 text-center font-bold">In-app</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><th class="py-3 font-medium">Order updates</th><td class="text-center"><input type="checkbox" checked aria-label="Order updates by email" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Order updates by SMS" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Order updates by push notification" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Order updates in app" class="rounded text-amber-600 focus:ring-amber-500"></td></tr>
+          <tr><th class="py-3 font-medium">Delivery notifications</th><td class="text-center"><input type="checkbox" checked aria-label="Delivery notifications by email" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Delivery notifications by SMS" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Delivery notifications by push" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Delivery notifications in app" class="rounded text-amber-600 focus:ring-amber-500"></td></tr>
+          <tr><th class="py-3 font-medium">Direct messages</th><td class="text-center"><input type="checkbox" checked aria-label="Direct messages by email" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" aria-label="Direct messages by SMS" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Direct messages by push" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Direct messages in app" class="rounded text-amber-600 focus:ring-amber-500"></td></tr>
+          <tr><th class="py-3 font-medium">Product-question replies</th><td class="text-center"><input type="checkbox" checked aria-label="Question replies by email" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" aria-label="Question replies by SMS" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Question replies by push" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Question replies in app" class="rounded text-amber-600 focus:ring-amber-500"></td></tr>
+          <tr><th class="py-3 font-medium">Review reminders</th><td class="text-center"><input type="checkbox" checked aria-label="Review reminders by email" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" aria-label="Review reminders by SMS" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" aria-label="Review reminders by push" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Review reminders in app" class="rounded text-amber-600 focus:ring-amber-500"></td></tr>
+          <tr><th class="py-3 font-medium">Followed-store updates</th><td class="text-center"><input type="checkbox" checked aria-label="Store updates by email" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" aria-label="Store updates by SMS" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Store updates by push" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Store updates in app" class="rounded text-amber-600 focus:ring-amber-500"></td></tr>
+          <tr><th class="py-3 font-medium">Price-drop and restock alerts</th><td class="text-center"><input type="checkbox" checked aria-label="Price alerts by email" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" aria-label="Price alerts by SMS" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Price alerts by push" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Price alerts in app" class="rounded text-amber-600 focus:ring-amber-500"></td></tr>
+          <tr><th class="py-3 font-medium">Coupons and promotions</th><td class="text-center"><input type="checkbox" checked aria-label="Promotions by email" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" aria-label="Promotions by SMS" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" aria-label="Promotions by push" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Promotions in app" class="rounded text-amber-600 focus:ring-amber-500"></td></tr>
+          <tr><th class="py-3 font-medium">AsBeez announcements</th><td class="text-center"><input type="checkbox" checked aria-label="Announcements by email" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" aria-label="Announcements by SMS" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" aria-label="Announcements by push" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Announcements in app" class="rounded text-amber-600 focus:ring-amber-500"></td></tr>
+          <tr><th class="py-3 font-medium">Referral and reward updates</th><td class="text-center"><input type="checkbox" checked aria-label="Reward updates by email" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" aria-label="Reward updates by SMS" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Reward updates by push" class="rounded text-amber-600 focus:ring-amber-500"></td><td class="text-center"><input type="checkbox" checked aria-label="Reward updates in app" class="rounded text-amber-600 focus:ring-amber-500"></td></tr>
+        </tbody>
+      </table>
+      <div class="mt-5 border-t border-slate-200 pt-4">
+        <p class="text-xs leading-5 text-slate-500">Required transactional and security messages may still be sent when necessary to operate or protect your account.</p>
+        <a href="/member/notifications" class="mt-2 inline-block text-sm font-bold text-amber-700 hover:underline">Manage Notification Preferences</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Privacy and Security -->
+<section aria-labelledby="security-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-200 px-5 py-4 sm:px-6">
+    <h2 id="security-heading" class="text-lg font-bold text-slate-950">Privacy and security</h2>
+    <p class="mt-1 text-sm text-slate-500">Review your verification, login protection, connected accounts, and privacy controls.</p>
+  </div>
+
+  <div class="grid gap-6 p-5 sm:p-6 lg:grid-cols-[1fr_0.8fr]">
+    <dl class="grid gap-3 sm:grid-cols-2">
+      <div class="rounded-xl border border-slate-200 p-4"><dt class="text-xs text-slate-500">Email verification</dt><dd class="mt-1 text-sm font-bold text-emerald-700">Verified</dd></div>
+      <div class="rounded-xl border border-slate-200 p-4"><dt class="text-xs text-slate-500">Phone verification</dt><dd class="mt-1 text-sm font-bold text-amber-700">Action required</dd></div>
+      <div class="rounded-xl border border-slate-200 p-4"><dt class="text-xs text-slate-500">Password last changed</dt><dd class="mt-1 text-sm font-bold">August 12, 2026</dd></div>
+      <div class="rounded-xl border border-slate-200 p-4"><dt class="text-xs text-slate-500">Two-factor authentication</dt><dd class="mt-1 text-sm font-bold text-amber-700">Not enabled</dd></div>
+      <div class="rounded-xl border border-slate-200 p-4"><dt class="text-xs text-slate-500">Passkeys</dt><dd class="mt-1 text-sm font-bold">No passkeys added</dd></div>
+      <div class="rounded-xl border border-slate-200 p-4"><dt class="text-xs text-slate-500">Active sessions</dt><dd class="mt-1 text-sm font-bold">2 devices</dd></div>
+      <div class="rounded-xl border border-slate-200 p-4"><dt class="text-xs text-slate-500">Most recent login</dt><dd class="mt-1 text-sm font-bold">Today at 9:17 PM</dd><dd class="mt-1 text-xs text-slate-500">Chrome · Windows · Vancouver</dd></div>
+      <div class="rounded-xl border border-slate-200 p-4"><dt class="text-xs text-slate-500">Connected accounts</dt><dd class="mt-1 text-sm font-bold">Google</dd></div>
+      <div class="rounded-xl border border-slate-200 p-4 sm:col-span-2"><dt class="text-xs text-slate-500">Account privacy</dt><dd class="mt-1 text-sm font-bold text-emerald-700">Standard protection enabled</dd></div>
+    </dl>
+
+    <div>
+      <div class="grid gap-2 sm:grid-cols-2">
+        <a href="/member/security/password" class="rounded-xl border border-slate-200 p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Change Password</a>
+        <a href="/member/security/two-factor" class="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm font-semibold text-amber-900 hover:bg-amber-100">Enable Two-Factor Authentication</a>
+        <a href="/member/security/passkeys" class="rounded-xl border border-slate-200 p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Manage Passkeys</a>
+        <a href="/member/security/sessions" class="rounded-xl border border-slate-200 p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Manage Active Sessions</a>
+        <a href="/member/security/logins" class="rounded-xl border border-slate-200 p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Login History</a>
+        <a href="/member/security/connections" class="rounded-xl border border-slate-200 p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Connected Accounts</a>
+        <a href="/member/privacy" class="rounded-xl border border-slate-200 p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Privacy Settings</a>
+        <a href="/member/privacy/download" class="rounded-xl border border-slate-200 p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50">Download My Data</a>
+        <a href="/member/privacy/cookies" class="rounded-xl border border-slate-200 p-3 text-sm font-semibold hover:border-amber-400 hover:bg-amber-50 sm:col-span-2">Manage Cookie Preferences</a>
+      </div>
+
+      <div class="mt-5 rounded-xl border border-rose-200 bg-rose-50/50 p-4">
+        <h3 class="text-sm font-bold text-rose-800">Danger Zone</h3>
+        <p class="mt-1 text-xs leading-5 text-rose-700">Account deactivation can be reversed by signing in again. Permanent deletion removes eligible account data after the required retention period.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <a href="/member/account/deactivate" class="rounded-lg border border-rose-300 bg-white px-3 py-2 text-xs font-bold text-rose-700 hover:bg-rose-50">Deactivate Account</a>
+          <a href="/member/account/delete" class="rounded-lg px-3 py-2 text-xs font-bold text-rose-700 hover:bg-rose-100">Delete Account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Account Trust -->
+<section aria-labelledby="trust-heading" class="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 text-white shadow-sm">
+  <div class="grid gap-6 p-5 sm:p-6 lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
+    <div>
+      <span class="rounded-full bg-amber-400 px-3 py-1 text-xs font-black text-slate-950">AsBeez Trust Center</span>
+      <h2 id="trust-heading" class="mt-4 text-xl font-bold">Strengthen your account protection</h2>
+      <p class="mt-2 text-sm leading-6 text-slate-300">Verification helps protect members and vendors from fraud, improves account recovery, and supports safer marketplace transactions.</p>
+      <a href="/member/verification" class="mt-5 inline-flex rounded-xl bg-amber-400 px-4 py-2.5 text-sm font-bold text-slate-950 hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-white">Complete Verification</a>
+    </div>
+
+    <dl class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="rounded-xl border border-white/10 bg-white/5 p-4"><dt class="text-xs text-slate-400">Account status</dt><dd class="mt-1 text-sm font-bold text-emerald-300">Active</dd></div>
+      <div class="rounded-xl border border-white/10 bg-white/5 p-4"><dt class="text-xs text-slate-400">Identity verification</dt><dd class="mt-1 text-sm font-bold text-amber-300">Pending</dd></div>
+      <div class="rounded-xl border border-white/10 bg-white/5 p-4"><dt class="text-xs text-slate-400">Email verification</dt><dd class="mt-1 text-sm font-bold text-emerald-300">Verified</dd></div>
+      <div class="rounded-xl border border-white/10 bg-white/5 p-4"><dt class="text-xs text-slate-400">Phone verification</dt><dd class="mt-1 text-sm font-bold text-amber-300">Required</dd></div>
+      <div class="rounded-xl border border-white/10 bg-white/5 p-4"><dt class="text-xs text-slate-400">Buyer protection</dt><dd class="mt-1 text-sm font-bold text-emerald-300">Eligible</dd></div>
+      <div class="rounded-xl border border-white/10 bg-white/5 p-4"><dt class="text-xs text-slate-400">Community standing</dt><dd class="mt-1 text-sm font-bold text-emerald-300">Excellent</dd></div>
+      <div class="rounded-xl border border-amber-300/30 bg-amber-400/10 p-4 sm:col-span-2 lg:col-span-3"><dt class="text-xs text-amber-200">Trust indicator</dt><dd class="mt-1 text-lg font-black text-amber-300">High Trust · 88/100</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- Manage Account -->
+<section aria-labelledby="manage-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="border-b border-slate-200 px-5 py-5 sm:px-6">
+    <h2 id="manage-heading" class="text-xl font-bold text-slate-950">Manage Your Account</h2>
+    <p class="mt-1 text-sm text-slate-500">Quick access to every area of your AsBeez membership.</p>
+  </div>
+
+  <div class="space-y-8 p-5 sm:p-6">
+    <section aria-labelledby="profile-links">
+      <h3 id="profile-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Profile and preferences</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="/member/profile" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Profile Overview</p><p class="mt-1 text-xs text-slate-500">View your membership summary.</p></a>
+        <a href="/member/profile/personal" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Personal Information</p><p class="mt-1 text-xs text-slate-500">Update your personal details.</p></a>
+        <a href="/member/profile/public" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Public Profile</p><p class="mt-1 text-xs text-slate-500">Control your marketplace identity.</p></a>
+        <a href="/member/preferences/interests" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Interests and Preferences</p><p class="mt-1 text-xs text-slate-500">Personalize recommendations.</p></a>
+        <a href="/member/preferences/appearance" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Appearance</p><p class="mt-1 text-xs text-slate-500">Theme and display settings.</p></a>
+        <a href="/member/preferences/accessibility" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Accessibility</p><p class="mt-1 text-xs text-slate-500">Adjust your experience.</p></a>
+        <a href="/member/preferences/locale" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Language and Region</p><p class="mt-1 text-xs text-slate-500">Language, currency, and time zone.</p></a>
+      </div>
+    </section>
+
+    <section aria-labelledby="shopping-links">
+      <h3 id="shopping-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Shopping</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="/member/orders" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Orders</p><p class="mt-1 text-xs text-slate-500">Track all purchases.</p></a>
+        <a href="/member/orders/open" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><div class="flex justify-between gap-2"><p class="font-semibold">Open Orders</p><span class="rounded-full bg-amber-100 px-2 text-xs font-bold text-amber-800">3</span></div><p class="mt-1 text-xs text-slate-500">Track active orders.</p></a>
+        <a href="/member/orders/history" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Order History</p><p class="mt-1 text-xs text-slate-500">Review completed purchases.</p></a>
+        <a href="/member/returns" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Returns and Refunds</p><p class="mt-1 text-xs text-slate-500">Manage return requests.</p></a>
+        <a href="/member/cancellations" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Cancellations</p><p class="mt-1 text-xs text-slate-500">Review cancelled orders.</p></a>
+        <a href="/member/orders/reorder" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Reorder Items</p><p class="mt-1 text-xs text-slate-500">Buy previous items again.</p></a>
+        <a href="/member/carts" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Saved Carts</p><p class="mt-1 text-xs text-slate-500">Return to saved shopping carts.</p></a>
+        <a href="/member/recently-viewed" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Recently Viewed</p><p class="mt-1 text-xs text-slate-500">Revisit products and services.</p></a>
+        <a href="/member/downloads" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Downloadable Purchases</p><p class="mt-1 text-xs text-slate-500">Access digital products.</p></a>
+        <a href="/member/bookings" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Service Bookings</p><p class="mt-1 text-xs text-slate-500">Manage appointments.</p></a>
+      </div>
+    </section>
+
+    <section aria-labelledby="saved-links">
+      <h3 id="saved-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Saved items</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="/member/wishlist" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><div class="flex justify-between gap-2"><p class="font-semibold">Wishlist</p><span class="rounded-full bg-amber-100 px-2 text-xs font-bold text-amber-800">24</span></div><p class="mt-1 text-xs text-slate-500">View saved items.</p></a>
+        <a href="/member/favorites/products" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Favorite Products</p><p class="mt-1 text-xs text-slate-500">Browse favorite products.</p></a>
+        <a href="/member/following/stores" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Followed Stores</p><p class="mt-1 text-xs text-slate-500">View your favorite vendors.</p></a>
+        <a href="/member/searches" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Saved Searches</p><p class="mt-1 text-xs text-slate-500">Run saved marketplace searches.</p></a>
+        <a href="/member/alerts/price" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Price-Drop Alerts</p><p class="mt-1 text-xs text-slate-500">Manage price notifications.</p></a>
+        <a href="/member/alerts/restock" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Restock Alerts</p><p class="mt-1 text-xs text-slate-500">Track unavailable items.</p></a>
+        <a href="/member/comparisons" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Product Comparisons</p><p class="mt-1 text-xs text-slate-500">Compare saved products.</p></a>
+      </div>
+    </section>
+
+    <section aria-labelledby="communication-links">
+      <h3 id="communication-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Communication</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="/member/messages" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Messages</p><p class="mt-1 text-xs text-slate-500">View all conversations.</p></a>
+        <a href="/member/messages?filter=unread" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><div class="flex justify-between gap-2"><p class="font-semibold">Unread Messages</p><span class="rounded-full bg-rose-100 px-2 text-xs font-bold text-rose-700">5</span></div><p class="mt-1 text-xs text-slate-500">Read new messages.</p></a>
+        <a href="/member/questions" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Product Questions</p><p class="mt-1 text-xs text-slate-500">Manage questions and replies.</p></a>
+        <a href="/member/support/tickets" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><div class="flex justify-between gap-2"><p class="font-semibold">Support Tickets</p><span class="rounded-full bg-sky-100 px-2 text-xs font-bold text-sky-700">1</span></div><p class="mt-1 text-xs text-slate-500">Track support requests.</p></a>
+        <a href="/member/notifications" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Notification Preferences</p><p class="mt-1 text-xs text-slate-500">Choose communication channels.</p></a>
+      </div>
+    </section>
+
+    <section aria-labelledby="community-links">
+      <h3 id="community-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Reviews and community</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="/member/reviews" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">My Reviews</p><p class="mt-1 text-xs text-slate-500">View published feedback.</p></a>
+        <a href="/member/reviews/pending" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><div class="flex justify-between gap-2"><p class="font-semibold">Pending Reviews</p><span class="rounded-full bg-amber-100 px-2 text-xs font-bold text-amber-800">2</span></div><p class="mt-1 text-xs text-slate-500">Review recent purchases.</p></a>
+        <a href="/member/questions-and-answers" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Questions and Answers</p><p class="mt-1 text-xs text-slate-500">View community contributions.</p></a>
+        <a href="/member/following" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Following</p><p class="mt-1 text-xs text-slate-500">Profiles you follow.</p></a>
+        <a href="/member/followers" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Followers</p><p class="mt-1 text-xs text-slate-500">Members following you.</p></a>
+        <a href="/member/community/activity" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Community Activity</p><p class="mt-1 text-xs text-slate-500">View your public contributions.</p></a>
+        <a href="/member/reports" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Reported Content</p><p class="mt-1 text-xs text-slate-500">Track submitted reports.</p></a>
+      </div>
+    </section>
+
+    <section aria-labelledby="financial-links">
+      <h3 id="financial-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Payments and financial activity</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="/member/payments" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Payment Methods</p><p class="mt-1 text-xs text-slate-500">Manage saved payment options.</p></a>
+        <a href="/member/wallet" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Wallet</p><p class="mt-1 text-xs text-slate-500">View your AsBeez balance.</p></a>
+        <a href="/member/gift-cards" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Gift Cards</p><p class="mt-1 text-xs text-slate-500">Redeem and manage gift cards.</p></a>
+        <a href="/member/store-credits" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Store Credits</p><p class="mt-1 text-xs text-slate-500">Review available credits.</p></a>
+        <a href="/member/transactions" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Transactions</p><p class="mt-1 text-xs text-slate-500">View account transactions.</p></a>
+        <a href="/member/refunds" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Refund History</p><p class="mt-1 text-xs text-slate-500">Track completed refunds.</p></a>
+        <a href="/member/addresses/billing" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Billing Addresses</p><p class="mt-1 text-xs text-slate-500">Manage billing destinations.</p></a>
+        <a href="/member/invoices" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Invoices and Receipts</p><p class="mt-1 text-xs text-slate-500">Download purchase records.</p></a>
+      </div>
+    </section>
+
+    <section aria-labelledby="reward-links">
+      <h3 id="reward-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Rewards and referrals</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="/member/rewards/points" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Reward Points</p><p class="mt-1 text-xs text-slate-500">Review points activity.</p></a>
+        <a href="/member/rewards" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Available Rewards</p><p class="mt-1 text-xs text-slate-500">Redeem member benefits.</p></a>
+        <a href="/member/coupons" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><div class="flex justify-between gap-2"><p class="font-semibold">Coupons</p><span class="rounded-full bg-amber-100 px-2 text-xs font-bold text-amber-800">4</span></div><p class="mt-1 text-xs text-slate-500">View available promotions.</p></a>
+        <a href="/member/membership/benefits" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Membership Benefits</p><p class="mt-1 text-xs text-slate-500">Explore your member benefits.</p></a>
+        <a href="/member/referrals/create" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Refer a Friend</p><p class="mt-1 text-xs text-slate-500">Share your referral link.</p></a>
+        <a href="/member/referrals/history" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Referral History</p><p class="mt-1 text-xs text-slate-500">Track referral rewards.</p></a>
+      </div>
+    </section>
+
+    <section aria-labelledby="security-links">
+      <h3 id="security-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Account settings and security</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="/member/addresses" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Address Book</p><p class="mt-1 text-xs text-slate-500">Manage saved locations.</p></a>
+        <a href="/member/security" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Login and Security</p><p class="mt-1 text-xs text-slate-500">Protect your account.</p></a>
+        <a href="/member/security/two-factor" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Two-Factor Authentication</p><p class="mt-1 text-xs text-slate-500">Add another verification step.</p></a>
+        <a href="/member/security/passkeys" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Passkeys</p><p class="mt-1 text-xs text-slate-500">Use secure passwordless login.</p></a>
+        <a href="/member/security/sessions" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Active Sessions</p><p class="mt-1 text-xs text-slate-500">Review signed-in devices.</p></a>
+        <a href="/member/security/connections" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Connected Accounts</p><p class="mt-1 text-xs text-slate-500">Manage social sign-ins.</p></a>
+        <a href="/member/privacy" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Privacy Settings</p><p class="mt-1 text-xs text-slate-500">Control information visibility.</p></a>
+        <a href="/member/personalization" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Data and Personalization</p><p class="mt-1 text-xs text-slate-500">Manage recommendation data.</p></a>
+        <a href="/member/privacy/download" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Download My Data</p><p class="mt-1 text-xs text-slate-500">Request a portable archive.</p></a>
+      </div>
+    </section>
+
+    <section aria-labelledby="support-links">
+      <h3 id="support-links" class="text-xs font-black uppercase tracking-widest text-amber-700">Help and support</h3>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <a href="/help" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Help Center</p><p class="mt-1 text-xs text-slate-500">Browse answers and tutorials.</p></a>
+        <a href="/support/contact" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Contact Support</p><p class="mt-1 text-xs text-slate-500">Get help from AsBeez.</p></a>
+        <a href="/member/support/tickets" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><div class="flex justify-between gap-2"><p class="font-semibold">My Support Tickets</p><span class="rounded-full bg-sky-100 px-2 text-xs font-bold text-sky-700">1</span></div><p class="mt-1 text-xs text-slate-500">Track support requests.</p></a>
+        <a href="/support/disputes" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Dispute Resolution</p><p class="mt-1 text-xs text-slate-500">Resolve transaction concerns.</p></a>
+        <a href="/support/report" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Report a Problem</p><p class="mt-1 text-xs text-slate-500">Report technical or safety issues.</p></a>
+        <a href="/community/guidelines" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Community Guidelines</p><p class="mt-1 text-xs text-slate-500">Review member expectations.</p></a>
+        <a href="/policies/marketplace" class="rounded-xl border border-slate-200 p-4 hover:border-amber-400 hover:bg-amber-50"><p class="font-semibold">Marketplace Policies</p><p class="mt-1 text-xs text-slate-500">Review buying and selling rules.</p></a>
+      </div>
+    </section>
+  </div>
+</section>
+</div> <!-- Sticky Mobile Save Bar --> <div class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-4 py-3 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur lg:hidden"> <div class="mx-auto flex max-w-7xl items-center justify-between gap-3"> <p class="text-xs font-semibold text-slate-700 sm:text-sm">You have unsaved changes</p> <div class="flex gap-2"> <button type="reset" form="member-profile-form" class="rounded-lg px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-400">Discard</button> <button type="submit" form="member-profile-form" class="rounded-lg bg-amber-400 px-4 py-2 text-xs font-bold text-slate-950 shadow-sm hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">Save Changes</button> </div> 
+</div> 
+</div> 
+</main>

@@ -1,5 +1,7 @@
 import { X } from 'lucide-react';
 
+import { useTranslation } from '../../i18n';
+
 /**
  * Dismiss control for a dropdown panel, shared by all three dashboards.
  *
@@ -18,11 +20,13 @@ export function MenuCloseButton({
     onClose: () => void;
     tone?: string;
 }) {
+    const { t } = useTranslation();
+
     return (
         <button
             type="button"
             onClick={onClose}
-            aria-label="Close menu"
+            aria-label={t('common.closeMenu')}
             className={`-mr-1 shrink-0 rounded-lg p-1 transition focus:outline-none focus:ring-2 ${tone}`}
         >
             <X className="h-4 w-4" />

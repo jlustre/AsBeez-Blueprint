@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
@@ -50,7 +51,7 @@ class AuthController extends Controller
 
         if (! $user || ! Hash::check($validated['password'], $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'email' => [__('app.auth.credentials_incorrect')],
             ]);
         }
 
@@ -68,9 +69,16 @@ class AuthController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        $token = $request->user()->currentAccessToken();
 
-        return response()->json(['message' => 'Logged out successfully.']);
+        // Only a real personal access token can be revoked. Session-guard
+        // callers get a TransientToken, which has no delete() — reaching it
+        // would be a 500 rather than a logout.
+        if ($token instanceof PersonalAccessToken) {
+            $token->delete();
+        }
+
+        return response()->json(['message' => __('app.auth.logged_out')]);
     }
 
     /**
@@ -81,7 +89,7 @@ class AuthController extends Controller
     {
         $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Logged out of all devices.']);
+        return response()->json(['message' => __('app.auth.logged_out_all')]);
     }
 
     private function tokenResponse(User $user, ?string $deviceName, int $status = 200): JsonResponse

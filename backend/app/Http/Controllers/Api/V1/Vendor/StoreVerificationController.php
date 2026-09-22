@@ -37,7 +37,7 @@ class StoreVerificationController extends Controller
         $existing = $store->verifications()->where('kind', $validated['kind'])->first();
 
         if ($existing?->isVerified()) {
-            return response()->json(['message' => 'That check is already verified.'], 409);
+            return response()->json(['message' => __('app.store.already_verified')], 409);
         }
 
         $path = $request->hasFile('document')
@@ -55,7 +55,7 @@ class StoreVerificationController extends Controller
         );
 
         return response()->json([
-            'message' => 'Verification requested. An administrator will review it.',
+            'message' => __('app.store.verification_requested'),
             'verification' => $verification->only(['kind', 'status', 'reference', 'verified_at']),
         ]);
     }

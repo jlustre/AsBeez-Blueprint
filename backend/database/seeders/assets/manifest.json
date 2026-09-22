@@ -61,6 +61,182 @@
       "license": "Unsplash License",
       "used_for": "hive-home-services logo",
       "verified": true
+    },
+    {
+      "file": "home-slide-shop.jpg",
+      "photo_id": "photo-1556742049-0cfed4f6a45d",
+      "width": 1600,
+      "height": 800,
+      "subject": "Checkout counter with a card reader",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "homepage shop slide",
+      "verified": true
+    },
+    {
+      "file": "home-slide-services.jpg",
+      "photo_id": "photo-1581578731548-c64695cc6952",
+      "width": 1600,
+      "height": 800,
+      "subject": "Cleaner wiping a window",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "homepage services slide",
+      "verified": true
+    },
+    {
+      "file": "home-slide-sell.jpg",
+      "photo_id": "photo-1556740738-b6a63e27c4df",
+      "width": 1600,
+      "height": 800,
+      "subject": "Vendor handing a bag to a customer",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "homepage sell slide",
+      "verified": true
+    },
+    {
+      "file": "product-honey-pack.jpg",
+      "photo_id": "photo-1558642452-9d2a7deb7f62",
+      "width": 800,
+      "height": 600,
+      "subject": "Honey dipper over an open jar",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Wildflower Honey Three-Pack",
+      "verified": true
+    },
+    {
+      "file": "product-board.jpg",
+      "photo_id": "photo-1556910103-1c0279aa3b14",
+      "width": 800,
+      "height": 600,
+      "subject": "Wooden kitchen board",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Beeswax Serving Board",
+      "verified": true
+    },
+    {
+      "file": "product-cleaning.jpg",
+      "photo_id": "photo-1584820927498-cfe5211fd8bf",
+      "width": 800,
+      "height": 600,
+      "subject": "Cleaning supplies on a counter",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Complete Home Deep Cleaning",
+      "verified": true
+    },
+    {
+      "file": "product-audit.jpg",
+      "photo_id": "photo-1498050108023-c5249f4df085",
+      "width": 800,
+      "height": 600,
+      "subject": "Laptop on a desk",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Website Accessibility Review",
+      "verified": true
+    },
+    {
+      "file": "product-ebook.jpg",
+      "photo_id": "photo-14565130808-af16490d7aa0",
+      "width": 800,
+      "height": 600,
+      "subject": "Open notebook and reading glasses",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Client Onboarding Checklist",
+      "verified": true
+    },
+    {
+      "file": "product-drill.jpg",
+      "photo_id": "photo-1504148455328-c376907d081c",
+      "width": 800,
+      "height": 600,
+      "subject": "Power drill on a workbench",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "ProGrade 20V Cordless Drill",
+      "verified": true
+    },
+    {
+      "file": "product-clamps.jpg",
+      "photo_id": "photo-1530124566582-a618bc2615dc",
+      "width": 800,
+      "height": 600,
+      "subject": "Workshop tools",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Workshop Clamp Set",
+      "verified": true
+    },
+    {
+      "file": "product-honey-jar.jpg",
+      "photo_id": "photo-1471943311424-646960669fbc",
+      "width": 800,
+      "height": 600,
+      "subject": "Honey jar and honeycomb",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Orange Blossom Honey Jar",
+      "verified": true
+    },
+    {
+      "file": "product-skillet.jpg",
+      "photo_id": "photo-1556909114-f6e7ad7d3136",
+      "width": 800,
+      "height": 600,
+      "subject": "Cast iron cookware",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Cast Iron Skillet",
+      "verified": true
+    },
+    {
+      "file": "product-votive.jpg",
+      "photo_id": "photo-1603006905003-be475563bc59",
+      "width": 800,
+      "height": 600,
+      "subject": "Candles on a table",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Beeswax Votive Set",
+      "verified": true
+    },
+    {
+      "file": "product-template.jpg",
+      "photo_id": "photo-1586281380349-632531db7ed4",
+      "width": 800,
+      "height": 600,
+      "subject": "Printed papers on a desk",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Store Hours Sign Template",
+      "verified": true
+    },
+    {
+      "file": "product-workshop.jpg",
+      "photo_id": "photo-1504328345606-18bbc8c9d7d1",
+      "width": 800,
+      "height": 600,
+      "subject": "Workshop apron and tools",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Shop Apron",
+      "verified": true
+    },
+    {
+      "file": "product-porch.jpg",
+      "photo_id": "photo-1416339442236-8ceb164542d0",
+      "width": 800,
+      "height": 600,
+      "subject": "Front porch of a house",
+      "credit": "Unsplash",
+      "license": "Unsplash License",
+      "used_for": "Porch and Entry Refresh",
+      "verified": true
     }
   ]
 }

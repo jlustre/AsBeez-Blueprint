@@ -22,9 +22,11 @@ import {
     X,
 } from 'lucide-react';
 
+import { useTranslation, type MessageKey, type TranslateFn } from '../../i18n';
 import { iconByName } from '../../lib/icons';
+import { categoryOptions, indentOption } from '../../lib/categories';
 import { toneClasses } from '../../lib/tones';
-import { storeApi, type StoreProfile, type StructureSettingDefinition } from '../../lib/store';
+import { storeApi, type StoreProfile, type Structure, type StructureNavLink, type StructureRegion, type StructureSettingDefinition } from '../../lib/store';
 import { useStoreProfile, type Draft } from './useStoreProfile';
 
 /* ------------------------------------------------------------------ */
@@ -118,6 +120,40 @@ function Centered({ children }: { children: ReactNode }) {
 /* Page                                                                */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Subdivisions for a country, or an empty list when none were seeded.
+ */
+function regionsFor(structure: Structure, countryCode: string): StructureRegion[] {
+    return (countryCode && structure.regions[countryCode]) || [];
+}
+
+/**
+ * Names the field after what the country actually calls its subdivisions, so
+ * Canadian sellers are not asked for a "state".
+ */
+function regionLabel(regions: StructureRegion[] | undefined, t: TranslateFn): string {
+    if (!regions || regions.length === 0) {
+        return t('store.regionStateProvince');
+    }
+
+    const types = new Set(regions.map((r) => r.type));
+
+    if (types.size === 1) {
+        const [only] = [...types];
+        return only.charAt(0).toUpperCase() + only.slice(1);
+    }
+
+    if (types.has('province')) {
+        return t('store.regionProvinceTerritory');
+    }
+
+    if (types.has('country')) {
+        return t('store.regionCountryRegion');
+    }
+
+    return t('store.regionStateTerritory');
+}
+
 function storeIdFromLocation(): number | null {
     const raw = new URLSearchParams(window.location.search).get('store');
     const id = raw ? Number(raw) : NaN;
@@ -126,6 +162,7 @@ function storeIdFromLocation(): number | null {
 }
 
 export function StoreProfilePage() {
+    const { t } = useTranslation();
     const [routeStoreId, setRouteStoreId] = useState(storeIdFromLocation);
     const profile = useStoreProfile(routeStoreId);
     const {
@@ -150,7 +187,7 @@ export function StoreProfilePage() {
             <Centered>
                 <div className="flex items-center gap-3 text-slate-500">
                     <Loader2 className="h-5 w-5 animate-spin" />
-                    <span className="text-sm font-medium">Loading your store profile…</span>
+                    <span className="text-sm font-medium">{t('store.loading')}</span>
                 </div>
             </Centered>
         );
@@ -162,7 +199,7 @@ export function StoreProfilePage() {
                 <div className="max-w-sm space-y-3">
                     <AlertCircle className="mx-auto h-10 w-10 text-rose-500" />
                     <p className="text-sm font-semibold text-slate-900">{loadError}</p>
-                    <button onClick={() => window.location.reload()} className={ghostButton}>Try again</button>
+                    <button onClick={() => window.location.reload()} className={ghostButton}>{t('common.tryAgain')}</button>
                 </div>
             </Centered>
         );
@@ -173,8 +210,8 @@ export function StoreProfilePage() {
             <Centered>
                 <div className="max-w-sm space-y-3">
                     <Store2 />
-                    <p className="text-sm font-semibold text-slate-900">You do not have a store yet.</p>
-                    <p className="text-xs text-slate-500">Create one to start building your storefront.</p>
+                    <p className="text-sm font-semibold text-slate-900">{t('store.noStoreYet')}</p>
+                    <p className="text-xs text-slate-500">{t('store.createOne')}</p>
                     <CreateStoreButton onCreated={(fresh) => { replaceStore(fresh); setRouteStoreId(fresh.id); }} />
                 </div>
             </Centered>
@@ -194,7 +231,7 @@ export function StoreProfilePage() {
         try {
             replaceStore(await storeApi.uploadMedia(store.id, kind, file));
         } catch (error) {
-            setMediaError(error instanceof Error ? error.message : 'Upload failed.');
+            setMediaError(error instanceof Error ? error.message : t('store.uploadFailed'));
         } finally {
             setBusyMedia(null);
         }
@@ -210,7 +247,7 @@ export function StoreProfilePage() {
         try {
             replaceStore(await storeApi.removeMedia(store.id, kind));
         } catch (error) {
-            setMediaError(error instanceof Error ? error.message : 'Could not remove the image.');
+            setMediaError(error instanceof Error ? error.message : t('store.removeImageFailed'));
         } finally {
             setBusyMedia(null);
         }
@@ -234,31 +271,31 @@ export function StoreProfilePage() {
 
             {/* ===== PAGE HEADER ===== */}
             <header className="space-y-4">
-                <nav aria-label="Breadcrumb">
+                <nav aria-label={t('nav.breadcrumb')}>
                     <ol className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
-                        <li><a href="#vendor-dashboard" className="rounded transition-colors hover:text-amber-600">Dashboard</a></li>
+                        <li><a href="#vendor-dashboard" className="rounded transition-colors hover:text-amber-600">{t('nav.dashboard')}</a></li>
                         <li aria-hidden="true" className="text-slate-300"><ChevronRight className="h-3.5 w-3.5" /></li>
-                        <li><a href="#store-profile" className="rounded transition-colors hover:text-amber-600">My Store</a></li>
+                        <li><a href="#store-profile" className="rounded transition-colors hover:text-amber-600">{t('nav.myStore')}</a></li>
                         <li aria-hidden="true" className="text-slate-300"><ChevronRight className="h-3.5 w-3.5" /></li>
-                        <li aria-current="page" className="font-medium text-slate-700">Store Profile</li>
+                        <li aria-current="page" className="font-medium text-slate-700">{t('nav.storeProfile')}</li>
                     </ol>
                 </nav>
 
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2.5">
-                            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Store Profile</h1>
+                            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">{t('store.title')}</h1>
                             <StatusPill status={store.status === 'active' ? 'published' : 'draft'}>
                                 {store.status.charAt(0).toUpperCase() + store.status.slice(1)}
                             </StatusPill>
                             {store.verified_at && (
                                 <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
-                                    <ShieldCheck className="h-3.5 w-3.5" />Verified
+                                    <ShieldCheck className="h-3.5 w-3.5" />{t('verify.verified')}
                                 </span>
                             )}
                         </div>
                         <p className="mt-1.5 max-w-2xl text-sm text-slate-500">
-                            Manage the public identity, media, and presentation of your store. Changes here appear on your live storefront.
+                            {t('store.intro')}
                         </p>
                     </div>
 
@@ -279,7 +316,7 @@ export function StoreProfilePage() {
                         {/* Preview uses the saved slug, not the draft one: the
                             storefront can only resolve what is actually stored. */}
                         <a href={`?store=${store.slug}#storefront`} className={ghostButton}>
-                            <Eye className="h-4 w-4" />Preview Store
+                            <Eye className="h-4 w-4" />{t('store.previewStore')}
                         </a>
                         {store.status === 'active' && (
                             <a
@@ -287,9 +324,9 @@ export function StoreProfilePage() {
                                 target="_blank"
                                 rel="noreferrer"
                                 className={ghostButton}
-                                title="Opens your published storefront in a new tab"
+                                title={t('store.viewLiveTitle')}
                             >
-                                <ExternalLink className="h-4 w-4" />View Live Store
+                                <ExternalLink className="h-4 w-4" />{t('store.viewLive')}
                             </a>
                         )}
                         <button
@@ -299,7 +336,7 @@ export function StoreProfilePage() {
                             className="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-4 py-2 text-sm font-bold text-slate-900 shadow-sm transition-colors hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-60"
                         >
                             {save.saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                            {save.saving ? 'Saving…' : 'Save Changes'}
+                            {save.saving ? t('common.saving') : t('common.saveChanges')}
                         </button>
                     </div>
                 </div>
@@ -326,15 +363,15 @@ export function StoreProfilePage() {
                                     <WandSparkles className="h-5 w-5" />
                                 </span>
                                 <div>
-                                    <h2 id="completeness-heading" className="text-base font-bold text-slate-900">Complete your store setup</h2>
-                                    <p className="mt-0.5 text-xs text-slate-500">A complete store builds customer trust and ranks higher in search.</p>
+                                    <h2 id="completeness-heading" className="text-base font-bold text-slate-900">{t('store.setupTitle')}</h2>
+                                    <p className="mt-0.5 text-xs text-slate-500">{t('store.setupIntro')}</p>
                                 </div>
                             </div>
 
                             <div className="mt-5">
                                 <div className="mb-1.5 flex items-center justify-between">
-                                    <span className="text-xs font-semibold text-slate-600">Setup progress</span>
-                                    <span className="text-sm font-extrabold text-amber-700">{store.completeness.percent}% complete</span>
+                                    <span className="text-xs font-semibold text-slate-600">{t('store.setupProgress')}</span>
+                                    <span className="text-sm font-extrabold text-amber-700">{t('store.percentComplete', { percent: store.completeness.percent })}</span>
                                 </div>
                                 <div
                                     className="h-2.5 w-full overflow-hidden rounded-full border border-amber-200 bg-white"
@@ -342,14 +379,14 @@ export function StoreProfilePage() {
                                     aria-valuenow={store.completeness.percent}
                                     aria-valuemin={0}
                                     aria-valuemax={100}
-                                    aria-label="Store setup progress"
+                                    aria-label={t('store.setupProgressLabel')}
                                 >
                                     <div className="h-full rounded-full bg-gradient-to-r from-amber-300 to-amber-500 transition-all duration-500" style={{ width: `${store.completeness.percent}%` }} />
                                 </div>
                                 <p className="mt-2 text-xs text-slate-500">
                                     {store.completeness.remaining === 0
-                                        ? 'Everything is done. Nice work.'
-                                        : `${store.completeness.remaining} of ${store.completeness.total} remaining tasks. Finish them to boost your store visibility.`}
+                                        ? t('store.allDone')
+                                        : t('store.tasksRemaining', { remaining: store.completeness.remaining, total: store.completeness.total })}
                                 </p>
                             </div>
                         </div>
@@ -393,11 +430,11 @@ export function StoreProfilePage() {
                     {/* --- Identity & media --- */}
                     <Section
                         id="store-identity"
-                        title="Store Identity & Media"
-                        description="Your storefront branding — logo, banner, name, and description."
+                        title={t('store.identityTitle')}
+                        description={t('store.identityIntro')}
                         aside={
                             <span className="hidden items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-slate-600 sm:inline-flex">
-                                Branding
+                                {t('store.branding')}
                             </span>
                         }
                     >
@@ -409,25 +446,25 @@ export function StoreProfilePage() {
                             {/* Banner */}
                             <div>
                                 <div className="mb-2 flex items-center justify-between">
-                                    <label className="text-sm font-semibold text-slate-900">Store banner</label>
-                                    <span className="text-[11px] text-slate-500">Recommended 1600 × 400px · JPG or PNG · max 5MB</span>
+                                    <label className="text-sm font-semibold text-slate-900">{t('store.banner')}</label>
+                                    <span className="text-[11px] text-slate-500">{t('store.bannerHint')}</span>
                                 </div>
                                 <input ref={bannerInput} type="file" accept="image/*" className="hidden" onChange={(e) => void uploadMedia('banner', e.target.files?.[0])} />
                                 <div className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 transition-colors hover:border-amber-400">
                                     {store.media.banner_url ? (
-                                        <img src={store.media.banner_url} alt="Current store banner" className="h-40 w-full object-cover sm:h-52" />
+                                        <img src={store.media.banner_url} alt={t('store.bannerAlt')} className="h-40 w-full object-cover sm:h-52" />
                                     ) : (
-                                        <div className="flex h-40 w-full items-center justify-center bg-slate-50 text-xs text-slate-400 sm:h-52">No banner uploaded yet</div>
+                                        <div className="flex h-40 w-full items-center justify-center bg-slate-50 text-xs text-slate-400 sm:h-52">{t('store.noBanner')}</div>
                                     )}
                                     <div className="absolute inset-0 flex items-end justify-between bg-gradient-to-t from-slate-900/60 to-transparent p-4">
                                         <div className="flex gap-2">
                                             <button type="button" disabled={busyMedia === 'banner'} onClick={() => bannerInput.current?.click()} className="inline-flex items-center gap-1.5 rounded-lg bg-white/95 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-sm hover:bg-white disabled:opacity-60">
                                                 {busyMedia === 'banner' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-                                                {store.media.banner_url ? 'Replace' : 'Upload'}
+                                                {store.media.banner_url ? t('store.replace') : t('store.upload')}
                                             </button>
                                             {store.media.banner_url && (
                                                 <button type="button" disabled={busyMedia === 'banner'} onClick={() => void removeMedia('banner')} className="inline-flex items-center gap-1.5 rounded-lg bg-white/95 px-3 py-1.5 text-xs font-semibold text-rose-600 shadow-sm hover:bg-white disabled:opacity-60">
-                                                    <Trash2 className="h-3.5 w-3.5" />Remove
+                                                    <Trash2 className="h-3.5 w-3.5" />{t('common.remove')}
                                                 </button>
                                             )}
                                         </div>
@@ -438,24 +475,24 @@ export function StoreProfilePage() {
                             {/* Logo */}
                             <div>
                                 <div className="mb-2 flex items-center justify-between">
-                                    <label className="text-sm font-semibold text-slate-900">Store logo</label>
-                                    <span className="text-[11px] text-slate-500">Recommended 400 × 400px · PNG or SVG</span>
+                                    <label className="text-sm font-semibold text-slate-900">{t('store.logo')}</label>
+                                    <span className="text-[11px] text-slate-500">{t('store.logoHint')}</span>
                                 </div>
                                 <input ref={logoInput} type="file" accept="image/*" className="hidden" onChange={(e) => void uploadMedia('logo', e.target.files?.[0])} />
                                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                                     {store.media.logo_url ? (
-                                        <img src={store.media.logo_url} alt="Current store logo" className="h-20 w-20 shrink-0 rounded-2xl object-cover ring-4 ring-amber-100" />
+                                        <img src={store.media.logo_url} alt={t('store.logoAlt')} className="h-20 w-20 shrink-0 rounded-2xl object-cover ring-4 ring-amber-100" />
                                     ) : (
-                                        <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-[10px] text-slate-400 ring-4 ring-amber-100">No logo</div>
+                                        <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-[10px] text-slate-400 ring-4 ring-amber-100">{t('store.noLogo')}</div>
                                     )}
                                     <div className="flex flex-wrap gap-2">
                                         <button type="button" disabled={busyMedia === 'logo'} onClick={() => logoInput.current?.click()} className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 disabled:opacity-60">
                                             {busyMedia === 'logo' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-                                            {store.media.logo_url ? 'Upload new logo' : 'Upload logo'}
+                                            {store.media.logo_url ? t('store.uploadNewLogo') : t('store.uploadLogo')}
                                         </button>
                                         {store.media.logo_url && (
                                             <button type="button" disabled={busyMedia === 'logo'} onClick={() => void removeMedia('logo')} className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-rose-600 shadow-sm hover:bg-rose-50 disabled:opacity-60">
-                                                <Trash2 className="h-3.5 w-3.5" />Remove
+                                                <Trash2 className="h-3.5 w-3.5" />{t('common.remove')}
                                             </button>
                                         )}
                                     </div>
@@ -463,10 +500,10 @@ export function StoreProfilePage() {
                             </div>
 
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                <Field label="Store name" hint="Displayed across your storefront, listings, and receipts." error={fieldError('name')}>
+                                <Field label={t('store.storeName')} hint={t('store.nameHint')} error={fieldError('name')}>
                                     <input type="text" value={draft.core.name} onChange={(e) => setCore('name', e.target.value)} className={inputClass} />
                                 </Field>
-                                <Field label="Store slug" hint="Lowercase letters, numbers, and hyphens only." error={fieldError('slug')}>
+                                <Field label={t('store.slug')} hint={t('store.slugHint')} error={fieldError('slug')}>
                                     <div className="relative">
                                         <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 font-mono text-xs text-slate-400">asbeez.com/store/</span>
                                         <input type="text" value={draft.core.slug} onChange={(e) => setCore('slug', e.target.value)} className={`${inputClass} pl-[148px] font-mono`} />
@@ -474,31 +511,31 @@ export function StoreProfilePage() {
                                 </Field>
                             </div>
 
-                            <Field label="Public store URL">
+                            <Field label={t('store.publicUrl')}>
                                 <div className="flex flex-col gap-2 sm:flex-row">
                                     <input type="text" readOnly value={`asbeez.com/store/${draft.core.slug}`} className="flex-1 rounded-xl border border-slate-200 bg-slate-100 px-3.5 py-2.5 font-mono text-sm text-slate-600" />
-                                    <button type="button" onClick={() => void copyStoreUrl()} aria-label="Copy store URL to clipboard" className={`${ghostButton} justify-center py-2.5`}>
-                                        {copied ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}{copied ? 'Copied' : 'Copy'}
+                                    <button type="button" onClick={() => void copyStoreUrl()} aria-label={t('store.copyUrl')} className={`${ghostButton} justify-center py-2.5`}>
+                                        {copied ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}{copied ? t('store.copied') : t('store.copy')}
                                     </button>
                                 </div>
                             </Field>
 
-                            <Field label="Short tagline" hint="Appears under your store name. Max 120 characters." error={fieldError('tagline')}>
+                            <Field label={t('store.tagline')} hint={t('store.taglineHint')} error={fieldError('tagline')}>
                                 <input type="text" maxLength={120} value={draft.core.tagline} onChange={(e) => setCore('tagline', e.target.value)} className={inputClass} />
                             </Field>
 
                             <div>
-                                <label htmlFor="store-description" className="mb-1.5 block text-sm font-semibold text-slate-900">Store description</label>
+                                <label htmlFor="store-description" className="mb-1.5 block text-sm font-semibold text-slate-900">{t('store.description')}</label>
                                 <textarea id="store-description" rows={5} value={draft.core.description} onChange={(e) => setCore('description', e.target.value)} className={`${inputClass} resize-y`} />
                                 <div className="mt-1.5 flex items-center justify-between">
-                                    <p className="text-[11px] text-slate-500">Aim for 150–300 characters for best SEO results.</p>
+                                    <p className="text-[11px] text-slate-500">{t('store.descriptionHint')}</p>
                                     <span className="text-[11px] text-slate-400">{draft.core.description.length} / 5000</span>
                                 </div>
                             </div>
 
                             {/* Categories — options come from the admin registry */}
                             <div>
-                                <label className="mb-1.5 block text-sm font-semibold text-slate-900">Store categories</label>
+                                <label className="mb-1.5 block text-sm font-semibold text-slate-900">{t('store.categories')}</label>
                                 <div className="mb-2.5 flex flex-wrap gap-2">
                                     {draft.categoryIds.map((id) => {
                                         const category = structure.categories.find((c) => c.id === id);
@@ -507,40 +544,40 @@ export function StoreProfilePage() {
                                         return (
                                             <span key={id} className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold ${toneClasses(category.tone).chip}`}>
                                                 {category.name}
-                                                <button type="button" onClick={() => toggleCategory(id)} aria-label={`Remove ${category.name} category`} className="rounded hover:opacity-70">
+                                                <button type="button" onClick={() => toggleCategory(id)} aria-label={t('store.removeCategory', { name: category.name })} className="rounded hover:opacity-70">
                                                     <X className="h-3 w-3" />
                                                 </button>
                                             </span>
                                         );
                                     })}
-                                    {draft.categoryIds.length === 0 && <span className="text-xs text-slate-400">No categories chosen yet.</span>}
+                                    {draft.categoryIds.length === 0 && <span className="text-xs text-slate-400">{t('store.noCategories')}</span>}
                                 </div>
                                 <select
                                     value=""
                                     onChange={(e) => e.target.value && toggleCategory(Number(e.target.value))}
                                     className={inputClass}
                                 >
-                                    <option value="">Choose a category to add…</option>
-                                    {structure.categories
+                                    <option value="">{t('store.chooseCategory')}</option>
+                                    {categoryOptions(structure.categories)
                                         .filter((c) => !draft.categoryIds.includes(c.id))
-                                        .map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                        .map((c) => <option key={c.id} value={c.id} title={c.path}>{indentOption(c)}</option>)}
                                 </select>
                             </div>
                         </div>
                     </Section>
 
                     {/* --- Contact & location --- */}
-                    <Section id="contact-location" title="Contact & Location" description="How customers reach you and where your business operates.">
+                    <Section id="contact-location" title={t('store.contactTitle')} description={t('store.contactIntro')}>
                         <div className="space-y-5 p-5 sm:p-6">
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                <Field label="Public email" error={fieldError('public_email')}>
+                                <Field label={t('store.publicEmail')} error={fieldError('public_email')}>
                                     <input type="email" value={draft.core.public_email} onChange={(e) => setCore('public_email', e.target.value)} className={inputClass} />
                                 </Field>
-                                <Field label="Customer-service phone" error={fieldError('public_phone')}>
+                                <Field label={t('store.publicPhone')} error={fieldError('public_phone')}>
                                     <input type="tel" value={draft.core.public_phone} onChange={(e) => setCore('public_phone', e.target.value)} className={inputClass} />
                                 </Field>
                                 <div className="sm:col-span-2">
-                                    <Field label="Website" error={fieldError('website')}>
+                                    <Field label={t('store.website')} error={fieldError('website')}>
                                         <div className="relative">
                                             <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"><Globe className="h-4 w-4" /></span>
                                             <input type="url" value={draft.core.website} onChange={(e) => setCore('website', e.target.value)} className={`${inputClass} pl-10`} />
@@ -552,44 +589,91 @@ export function StoreProfilePage() {
                             <hr className="border-slate-100" />
 
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                <Field label="Country" error={fieldError('country')}>
-                                    <input type="text" maxLength={2} value={draft.core.country} onChange={(e) => setCore('country', e.target.value.toUpperCase())} className={inputClass} placeholder="US" />
+                                <Field label={t('store.country')} error={fieldError('country')}>
+                                    <select
+                                        value={draft.core.country}
+                                        onChange={(e) => {
+                                            // The previous state belongs to the previous
+                                            // country, so it cannot survive the change.
+                                            setCore('country', e.target.value);
+                                            setCore('state', '');
+                                        }}
+                                        className={inputClass}
+                                    >
+                                        <option value="">{t('store.selectCountry')}</option>
+                                        {structure.countries.map((country) => (
+                                            <option key={country.code} value={country.code}>{country.name}</option>
+                                        ))}
+                                    </select>
                                 </Field>
-                                <Field label="State or province">
-                                    <input type="text" value={draft.core.state} onChange={(e) => setCore('state', e.target.value)} className={inputClass} />
+
+                                <Field
+                                    label={regionLabel(structure.regions[draft.core.country], t)}
+                                    hint={regionsFor(structure, draft.core.country).length === 0 && draft.core.country
+                                        ? t('store.noRegionList')
+                                        : undefined}
+                                    error={fieldError('state')}
+                                >
+                                    {regionsFor(structure, draft.core.country).length > 0 ? (
+                                        <select value={draft.core.state} onChange={(e) => setCore('state', e.target.value)} className={inputClass}>
+                                            <option value="">{t('store.select')}</option>
+                                            {/* The stable ISO code is stored; the name is
+                                                only ever what the seller reads. */}
+                                            {regionsFor(structure, draft.core.country).map((region) => (
+                                                <option key={region.code} value={region.code}>{region.name}</option>
+                                            ))}
+                                        </select>
+                                    ) : (
+                                        // Countries without a seeded list keep a free-text
+                                        // field: forcing a dropdown with nothing in it
+                                        // would simply block the address.
+                                        <input
+                                            type="text"
+                                            value={draft.core.state}
+                                            onChange={(e) => setCore('state', e.target.value)}
+                                            disabled={!draft.core.country}
+                                            placeholder={draft.core.country ? '' : t('store.chooseCountryFirst')}
+                                            className={`${inputClass} disabled:bg-slate-100 disabled:text-slate-400`}
+                                        />
+                                    )}
                                 </Field>
-                                <Field label="City">
+                                <Field label={t('store.city')}>
                                     <input type="text" value={draft.core.city} onChange={(e) => setCore('city', e.target.value)} className={inputClass} />
                                 </Field>
-                                <Field label="Postal code">
+                                <Field label={t('store.postalCode')}>
                                     <input type="text" value={draft.core.postal_code} onChange={(e) => setCore('postal_code', e.target.value)} className={inputClass} />
                                 </Field>
                                 <div className="sm:col-span-2">
-                                    <Field label="Business address">
+                                    <Field label={t('store.address')}>
                                         <input type="text" value={draft.core.address_line} onChange={(e) => setCore('address_line', e.target.value)} className={inputClass} />
                                     </Field>
                                     <label className="mt-2.5 inline-flex cursor-pointer items-center gap-2">
                                         <input type="checkbox" checked={draft.core.hide_address} onChange={(e) => setCore('hide_address', e.target.checked)} className="h-4 w-4 rounded border-slate-300 text-amber-500 focus:ring-amber-400" />
-                                        <span className="text-xs text-slate-600">Hide the complete street address from customers</span>
+                                        <span className="text-xs text-slate-600">{t('store.hideAddress')}</span>
                                     </label>
                                 </div>
                             </div>
 
-                            <Field label="Service area" hint="Describe where you deliver products or offer services.">
+                            <Field label={t('store.serviceArea')} hint={t('store.serviceAreaHint')}>
                                 <input type="text" value={draft.core.service_area} onChange={(e) => setCore('service_area', e.target.value)} className={inputClass} />
                             </Field>
 
                             <div>
-                                <label className="mb-1.5 block text-sm font-semibold text-slate-900">Location map</label>
-                                <div className="relative flex h-44 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-amber-50 via-yellow-50 to-white" role="img" aria-label="Approximate store location">
+                                <label className="mb-1.5 block text-sm font-semibold text-slate-900">{t('store.locationMap')}</label>
+                                <div className="relative flex h-44 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-amber-50 via-yellow-50 to-white" role="img" aria-label={t('store.mapAlt')}>
                                     <div className="absolute inset-0 opacity-30" aria-hidden="true" style={{ backgroundImage: 'radial-gradient(circle at 30% 40%, #F7B928 0.5px, transparent 1px), radial-gradient(circle at 70% 60%, #E89B0C 0.5px, transparent 1px)', backgroundSize: '22px 22px, 34px 34px' }} />
                                     <div className="relative px-4 text-center">
                                         <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-400 text-slate-900 shadow-lg"><MapPin className="h-6 w-6" /></span>
                                         <p className="mt-3 text-sm font-semibold text-slate-800">
-                                            {[draft.core.address_line, draft.core.city, draft.core.state, draft.core.postal_code].filter(Boolean).join(', ') || 'No address set'}
+                                            {[
+                                                draft.core.address_line,
+                                                draft.core.city,
+                                                regionsFor(structure, draft.core.country).find((r) => r.code === draft.core.state)?.name ?? draft.core.state,
+                                                draft.core.postal_code,
+                                            ].filter(Boolean).join(', ') || t('store.noAddress')}
                                         </p>
                                         <button type="button" className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-amber-200 bg-white/90 px-3 py-1.5 text-xs font-semibold text-amber-700 hover:bg-white">
-                                            <Maximize className="h-3.5 w-3.5" />Adjust pin location
+                                            <Maximize className="h-3.5 w-3.5" />{t('store.adjustPin')}
                                         </button>
                                     </div>
                                 </div>
@@ -600,8 +684,8 @@ export function StoreProfilePage() {
                     {/* --- Business hours --- */}
                     <Section
                         id="business-hours"
-                        title="Business Hours"
-                        description="Set when customers can reach you or place orders."
+                        title={t('store.hoursTitle')}
+                        description={t('store.hoursIntro')}
                         aside={
                             <select value={draft.core.timezone} onChange={(e) => setCore('timezone', e.target.value)} className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-700 focus:border-amber-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-400">
                                 {(settingsByGroup('commerce').find((d) => d.key === 'store_timezone')?.options ?? []).map((o) => (
@@ -628,14 +712,14 @@ export function StoreProfilePage() {
                                         <div key={dayName} className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50/50 p-3 sm:flex-row sm:items-center">
                                             <div className="flex shrink-0 items-center gap-3 sm:w-44">
                                                 <Toggle
-                                                    label={`Toggle ${dayName} open`}
+                                                    label={t('store.toggleDay', { day: dayName })}
                                                     on={!row.is_closed}
                                                     size="sm"
                                                     onColor="peer-checked:bg-emerald-500"
                                                     onChange={(on) => update({ is_closed: !on })}
                                                 />
                                                 <span className="text-sm font-semibold text-slate-800">{dayName}</span>
-                                                {row.is_closed && <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[11px] font-semibold text-slate-500">Closed</span>}
+                                                {row.is_closed && <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[11px] font-semibold text-slate-500">{t('store.closed')}</span>}
                                             </div>
                                             <div className={`flex flex-1 items-center gap-2 ${row.is_closed ? 'pointer-events-none opacity-50' : ''}`}>
                                                 <input
@@ -643,7 +727,7 @@ export function StoreProfilePage() {
                                                     value={row.opens_at ?? ''}
                                                     disabled={row.is_closed}
                                                     onChange={(e) => update({ opens_at: e.target.value })}
-                                                    aria-label={`${dayName} opening time`}
+                                                    aria-label={t('store.openingTime', { day: dayName })}
                                                     className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:bg-slate-100 sm:w-32"
                                                 />
                                                 <span className="text-xs text-slate-400">to</span>
@@ -652,7 +736,7 @@ export function StoreProfilePage() {
                                                     value={row.closes_at ?? ''}
                                                     disabled={row.is_closed}
                                                     onChange={(e) => update({ closes_at: e.target.value })}
-                                                    aria-label={`${dayName} closing time`}
+                                                    aria-label={t('store.closingTime', { day: dayName })}
                                                     className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400 disabled:bg-slate-100 sm:w-32"
                                                 />
                                             </div>
@@ -673,14 +757,14 @@ export function StoreProfilePage() {
                                     }}
                                     className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
                                 >
-                                    <Clock className="h-3.5 w-3.5" />Apply Monday&apos;s hours to weekdays
+                                    <Clock className="h-3.5 w-3.5" />{t('store.applyWeekdays')}
                                 </button>
                             </div>
                         </div>
                     </Section>
 
                     {/* --- Social — platform list comes from the admin registry --- */}
-                    <Section title="Social & Communication" description="Connect your social profiles and control how customers reach you.">
+                    <Section title={t('store.socialTitle')} description={t('store.socialIntro')}>
                         <div className="space-y-5 p-5 sm:p-6">
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 {structure.social_platforms.map((platform) => {
@@ -729,7 +813,7 @@ export function StoreProfilePage() {
                     />
 
                     {/* --- Settings — every control is a setting_definition row --- */}
-                    <Section title="Store Settings" description="Control how your store behaves for customers.">
+                    <Section title={t('store.settingsTitle')} description={t('store.settingsIntro')}>
                         <div className="space-y-5 p-5 sm:p-6">
                             <div className="space-y-3">
                                 {settingsByGroup('store').map((definition) => (
@@ -769,8 +853,8 @@ export function StoreProfilePage() {
                 <div className="space-y-6">
                     <section aria-labelledby="preview-heading" className="sticky top-20 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
                         <div className="flex items-center justify-between gap-3 border-b border-slate-100 p-4">
-                            <h2 id="preview-heading" className="text-sm font-bold text-slate-900">Storefront Preview</h2>
-                            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Live</span>
+                            <h2 id="preview-heading" className="text-sm font-bold text-slate-900">{t('store.previewTitle')}</h2>
+                            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{t('store.previewLive')}</span>
                         </div>
                         <div className="p-3">
                             <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
@@ -784,26 +868,26 @@ export function StoreProfilePage() {
                                 </div>
                                 <div className="px-4 pb-4 pt-8">
                                     <div className="flex items-center gap-1.5">
-                                        <h3 className="truncate text-sm font-bold text-slate-900">{draft.core.name || 'Untitled store'}</h3>
+                                        <h3 className="truncate text-sm font-bold text-slate-900">{draft.core.name || t('store.untitled')}</h3>
                                         {store.verified_at && (
-                                            <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-sky-500 text-white" aria-label="Verified store">
+                                            <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-sky-500 text-white" aria-label={t('store.verifiedStore')}>
                                                 <Check className="h-2.5 w-2.5" />
                                             </span>
                                         )}
                                     </div>
                                     <div className="mt-0.5 flex items-center gap-2 text-[11px] text-slate-500">
-                                        <span className="inline-flex items-center gap-0.5"><Star className="h-3 w-3 fill-amber-400 text-amber-400" /><span className="font-semibold text-slate-700">New</span></span>
+                                        <span className="inline-flex items-center gap-0.5"><Star className="h-3 w-3 fill-amber-400 text-amber-400" /><span className="font-semibold text-slate-700">{t('store.newBadge')}</span></span>
                                         {draft.core.city && <><span className="text-slate-300">·</span><span className="inline-flex items-center gap-0.5"><MapPin className="h-3 w-3" />{draft.core.city}{draft.core.state ? `, ${draft.core.state}` : ''}</span></>}
                                     </div>
-                                    <p className="mt-2 text-[11px] leading-relaxed text-slate-600">{draft.core.tagline || 'Add a tagline to introduce your store.'}</p>
+                                    <p className="mt-2 text-[11px] leading-relaxed text-slate-600">{draft.core.tagline || t('store.addTagline')}</p>
                                     <div className="mt-3 flex gap-2">
-                                        <button type="button" className="inline-flex flex-1 items-center justify-center rounded-lg bg-amber-400 px-3 py-1.5 text-[11px] font-bold text-slate-900 shadow-sm">Follow Store</button>
-                                        <button type="button" className="inline-flex flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700">Contact</button>
+                                        <button type="button" className="inline-flex flex-1 items-center justify-center rounded-lg bg-amber-400 px-3 py-1.5 text-[11px] font-bold text-slate-900 shadow-sm">{t('storefront.followStore')}</button>
+                                        <button type="button" className="inline-flex flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-slate-700">{t('storefront.contact')}</button>
                                     </div>
-                                    <nav className="mt-3 flex gap-3 overflow-x-auto border-t border-slate-100 pt-3" aria-label="Storefront navigation preview">
-                                        <span className="whitespace-nowrap border-b-2 border-amber-400 pb-1 text-[11px] font-semibold text-amber-700">Home</span>
-                                        {['Products', 'Services', 'About', 'Reviews', 'Policies'].map((item) => (
-                                            <span key={item} className="whitespace-nowrap text-[11px] text-slate-500">{item}</span>
+                                    <nav className="mt-3 flex gap-3 overflow-x-auto border-t border-slate-100 pt-3" aria-label={t('store.storefrontNav')}>
+                                        <span className="whitespace-nowrap border-b-2 border-amber-400 pb-1 text-[11px] font-semibold text-amber-700">{t('nav.home')}</span>
+                                        {(['nav.products', 'nav.services', 'nav.about', 'nav.reviews', 'nav.policies'] as const).map((item) => (
+                                            <span key={item} className="whitespace-nowrap text-[11px] text-slate-500">{t(item)}</span>
                                         ))}
                                     </nav>
                                 </div>
@@ -813,7 +897,7 @@ export function StoreProfilePage() {
                             href={`?store=${store.slug}#storefront`}
                             className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-slate-900 px-3 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-slate-800"
                         >
-                            <Eye className="h-3.5 w-3.5" />Open full preview
+                            <Eye className="h-3.5 w-3.5" />{t('store.openFullPreview')}
                         </a>
                     </section>
                 </div>
@@ -822,12 +906,12 @@ export function StoreProfilePage() {
             {/* ===== MANAGE YOUR STORE — every link is a nav_links row ===== */}
             <section aria-labelledby="nav-heading" className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
                 <div className="border-b border-slate-100 p-5">
-                    <h2 id="nav-heading" className="text-base font-bold text-slate-900">Manage Your Store</h2>
-                    <p className="mt-0.5 text-xs text-slate-500">Jump straight to any part of your vendor workspace.</p>
+                    <h2 id="nav-heading" className="text-base font-bold text-slate-900">{t('store.manageTitle')}</h2>
+                    <p className="mt-0.5 text-xs text-slate-500">{t('store.manageIntro')}</p>
                 </div>
                 <div className="space-y-6 p-5 sm:p-6">
                     {Object.entries(
-                        structure.nav_links.reduce<Record<string, typeof structure.nav_links>>((groups, link) => {
+                        (structure.nav_links.vendor ?? []).reduce<Record<string, StructureNavLink[]>>((groups, link) => {
                             (groups[link.group] ??= []).push(link);
                             return groups;
                         }, {}),
@@ -865,14 +949,14 @@ export function StoreProfilePage() {
                         <div className="mx-auto flex max-w-[1700px] items-center gap-3">
                             <div className="flex min-w-0 flex-1 items-center gap-2">
                                 <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-amber-400" aria-hidden="true" />
-                                <p className="truncate text-xs font-semibold text-slate-700">Unsaved changes</p>
+                                <p className="truncate text-xs font-semibold text-slate-700">{t('common.unsavedChanges')}</p>
                             </div>
                             <button type="button" onClick={discard} disabled={save.saving} className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60">
-                                Discard
+                                {t('common.discard')}
                             </button>
                             <button type="button" onClick={() => void commit()} disabled={save.saving} className="inline-flex items-center gap-1.5 rounded-xl bg-amber-400 px-4 py-2 text-xs font-bold text-slate-900 shadow-sm hover:bg-amber-500 disabled:opacity-60">
                                 {save.saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
-                                {save.saving ? 'Saving…' : 'Save'}
+                                {save.saving ? t('common.saving') : t('common.save')}
                             </button>
                         </div>
                     </div>
@@ -893,6 +977,7 @@ function Store2() {
 }
 
 function CreateStoreButton({ onCreated }: { onCreated: (store: StoreProfile) => void }) {
+    const { t } = useTranslation();
     const [name, setName] = useState('');
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState('');
@@ -906,7 +991,7 @@ function CreateStoreButton({ onCreated }: { onCreated: (store: StoreProfile) => 
         try {
             onCreated(await storeApi.create(name.trim()));
         } catch (caught) {
-            setError(caught instanceof Error ? caught.message : 'Could not create the store.');
+            setError(caught instanceof Error ? caught.message : t('store.createFailed'));
         } finally {
             setBusy(false);
         }
@@ -914,10 +999,10 @@ function CreateStoreButton({ onCreated }: { onCreated: (store: StoreProfile) => 
 
     return (
         <div className="space-y-2">
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Store name" className={inputClass} />
+            <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t('store.storeName')} className={inputClass} />
             {error && <p className="text-xs font-medium text-rose-600">{error}</p>}
             <button type="button" onClick={() => void create()} disabled={busy || !name.trim()} className="w-full rounded-xl bg-amber-400 px-4 py-2 text-sm font-bold text-slate-900 disabled:opacity-60">
-                {busy ? 'Creating…' : 'Create store'}
+                {busy ? t('store.creating') : t('store.createStore')}
             </button>
         </div>
     );
@@ -929,17 +1014,18 @@ function StoreSwitcher({ stores, currentId, dirty, onSwitch }: {
     dirty: boolean;
     onSwitch: (id: number) => void;
 }) {
+    const { t } = useTranslation();
     const current = stores.find((s) => s.id === currentId);
 
     return (
         <label className="relative inline-flex items-center">
-            <span className="sr-only">Switch store</span>
+            <span className="sr-only">{t('store.switchStore')}</span>
             <select
                 value={currentId}
                 onChange={(e) => {
                     const id = Number(e.target.value);
                     // Switching would drop unsaved edits, so make that explicit.
-                    if (dirty && !window.confirm('You have unsaved changes. Switch store and discard them?')) {
+                    if (dirty && !window.confirm(t('store.switchConfirm'))) {
                         e.target.value = String(currentId);
                         return;
                     }
@@ -982,6 +1068,7 @@ function PolicySection({ store, policyTypes, onChanged }: {
     policyTypes: { id: number; key: string; label: string; hint: string | null; icon: string; tone: string; is_required: boolean }[];
     onChanged: (store: StoreProfile) => void;
 }) {
+    const { t } = useTranslation();
     const [editing, setEditing] = useState<number | null>(null);
     const [body, setBody] = useState('');
     const [busy, setBusy] = useState(false);
@@ -996,7 +1083,7 @@ function PolicySection({ store, policyTypes, onChanged }: {
             onChanged(await storeApi.get(store.id));
             setEditing(null);
         } catch (caught) {
-            setError(caught instanceof Error ? caught.message : 'Could not save the policy.');
+            setError(caught instanceof Error ? caught.message : t('store.policySaveFailed'));
         } finally {
             setBusy(false);
         }
@@ -1005,11 +1092,11 @@ function PolicySection({ store, policyTypes, onChanged }: {
     return (
         <Section
             id="store-policies"
-            title="Store Policies"
-            description="Policies are shown to customers at checkout and on your storefront."
+            title={t('store.policiesTitle')}
+            description={t('store.policiesIntro')}
             aside={
                 <span className="text-[11px] font-semibold text-slate-500">
-                    {store.policies.filter((p) => p.status === 'published').length} of {policyTypes.length} published
+                    {t('store.policiesPublished', { done: store.policies.filter((p) => p.status === 'published').length, total: policyTypes.length })}
                 </span>
             }
         >
@@ -1029,19 +1116,19 @@ function PolicySection({ store, policyTypes, onChanged }: {
                                 <div className="min-w-0 flex-1">
                                     <p className="flex items-center gap-2 text-sm font-semibold text-slate-900">
                                         {type.label}
-                                        {type.is_required && <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-slate-500">Required</span>}
+                                        {type.is_required && <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-slate-500">{t('verify.required')}</span>}
                                     </p>
                                     <p className="mt-0.5 text-xs text-slate-500">{type.hint}</p>
                                 </div>
                                 <StatusPill status={existing?.status ?? 'none'}>
-                                    {existing ? (existing.status === 'published' ? 'Published' : 'Draft') : 'Not configured'}
+                                    {existing ? (existing.status === 'published' ? t('verify.published') : t('verify.draft')) : t('verify.notConfigured')}
                                 </StatusPill>
                                 <button
                                     type="button"
                                     onClick={() => { setEditing(isEditing ? null : type.id); setBody(existing?.body ?? ''); }}
                                     className="shrink-0 text-xs font-semibold text-slate-700 hover:text-amber-700"
                                 >
-                                    {isEditing ? 'Cancel' : existing ? 'Edit' : 'Add'}
+                                    {isEditing ? t('common.cancel') : existing ? t('common.edit') : t('common.add')}
                                 </button>
                             </div>
 
@@ -1051,15 +1138,15 @@ function PolicySection({ store, policyTypes, onChanged }: {
                                         rows={5}
                                         value={body}
                                         onChange={(e) => setBody(e.target.value)}
-                                        placeholder={`Write your ${type.label.toLowerCase()}…`}
+                                        placeholder={t('store.policyPlaceholder', { label: type.label.toLowerCase() })}
                                         className={`${inputClass} resize-y bg-white`}
                                     />
                                     <div className="flex justify-end gap-2">
                                         <button type="button" disabled={busy} onClick={() => void savePolicy(type.id, 'draft')} className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 disabled:opacity-60">
-                                            Save draft
+                                            {t('store.saveDraft')}
                                         </button>
                                         <button type="button" disabled={busy || !body.trim()} onClick={() => void savePolicy(type.id, 'published')} className="rounded-lg bg-amber-400 px-3 py-1.5 text-xs font-bold text-slate-900 disabled:opacity-60">
-                                            {busy ? 'Saving…' : 'Publish'}
+                                            {busy ? t('common.saving') : t('store.publish')}
                                         </button>
                                     </div>
                                 </div>
@@ -1073,13 +1160,14 @@ function PolicySection({ store, policyTypes, onChanged }: {
 }
 
 function VerificationSection({ store, onRefresh }: { store: StoreProfile; onRefresh: () => Promise<void> }) {
+    const { t } = useTranslation();
     const [busy, setBusy] = useState<string | null>(null);
     const kinds: { kind: string; label: string; hint: string }[] = [
-        { kind: 'business', label: 'Business verification', hint: 'Business licence or registration document' },
-        { kind: 'identity', label: 'Identity verification', hint: 'Government ID and a selfie' },
-        { kind: 'email', label: 'Email verification', hint: store.contact.public_email ?? 'Add a public email first' },
-        { kind: 'phone', label: 'Phone verification', hint: 'Enables SMS notifications' },
-        { kind: 'payment', label: 'Secure-payment badge', hint: 'Shows the AsBeez Secure Payments badge' },
+        { kind: 'business', label: t('store.businessVerification'), hint: t('store.businessVerificationHint') },
+        { kind: 'identity', label: t('store.identityVerification'), hint: t('store.identityVerificationHint') },
+        { kind: 'email', label: t('store.emailVerification'), hint: store.contact.public_email ?? t('store.emailVerificationHint') },
+        { kind: 'phone', label: t('store.phoneVerification'), hint: t('store.phoneVerificationHint') },
+        { kind: 'payment', label: t('store.paymentBadge'), hint: t('store.paymentBadgeHint') },
     ];
 
     async function request(kind: string) {
@@ -1094,7 +1182,7 @@ function VerificationSection({ store, onRefresh }: { store: StoreProfile; onRefr
     }
 
     return (
-        <Section id="verification-trust" title="Verification & Trust" description="Verified stores get more customer trust and higher placement in search results.">
+        <Section id="verification-trust" title={t('store.trustTitle')} description={t('store.trustIntro')}>
             <ul className="divide-y divide-slate-100" role="list">
                 {kinds.map(({ kind, label, hint }) => {
                     const row = store.verifications.find((v) => v.kind === kind);
@@ -1110,11 +1198,11 @@ function VerificationSection({ store, onRefresh }: { store: StoreProfile; onRefr
                                 <p className="mt-0.5 text-xs text-slate-500">{row?.reference ?? hint}</p>
                             </div>
                             <StatusPill status={status}>
-                                {status.charAt(0).toUpperCase() + status.slice(1)}
+                                {t(`verify.${status}` as MessageKey)}
                             </StatusPill>
                             {status !== 'verified' && status !== 'pending' && (
                                 <button type="button" disabled={busy === kind} onClick={() => void request(kind)} className="shrink-0 text-xs font-semibold text-slate-700 hover:text-amber-700 disabled:opacity-60">
-                                    {busy === kind ? 'Sending…' : 'Verify now'}
+                                    {busy === kind ? t('auth.sending') : t('store.verifyNow')}
                                 </button>
                             )}
                         </li>

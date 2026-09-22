@@ -46,8 +46,8 @@ class StorePolicyController extends Controller
 
         if ($publishing && blank($validated['body'] ?? null)) {
             return response()->json([
-                'message' => 'A policy needs a body before it can be published.',
-                'errors' => ['body' => ['A policy needs a body before it can be published.']],
+                'message' => __('app.store.policy_needs_body'),
+                'errors' => ['body' => [__('app.store.policy_needs_body')]],
             ], 422);
         }
 
@@ -73,6 +73,6 @@ class StorePolicyController extends Controller
 
         $policy->delete();
 
-        return response()->json(['message' => 'Policy removed.']);
+        return response()->json(['message' => __('app.store.policy_removed')]);
     }
 }

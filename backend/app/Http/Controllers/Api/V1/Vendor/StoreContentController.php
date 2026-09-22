@@ -39,7 +39,7 @@ class StoreContentController extends Controller
         $seen = array_column($validated['hours'], 'weekday');
 
         if (count($seen) !== count(array_unique($seen))) {
-            return response()->json(['message' => 'Each weekday may appear only once.'], 422);
+            return response()->json(['message' => __('app.store.weekday_once')], 422);
         }
 
         DB::transaction(function () use ($store, $validated) {
@@ -121,9 +121,11 @@ class StoreContentController extends Controller
         $unknown = array_diff(array_keys($validated['settings']), $definitions->keys()->all());
 
         if ($unknown !== []) {
+            $message = __('app.store.unknown_setting', ['keys' => implode(', ', $unknown)]);
+
             return response()->json([
-                'message' => 'Unknown setting: '.implode(', ', $unknown),
-                'errors' => ['settings' => ['Unknown setting: '.implode(', ', $unknown)]],
+                'message' => $message,
+                'errors' => ['settings' => [$message]],
             ], 422);
         }
 

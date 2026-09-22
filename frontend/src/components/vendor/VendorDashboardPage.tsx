@@ -19,6 +19,7 @@ import {
   Menu,
   MessageSquareText,
   Package,
+  ReceiptText,
   Plus,
   Search,
   Settings,
@@ -35,49 +36,62 @@ import {
 } from 'lucide-react';
 
 import { useAuth } from '../../auth/AuthProvider';
+import { SidebarTooltip } from '../ui/SidebarTooltip';
+import { useTranslation, type MessageKey } from '../../i18n';
 import { handleMenuKeys } from '../../lib/menu';
+import { Avatar } from '../ui/Avatar';
+import { LanguageMenu } from '../ui/LanguageMenu';
 import { MenuCloseButton } from '../ui/MenuCloseButton';
+import { PpfBreakdownPage } from '../ppf/PpfBreakdownPage';
 import { StoreProfilePage } from './StoreProfilePage';
 
-const kpis = [
-  { label: 'Total Revenue', value: '$24,860', delta: '12.5%', tone: 'bg-softyellow text-amber' },
-  { label: 'Total Orders', value: '386', delta: '8.2%', tone: 'bg-amber/10 text-charcoal' },
-  { label: 'Bookings', value: '94', delta: '15.3%', tone: 'bg-brandInfo/10 text-brandInfo' },
-  { label: 'Visitors', value: '8,429', delta: '6.7%', tone: 'bg-brandSuccess/10 text-brandSuccess' },
-  { label: 'Conversion', value: '4.8%', delta: '0.6%', tone: 'bg-honey/15 text-charcoal' },
-  { label: 'Avg. Rating', value: '4.9', delta: '327 reviews', tone: 'bg-gray-100 text-charcoal' },
-] as const;
+/*
+ * The rows below (orders, bookings, inventory, listings, feeds, notifications)
+ * are demo data standing in for endpoints that do not exist yet, so their
+ * values carry no message keys: they will be replaced wholesale, not
+ * translated. Labels that outlive the fixtures do carry keys.
+ */
+const STORE_NAME = 'Golden Hive Market';
+
+const kpis: { label: MessageKey; value: string; delta: string; tone: string; icon: typeof LayoutDashboard }[] = [
+  { label: 'vendor.kpiRevenue', value: '$24,860', delta: '12.5%', tone: 'bg-softyellow text-amber', icon: DollarSign },
+  { label: 'vendor.kpiOrders', value: '386', delta: '8.2%', tone: 'bg-amber/10 text-charcoal', icon: ShoppingBag },
+  { label: 'vendor.kpiBookings', value: '94', delta: '15.3%', tone: 'bg-brandInfo/10 text-brandInfo', icon: CalendarCheck2 },
+  { label: 'vendor.kpiVisitors', value: '8,429', delta: '6.7%', tone: 'bg-brandSuccess/10 text-brandSuccess', icon: Users },
+  { label: 'vendor.kpiConversion', value: '4.8%', delta: '0.6%', tone: 'bg-honey/15 text-charcoal', icon: TrendingUp },
+  { label: 'vendor.kpiRating', value: '4.9', delta: '327 reviews', tone: 'bg-gray-100 text-charcoal', icon: Star },
+];
 
 const sidebarItems: ReadonlyArray<{
-  label: string;
+  label: MessageKey;
   icon: typeof LayoutDashboard;
   active?: boolean;
   badge?: string;
   badgeTone?: string;
 }> = [
-  { label: 'Dashboard', icon: LayoutDashboard, active: true },
-  { label: 'Products', icon: Package },
-  { label: 'Services', icon: BriefcaseBusiness },
-  { label: 'Orders', icon: ShoppingBag, badge: '8' },
-  { label: 'Bookings', icon: CalendarCheck2, badge: '3' },
-  { label: 'Customers', icon: Users },
-  { label: 'Messages', icon: MessageSquareText, badge: '5', badgeTone: 'bg-brandInfo' },
-  { label: 'Reviews', icon: Star },
-  { label: 'Promotions', icon: Megaphone },
-  { label: 'Analytics', icon: ChartColumnBig },
-  { label: 'Finances', icon: WalletCards },
+  { label: 'nav.dashboard', icon: LayoutDashboard, active: true },
+  { label: 'nav.products', icon: Package },
+  { label: 'nav.services', icon: BriefcaseBusiness },
+  { label: 'vendor.navOrders', icon: ShoppingBag, badge: '8' },
+  { label: 'vendor.navBookings', icon: CalendarCheck2, badge: '3' },
+  { label: 'vendor.navCustomers', icon: Users },
+  { label: 'vendor.navMessages', icon: MessageSquareText, badge: '5', badgeTone: 'bg-brandInfo' },
+  { label: 'nav.reviews', icon: Star },
+  { label: 'vendor.navPromotions', icon: Megaphone },
+  { label: 'vendor.navAnalytics', icon: ChartColumnBig },
+  { label: 'vendor.navFinances', icon: WalletCards },
 ];
 
-const businessItems = ['Store Profile', 'Team Members', 'Subscription', 'Settings', 'Help & Support'];
-
-const quickActions = [
-  ['Add Product', 'Create a new item'],
-  ['Add Service', 'List your expertise'],
-  ['Create Promotion', 'Launch a campaign'],
-  ['Add Team Member', 'Invite a collaborator'],
-  ['Create Discount', 'Reward customers'],
-  ['Community Update', 'Post an announcement'],
-] as const;
+const businessItems: { label: MessageKey; icon: typeof LayoutDashboard; href?: string }[] = [
+  { label: 'nav.storeProfile', icon: Store, href: '#store-profile' },
+  { label: 'vendor.navTeamMembers', icon: Users },
+  { label: 'vendor.navSubscription', icon: CreditCard },
+  // Moved out of the shopper's top bar: what a partner pays is a seller
+  // concern, and this is the screen a seller already works from.
+  { label: 'nav.platformFees', icon: ReceiptText, href: '#platform-fees' },
+  { label: 'vendor.navSettings', icon: Settings },
+  { label: 'vendor.navHelp', icon: CircleHelp },
+];
 
 const orders = [
   { number: 'AB-4831', customer: 'Mia Carter', product: 'Wireless Headphones', date: 'Sep 18', amount: 89.99, payment: 'Paid', status: 'Processing' },
@@ -116,13 +130,13 @@ const customerFeed = [
   { title: 'Olivia saved a listing', time: '2 hr' },
 ] as const;
 
-const tasksSeed = [
-  'Ship three pending orders',
-  'Confirm tomorrow’s bookings',
-  'Update inventory quantities',
-  'Reply to customer questions',
-  'Review monthly statement',
-] as const;
+const tasksSeed: MessageKey[] = [
+  'vendor.taskShipOrders',
+  'vendor.taskConfirmBookings',
+  'vendor.taskUpdateInventory',
+  'vendor.taskReplyQuestions',
+  'vendor.taskReviewStatement',
+];
 
 const notifications = [
   { icon: ShoppingBag, tone: 'bg-softyellow text-amber', text: 'New order #AB-4831 received', when: '2 min ago', alert: true },
@@ -133,20 +147,20 @@ const notifications = [
 ] as const;
 
 type TopMenuItem = {
-  label: string;
-  hint: string;
+  label: MessageKey;
+  hint: MessageKey;
   icon: typeof LayoutDashboard;
   href?: string;
 };
 
 /** "Create New" menu — the same six shortcuts the quick-actions panel offers. */
 const createMenu: TopMenuItem[] = [
-  { label: 'Add Product', hint: 'Create a new item', icon: Package },
-  { label: 'Add Service', hint: 'List your expertise', icon: BriefcaseBusiness },
-  { label: 'Create Promotion', hint: 'Launch a campaign', icon: Megaphone },
-  { label: 'Add Team Member', hint: 'Invite a collaborator', icon: UserPlus },
-  { label: 'Create Discount', hint: 'Reward customers', icon: DollarSign },
-  { label: 'Community Update', hint: 'Post an announcement', icon: Sparkles },
+  { label: 'vendor.addProduct', hint: 'vendor.addProductHint', icon: Package },
+  { label: 'vendor.addService', hint: 'vendor.addServiceHint', icon: BriefcaseBusiness },
+  { label: 'vendor.createPromotion', hint: 'vendor.createPromotionHint', icon: Megaphone },
+  { label: 'vendor.addTeamMember', hint: 'vendor.addTeamMemberHint', icon: UserPlus },
+  { label: 'vendor.createDiscount', hint: 'vendor.createDiscountHint', icon: DollarSign },
+  { label: 'vendor.communityUpdate', hint: 'vendor.communityUpdateHint', icon: Sparkles },
 ];
 
 const topMessages = [
@@ -156,15 +170,15 @@ const topMessages = [
 ] as const;
 
 const profileMenu: TopMenuItem[] = [
-  { label: 'Browse Marketplace', hint: 'Shop as a customer', icon: ShoppingBag, href: '#marketplace' },
-  { label: 'Store Profile', hint: 'Public storefront', icon: Store, href: '#store-profile' },
-  { label: 'Subscription', hint: 'Growth plan', icon: CreditCard },
-  { label: 'Account Settings', hint: 'Password & security', icon: Settings, href: '#account-security' },
-  { label: 'Help & Support', hint: 'Docs and contact', icon: CircleHelp },
+  { label: 'storefront.browseMarketplace', hint: 'vendor.browseMarketplaceHint', icon: ShoppingBag, href: '#marketplace' },
+  { label: 'nav.storeProfile', hint: 'vendor.storeProfileHint', icon: Store, href: '#store-profile' },
+  { label: 'vendor.navSubscription', hint: 'vendor.subscriptionHint', icon: CreditCard },
+  { label: 'admin.accountSettings', hint: 'auth.accountSecurity', icon: Settings, href: '#account-security' },
+  { label: 'vendor.navHelp', hint: 'vendor.helpHint', icon: CircleHelp },
 ];
 
-function formatMoney(value: number) {
-  return new Intl.NumberFormat('en-US', {
+function formatMoney(value: number, locale: string) {
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: 'USD',
   }).format(value);
@@ -177,9 +191,10 @@ function getBadgeClass(value: string) {
   return 'bg-gray-100 text-gray-600';
 }
 
-type VendorMenu = 'create' | 'messages' | 'notifications' | 'profile';
+type VendorMenu = 'language' | 'create' | 'messages' | 'notifications' | 'profile';
 
 export function VendorDashboardPage() {
+  const { t, locale } = useTranslation();
   const { user, logout } = useAuth();
   const [openMenu, setOpenMenu] = useState<VendorMenu | null>(null);
   const [notifCount, setNotifCount] = useState<number>(notifications.length);
@@ -190,7 +205,7 @@ export function VendorDashboardPage() {
   const [collapsed, setCollapsed] = useState(false);
   const [showCompleted, setShowCompleted] = useState(false);
   const [taskList, setTaskList] = useState<Array<{ id: number; text: string; done: boolean }>>(
-    tasksSeed.map((text, index) => ({ id: Date.now() + index, text, done: false })),
+    tasksSeed.map((key, index) => ({ id: Date.now() + index, text: t(key), done: false })),
   );
   const [activeFilter, setActiveFilter] = useState<'All' | 'Product' | 'Service'>('All');
   const [messageSearch, setMessageSearch] = useState('');
@@ -219,6 +234,16 @@ export function VendorDashboardPage() {
   }, []);
 
   const onStoreProfile = routeHash === '#store-profile';
+  const onPlatformFees = routeHash === '#platform-fees' || routeHash.startsWith('#platform-fees/');
+
+  // What the top bar names, and which body the shell renders. Kept as one
+  // lookup so the breadcrumb, the heading and the sidebar's active state
+  // cannot disagree about which section is open.
+  const section: MessageKey = onStoreProfile
+    ? 'nav.storeProfile'
+    : onPlatformFees
+      ? 'nav.platformFees'
+      : 'vendor.overview';
 
   // A click anywhere outside the top-bar action cluster closes the open menu.
   useEffect(() => {
@@ -272,10 +297,10 @@ export function VendorDashboardPage() {
           {!collapsed && (
             <div className="min-w-0">
               <div className="text-xl font-extrabold tracking-tight">As<span className="text-honey">Beez</span></div>
-              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gray-400">Vendor Center</div>
+              <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-gray-400">{t('vendor.center')}</div>
             </div>
           )}
-          <button className="ml-auto rounded-lg p-2 text-gray-300 hover:bg-white/10 lg:hidden" onClick={() => setSidebarOpen(false)} aria-label="Close navigation">
+          <button className="ml-auto rounded-lg p-2 text-gray-300 hover:bg-white/10 lg:hidden" onClick={() => setSidebarOpen(false)} aria-label={t('nav.closeNavigation')}>
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -283,99 +308,108 @@ export function VendorDashboardPage() {
         <div className="p-4">
           <div className={`rounded-2xl border border-white/10 bg-white/[.06] p-4 ${collapsed ? 'hidden' : 'block'}`}>
             <div className="flex items-center gap-3">
-              <img src="https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&w=120&q=80" alt="Golden Hive Market logo" className="h-12 w-12 rounded-xl object-cover" />
+              <img src="https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&w=120&q=80" alt={t('vendor.storeLogoAlt', { name: STORE_NAME })} className="h-12 w-12 rounded-xl object-cover" />
               <div className="min-w-0">
                 <div className="flex items-center gap-1">
-                  <p className="truncate text-sm font-extrabold">Golden Hive Market</p>
+                  <p className="truncate text-sm font-extrabold">{STORE_NAME}</p>
                   <BadgeCheck className="h-4 w-4 shrink-0 text-honey" />
                 </div>
-                <p className="text-xs text-gray-400">Products & Services</p>
+                <p className="text-xs text-gray-400">{t('vendor.productsAndServices')}</p>
               </div>
             </div>
             <div className="mt-3 flex items-center justify-between">
               <span className="inline-flex items-center gap-2 text-xs font-bold text-emerald-400">
                 <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                Store Active
+                {t('vendor.storeActive')}
               </span>
-              <button className="text-xs font-bold text-honey hover:underline">View Store</button>
+              <button className="text-xs font-bold text-honey hover:underline">{t('vendor.viewStore')}</button>
             </div>
           </div>
 
-          {!collapsed && <p className="mt-6 px-3 text-[11px] font-extrabold uppercase tracking-[0.2em] text-gray-500">Workspace</p>}
+          {!collapsed && <p className="mt-6 px-3 text-[11px] font-extrabold uppercase tracking-[0.2em] text-gray-500">{t('vendor.workspace')}</p>}
 
           <nav className="mt-2 space-y-1">
             {sidebarItems.map(({ label, icon: Icon, active, badge, badgeTone }) => {
               const IconComp = Icon;
               return (
-                <button key={label} className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${active ? 'bg-honey text-charcoal font-bold' : 'text-gray-300 hover:bg-white/10 hover:text-white'} ${collapsed ? 'justify-center' : ''}`}>
-                  <IconComp className="h-5 w-5 shrink-0" />
-                  {!collapsed && <span className="flex-1 text-left">{label}</span>}
-                  {!collapsed && badge && <span className={`rounded-full px-2 py-0.5 text-[11px] ${badgeTone ?? 'bg-honey text-charcoal'}`}>{badge}</span>}
-                </button>
+                // Collapsed, the button shows an icon and nothing else, so it
+                // carries its own accessible name; the tooltip is decoration.
+                <SidebarTooltip key={label} label={t(label)} enabled={collapsed}>
+                  <button
+                    aria-label={collapsed ? t(label) : undefined}
+                    className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${active ? 'bg-honey text-charcoal font-bold' : 'text-gray-300 hover:bg-white/10 hover:text-white'} ${collapsed ? 'justify-center' : ''}`}
+                  >
+                    <IconComp className="h-5 w-5 shrink-0" />
+                    {!collapsed && <span className="flex-1 text-left">{t(label)}</span>}
+                    {!collapsed && badge && <span className={`rounded-full px-2 py-0.5 text-[11px] ${badgeTone ?? 'bg-honey text-charcoal'}`}>{badge}</span>}
+                  </button>
+                </SidebarTooltip>
               );
             })}
           </nav>
 
           {!collapsed && (
-            <>
-              <button className="mt-6 flex w-full items-center px-3 text-left text-[11px] font-extrabold uppercase tracking-[0.2em] text-gray-500" aria-expanded="true">
-                <span>Business</span>
-                <ChevronDown className="ml-auto h-4 w-4" />
-              </button>
-              <nav className="mt-2 space-y-1">
-                {businessItems.map((label) => {
-                  const iconMap = {
-                    'Store Profile': Store,
-                    'Team Members': Users,
-                    Subscription: CreditCard,
-                    Settings: Settings,
-                    'Help & Support': CircleHelp,
-                  };
-                  const Icon = iconMap[label as keyof typeof iconMap] ?? Store;
-                  const href = label === 'Store Profile' ? '#store-profile' : undefined;
-                  const active = label === 'Store Profile' && onStoreProfile;
+            <button className="mt-6 flex w-full items-center px-3 text-left text-[11px] font-extrabold uppercase tracking-[0.2em] text-gray-500" aria-expanded="true">
+              <span>{t('vendor.business')}</span>
+              <ChevronDown className="ml-auto h-4 w-4" />
+            </button>
+          )}
+
+          <nav className="mt-2 space-y-1">
+                {businessItems.map(({ label, icon: Icon, href }) => {
+                  const active = (href === '#store-profile' && onStoreProfile) || (href === '#platform-fees' && onPlatformFees);
                   const tone = active
                     ? 'bg-honey text-charcoal'
                     : 'text-gray-300 hover:bg-white/10 hover:text-white';
 
                   if (href) {
                     return (
-                      <a
-                        key={label}
-                        href={href}
-                        onClick={() => setSidebarOpen(false)}
-                        aria-current={active ? 'page' : undefined}
-                        className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold ${tone}`}
-                      >
-                        <Icon className="h-5 w-5" />
-                        <span className="flex-1 text-left">{label}</span>
-                      </a>
+                      <SidebarTooltip key={label} label={t(label)} enabled={collapsed}>
+                        <a
+                          href={href}
+                          onClick={() => setSidebarOpen(false)}
+                          aria-current={active ? 'page' : undefined}
+                          aria-label={collapsed ? t(label) : undefined}
+                          className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold ${tone} ${collapsed ? 'justify-center' : ''}`}
+                        >
+                          <Icon className="h-5 w-5 shrink-0" />
+                          {!collapsed && <span className="flex-1 text-left">{t(label)}</span>}
+                        </a>
+                      </SidebarTooltip>
                     );
                   }
 
                   return (
-                    <button key={label} className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold ${tone}`}>
-                      <Icon className="h-5 w-5" />
-                      <span className="flex-1 text-left">{label}</span>
-                    </button>
+                    <SidebarTooltip key={label} label={t(label)} enabled={collapsed}>
+                      <button
+                        aria-label={collapsed ? t(label) : undefined}
+                        className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold ${tone} ${collapsed ? 'justify-center' : ''}`}
+                      >
+                        <Icon className="h-5 w-5 shrink-0" />
+                        {!collapsed && <span className="flex-1 text-left">{t(label)}</span>}
+                      </button>
+                    </SidebarTooltip>
                   );
                 })}
-              </nav>
+          </nav>
+
+          {!collapsed && (
+            <>
 
               <div className="mt-6 rounded-2xl bg-gradient-to-br from-honey to-amber p-4 text-charcoal">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold">Growth Plan</span>
+                  <span className="text-xs font-bold">{t('vendor.growthPlan')}</span>
                   <span className="text-xs font-extrabold">72%</span>
                 </div>
                 <div className="mt-2 h-2 rounded-full bg-white/60">
                   <div className="h-full w-[72%] rounded-full bg-charcoal" />
                 </div>
-                <button className="mt-3 w-full rounded-lg bg-charcoal py-2 text-xs font-extrabold text-white hover:bg-black">Upgrade Plan</button>
+                <button className="mt-3 w-full rounded-lg bg-charcoal py-2 text-xs font-extrabold text-white hover:bg-black">{t('vendor.upgradePlan')}</button>
               </div>
 
               <button className="mt-4 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-gray-400 hover:bg-white/10 hover:text-white">
                 <LogOut className="h-5 w-5" />
-                <span>Log Out</span>
+                <span>{t('vendor.logOut')}</span>
               </button>
             </>
           )}
@@ -385,24 +419,24 @@ export function VendorDashboardPage() {
       <div className={`min-h-screen transition-all ${collapsed ? 'lg:pl-[84px]' : 'lg:pl-[270px]'}`}>
         <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur">
           <div className="flex h-20 items-center gap-3 px-4 sm:px-6">
-            <button className="rounded-xl border border-gray-200 p-2.5 hover:bg-gray-50 lg:hidden" onClick={() => setSidebarOpen(true)} aria-label="Open navigation">
+            <button className="rounded-xl border border-gray-200 p-2.5 hover:bg-gray-50 lg:hidden" onClick={() => setSidebarOpen(true)} aria-label={t('nav.openNavigation')}>
               <Menu className="h-5 w-5" />
             </button>
-            <button className="hidden rounded-xl border border-gray-200 p-2.5 hover:bg-gray-50 lg:block" onClick={() => setCollapsed((current) => !current)} aria-label="Collapse sidebar">
+            <button className="hidden rounded-xl border border-gray-200 p-2.5 hover:bg-gray-50 lg:block" onClick={() => setCollapsed((current) => !current)} aria-label={t('vendor.collapseSidebar')}>
               <LayoutDashboard className="h-5 w-5" />
             </button>
             <div className="min-w-0">
               <p className="hidden text-xs font-semibold text-gray-500 sm:block">
-                Vendor Center / {onStoreProfile ? 'Store Profile' : 'Overview'}
+                {t('vendor.breadcrumb', { section: t(section) })}
               </p>
               <h1 className="truncate text-lg font-extrabold sm:text-xl">
-                {onStoreProfile ? 'Store Profile' : 'Vendor Dashboard'}
+                {onStoreProfile || onPlatformFees ? t(section) : t('vendor.dashboard')}
               </h1>
             </div>
 
             <div className="relative ml-auto hidden w-full max-w-sm xl:block">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
-              <input type="search" placeholder="Search orders, customers, products…" className="w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-10 pr-4 text-sm focus:border-honey focus:bg-white focus:outline-none" />
+              <input type="search" placeholder={t('vendor.searchPlaceholder')} className="w-full rounded-xl border border-gray-200 bg-gray-50 py-2.5 pl-10 pr-4 text-sm focus:border-honey focus:bg-white focus:outline-none" />
             </div>
 
             <div ref={topActions} className="flex items-center gap-3">
@@ -416,14 +450,14 @@ export function VendorDashboardPage() {
                   className="hidden items-center gap-2 rounded-xl bg-honey px-4 py-2.5 text-sm font-extrabold hover:bg-amber sm:flex"
                 >
                   <Plus className="h-4 w-4" />
-                  Create New
+                  {t('vendor.createNew')}
                   <ChevronDown className={`h-4 w-4 transition-transform ${openMenu === 'create' ? 'rotate-180' : ''}`} />
                 </button>
 
                 {openMenu === 'create' && (
                   <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-72 rounded-2xl border border-gray-300 bg-white py-2 shadow-2xl ring-1 ring-charcoal/10">
                     <div className="flex items-center justify-between gap-2 border-b border-gray-100 px-4 pb-2 pt-1">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">Create</span>
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">{t('vendor.create')}</span>
                       <MenuCloseButton onClose={() => setOpenMenu(null)} />
                     </div>
                     {createMenu.map(({ label, hint, icon: Icon }) => (
@@ -437,14 +471,21 @@ export function VendorDashboardPage() {
                           <Icon className="h-4 w-4" />
                         </span>
                         <span className="min-w-0">
-                          <span className="block text-sm font-bold text-charcoal">{label}</span>
-                          <span className="block text-xs text-gray-500">{hint}</span>
+                          <span className="block text-sm font-bold text-charcoal">{t(label)}</span>
+                          <span className="block text-xs text-gray-500">{t(hint)}</span>
                         </span>
                       </button>
                     ))}
                   </div>
                 )}
               </div>
+
+              <LanguageMenu
+                open={openMenu === 'language'}
+                onToggle={() => toggleMenu('language')}
+                onClose={() => setOpenMenu(null)}
+                buttonClassName="flex items-center gap-1 rounded-xl border border-gray-200 p-2.5 hover:bg-gray-50"
+              />
 
               {/* Messages menu */}
               <div className="relative hidden md:block">
@@ -453,7 +494,7 @@ export function VendorDashboardPage() {
                   aria-haspopup="menu"
                   aria-expanded={openMenu === 'messages'}
                   className="relative rounded-xl border border-gray-200 p-2.5 hover:bg-gray-50"
-                  aria-label="Messages"
+                  aria-label={t('vendor.navMessages')}
                 >
                   <MessageSquareText className="h-5 w-5" />
                   {msgCount > 0 && (
@@ -466,9 +507,9 @@ export function VendorDashboardPage() {
                 {openMenu === 'messages' && (
                   <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-80 rounded-2xl border border-gray-300 bg-white py-2 shadow-2xl ring-1 ring-charcoal/10 sm:w-96">
                     <div className="flex items-center justify-between border-b border-gray-100 px-4 py-2">
-                      <h3 className="text-sm font-extrabold text-charcoal">Messages</h3>
+                      <h3 className="text-sm font-extrabold text-charcoal">{t('vendor.navMessages')}</h3>
                       <div className="flex items-center gap-2">
-                        <button onClick={() => setMsgCount(0)} className="text-xs font-bold text-[#8A5900] hover:underline">Mark as read</button>
+                        <button onClick={() => setMsgCount(0)} className="text-xs font-bold text-[#8A5900] hover:underline">{t('vendor.markAsRead')}</button>
                         <MenuCloseButton onClose={() => setOpenMenu(null)} />
                       </div>
                     </div>
@@ -492,7 +533,7 @@ export function VendorDashboardPage() {
                       ))}
                     </div>
                     <div className="border-t border-gray-100 px-4 py-2 text-center">
-                      <a href="#" className="text-xs font-bold text-charcoal hover:text-amber">Open inbox</a>
+                      <a href="#" className="text-xs font-bold text-charcoal hover:text-amber">{t('vendor.openInbox')}</a>
                     </div>
                   </div>
                 )}
@@ -505,7 +546,7 @@ export function VendorDashboardPage() {
                   aria-haspopup="menu"
                   aria-expanded={openMenu === 'notifications'}
                   className="relative rounded-xl border border-gray-200 p-2.5 hover:bg-gray-50"
-                  aria-label="Notifications"
+                  aria-label={t('admin.notifications')}
                 >
                   <Bell className="h-5 w-5" />
                   {notifCount > 0 && (
@@ -518,9 +559,9 @@ export function VendorDashboardPage() {
                 {openMenu === 'notifications' && (
                   <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-80 rounded-2xl border border-gray-300 bg-white py-2 shadow-2xl ring-1 ring-charcoal/10 sm:w-96">
                     <div className="flex items-center justify-between border-b border-gray-100 px-4 py-2">
-                      <h3 className="text-sm font-extrabold text-charcoal">Notifications</h3>
+                      <h3 className="text-sm font-extrabold text-charcoal">{t('admin.notifications')}</h3>
                       <div className="flex items-center gap-2">
-                        <button onClick={() => setNotifCount(0)} className="text-xs font-bold text-[#8A5900] hover:underline">Mark all read</button>
+                        <button onClick={() => setNotifCount(0)} className="text-xs font-bold text-[#8A5900] hover:underline">{t('admin.markAllRead')}</button>
                         <MenuCloseButton onClose={() => setOpenMenu(null)} />
                       </div>
                     </div>
@@ -543,7 +584,7 @@ export function VendorDashboardPage() {
                       ))}
                     </div>
                     <div className="border-t border-gray-100 px-4 py-2 text-center">
-                      <a href="#" className="text-xs font-bold text-charcoal hover:text-amber">View all activity</a>
+                      <a href="#" className="text-xs font-bold text-charcoal hover:text-amber">{t('vendor.viewAllActivity')}</a>
                     </div>
                   </div>
                 )}
@@ -555,13 +596,13 @@ export function VendorDashboardPage() {
                   onClick={() => toggleMenu('profile')}
                   aria-haspopup="menu"
                   aria-expanded={openMenu === 'profile'}
-                  aria-label="Account menu"
+                  aria-label={t('admin.accountMenu')}
                   className="flex items-center gap-2 rounded-xl p-1.5 hover:bg-gray-50"
                 >
-                  <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80" alt={`${user?.name ?? 'Vendor'} profile`} className="h-9 w-9 rounded-xl object-cover" />
+                  <Avatar user={user} className="h-9 w-9 shrink-0 rounded-xl" fallbackTone="bg-honey text-charcoal" />
                   <span className="hidden text-left lg:block">
-                    <span className="block text-sm font-extrabold">{(user?.name ?? 'Vendor').split(' ')[0]}</span>
-                    <span className="block text-[11px] text-gray-500">Owner</span>
+                    <span className="block text-sm font-extrabold">{(user?.name ?? t('vendor.vendor')).split(' ')[0]}</span>
+                    <span className="block text-[11px] text-gray-500">{t('vendor.owner')}</span>
                   </span>
                   <ChevronDown className={`hidden h-4 w-4 transition-transform lg:block ${openMenu === 'profile' ? 'rotate-180' : ''}`} />
                 </button>
@@ -570,7 +611,7 @@ export function VendorDashboardPage() {
                   <div role="menu" onKeyDown={handleMenuKeys} className="absolute right-0 z-50 mt-2 w-64 rounded-2xl border border-gray-300 bg-white py-2 shadow-2xl ring-1 ring-charcoal/10">
                     <div className="flex items-start justify-between gap-2 border-b border-gray-100 px-4 py-2.5">
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-extrabold text-charcoal">{user?.name ?? 'Vendor'}</p>
+                        <p className="truncate text-sm font-extrabold text-charcoal">{user?.name ?? t('vendor.vendor')}</p>
                         <p className="truncate text-[11px] text-gray-500">{user?.email ?? ''}</p>
                         <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-softyellow px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#8A5900]">
                           <BadgeCheck className="h-3 w-3" />
@@ -590,8 +631,8 @@ export function VendorDashboardPage() {
                         >
                           <Icon className="h-4 w-4 shrink-0 text-gray-500" />
                           <span className="min-w-0">
-                            <span className="block text-sm font-semibold text-charcoal">{label}</span>
-                            <span className="block text-[11px] text-gray-500">{hint}</span>
+                            <span className="block text-sm font-semibold text-charcoal">{t(label)}</span>
+                            <span className="block text-[11px] text-gray-500">{t(hint)}</span>
                           </span>
                         </a>
                       ))}
@@ -603,7 +644,7 @@ export function VendorDashboardPage() {
                         className="flex w-full items-center gap-3 px-4 py-2 text-sm font-semibold text-danger transition hover:bg-red-50"
                       >
                         <LogOut className="h-4 w-4" />
-                        <span>Sign Out</span>
+                        <span>{t('auth.signOut')}</span>
                       </button>
                     </div>
                   </div>
@@ -613,7 +654,7 @@ export function VendorDashboardPage() {
           </div>
         </header>
 
-        {onStoreProfile ? <StoreProfilePage /> : (
+        {onStoreProfile ? <StoreProfilePage /> : onPlatformFees ? <PpfBreakdownPage embedded /> : (
         <main className="p-4 sm:p-6">
           <section className="grid gap-5 xl:grid-cols-[1.7fr_1fr]">
             <article className="relative overflow-hidden rounded-3xl bg-charcoal p-6 text-white shadow-soft sm:p-8">
@@ -621,13 +662,13 @@ export function VendorDashboardPage() {
               <div className="relative">
                 <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-honey/30 bg-honey/10 px-3 py-1.5 text-xs font-bold text-honey">
                   <Sparkles className="h-4 w-4" />
-                  <span>Wednesday, September 17, 2026</span>
+                  <span>{new Date().toLocaleDateString(locale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
                 </div>
-                <h2 className="text-3xl font-extrabold sm:text-4xl">Good morning, Joey!</h2>
-                <p className="mt-2 max-w-xl text-gray-300">Here’s what’s happening with Golden Hive Market today.</p>
+                <h2 className="text-3xl font-extrabold sm:text-4xl">{t('vendor.greeting', { name: (user?.name ?? t('vendor.vendor')).split(' ')[0] })}</h2>
+                <p className="mt-2 max-w-xl text-gray-300">{t('vendor.greetingIntro', { store: STORE_NAME })}</p>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <button className="rounded-xl border border-white/30 px-4 py-2.5 text-sm font-bold hover:bg-white hover:text-charcoal">View Store</button>
-                  <button className="rounded-xl bg-honey px-4 py-2.5 text-sm font-extrabold text-charcoal hover:bg-amber">Add Product or Service</button>
+                  <button className="rounded-xl border border-white/30 px-4 py-2.5 text-sm font-bold hover:bg-white hover:text-charcoal">{t('vendor.viewStore')}</button>
+                  <button className="rounded-xl bg-honey px-4 py-2.5 text-sm font-extrabold text-charcoal hover:bg-amber">{t('vendor.addProductOrService')}</button>
                 </div>
               </div>
             </article>
@@ -635,8 +676,8 @@ export function VendorDashboardPage() {
             <article className="rounded-3xl border border-gray-200 bg-white p-6 shadow-soft">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-gray-500">Store setup</p>
-                  <h2 className="mt-1 text-2xl font-extrabold">82% complete</h2>
+                  <p className="text-sm font-semibold text-gray-500">{t('vendor.storeSetup')}</p>
+                  <h2 className="mt-1 text-2xl font-extrabold">{t('vendor.percentComplete', { percent: 82 })}</h2>
                 </div>
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-softyellow text-amber">
                   <Store className="h-6 w-6" />
@@ -646,28 +687,28 @@ export function VendorDashboardPage() {
                 <div className="h-full w-[82%] rounded-full bg-honey" />
               </div>
               <ul className="mt-4 space-y-2 text-sm text-gray-600">
-                {['Add payment information', 'Complete return policy', 'Upload storefront banner'].map((item) => (
+                {(['vendor.setupPayment', 'vendor.setupReturnPolicy', 'vendor.setupBanner'] as const).map((item) => (
                   <li key={item} className="flex gap-2">
                     <span className="mt-1 h-3 w-3 rounded-full bg-amber" />
-                    {item}
+                    {t(item)}
                   </li>
                 ))}
               </ul>
-              <button className="mt-5 w-full rounded-xl bg-charcoal py-2.5 text-sm font-extrabold text-white hover:bg-black">Complete Setup</button>
+              <button className="mt-5 w-full rounded-xl bg-charcoal py-2.5 text-sm font-extrabold text-white hover:bg-black">{t('vendor.completeSetup')}</button>
             </article>
           </section>
 
-          <section className="mt-6" aria-label="Key performance indicators">
+          <section className="mt-6" aria-label={t('vendor.kpiLabel')}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
-              {kpis.map(({ label, value, delta, tone }) => (
+              {kpis.map(({ label, value, delta, tone, icon: Icon }) => (
                 <article key={label} className="rounded-2xl border border-gray-200 bg-white p-4 shadow-soft">
                   <div className="flex items-center justify-between">
                     <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${tone}`}>
-                      {label.includes('Revenue') ? <DollarSign className="h-5 w-5" /> : label.includes('Orders') ? <ShoppingBag className="h-5 w-5" /> : label.includes('Bookings') ? <CalendarCheck2 className="h-5 w-5" /> : label.includes('Visitors') ? <Users className="h-5 w-5" /> : label.includes('Conversion') ? <TrendingUp className="h-5 w-5" /> : <Star className="h-5 w-5" />}
+                      <Icon className="h-5 w-5" />
                     </span>
                     <span className="text-xs font-bold text-gray-500">↗</span>
                   </div>
-                  <p className="mt-4 text-sm font-semibold text-gray-500">{label}</p>
+                  <p className="mt-4 text-sm font-semibold text-gray-500">{t(label)}</p>
                   <strong className="mt-1 block text-2xl font-extrabold">{value}</strong>
                   <p className="mt-2 text-xs font-bold text-success">{delta}</p>
                 </article>
@@ -679,8 +720,8 @@ export function VendorDashboardPage() {
             <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-soft sm:p-6">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p className="text-sm font-bold text-gray-500">Performance</p>
-                  <h2 className="text-xl font-extrabold">Sales Overview</h2>
+                  <p className="text-sm font-bold text-gray-500">{t('vendor.performance')}</p>
+                  <h2 className="text-xl font-extrabold">{t('vendor.salesOverview')}</h2>
                   <div className="mt-2 flex items-end gap-2">
                     <span className="text-3xl font-extrabold">$24,860</span>
                     <span className="mb-1 text-xs font-bold text-success">↗ 12.5%</span>
@@ -688,12 +729,12 @@ export function VendorDashboardPage() {
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <select className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm font-bold">
-                    <option>Last 30 Days</option>
-                    <option>Last 7 Days</option>
-                    <option>Last 90 Days</option>
+                    <option>{t('vendor.last30Days')}</option>
+                    <option>{t('vendor.last7Days')}</option>
+                    <option>{t('vendor.last90Days')}</option>
                   </select>
                   <button className="rounded-xl border border-gray-200 px-3 py-2 text-sm font-bold hover:bg-gray-50">
-                    <Download className="mr-1 inline h-4 w-4" />Report
+                    <Download className="mr-1 inline h-4 w-4" />{t('vendor.report')}
                   </button>
                 </div>
               </div>
@@ -710,8 +751,8 @@ export function VendorDashboardPage() {
 
             <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-soft sm:p-6">
               <div>
-                <p className="text-sm font-bold text-gray-500">Sources</p>
-                <h2 className="text-xl font-extrabold">Revenue Breakdown</h2>
+                <p className="text-sm font-bold text-gray-500">{t('vendor.sources')}</p>
+                <h2 className="text-xl font-extrabold">{t('vendor.revenueBreakdown')}</h2>
               </div>
               <div className="mt-4 flex justify-center">
                 <div className="relative flex h-52 w-52 items-center justify-center rounded-full bg-[conic-gradient(#F7B928_0_58%,#242424_58%_85%,#2563EB_85%_94%,#E5E7EB_94%_100%)]">
@@ -719,33 +760,33 @@ export function VendorDashboardPage() {
                 </div>
               </div>
               <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
-                <div className="rounded-xl bg-gray-50 p-3"><span className="text-gray-500">Gross revenue</span><strong className="mt-1 block">$28,920</strong></div>
-                <div className="rounded-xl bg-gray-50 p-3"><span className="text-gray-500">Marketplace fees</span><strong className="mt-1 block">−$2,315</strong></div>
-                <div className="rounded-xl bg-gray-50 p-3"><span className="text-gray-500">Refunds</span><strong className="mt-1 block">−$1,745</strong></div>
-                <div className="rounded-xl bg-softyellow p-3"><span className="text-[#735000]">Net earnings</span><strong className="mt-1 block">$24,860</strong></div>
+                <div className="rounded-xl bg-gray-50 p-3"><span className="text-gray-500">{t('vendor.grossRevenue')}</span><strong className="mt-1 block">$28,920</strong></div>
+                <div className="rounded-xl bg-gray-50 p-3"><span className="text-gray-500">{t('vendor.marketplaceFees')}</span><strong className="mt-1 block">−$2,315</strong></div>
+                <div className="rounded-xl bg-gray-50 p-3"><span className="text-gray-500">{t('vendor.refunds')}</span><strong className="mt-1 block">−$1,745</strong></div>
+                <div className="rounded-xl bg-softyellow p-3"><span className="text-[#735000]">{t('vendor.netEarnings')}</span><strong className="mt-1 block">$24,860</strong></div>
               </div>
             </article>
           </section>
 
-          <section className="mt-6 rounded-3xl border border-gray-200 bg-white shadow-soft" aria-label="Recent orders">
+          <section className="mt-6 rounded-3xl border border-gray-200 bg-white shadow-soft" aria-label={t('vendor.recentOrders')}>
             <div className="flex flex-col gap-4 border-b p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
               <div>
-                <p className="text-sm font-bold text-gray-500">Commerce</p>
-                <h2 className="text-xl font-extrabold">Recent Orders</h2>
+                <p className="text-sm font-bold text-gray-500">{t('vendor.commerce')}</p>
+                <h2 className="text-xl font-extrabold">{t('vendor.recentOrders')}</h2>
               </div>
               <div className="flex flex-wrap gap-2">
                 <label className="relative flex-1 sm:flex-none">
-                  <span className="sr-only">Search orders</span>
+                  <span className="sr-only">{t('vendor.searchOrders')}</span>
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
-                  <input type="search" placeholder="Search orders" className="w-full rounded-xl border border-gray-200 py-2 pl-9 pr-3 text-sm sm:w-48" />
+                  <input type="search" placeholder={t('vendor.searchOrders')} className="w-full rounded-xl border border-gray-200 py-2 pl-9 pr-3 text-sm sm:w-48" />
                 </label>
                 <select className="rounded-xl border border-gray-200 px-3 py-2 text-sm">
-                  <option>All statuses</option>
-                  <option>Paid</option>
-                  <option>Pending</option>
-                  <option>Refunded</option>
+                  <option>{t('vendor.allStatuses')}</option>
+                  <option>{t('vendor.statusPaid')}</option>
+                  <option>{t('vendor.statusPending')}</option>
+                  <option>{t('vendor.statusRefunded')}</option>
                 </select>
-                <button className="rounded-xl bg-charcoal px-3 py-2 text-sm font-bold text-white">View All</button>
+                <button className="rounded-xl bg-charcoal px-3 py-2 text-sm font-bold text-white">{t('vendor.viewAll')}</button>
               </div>
             </div>
 
@@ -753,14 +794,14 @@ export function VendorDashboardPage() {
               <table className="w-full min-w-[950px] text-left text-sm">
                 <thead className="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
                   <tr>
-                    <th className="px-6 py-4">Order</th>
-                    <th className="px-4 py-4">Customer</th>
-                    <th className="px-4 py-4">Product</th>
-                    <th className="px-4 py-4">Date</th>
-                    <th className="px-4 py-4">Amount</th>
-                    <th className="px-4 py-4">Payment</th>
-                    <th className="px-4 py-4">Fulfillment</th>
-                    <th className="px-4 py-4 text-right">Actions</th>
+                    <th className="px-6 py-4">{t('vendor.colOrder')}</th>
+                    <th className="px-4 py-4">{t('vendor.colCustomer')}</th>
+                    <th className="px-4 py-4">{t('vendor.colProduct')}</th>
+                    <th className="px-4 py-4">{t('vendor.colDate')}</th>
+                    <th className="px-4 py-4">{t('vendor.colAmount')}</th>
+                    <th className="px-4 py-4">{t('vendor.colPayment')}</th>
+                    <th className="px-4 py-4">{t('vendor.colFulfillment')}</th>
+                    <th className="px-4 py-4 text-right">{t('vendor.colActions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y">
@@ -775,7 +816,7 @@ export function VendorDashboardPage() {
                       </td>
                       <td className="px-4 py-4 text-gray-600">{product}</td>
                       <td className="px-4 py-4 text-gray-500">{date}</td>
-                      <td className="px-4 py-4 font-bold">{formatMoney(amount)}</td>
+                      <td className="px-4 py-4 font-bold">{formatMoney(amount, locale)}</td>
                       <td className="px-4 py-4"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-bold ${getBadgeClass(payment)}`}>{payment}</span></td>
                       <td className="px-4 py-4"><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-bold ${getBadgeClass(status)}`}>{status}</span></td>
                       <td className="px-4 py-4 text-right"><button className="rounded-lg p-2 hover:bg-gray-100"><ChevronRight className="h-4 w-4" /></button></td>
@@ -790,8 +831,8 @@ export function VendorDashboardPage() {
             <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-soft sm:p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-bold text-gray-500">Schedule</p>
-                  <h2 className="text-xl font-extrabold">Upcoming Bookings</h2>
+                  <p className="text-sm font-bold text-gray-500">{t('vendor.schedule')}</p>
+                  <h2 className="text-xl font-extrabold">{t('vendor.upcomingBookings')}</h2>
                 </div>
                 <div className="flex rounded-xl bg-gray-100 p-1">
                   <button className="rounded-lg bg-white p-2 shadow-sm"><CalendarCheck2 className="h-4 w-4" /></button>
@@ -813,8 +854,8 @@ export function VendorDashboardPage() {
                     </div>
                     <strong>{value}</strong>
                     <div className="flex gap-2">
-                      <button className="rounded-lg border px-3 py-2 text-xs font-bold">Details</button>
-                      <button className="rounded-lg bg-charcoal px-3 py-2 text-xs font-bold text-white">Message</button>
+                      <button className="rounded-lg border px-3 py-2 text-xs font-bold">{t('vendor.details')}</button>
+                      <button className="rounded-lg bg-charcoal px-3 py-2 text-xs font-bold text-white">{t('vendor.message')}</button>
                     </div>
                   </div>
                 ))}
@@ -824,20 +865,20 @@ export function VendorDashboardPage() {
             <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-soft sm:p-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm font-bold text-gray-500">Catalog</p>
-                  <h2 className="text-xl font-extrabold">Inventory Overview</h2>
+                  <p className="text-sm font-bold text-gray-500">{t('vendor.catalog')}</p>
+                  <h2 className="text-xl font-extrabold">{t('vendor.inventoryOverview')}</h2>
                 </div>
-                <button className="rounded-xl bg-honey px-4 py-2 text-sm font-extrabold hover:bg-amber"><Plus className="mr-1 inline h-4 w-4" />Add Product</button>
+                <button className="rounded-xl bg-honey px-4 py-2 text-sm font-extrabold hover:bg-amber"><Plus className="mr-1 inline h-4 w-4" />{t('vendor.addProduct')}</button>
               </div>
               <div className="mt-4 grid grid-cols-4 gap-2 text-center text-xs">
-                <div className="rounded-xl bg-gray-50 p-2"><strong className="block text-lg">42</strong>Active</div>
-                <div className="rounded-xl bg-red-50 p-2 text-danger"><strong className="block text-lg">2</strong>Out</div>
-                <div className="rounded-xl bg-amber-50 p-2 text-[#8A5900]"><strong className="block text-lg">5</strong>Low</div>
-                <div className="rounded-xl bg-gray-50 p-2"><strong className="block text-lg">7</strong>Drafts</div>
+                <div className="rounded-xl bg-gray-50 p-2"><strong className="block text-lg">42</strong>{t('vendor.invActive')}</div>
+                <div className="rounded-xl bg-red-50 p-2 text-danger"><strong className="block text-lg">2</strong>{t('vendor.invOut')}</div>
+                <div className="rounded-xl bg-amber-50 p-2 text-[#8A5900]"><strong className="block text-lg">5</strong>{t('vendor.invLow')}</div>
+                <div className="rounded-xl bg-gray-50 p-2"><strong className="block text-lg">7</strong>{t('vendor.invDrafts')}</div>
               </div>
               <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-[#735000]">
                 <span className="mt-0.5 text-lg">⚠</span>
-                <span>Seven products need inventory attention.</span>
+                <span>{t('vendor.inventoryWarning')}</span>
               </div>
               <div className="mt-3 space-y-3">
                 {inventory.map((item) => (
@@ -845,11 +886,11 @@ export function VendorDashboardPage() {
                     <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=100&q=80" alt={item.name} className="h-11 w-11 rounded-xl object-cover" />
                     <div className="min-w-0 flex-1">
                       <strong className="block truncate text-sm">{item.name}</strong>
-                      <span className="text-xs text-gray-500">{item.sku} · {formatMoney(item.price)}</span>
+                      <span className="text-xs text-gray-500">{item.sku} · {formatMoney(item.price, locale)}</span>
                     </div>
                     <div className="text-right">
-                      <strong className={`block text-sm ${item.units === 0 ? 'text-danger' : item.units <= item.threshold ? 'text-[#8A5900]' : ''}`}>{item.units} units</strong>
-                      <span className="text-[11px] text-gray-500">Threshold {item.threshold}</span>
+                      <strong className={`block text-sm ${item.units === 0 ? 'text-danger' : item.units <= item.threshold ? 'text-[#8A5900]' : ''}`}>{t('vendor.units', { count: item.units })}</strong>
+                      <span className="text-[11px] text-gray-500">{t('vendor.threshold', { count: item.threshold })}</span>
                     </div>
                   </div>
                 ))}
@@ -861,13 +902,13 @@ export function VendorDashboardPage() {
             <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-soft sm:p-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm font-bold text-gray-500">Performance</p>
-                  <h2 className="text-xl font-extrabold">Top-performing Listings</h2>
+                  <p className="text-sm font-bold text-gray-500">{t('vendor.performance')}</p>
+                  <h2 className="text-xl font-extrabold">{t('vendor.topListings')}</h2>
                 </div>
                 <div className="flex rounded-xl bg-gray-100 p-1">
                   {(['All', 'Product', 'Service'] as const).map((filter) => (
                     <button key={filter} className={`rounded-lg px-3 py-1.5 text-xs font-bold ${activeFilter === filter ? 'bg-charcoal text-white' : ''}`} onClick={() => setActiveFilter(filter)}>
-                      {filter}
+                      {t(`vendor.filter${filter}` as MessageKey)}
                     </button>
                   ))}
                 </div>
@@ -881,11 +922,11 @@ export function VendorDashboardPage() {
                         <strong className="truncate text-sm">{listing.name}</strong>
                         <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-gray-500">{listing.type}</span>
                       </div>
-                      <p className="mt-1 text-xs text-gray-500">{listing.views.toLocaleString()} views · {listing.sales} orders · {listing.conversion} conversion</p>
+                      <p className="mt-1 text-xs text-gray-500">{t('vendor.listingStats', { views: listing.views.toLocaleString(locale), sales: listing.sales, conversion: listing.conversion })}</p>
                     </div>
                     <div className="text-right">
                       <strong className="block text-sm">{listing.revenue}</strong>
-                      <span className={`text-xs ${listing.trend === 'up' ? 'text-success' : 'text-danger'}`}>{listing.trend === 'up' ? '↑' : '↓'} trend</span>
+                      <span className={`text-xs ${listing.trend === 'up' ? 'text-success' : 'text-danger'}`}>{listing.trend === 'up' ? '↑' : '↓'} {t('vendor.trend')}</span>
                     </div>
                   </div>
                 ))}
@@ -894,19 +935,19 @@ export function VendorDashboardPage() {
 
             <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-soft sm:p-6">
               <div>
-                <p className="text-sm font-bold text-gray-500">Audience</p>
-                <h2 className="text-xl font-extrabold">Customer Activity</h2>
+                <p className="text-sm font-bold text-gray-500">{t('vendor.audience')}</p>
+                <h2 className="text-xl font-extrabold">{t('vendor.customerActivity')}</h2>
               </div>
               <div className="mt-5 grid grid-cols-2 gap-3">
-                <div className="rounded-xl bg-gray-50 p-3"><span className="text-xs text-gray-500">New customers</span><strong className="mt-1 block text-xl">186</strong></div>
-                <div className="rounded-xl bg-gray-50 p-3"><span className="text-xs text-gray-500">Returning</span><strong className="mt-1 block text-xl">124</strong></div>
-                <div className="rounded-xl bg-gray-50 p-3"><span className="text-xs text-gray-500">Repeat rate</span><strong className="mt-1 block text-xl">40%</strong></div>
-                <div className="rounded-xl bg-softyellow p-3"><span className="text-xs text-[#735000]">Avg. value</span><strong className="mt-1 block text-xl">$80.19</strong></div>
+                <div className="rounded-xl bg-gray-50 p-3"><span className="text-xs text-gray-500">{t('vendor.newCustomers')}</span><strong className="mt-1 block text-xl">186</strong></div>
+                <div className="rounded-xl bg-gray-50 p-3"><span className="text-xs text-gray-500">{t('vendor.returning')}</span><strong className="mt-1 block text-xl">124</strong></div>
+                <div className="rounded-xl bg-gray-50 p-3"><span className="text-xs text-gray-500">{t('vendor.repeatRate')}</span><strong className="mt-1 block text-xl">40%</strong></div>
+                <div className="rounded-xl bg-softyellow p-3"><span className="text-xs text-[#735000]">{t('vendor.avgValue')}</span><strong className="mt-1 block text-xl">$80.19</strong></div>
               </div>
               <div className="mt-5 h-3 overflow-hidden rounded-full bg-gray-100">
                 <div className="h-full w-[60%] bg-honey" />
               </div>
-              <div className="mt-2 flex justify-between text-xs text-gray-500"><span>60% new</span><span>40% returning</span></div>
+              <div className="mt-2 flex justify-between text-xs text-gray-500"><span>{t('vendor.percentNew', { percent: 60 })}</span><span>{t('vendor.percentReturning', { percent: 40 })}</span></div>
               <div className="mt-5 space-y-3">
                 {customerFeed.map(({ title, time }) => (
                   <div key={title} className="flex items-center gap-3">
@@ -925,8 +966,8 @@ export function VendorDashboardPage() {
             <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-soft sm:p-6">
               <div className="flex flex-wrap items-start justify-between gap-5">
                 <div>
-                  <p className="text-sm font-bold text-gray-500">Reputation</p>
-                  <h2 className="text-xl font-extrabold">Reviews & Ratings</h2>
+                  <p className="text-sm font-bold text-gray-500">{t('vendor.reputation')}</p>
+                  <h2 className="text-xl font-extrabold">{t('vendor.reviewsRatings')}</h2>
                   <div className="mt-3 flex items-center gap-3">
                     <span className="text-4xl font-extrabold">4.9</span>
                     <div>
@@ -935,13 +976,13 @@ export function VendorDashboardPage() {
                           <Star key={index} className="h-4 w-4 fill-current" />
                         ))}
                       </div>
-                      <p className="mt-1 text-xs text-gray-500">327 reviews</p>
+                      <p className="mt-1 text-xs text-gray-500">{t('vendor.reviewCount', { count: 327 })}</p>
                     </div>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div className="rounded-xl bg-gray-50 p-3"><span className="text-gray-500">Response rate</span><strong className="block text-lg">96%</strong></div>
-                  <div className="rounded-xl bg-gray-50 p-3"><span className="text-gray-500">Avg. response</span><strong className="block text-lg">42 min</strong></div>
+                  <div className="rounded-xl bg-gray-50 p-3"><span className="text-gray-500">{t('vendor.responseRate')}</span><strong className="block text-lg">96%</strong></div>
+                  <div className="rounded-xl bg-gray-50 p-3"><span className="text-gray-500">{t('vendor.avgResponse')}</span><strong className="block text-lg">42 min</strong></div>
                 </div>
               </div>
             </article>
@@ -949,14 +990,14 @@ export function VendorDashboardPage() {
             <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-soft sm:p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-bold text-gray-500">Inbox</p>
-                  <h2 className="text-xl font-extrabold">Messages</h2>
+                  <p className="text-sm font-bold text-gray-500">{t('vendor.inbox')}</p>
+                  <h2 className="text-xl font-extrabold">{t('vendor.navMessages')}</h2>
                 </div>
-                <button className="text-sm font-extrabold text-[#8A5900] hover:underline">View All</button>
+                <button className="text-sm font-extrabold text-[#8A5900] hover:underline">{t('vendor.viewAll')}</button>
               </div>
               <label className="relative mt-4 block">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
-                <input value={messageSearch} onChange={(event) => setMessageSearch(event.target.value)} type="search" placeholder="Search conversations" className="w-full rounded-xl border border-gray-200 py-2.5 pl-9 pr-3 text-sm" />
+                <input value={messageSearch} onChange={(event) => setMessageSearch(event.target.value)} type="search" placeholder={t('vendor.searchConversations')} className="w-full rounded-xl border border-gray-200 py-2.5 pl-9 pr-3 text-sm" />
               </label>
               <div className="mt-3 divide-y">
                 {['Mia Carter', 'Ethan Clark', 'Priya Shah', 'Marcus Lee'].filter((person) => person.toLowerCase().includes(messageSearch.toLowerCase())).map((person) => (
@@ -982,27 +1023,27 @@ export function VendorDashboardPage() {
             <article className="rounded-3xl border border-gray-200 bg-charcoal p-5 text-white shadow-soft sm:p-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm font-bold text-gray-400">Financial summary</p>
-                  <h2 className="text-xl font-extrabold">Available balance</h2>
+                  <p className="text-sm font-bold text-gray-400">{t('vendor.financialSummary')}</p>
+                  <h2 className="text-xl font-extrabold">{t('vendor.availableBalance')}</h2>
                   <p className="mt-2 text-4xl font-extrabold text-honey">$8,462.38</p>
                 </div>
-                <button className="rounded-xl bg-honey px-4 py-2.5 text-sm font-extrabold text-charcoal hover:bg-amber">Withdraw Funds</button>
+                <button className="rounded-xl bg-honey px-4 py-2.5 text-sm font-extrabold text-charcoal hover:bg-amber">{t('vendor.withdrawFunds')}</button>
               </div>
               <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <div className="rounded-xl bg-white/[.07] p-3"><span className="text-xs text-gray-400">Pending</span><strong className="mt-1 block">$1,280.00</strong></div>
-                <div className="rounded-xl bg-white/[.07] p-3"><span className="text-xs text-gray-400">Next payout</span><strong className="mt-1 block">$2,840.15</strong></div>
-                <div className="rounded-xl bg-white/[.07] p-3"><span className="text-xs text-gray-400">Payout date</span><strong className="mt-1 block">Sep 22</strong></div>
-                <div className="rounded-xl bg-white/[.07] p-3"><span className="text-xs text-gray-400">Lifetime</span><strong className="mt-1 block">$142,806</strong></div>
+                <div className="rounded-xl bg-white/[.07] p-3"><span className="text-xs text-gray-400">{t('vendor.statusPending')}</span><strong className="mt-1 block">$1,280.00</strong></div>
+                <div className="rounded-xl bg-white/[.07] p-3"><span className="text-xs text-gray-400">{t('vendor.nextPayout')}</span><strong className="mt-1 block">$2,840.15</strong></div>
+                <div className="rounded-xl bg-white/[.07] p-3"><span className="text-xs text-gray-400">{t('vendor.payoutDate')}</span><strong className="mt-1 block">Sep 22</strong></div>
+                <div className="rounded-xl bg-white/[.07] p-3"><span className="text-xs text-gray-400">{t('vendor.lifetime')}</span><strong className="mt-1 block">$142,806</strong></div>
               </div>
             </article>
 
             <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-soft sm:p-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm font-bold text-gray-500">Marketing</p>
-                  <h2 className="text-xl font-extrabold">Promotions & Advertising</h2>
+                  <p className="text-sm font-bold text-gray-500">{t('vendor.marketing')}</p>
+                  <h2 className="text-xl font-extrabold">{t('vendor.promotionsAdvertising')}</h2>
                 </div>
-                <button className="rounded-xl bg-honey px-4 py-2 text-sm font-extrabold hover:bg-amber">Create Promotion</button>
+                <button className="rounded-xl bg-honey px-4 py-2 text-sm font-extrabold hover:bg-amber">{t('vendor.createPromotion')}</button>
               </div>
               <div className="mt-5 space-y-4">
                 {[
@@ -1027,20 +1068,22 @@ export function VendorDashboardPage() {
           <section className="mt-6 grid gap-5 2xl:grid-cols-[1.35fr_1fr]">
             <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-soft sm:p-6">
               <div>
-                <p className="text-sm font-bold text-gray-500">Personalized guidance</p>
-                <h2 className="text-xl font-extrabold">Insights for Your Business</h2>
+                <p className="text-sm font-bold text-gray-500">{t('vendor.personalizedGuidance')}</p>
+                <h2 className="text-xl font-extrabold">{t('vendor.insights')}</h2>
               </div>
               <div className="mt-5 grid gap-3 md:grid-cols-2">
-                {[
-                  ['High', 'Restock your best-selling product', 'Wireless Headphones may sell out within two days.'],
-                  ['High', 'Respond to unanswered reviews', 'Three customers are waiting for a response.'],
-                  ['Medium', 'Promote high-view listings', 'Two listings get traffic but convert below average.'],
-                  ['Medium', 'Add service availability', 'Two services have no dates after next week.'],
-                ].map(([priority, title, description]) => (
+                {([
+                  ['high', 'vendor.insightRestock', 'vendor.insightRestockBody'],
+                  ['high', 'vendor.insightReviews', 'vendor.insightReviewsBody'],
+                  ['medium', 'vendor.insightPromote', 'vendor.insightPromoteBody'],
+                  ['medium', 'vendor.insightAvailability', 'vendor.insightAvailabilityBody'],
+                ] as const).map(([priority, title, description]) => (
                   <div key={title} className="rounded-2xl border border-gray-100 p-4">
-                    <span className={`inline-flex rounded-full px-2 py-1 text-[10px] font-extrabold ${priority === 'High' ? 'bg-red-50 text-danger' : 'bg-amber-50 text-[#8A5900]'}`}>{priority} PRIORITY</span>
-                    <h3 className="mt-3 font-extrabold">{title}</h3>
-                    <p className="mt-1 text-sm text-gray-600">{description}</p>
+                    <span className={`inline-flex rounded-full px-2 py-1 text-[10px] font-extrabold ${priority === 'high' ? 'bg-red-50 text-danger' : 'bg-amber-50 text-[#8A5900]'}`}>
+                      {t('vendor.priorityLabel', { level: priority === 'high' ? t('vendor.priorityHigh') : t('vendor.priorityMedium') })}
+                    </span>
+                    <h3 className="mt-3 font-extrabold">{t(title)}</h3>
+                    <p className="mt-1 text-sm text-gray-600">{t(description)}</p>
                   </div>
                 ))}
               </div>
@@ -1049,26 +1092,26 @@ export function VendorDashboardPage() {
             <article className="rounded-3xl border border-gray-200 bg-white p-5 shadow-soft sm:p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-bold text-gray-500">Stay on track</p>
-                  <h2 className="text-xl font-extrabold">Tasks & Reminders</h2>
+                  <p className="text-sm font-bold text-gray-500">{t('vendor.stayOnTrack')}</p>
+                  <h2 className="text-xl font-extrabold">{t('vendor.tasksReminders')}</h2>
                 </div>
                 <button className="text-xs font-bold text-[#8A5900] hover:underline" onClick={() => setShowCompleted((current) => !current)}>
-                  {showCompleted ? 'Hide completed' : 'Show completed'}
+                  {showCompleted ? t('vendor.hideCompleted') : t('vendor.showCompleted')}
                 </button>
               </div>
               <form onSubmit={addTask} className="mt-4 flex gap-2">
-                <input name="task" required maxLength={80} placeholder="Add a new task" className="min-w-0 flex-1 rounded-xl border border-gray-200 px-3 py-2.5 text-sm" />
-                <button className="rounded-xl bg-charcoal px-4 text-sm font-bold text-white">Add</button>
+                <input name="task" required maxLength={80} placeholder={t('vendor.addTask')} className="min-w-0 flex-1 rounded-xl border border-gray-200 px-3 py-2.5 text-sm" />
+                <button className="rounded-xl bg-charcoal px-4 text-sm font-bold text-white">{t('common.add')}</button>
               </form>
               <div className="mt-4 space-y-2">
                 {visibleTasks.length === 0 ? (
-                  <div className="py-8 text-center text-sm text-gray-500">No tasks to show.</div>
+                  <div className="py-8 text-center text-sm text-gray-500">{t('vendor.noTasks')}</div>
                 ) : (
                   visibleTasks.map((task) => (
                     <div key={task.id} className={`flex items-center gap-3 rounded-xl border border-gray-100 p-3 ${task.done ? 'opacity-55' : ''}`}>
                       <input type="checkbox" checked={task.done} onChange={() => toggleTask(task.id)} className="h-4 w-4" />
                       <span className={`min-w-0 flex-1 text-sm ${task.done ? 'line-through' : ''}`}>{task.text}</span>
-                      <button className="rounded-lg p-1.5 text-gray-400 hover:bg-red-50 hover:text-danger" onClick={() => setTaskList((current) => current.filter((item) => item.id !== task.id))}>×</button>
+                      <button className="rounded-lg p-1.5 text-gray-400 hover:bg-red-50 hover:text-danger" onClick={() => setTaskList((current) => current.filter((item) => item.id !== task.id))} aria-label={t('vendor.removeTask')}>×</button>
                     </div>
                   ))
                 )}
@@ -1080,14 +1123,14 @@ export function VendorDashboardPage() {
 
         <footer className="mt-6 border-t border-gray-200 bg-white px-6 py-6 text-xs text-gray-500">
           <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
-            <p>© 2026 AsBeez Marketplace · Vendor Center v2.4.0</p>
+            <p>{t('vendor.footerCopy', { year: new Date().getFullYear(), version: '2.4.0' })}</p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="#" className="hover:text-charcoal">Privacy Policy</a>
-              <a href="#" className="hover:text-charcoal">Vendor Terms</a>
-              <a href="#" className="hover:text-charcoal">Help Center</a>
-              <span className="inline-flex items-center gap-2 text-success"><span className="h-2 w-2 rounded-full bg-success" />System Operational</span>
+              <a href="#" className="hover:text-charcoal">{t('vendor.privacyPolicy')}</a>
+              <a href="#" className="hover:text-charcoal">{t('vendor.vendorTerms')}</a>
+              <a href="#" className="hover:text-charcoal">{t('vendor.helpCenter')}</a>
+              <span className="inline-flex items-center gap-2 text-success"><span className="h-2 w-2 rounded-full bg-success" />{t('vendor.systemOperational')}</span>
             </div>
-            <p className="font-bold text-charcoal">Powered by As<span className="text-amber">Beez</span></p>
+            <p className="font-bold text-charcoal">{t('vendor.poweredBy')} As<span className="text-amber">Beez</span></p>
           </div>
         </footer>
       </div>

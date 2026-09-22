@@ -34,7 +34,7 @@ class PasswordController extends Controller
         }
 
         return response()->json([
-            'message' => 'If that address has an account, a reset link is on its way.',
+            'message' => __('app.auth.reset_sent'),
         ]);
     }
 
@@ -64,7 +64,7 @@ class PasswordController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Your password has been reset. Please sign in.']);
+        return response()->json(['message' => __('app.auth.reset_done')]);
     }
 
     /**
@@ -82,7 +82,7 @@ class PasswordController extends Controller
 
         if (! Hash::check($validated['current_password'], $user->password)) {
             throw ValidationException::withMessages([
-                'current_password' => ['The provided password is incorrect.'],
+                'current_password' => [__('app.auth.password_incorrect')],
             ]);
         }
 
@@ -91,6 +91,6 @@ class PasswordController extends Controller
         $currentTokenId = $request->user()->currentAccessToken()->getKey();
         $user->tokens()->whereKeyNot($currentTokenId)->delete();
 
-        return response()->json(['message' => 'Password updated.']);
+        return response()->json(['message' => __('app.auth.password_updated')]);
     }
 }

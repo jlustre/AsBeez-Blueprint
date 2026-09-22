@@ -39,6 +39,24 @@ export function dashboardHashFor(role: UserRole): string {
     return '#member-dashboard';
 }
 
+/**
+ * Where a visitor was headed when a gate sent them to sign in.
+ *
+ * Lives here because `enter()` is what consumes it: any route may set it, but
+ * exactly one place gets to decide what happens after a successful sign in.
+ */
+export const RETURN_HASH_KEY = 'asbeez_return_hash';
+
+/** Remembers the intended destination before bouncing someone to sign in. */
+export function rememberReturnHash(hash: string = window.location.hash): void {
+    try {
+        window.sessionStorage.setItem(RETURN_HASH_KEY, hash);
+    } catch {
+        // Storage blocked. Signing in still works; it just lands on the
+        // dashboard instead of coming back here.
+    }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
@@ -66,6 +84,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     function enter(authenticatedUser: User) {
         setUser(authenticatedUser);
+
+        try {
+            const pending = window.sessionStorage.getItem(RETURN_HASH_KEY);
+
+            if (pending) {
+                window.sessionStorage.removeItem(RETURN_HASH_KEY);
+                window.location.hash = pending;
+                return authenticatedUser;
+            }
+        } catch {
+            // Storage blocked; fall through to the role dashboard.
+        }
+
         window.location.hash = dashboardHashFor(authenticatedUser.role);
         return authenticatedUser;
     }

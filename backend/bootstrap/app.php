@@ -13,6 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Runs on every API request, after authentication so a signed-in
+        // member's saved language is available to it.
+        $middleware->appendToGroup('api', [
+            \App\Http\Middleware\SetLocale::class,
+            \App\Http\Middleware\TouchLastActive::class,
+        ]);
+
         $middleware->alias([
             'role' => \App\Http\Middleware\EnsureUserHasRole::class,
         ]);

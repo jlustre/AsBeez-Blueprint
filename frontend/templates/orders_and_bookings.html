@@ -1,0 +1,754 @@
+<main class="min-h-screen bg-amber-50/40 pb-28 text-slate-900 lg:pb-12"> <div class="mx-auto max-w-[1600px] space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+
+<!-- Page Header -->
+<header class="space-y-5">
+  <nav aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-2 text-sm text-slate-500">
+      <li><a href="/admin" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Dashboard</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/admin/orders" class="rounded hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500">Sales</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="font-medium text-slate-800" aria-current="page">Orders &amp; Bookings</li>
+    </ol>
+  </nav>
+
+  <div class="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+    <div>
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-400 text-slate-950 shadow-sm">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M6 7h15l-1.5 9h-12z"/><path d="M6 7 5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M10 11h7M13.5 8v6"/>
+          </svg>
+        </span>
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Orders &amp; Bookings</h1>
+          <p class="mt-1 max-w-3xl text-sm leading-6 text-slate-600">Monitor marketplace transactions, product fulfillment, service appointments, payments, refunds, and customer issues.</p>
+        </div>
+      </div>
+      <div class="mt-3 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600">
+        <svg class="h-4 w-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+        September 1–20, 2026
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+      <a href="/admin/orders/export" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v3h16v-3"/></svg>
+        Export
+      </a>
+      <a href="/admin/orders/create" class="inline-flex items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-100 px-4 py-2.5 text-sm font-semibold text-amber-950 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Create Order
+      </a>
+      <a href="/admin/bookings/create" class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2.5 text-sm font-bold text-slate-950 shadow-sm hover:bg-amber-400 active:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M12 14v4M10 16h4"/></svg>
+        Create Booking
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Statistics -->
+<section aria-labelledby="overview-heading">
+  <div class="mb-3 flex items-center justify-between">
+    <h2 id="overview-heading" class="text-lg font-bold text-slate-950">Transaction overview</h2>
+    <span class="text-xs font-medium text-slate-500">Compared with previous period</span>
+  </div>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <a href="/admin/orders" class="group rounded-2xl border border-amber-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500">
+      <div class="flex items-start justify-between">
+        <span class="rounded-xl bg-amber-100 p-2.5 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16v13H4zM8 7V4h8v3"/><path d="M8 12h8"/></svg></span>
+        <span class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700">↑ 12.4%</span>
+      </div>
+      <p class="mt-4 text-sm font-medium text-slate-500">Total transactions</p>
+      <p class="mt-1 text-2xl font-bold">2,846</p>
+      <p class="mt-2 text-xs text-slate-500 group-hover:text-amber-700">View all transactions →</p>
+    </a>
+
+    <a href="/admin/orders?type=product" class="group rounded-2xl border border-amber-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500">
+      <div class="flex items-start justify-between">
+        <span class="rounded-xl bg-orange-100 p-2.5 text-orange-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m4 7 8-4 8 4-8 4z"/><path d="M4 7v10l8 4 8-4V7M12 11v10"/></svg></span>
+        <span class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700">↑ 9.8%</span>
+      </div>
+      <p class="mt-4 text-sm font-medium text-slate-500">Product orders</p>
+      <p class="mt-1 text-2xl font-bold">1,932</p>
+      <p class="mt-2 text-xs text-slate-500 group-hover:text-amber-700">View product orders →</p>
+    </a>
+
+    <a href="/admin/bookings" class="group rounded-2xl border border-blue-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <div class="flex items-start justify-between">
+        <span class="rounded-xl bg-blue-100 p-2.5 text-blue-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 15h2M14 15h2"/></svg></span>
+        <span class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700">↑ 18.2%</span>
+      </div>
+      <p class="mt-4 text-sm font-medium text-slate-500">Service bookings</p>
+      <p class="mt-1 text-2xl font-bold">914</p>
+      <p class="mt-2 text-xs text-slate-500 group-hover:text-blue-700">View service bookings →</p>
+    </a>
+
+    <a href="/admin/reports/sales" class="group rounded-2xl border border-amber-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500">
+      <div class="flex items-start justify-between">
+        <span class="rounded-xl bg-emerald-100 p-2.5 text-emerald-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v20M17 6.5c0-2-2-3-5-3s-5 1.3-5 3 1.3 2.5 5 3.5 5 2 5 4-2 3.5-5 3.5-5-1.5-5-3.5"/></svg></span>
+        <span class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-bold text-emerald-700">↑ 15.1%</span>
+      </div>
+      <p class="mt-4 text-sm font-medium text-slate-500">Gross transaction value</p>
+      <p class="mt-1 text-2xl font-bold">$428,760</p>
+      <p class="mt-2 text-xs text-slate-500 group-hover:text-amber-700">Open sales report →</p>
+    </a>
+
+    <a href="/admin/orders?fulfillment=pending" class="group rounded-2xl border border-amber-100 bg-white p-5 shadow-sm transition hover:border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-amber-100 p-2.5 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="9"/></svg></span><span class="text-xs font-bold text-rose-600">↑ 6.2%</span></div>
+      <p class="mt-4 text-sm text-slate-500">Pending fulfillment</p><p class="mt-1 text-2xl font-bold">138</p><p class="mt-2 text-xs text-amber-700">Review queue →</p>
+    </a>
+    <a href="/admin/bookings?status=upcoming" class="group rounded-2xl border border-blue-100 bg-white p-5 shadow-sm transition hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-blue-100 p-2.5 text-blue-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 2v4M16 2v4M3 9h18M5 4h14a2 2 0 0 1 2 2v15H3V6a2 2 0 0 1 2-2Z"/><path d="m9 15 2 2 4-5"/></svg></span><span class="text-xs font-bold text-emerald-700">↑ 11.7%</span></div>
+      <p class="mt-4 text-sm text-slate-500">Upcoming appointments</p><p class="mt-1 text-2xl font-bold">76</p><p class="mt-2 text-xs text-blue-700">Open calendar →</p>
+    </a>
+    <a href="/admin/refunds" class="group rounded-2xl border border-rose-100 bg-white p-5 shadow-sm transition hover:border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-rose-100 p-2.5 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 7H4v5"/><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8"/></svg></span><span class="text-xs font-bold text-emerald-700">↓ 3.1%</span></div>
+      <p class="mt-4 text-sm text-slate-500">Refund requests</p><p class="mt-1 text-2xl font-bold">24</p><p class="mt-2 text-xs text-rose-700">Review requests →</p>
+    </a>
+    <a href="/admin/disputes" class="group rounded-2xl border border-rose-100 bg-white p-5 shadow-sm transition hover:border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-500">
+      <div class="flex items-start justify-between"><span class="rounded-xl bg-rose-100 p-2.5 text-rose-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.6 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z"/></svg></span><span class="text-xs font-bold text-slate-500">— 0%</span></div>
+      <p class="mt-4 text-sm text-slate-500">Active disputes</p><p class="mt-1 text-2xl font-bold">9</p><p class="mt-2 text-xs text-rose-700">Resolve disputes →</p>
+    </a>
+  </div>
+</section>
+
+<!-- Alerts -->
+<section aria-labelledby="alerts-heading" class="rounded-2xl border border-rose-200 bg-rose-50 p-5 shadow-sm">
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div>
+      <div class="flex items-center gap-2">
+        <svg class="h-5 w-5 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.6 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z"/></svg>
+        <h2 id="alerts-heading" class="font-bold text-rose-950">12 transactions need attention</h2>
+      </div>
+      <p class="mt-1 text-sm text-rose-800">Prioritized by customer impact and resolution deadline.</p>
+    </div>
+    <a href="/admin/orders?attention=required" class="text-sm font-bold text-rose-700 hover:text-rose-900 focus:outline-none focus:underline">View attention queue →</a>
+  </div>
+  <div class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+    <a href="/admin/orders/ASB-10482" class="rounded-xl border border-rose-200 bg-white p-3 hover:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-500"><p class="text-xs font-bold uppercase text-rose-600">Payment failed</p><p class="mt-1 text-sm font-semibold">ASB-10482 · $286.40</p><p class="mt-1 text-xs text-slate-500">Retry or contact customer</p></a>
+    <a href="/admin/orders/ASB-10451" class="rounded-xl border border-rose-200 bg-white p-3 hover:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-500"><p class="text-xs font-bold uppercase text-rose-600">Shipment overdue</p><p class="mt-1 text-sm font-semibold">ASB-10451 · 3 days late</p><p class="mt-1 text-xs text-slate-500">Contact Honey Home Goods</p></a>
+    <a href="/admin/bookings/BKG-6094" class="rounded-xl border border-amber-200 bg-white p-3 hover:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500"><p class="text-xs font-bold uppercase text-amber-700">Provider unassigned</p><p class="mt-1 text-sm font-semibold">BKG-6094 · Starts in 4 hours</p><p class="mt-1 text-xs text-slate-500">Assign a qualified provider</p></a>
+    <a href="/admin/disputes/DSP-204" class="rounded-xl border border-rose-200 bg-white p-3 hover:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-500"><p class="text-xs font-bold uppercase text-rose-600">Response overdue</p><p class="mt-1 text-sm font-semibold">DSP-204 · Due today</p><p class="mt-1 text-xs text-slate-500">Review evidence and respond</p></a>
+  </div>
+</section>
+
+<!-- Navigation Tabs -->
+<nav aria-label="Transaction categories" class="overflow-x-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-sm">
+  <div class="flex min-w-max gap-1">
+    <a href="/admin/orders" aria-current="page" class="rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-amber-500">All Transactions <span class="ml-1 rounded-full bg-white/20 px-2 py-0.5 text-xs">2,846</span></a>
+    <a href="/admin/orders?type=product" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-amber-50 hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500">Product Orders <span class="ml-1 text-xs">1,932</span></a>
+    <a href="/admin/bookings" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">Service Bookings <span class="ml-1 text-xs">914</span></a>
+    <a href="/admin/orders?status=pending" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Pending <span class="ml-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800">138</span></a>
+    <a href="/admin/orders?status=in-progress" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">In Progress <span class="ml-1 text-xs">86</span></a>
+    <a href="/admin/orders?status=completed" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Completed</a>
+    <a href="/admin/orders?status=cancelled" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Cancelled <span class="ml-1 text-xs">31</span></a>
+    <a href="/admin/refunds" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-rose-50 focus:outline-none focus:ring-2 focus:ring-rose-500">Refunds <span class="ml-1 rounded-full bg-rose-100 px-2 py-0.5 text-xs text-rose-700">24</span></a>
+    <a href="/admin/disputes" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-rose-50 focus:outline-none focus:ring-2 focus:ring-rose-500">Disputes <span class="ml-1 rounded-full bg-rose-100 px-2 py-0.5 text-xs text-rose-700">9</span></a>
+  </div>
+</nav>
+
+<!-- Filters -->
+<section aria-labelledby="filters-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h2 id="filters-heading" class="font-bold text-slate-950">Search and filters</h2>
+      <p class="mt-1 text-sm text-slate-500">Find transactions using customer, vendor, payment, location, or operational details.</p>
+    </div>
+    <div class="flex gap-2">
+      <button type="button" class="rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500">Reset filters</button>
+      <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Save filter</button>
+    </div>
+  </div>
+
+  <form class="mt-5 space-y-4" action="/admin/orders" method="get">
+    <div>
+      <label for="transaction-search" class="sr-only">Search orders and bookings</label>
+      <div class="relative">
+        <svg class="pointer-events-none absolute left-3 top-3 h-5 w-5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="transaction-search" name="search" type="search" placeholder="Search order or booking number, customer, vendor, product, or service…" class="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-4 text-sm placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200">
+      </div>
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+      <div><label for="type" class="mb-1 block text-xs font-semibold text-slate-600">Transaction type</label><select id="type" name="type" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All types</option><option>Product order</option><option>Service booking</option></select></div>
+      <div><label for="status" class="mb-1 block text-xs font-semibold text-slate-600">Overall status</label><select id="status" name="status" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All statuses</option><option>New</option><option>Confirmed</option><option>In Progress</option><option>Completed</option><option>Cancelled</option><option>On Hold</option></select></div>
+      <div><label for="payment-status" class="mb-1 block text-xs font-semibold text-slate-600">Payment status</label><select id="payment-status" name="payment_status" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any payment</option><option>Paid</option><option>Pending</option><option>Authorized</option><option>Failed</option><option>Refunded</option></select></div>
+      <div><label for="fulfillment" class="mb-1 block text-xs font-semibold text-slate-600">Fulfillment</label><select id="fulfillment" name="fulfillment" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any fulfillment</option><option>Unfulfilled</option><option>Processing</option><option>Shipped</option><option>Delivered</option><option>Ready for pickup</option></select></div>
+      <div><label for="appointment" class="mb-1 block text-xs font-semibold text-slate-600">Appointment</label><select id="appointment" name="appointment" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any appointment</option><option>Scheduled</option><option>Provider assigned</option><option>In progress</option><option>Completed</option><option>No-show</option></select></div>
+      <div><label for="category" class="mb-1 block text-xs font-semibold text-slate-600">Category</label><select id="category" name="category" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All categories</option><option>Home &amp; Garden</option><option>Electronics</option><option>Cleaning Services</option><option>Consulting</option><option>Beauty &amp; Wellness</option></select></div>
+      <div><label for="vendor" class="mb-1 block text-xs font-semibold text-slate-600">Vendor</label><input id="vendor" name="vendor" type="text" placeholder="Vendor or store" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="customer" class="mb-1 block text-xs font-semibold text-slate-600">Customer</label><input id="customer" name="customer" type="text" placeholder="Name or email" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="payment-method" class="mb-1 block text-xs font-semibold text-slate-600">Payment method</label><select id="payment-method" name="payment_method" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>All methods</option><option>Visa</option><option>Mastercard</option><option>PayPal</option><option>Apple Pay</option><option>Manual payment</option></select></div>
+      <div><label for="delivery-method" class="mb-1 block text-xs font-semibold text-slate-600">Delivery method</label><select id="delivery-method" name="delivery_method" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any method</option><option>Shipping</option><option>Local delivery</option><option>Pickup</option><option>Digital</option></select></div>
+      <div><label for="booking-type" class="mb-1 block text-xs font-semibold text-slate-600">Booking type</label><select id="booking-type" name="booking_type" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any type</option><option>At customer location</option><option>In-store</option><option>Virtual</option></select></div>
+      <div><label for="assigned-staff" class="mb-1 block text-xs font-semibold text-slate-600">Assigned staff</label><select id="assigned-staff" name="staff" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Anyone</option><option>Unassigned</option><option>Maya Chen</option><option>Daniel Reyes</option></select></div>
+      <div><label for="date-from" class="mb-1 block text-xs font-semibold text-slate-600">Date from</label><input id="date-from" name="date_from" type="date" value="2026-09-01" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="date-to" class="mb-1 block text-xs font-semibold text-slate-600">Date to</label><input id="date-to" name="date_to" type="date" value="2026-09-20" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="minimum-amount" class="mb-1 block text-xs font-semibold text-slate-600">Minimum amount</label><input id="minimum-amount" name="min_amount" type="number" min="0" placeholder="$0" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="maximum-amount" class="mb-1 block text-xs font-semibold text-slate-600">Maximum amount</label><input id="maximum-amount" name="max_amount" type="number" min="0" placeholder="No maximum" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="location" class="mb-1 block text-xs font-semibold text-slate-600">Location</label><input id="location" name="location" type="text" placeholder="Country, state, or city" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></div>
+      <div><label for="risk" class="mb-1 block text-xs font-semibold text-slate-600">Risk flag</label><select id="risk" name="risk" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any risk</option><option>Low</option><option>Medium</option><option>High</option><option>Manual review</option></select></div>
+      <div><label for="dispute" class="mb-1 block text-xs font-semibold text-slate-600">Dispute status</label><select id="dispute" name="dispute" class="w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Any dispute status</option><option>None</option><option>Open</option><option>Awaiting response</option><option>Resolved</option></select></div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
+      <div class="flex flex-wrap gap-2" aria-label="Active filters">
+        <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">Date: Sep 1–20 <button type="button" aria-label="Remove date filter" class="rounded-full hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500">×</button></span>
+        <span class="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-900">Type: All <button type="button" aria-label="Remove transaction type filter" class="rounded-full hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500">×</button></span>
+      </div>
+      <button type="submit" class="rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">Apply Filters</button>
+    </div>
+  </form>
+</section>
+
+<!-- Transactions Table -->
+<section aria-labelledby="transactions-heading" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+  <div class="flex flex-col gap-3 border-b border-slate-200 p-5 xl:flex-row xl:items-center xl:justify-between">
+    <div>
+      <h2 id="transactions-heading" class="font-bold text-slate-950">Orders and bookings</h2>
+      <p class="mt-1 text-sm text-slate-500">Showing 1–7 of 2,846 transactions</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <label for="bulk-action" class="sr-only">Bulk action</label>
+      <select id="bulk-action" class="rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500">
+        <option>Bulk actions</option><option>Update status</option><option>Assign staff</option><option>Export selected</option><option>Send customer update</option><option>Send vendor update</option><option>Archive selected</option><option>Cancel selected</option>
+      </select>
+      <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Apply</button>
+      <label for="sort" class="sr-only">Sort transactions</label>
+      <select id="sort" class="rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Newest first</option><option>Oldest first</option><option>Highest value</option><option>Attention required</option></select>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-[1450px] w-full text-left text-sm">
+      <caption class="sr-only">Marketplace product orders and service bookings</caption>
+      <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
+        <tr>
+          <th scope="col" class="px-4 py-3"><label for="select-all" class="sr-only">Select all transactions</label><input id="select-all" type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></th>
+          <th scope="col" class="px-4 py-3">Transaction</th>
+          <th scope="col" class="px-4 py-3">Type</th>
+          <th scope="col" class="px-4 py-3">Customer</th>
+          <th scope="col" class="px-4 py-3">Vendor</th>
+          <th scope="col" class="px-4 py-3">Item or service</th>
+          <th scope="col" class="px-4 py-3">Date &amp; time</th>
+          <th scope="col" class="px-4 py-3">Total</th>
+          <th scope="col" class="px-4 py-3">Payment</th>
+          <th scope="col" class="px-4 py-3">Fulfillment / appointment</th>
+          <th scope="col" class="px-4 py-3">Status</th>
+          <th scope="col" class="px-4 py-3 text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr class="bg-amber-50/50 hover:bg-amber-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select order ASB-10492" checked class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/orders/ASB-10492" class="font-bold text-slate-950 hover:text-amber-700">ASB-10492</a><p class="mt-1 text-xs text-slate-500">Created Sep 20, 9:42 AM</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-800">Product order</span></td>
+          <td class="px-4 py-4"><div class="flex items-center gap-2"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-xs font-bold">MR</span><div><p class="font-semibold">Maria Reyes</p><p class="text-xs text-slate-500">maria@example.com</p></div></div></td>
+          <td class="px-4 py-4"><p class="font-semibold">BeeWell Market</p><p class="text-xs text-slate-500">Verified vendor</p></td>
+          <td class="px-4 py-4"><div class="flex items-center gap-2"><span class="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-100 text-amber-700"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m4 7 8-4 8 4-8 4z"/><path d="M4 7v10l8 4 8-4V7"/></svg></span><div><p class="max-w-44 truncate font-medium">Organic Wellness Bundle</p><p class="text-xs text-slate-500">3 items</p></div></div></td>
+          <td class="px-4 py-4"><p>Sep 20, 2026</p><p class="text-xs text-slate-500">9:42 AM</p></td>
+          <td class="px-4 py-4 font-bold">$164.75 <span class="text-xs font-normal text-slate-500">USD</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">Paid</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700">Processing</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">Confirmed</span></td>
+          <td class="px-4 py-4"><div class="flex items-center justify-end gap-2"><a href="/admin/orders/ASB-10492" class="font-bold text-amber-700 hover:text-amber-900">View Details</a><button type="button" aria-label="More actions for order ASB-10492" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></button></div></td>
+        </tr>
+
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select booking BKG-6102" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/bookings/BKG-6102" class="font-bold hover:text-blue-700">BKG-6102</a><p class="mt-1 text-xs text-slate-500">Created Sep 20, 8:15 AM</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-800">Home service</span></td>
+          <td class="px-4 py-4"><div class="flex items-center gap-2"><span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">JL</span><div><p class="font-semibold">Jordan Lee</p><p class="text-xs text-slate-500">Returning customer</p></div></div></td>
+          <td class="px-4 py-4"><p class="font-semibold">BrightHive Cleaning</p><p class="text-xs text-slate-500">Provider: Ana Cruz</p></td>
+          <td class="px-4 py-4"><p class="font-medium">Deep Home Cleaning</p><p class="text-xs text-slate-500">3 hours · 2 add-ons</p></td>
+          <td class="px-4 py-4"><p>Sep 21, 2026</p><p class="text-xs text-slate-500">10:00 AM–1:00 PM</p></td>
+          <td class="px-4 py-4 font-bold">$220.00 <span class="text-xs font-normal text-slate-500">USD</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">Authorized</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">Provider Assigned</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-indigo-100 px-2.5 py-1 text-xs font-bold text-indigo-700">Scheduled</span></td>
+          <td class="px-4 py-4"><div class="flex items-center justify-end gap-2"><a href="/admin/bookings/BKG-6102" class="font-bold text-blue-700 hover:text-blue-900">View Details</a><button type="button" aria-label="More actions for booking BKG-6102" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">•••</button></div></td>
+        </tr>
+
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select order ASB-10488" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/orders/ASB-10488" class="font-bold hover:text-amber-700">ASB-10488</a><p class="text-xs text-slate-500">Sep 19, 6:30 PM</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-violet-100 px-2.5 py-1 text-xs font-bold text-violet-700">Digital order</span></td>
+          <td class="px-4 py-4"><p class="font-semibold">Nina Patel</p><p class="text-xs text-slate-500">New customer</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">DesignBee Studio</p></td>
+          <td class="px-4 py-4"><p class="font-medium">Brand Starter Templates</p><p class="text-xs text-slate-500">Digital download</p></td>
+          <td class="px-4 py-4"><p>Sep 19, 2026</p><p class="text-xs text-slate-500">6:30 PM</p></td>
+          <td class="px-4 py-4 font-bold">$49.00</td>
+          <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">Paid</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">Delivered</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">Completed</span></td>
+          <td class="px-4 py-4 text-right"><a href="/admin/orders/ASB-10488" class="font-bold text-amber-700">View Details</a></td>
+        </tr>
+
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select booking BKG-6098" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/bookings/BKG-6098" class="font-bold hover:text-blue-700">BKG-6098</a><p class="text-xs text-slate-500">Sep 19, 2:11 PM</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">Virtual consultation</span></td>
+          <td class="px-4 py-4"><p class="font-semibold">Samuel Wong</p><p class="text-xs text-slate-500">3 prior bookings</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">BizHive Advisors</p></td>
+          <td class="px-4 py-4"><p class="font-medium">Business Strategy Call</p><p class="text-xs text-slate-500">60 minutes</p></td>
+          <td class="px-4 py-4"><p>Sep 22, 2026</p><p class="text-xs text-slate-500">1:00–2:00 PM</p></td>
+          <td class="px-4 py-4 font-bold">$125.00</td>
+          <td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-700">Pending</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">Scheduled</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-700">New</span></td>
+          <td class="px-4 py-4 text-right"><a href="/admin/bookings/BKG-6098" class="font-bold text-blue-700">View Details</a></td>
+        </tr>
+
+        <tr class="hover:bg-rose-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select order ASB-10482" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/orders/ASB-10482" class="font-bold hover:text-rose-700">ASB-10482</a><p class="text-xs font-medium text-rose-600">Payment issue</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-800">Delivery order</span></td>
+          <td class="px-4 py-4"><p class="font-semibold">Chris Morgan</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">TechNest Supply</p></td>
+          <td class="px-4 py-4"><p class="font-medium">Smart Home Hub</p><p class="text-xs text-slate-500">2 items</p></td>
+          <td class="px-4 py-4"><p>Sep 19, 2026</p><p class="text-xs text-slate-500">11:40 AM</p></td>
+          <td class="px-4 py-4 font-bold">$286.40</td>
+          <td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-bold text-rose-700">Failed</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-700">On Hold</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-bold text-rose-700">Action Required</span></td>
+          <td class="px-4 py-4 text-right"><a href="/admin/orders/ASB-10482" class="font-bold text-rose-700">Resolve</a></td>
+        </tr>
+
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select order ASB-10476" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/orders/ASB-10476" class="font-bold hover:text-amber-700">ASB-10476</a><p class="text-xs text-slate-500">Sep 18, 4:05 PM</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700">Pickup order</span></td>
+          <td class="px-4 py-4"><p class="font-semibold">Evelyn Brooks</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">Honey Home Goods</p></td>
+          <td class="px-4 py-4"><p class="font-medium">Artisan Kitchen Set</p><p class="text-xs text-slate-500">1 item</p></td>
+          <td class="px-4 py-4"><p>Sep 20, 2026</p><p class="text-xs text-slate-500">Pickup after 3 PM</p></td>
+          <td class="px-4 py-4 font-bold">$89.95</td>
+          <td class="px-4 py-4"><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">Paid</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-800">Ready for Pickup</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">Confirmed</span></td>
+          <td class="px-4 py-4 text-right"><a href="/admin/orders/ASB-10476" class="font-bold text-amber-700">View Details</a></td>
+        </tr>
+
+        <tr class="hover:bg-slate-50">
+          <td class="px-4 py-4"><input type="checkbox" aria-label="Select booking BKG-6089" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"></td>
+          <td class="px-4 py-4"><a href="/admin/bookings/BKG-6089" class="font-bold hover:text-blue-700">BKG-6089</a><p class="text-xs text-slate-500">Sep 18, 10:20 AM</p></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">In-store appointment</span></td>
+          <td class="px-4 py-4"><p class="font-semibold">Olivia Martin</p></td>
+          <td class="px-4 py-4"><p class="font-semibold">GlowBee Wellness</p></td>
+          <td class="px-4 py-4"><p class="font-medium">Signature Facial</p><p class="text-xs text-slate-500">90 minutes</p></td>
+          <td class="px-4 py-4"><p>Sep 18, 2026</p><p class="text-xs text-slate-500">10:30 AM–12:00 PM</p></td>
+          <td class="px-4 py-4 font-bold">$140.00</td>
+          <td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-bold text-rose-700">Partially Refunded</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-700">No-show</span></td>
+          <td class="px-4 py-4"><span class="rounded-full bg-rose-100 px-2.5 py-1 text-xs font-bold text-rose-700">Disputed</span></td>
+          <td class="px-4 py-4 text-right"><a href="/admin/disputes/DSP-204" class="font-bold text-rose-700">Review Dispute</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex flex-col gap-3 border-t border-slate-200 p-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex items-center gap-2 text-sm text-slate-600">
+      <label for="rows-per-page">Rows per page</label>
+      <select id="rows-per-page" class="rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>10</option><option>25</option><option>50</option><option>100</option></select>
+    </div>
+    <nav aria-label="Transaction pagination" class="flex items-center gap-1">
+      <a href="/admin/orders?page=1" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Previous</a>
+      <a href="/admin/orders?page=1" aria-current="page" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white">1</a>
+      <a href="/admin/orders?page=2" class="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-100">2</a>
+      <a href="/admin/orders?page=3" class="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-100">3</a>
+      <span class="px-2 text-slate-400">…</span>
+      <a href="/admin/orders?page=285" class="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-100">285</a>
+      <a href="/admin/orders?page=2" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Next</a>
+    </nav>
+  </div>
+</section>
+
+<!-- Selected Transaction -->
+<section aria-labelledby="selected-heading" class="overflow-hidden rounded-2xl border border-amber-300 bg-white shadow-sm">
+  <div class="border-b border-amber-200 bg-gradient-to-r from-amber-100 via-amber-50 to-white p-5">
+    <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+      <div>
+        <div class="flex flex-wrap items-center gap-2">
+          <h2 id="selected-heading" class="text-xl font-bold">Order ASB-10492</h2>
+          <span class="rounded-full bg-amber-200 px-2.5 py-1 text-xs font-bold text-amber-900">Product Order</span>
+          <span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">Confirmed</span>
+          <span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">Paid</span>
+        </div>
+        <p class="mt-2 text-sm text-slate-600">Created September 20, 2026 at 9:42 AM · Updated 11 minutes ago</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/customers/4821" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">View Customer</a>
+        <a href="/admin/vendors/215" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">View Vendor</a>
+        <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Print</button>
+        <a href="/admin/orders/ASB-10492/invoice" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500">Download Invoice</a>
+        <button type="button" aria-label="More actions for selected order" class="rounded-lg border border-slate-300 bg-white p-2 text-slate-600 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">•••</button>
+      </div>
+    </div>
+  </div>
+
+  <dl class="grid gap-px bg-slate-200 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+    <div class="bg-white p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Customer</dt><dd class="mt-1 font-bold">Maria Reyes</dd><dd class="text-xs text-slate-500">maria@example.com · (415) 555-0184</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Vendor</dt><dd class="mt-1 font-bold">BeeWell Market</dd><dd class="text-xs text-slate-500">Vendor #V-0215</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Fulfillment</dt><dd class="mt-1 font-bold text-orange-700">Processing</dd><dd class="text-xs text-slate-500">Standard shipping</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Source</dt><dd class="mt-1 font-bold">AsBeez Web</dd><dd class="text-xs text-slate-500">Chrome · Desktop</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Admin owner</dt><dd class="mt-1 font-bold">Maya Chen</dd><dd class="text-xs text-slate-500">Normal priority</dd></div>
+    <div class="bg-white p-4"><dt class="text-xs font-semibold uppercase text-slate-500">Fraud risk</dt><dd class="mt-1 font-bold text-emerald-700">Low · 8/100</dd><dd class="text-xs text-slate-500">Automated checks passed</dd></div>
+  </dl>
+</section>
+
+<!-- Order and Booking Details -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="items-heading" class="rounded-2xl border border-slate-200 bg-white shadow-sm xl:col-span-2">
+    <div class="border-b border-slate-200 p-5"><h2 id="items-heading" class="font-bold">Order items</h2><p class="mt-1 text-sm text-slate-500">Products included in ASB-10492.</p></div>
+    <div class="overflow-x-auto">
+      <table class="min-w-[900px] w-full text-sm">
+        <caption class="sr-only">Products in selected order</caption>
+        <thead class="bg-slate-50 text-left text-xs uppercase text-slate-500"><tr><th scope="col" class="px-5 py-3">Product</th><th scope="col" class="px-4 py-3">Variant</th><th scope="col" class="px-4 py-3">Unit price</th><th scope="col" class="px-4 py-3">Qty</th><th scope="col" class="px-4 py-3">Discount</th><th scope="col" class="px-4 py-3">Tax</th><th scope="col" class="px-4 py-3">Total</th><th scope="col" class="px-4 py-3">Status</th></tr></thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr><td class="px-5 py-4"><div class="flex items-center gap-3"><span class="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100 text-amber-700"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 8h14l-1 13H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg></span><div><p class="font-bold">Raw Honey Wellness Set</p><p class="text-xs text-slate-500">SKU: BWM-HNY-SET · BeeWell Market</p></div></div></td><td class="px-4 py-4">Large · Gift box</td><td class="px-4 py-4">$59.00</td><td class="px-4 py-4">2</td><td class="px-4 py-4 text-emerald-700">−$11.80</td><td class="px-4 py-4">$9.29</td><td class="px-4 py-4 font-bold">$115.49</td><td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2 py-1 text-xs font-bold text-orange-700">Processing</span></td></tr>
+          <tr><td class="px-5 py-4"><div class="flex items-center gap-3"><span class="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 text-green-700"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21V9"/><path d="M12 13C7 13 4 10 4 5c5 0 8 3 8 8ZM12 16c5 0 8-3 8-8-5 0-8 3-8 8Z"/></svg></span><div><p class="font-bold">Bee Pollen Energy Blend</p><p class="text-xs text-slate-500">SKU: BWM-BP-250 · BeeWell Market</p></div></div></td><td class="px-4 py-4">250 g</td><td class="px-4 py-4">$39.00</td><td class="px-4 py-4">1</td><td class="px-4 py-4">—</td><td class="px-4 py-4">$3.42</td><td class="px-4 py-4 font-bold">$42.42</td><td class="px-4 py-4"><span class="rounded-full bg-orange-100 px-2 py-1 text-xs font-bold text-orange-700">Processing</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <aside aria-labelledby="totals-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="totals-heading" class="font-bold">Order totals</h2>
+    <dl class="mt-4 space-y-3 text-sm">
+      <div class="flex justify-between"><dt class="text-slate-500">Subtotal</dt><dd class="font-semibold">$157.00</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Discounts</dt><dd class="font-semibold text-emerald-700">−$11.80</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Shipping</dt><dd class="font-semibold">$9.95</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Tax</dt><dd class="font-semibold">$12.71</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Marketplace fee</dt><dd class="font-semibold">$19.77</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Vendor earnings</dt><dd class="font-semibold">$132.27</dd></div>
+      <div class="flex justify-between border-t border-slate-200 pt-3 text-base"><dt class="font-bold">Customer total</dt><dd class="font-bold">$167.86</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Amount paid</dt><dd class="font-bold text-emerald-700">$167.86</dd></div>
+      <div class="flex justify-between"><dt class="text-slate-500">Amount due</dt><dd class="font-bold">$0.00</dd></div>
+    </dl>
+  </aside>
+</div>
+
+<section aria-labelledby="booking-detail-heading" class="rounded-2xl border border-blue-200 bg-white p-5 shadow-sm">
+  <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+    <div>
+      <div class="flex flex-wrap items-center gap-2"><h2 id="booking-detail-heading" class="font-bold">Related booking detail example</h2><span class="rounded-full bg-blue-100 px-2.5 py-1 text-xs font-bold text-blue-700">BKG-6102</span></div>
+      <p class="mt-1 text-sm text-slate-500">Service-specific controls shown when a booking is selected.</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button type="button" class="rounded-lg bg-blue-600 px-3 py-2 text-sm font-bold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">Confirm Booking</button>
+      <button type="button" class="rounded-lg border border-blue-300 px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500">Assign Provider</button>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500">Reschedule</button>
+    </div>
+  </div>
+
+  <dl class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div><dt class="text-xs font-bold uppercase text-slate-500">Service</dt><dd class="mt-1 font-semibold">Deep Home Cleaning</dd><dd class="text-sm text-slate-500">Cleaning Services</dd></div>
+    <div><dt class="text-xs font-bold uppercase text-slate-500">Provider</dt><dd class="mt-1 font-semibold">Ana Cruz</dd><dd class="text-sm text-slate-500">BrightHive Cleaning</dd></div>
+    <div><dt class="text-xs font-bold uppercase text-slate-500">Schedule</dt><dd class="mt-1 font-semibold">Sep 21 · 10:00 AM–1:00 PM</dd><dd class="text-sm text-slate-500">3 hours · Pacific Time</dd></div>
+    <div><dt class="text-xs font-bold uppercase text-slate-500">Booking type</dt><dd class="mt-1 font-semibold">Customer location</dd><dd class="text-sm text-slate-500">San Francisco, CA</dd></div>
+    <div><dt class="text-xs font-bold uppercase text-slate-500">Assigned team member</dt><dd class="mt-1 font-semibold">Ana Cruz</dd><dd class="text-sm text-slate-500">1 provider · 1 attendee</dd></div>
+    <div><dt class="text-xs font-bold uppercase text-slate-500">Requirements</dt><dd class="mt-1 font-semibold">Pet-friendly products</dd><dd class="text-sm text-slate-500">Call before arrival</dd></div>
+    <div><dt class="text-xs font-bold uppercase text-slate-500">Add-ons</dt><dd class="mt-1 font-semibold">Inside oven · Refrigerator</dd><dd class="text-sm text-slate-500">+$45.00</dd></div>
+    <div><dt class="text-xs font-bold uppercase text-slate-500">Booking history</dt><dd class="mt-1 font-semibold">One-time · 0 reschedules</dd><dd class="text-sm text-slate-500">Not checked in</dd></div>
+  </dl>
+
+  <div class="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-4">
+    <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500">Mark Customer Arrived</button>
+    <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500">Start Service</button>
+    <button type="button" class="rounded-lg border border-emerald-300 px-3 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500">Mark Completed</button>
+    <button type="button" class="rounded-lg border border-orange-300 px-3 py-2 text-sm font-semibold text-orange-700 hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-500">Mark No-show</button>
+    <button type="button" class="rounded-lg border border-rose-300 px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50 focus:outline-none focus:ring-2 focus:ring-rose-500">Cancel Booking</button>
+  </div>
+</section>
+
+<!-- Operations -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="timeline-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="timeline-heading" class="font-bold">Fulfillment &amp; appointment timeline</h2>
+    <p class="mt-1 text-sm text-slate-500">Complete activity history for the selected transaction.</p>
+    <ol class="relative mt-6 ml-3 border-l-2 border-amber-200">
+      <li class="relative pb-6 pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white ring-4 ring-white">✓</span><h3 class="text-sm font-bold">Transaction created</h3><p class="text-sm text-slate-600">Maria Reyes submitted the order through AsBeez Web.</p><p class="mt-1 text-xs text-slate-400">Sep 20, 9:42 AM · Customer</p></li>
+      <li class="relative pb-6 pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white ring-4 ring-white">✓</span><h3 class="text-sm font-bold">Payment authorized</h3><p class="text-sm text-slate-600">Visa ending in 4242 was successfully charged.</p><p class="mt-1 text-xs text-slate-400">Sep 20, 9:43 AM · Payment system</p></li>
+      <li class="relative pb-6 pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white ring-4 ring-white">✓</span><h3 class="text-sm font-bold">Vendor notified</h3><p class="text-sm text-slate-600">Order notification delivered to BeeWell Market.</p><p class="mt-1 text-xs text-slate-400">Sep 20, 9:44 AM · AsBeez automation</p></li>
+      <li class="relative pb-6 pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-amber-500 text-slate-950 ring-4 ring-white">•</span><h3 class="text-sm font-bold">Order confirmed</h3><p class="text-sm text-slate-600">Vendor accepted the order and began preparation.</p><p class="mt-1 text-xs text-slate-400">Sep 20, 10:08 AM · Vendor</p></li>
+      <li class="relative pl-7"><span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 text-slate-500 ring-4 ring-white">○</span><h3 class="text-sm font-bold text-slate-500">Shipment dispatched</h3><p class="text-sm text-slate-500">Waiting for tracking information.</p><p class="mt-1 text-xs text-slate-400">Expected Sep 21 · Vendor</p></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="logistics-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><h2 id="logistics-heading" class="font-bold">Shipping, delivery &amp; pickup</h2><span class="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-700">Processing</span></div>
+    <dl class="mt-5 grid gap-4 sm:grid-cols-2">
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Method</dt><dd class="mt-1 font-semibold">Standard shipping</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Carrier</dt><dd class="mt-1 font-semibold">USPS Priority Mail</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Tracking</dt><dd class="mt-1 font-semibold text-slate-400">Not assigned</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Estimated delivery</dt><dd class="mt-1 font-semibold">September 24–25</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Shipping address</dt><dd class="mt-1 text-sm font-semibold">2148 Valencia Street<br>San Francisco, CA 94110</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Billing address</dt><dd class="mt-1 text-sm font-semibold">Same as shipping address</dd></div>
+      <div class="sm:col-span-2"><dt class="text-xs font-bold uppercase text-slate-500">Delivery instructions</dt><dd class="mt-1 text-sm">Leave with the front desk if the customer is unavailable.</dd></div>
+    </dl>
+    <div class="mt-5 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5 text-center">
+      <svg class="mx-auto h-7 w-7 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7z"/><circle cx="7" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>
+      <p class="mt-2 text-sm font-semibold">Proof of delivery will appear here</p>
+    </div>
+    <div class="mt-5 flex flex-wrap gap-2">
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Update Tracking</button>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Print Shipping Label</button>
+      <button type="button" class="rounded-lg bg-amber-500 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500">Mark as Shipped</button>
+      <button type="button" disabled class="cursor-not-allowed rounded-lg bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-400">Mark as Delivered</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="payment-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><h2 id="payment-heading" class="font-bold">Payment &amp; financial information</h2><span class="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">Paid</span></div>
+    <dl class="mt-5 grid gap-4 sm:grid-cols-2">
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Payment method</dt><dd class="mt-1 font-semibold">Visa •••• 4242</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Transaction reference</dt><dd class="mt-1 font-semibold">pi_3A92BX10492</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Authorization</dt><dd class="mt-1 font-semibold text-emerald-700">Captured</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Payment date</dt><dd class="mt-1 font-semibold">Sep 20, 9:43 AM</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Commission / processing</dt><dd class="mt-1 font-semibold">$19.77 / $5.17</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Tax collected</dt><dd class="mt-1 font-semibold">$12.71</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Vendor payout</dt><dd class="mt-1 font-semibold">$132.27 · Pending</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Expected payout</dt><dd class="mt-1 font-semibold">September 27, 2026</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Customer refunds</dt><dd class="mt-1 font-semibold">$0.00</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Chargeback</dt><dd class="mt-1 font-semibold text-emerald-700">None</dd></div>
+    </dl>
+    <a href="/admin/payments/pi_3A92BX10492" class="mt-4 inline-block text-sm font-bold text-amber-700 hover:text-amber-900">View payment-provider record →</a>
+    <div class="mt-5 flex flex-wrap gap-2">
+      <button type="button" disabled class="cursor-not-allowed rounded-lg bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-400">Capture Payment</button>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Record Manual Payment</button>
+      <button type="button" class="rounded-lg border border-rose-300 px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50">Issue Refund</button>
+      <a href="/admin/payouts/ASB-10492" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">View Payout</a>
+      <a href="/admin/orders/ASB-10492/receipt" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-800">Download Receipt</a>
+    </div>
+  </section>
+
+  <section aria-labelledby="case-heading" class="rounded-2xl border border-rose-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><h2 id="case-heading" class="font-bold">Refunds, cancellations &amp; disputes</h2><span class="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-700">Awaiting Review</span></div>
+    <dl class="mt-5 grid gap-4 sm:grid-cols-2">
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Request type</dt><dd class="mt-1 font-semibold">Partial refund</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Reason</dt><dd class="mt-1 font-semibold">One item damaged</dd></div>
+      <div class="sm:col-span-2"><dt class="text-xs font-bold uppercase text-slate-500">Customer explanation</dt><dd class="mt-1 text-sm">The outer jar arrived cracked. The remaining products are usable.</dd></div>
+      <div class="sm:col-span-2"><dt class="text-xs font-bold uppercase text-slate-500">Vendor response</dt><dd class="mt-1 text-sm">Vendor offered a replacement or $39 partial refund.</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Requested / approved</dt><dd class="mt-1 font-semibold">$39.00 / Pending</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Resolution deadline</dt><dd class="mt-1 font-semibold text-rose-700">September 22, 2026</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Assigned admin</dt><dd class="mt-1 font-semibold">Daniel Reyes</dd></div>
+      <div><dt class="text-xs font-bold uppercase text-slate-500">Evidence</dt><dd class="mt-1"><a href="/admin/refunds/RF-884/evidence" class="font-semibold text-amber-700">3 photo attachments</a></dd></div>
+    </dl>
+    <label for="case-note" class="mt-4 block text-xs font-bold uppercase text-slate-500">Internal resolution note</label>
+    <textarea id="case-note" rows="3" placeholder="Add an internal note about this request…" class="mt-1 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea>
+    <div class="mt-4 flex flex-wrap gap-2">
+      <button type="button" class="rounded-lg bg-emerald-600 px-3 py-2 text-sm font-bold text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">Approve</button>
+      <button type="button" class="rounded-lg border border-emerald-300 px-3 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50">Partially Approve</button>
+      <button type="button" class="rounded-lg border border-rose-300 px-3 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-50">Reject</button>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Request Information</button>
+      <button type="button" class="rounded-lg border border-orange-300 px-3 py-2 text-sm font-semibold text-orange-700 hover:bg-orange-50">Escalate</button>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Contact Customer</button>
+      <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Contact Vendor</button>
+    </div>
+  </section>
+</div>
+
+<!-- People -->
+<div class="grid gap-6 xl:grid-cols-2">
+  <section aria-labelledby="customer-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-start gap-4">
+      <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-100 text-sm font-bold text-amber-800">MR</span>
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center gap-2"><h2 id="customer-heading" class="font-bold">Maria Reyes</h2><span class="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-700">Active</span></div>
+        <p class="text-sm text-slate-500">maria@example.com · (415) 555-0184</p>
+        <p class="mt-1 text-xs text-slate-400">Member since March 2023</p>
+      </div>
+    </div>
+    <dl class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Orders</dt><dd class="mt-1 font-bold">18</dd></div>
+      <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Bookings</dt><dd class="mt-1 font-bold">6</dd></div>
+      <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Lifetime spend</dt><dd class="mt-1 font-bold">$2,845</dd></div>
+      <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Cancellation rate</dt><dd class="mt-1 font-bold">2.1%</dd></div>
+    </dl>
+    <div class="mt-4 rounded-xl border border-slate-200 p-3 text-sm"><p class="font-semibold">Saved address</p><p class="mt-1 text-slate-500">2148 Valencia Street, San Francisco, CA 94110</p><p class="mt-2 text-xs text-slate-400">Refund history: 1 · Disputes: 0 · Note: Prefers email updates</p></div>
+    <div class="mt-4 flex flex-wrap gap-3 text-sm font-bold"><a href="/admin/customers/4821" class="text-amber-700 hover:text-amber-900">View Profile</a><a href="/admin/customers/4821/transactions" class="text-amber-700 hover:text-amber-900">Transaction History</a><a href="/admin/messages/new?customer=4821" class="text-amber-700 hover:text-amber-900">Send Message</a><button type="button" class="text-slate-600 hover:text-slate-900">Add Note</button></div>
+  </section>
+
+  <section aria-labelledby="vendor-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-start gap-4">
+      <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-xl text-amber-400">✦</span>
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center gap-2"><h2 id="vendor-heading" class="font-bold">BeeWell Market</h2><span class="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-bold text-blue-700">✓ Verified</span></div>
+        <p class="text-sm text-slate-500">Owner: Sophia Bennett · support@beewell.example</p>
+        <p class="mt-1 text-xs text-slate-400">4.9 rating · Replies within 38 minutes</p>
+      </div>
+    </div>
+    <dl class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Fulfillment</dt><dd class="mt-1 font-bold">98.4%</dd></div>
+      <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Booking completion</dt><dd class="mt-1 font-bold">96.8%</dd></div>
+      <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Cancellation</dt><dd class="mt-1 font-bold">1.2%</dd></div>
+      <div class="rounded-xl bg-slate-50 p-3"><dt class="text-xs text-slate-500">Balance</dt><dd class="mt-1 font-bold">$8,420</dd></div>
+    </dl>
+    <p class="mt-4 rounded-xl bg-amber-50 p-3 text-sm text-amber-900"><span class="font-bold">Payout status:</span> $3,684 scheduled for September 27.</p>
+    <div class="mt-4 flex flex-wrap gap-3 text-sm font-bold"><a href="/admin/vendors/215" class="text-amber-700 hover:text-amber-900">View Vendor</a><a href="/stores/beewell-market" class="text-amber-700 hover:text-amber-900">Live Store</a><a href="/admin/vendors/215/transactions" class="text-amber-700 hover:text-amber-900">Transactions</a><a href="/admin/messages/new?vendor=215" class="text-amber-700 hover:text-amber-900">Message</a><a href="/admin/vendors/215/compliance" class="text-amber-700 hover:text-amber-900">Compliance</a></div>
+  </section>
+</div>
+
+<!-- Communication, Notes and Calendar -->
+<div class="grid gap-6 xl:grid-cols-3">
+  <section aria-labelledby="communication-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 id="communication-heading" class="font-bold">Communication center</h2>
+    <div class="mt-4 space-y-3">
+      <article class="rounded-xl bg-blue-50 p-3"><div class="flex justify-between gap-3"><p class="text-xs font-bold text-blue-700">CUSTOMER MESSAGE</p><time class="text-xs text-slate-400">20 min ago</time></div><p class="mt-1 text-sm">“Can you confirm when the order will ship?”</p></article>
+      <article class="rounded-xl bg-amber-50 p-3"><div class="flex justify-between gap-3"><p class="text-xs font-bold text-amber-700">VENDOR UPDATE</p><time class="text-xs text-slate-400">35 min ago</time></div><p class="mt-1 text-sm">Items are being packed for tomorrow’s carrier pickup.</p></article>
+      <article class="rounded-xl bg-slate-50 p-3"><p class="text-xs font-bold text-slate-600">AUTOMATED NOTIFICATIONS</p><p class="mt-1 text-sm">Confirmation email delivered · SMS delivered · Shipping notice pending</p></article>
+    </div>
+    <label for="message-recipient" class="mt-4 block text-xs font-bold text-slate-600">Recipient</label>
+    <select id="message-recipient" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Customer</option><option>Vendor</option><option>Customer and vendor</option></select>
+    <label for="message-template" class="mt-3 block text-xs font-bold text-slate-600">Saved response</label>
+    <select id="message-template" class="mt-1 w-full rounded-lg border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"><option>Select a template</option><option>Order status update</option><option>Booking reminder</option><option>Refund request received</option></select>
+    <label for="admin-message" class="mt-3 block text-xs font-bold text-slate-600">Message</label>
+    <textarea id="admin-message" rows="4" placeholder="Write a customer or vendor message…" class="mt-1 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea>
+    <div class="mt-3 flex flex-wrap gap-2"><button type="button" class="rounded-lg bg-amber-500 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-400">Send Message</button><button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold hover:bg-slate-50">Resend Confirmation</button></div>
+  </section>
+
+  <section aria-labelledby="notes-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between"><h2 id="notes-heading" class="font-bold">Internal notes &amp; audit log</h2><span class="rounded-full bg-slate-900 px-2 py-1 text-xs font-bold text-white">Admin only</span></div>
+    <p class="mt-1 text-xs text-slate-500">These notes are never visible to customers or vendors.</p>
+    <label for="internal-note" class="mt-4 block text-xs font-bold text-slate-600">New internal note</label>
+    <textarea id="internal-note" rows="3" placeholder="Add context for other administrators…" class="mt-1 w-full rounded-xl border-slate-300 text-sm focus:border-amber-500 focus:ring-amber-500"></textarea>
+    <div class="mt-3 grid grid-cols-2 gap-2">
+      <div><label for="note-visibility" class="block text-xs font-bold text-slate-600">Visibility</label><select id="note-visibility" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>All admins</option><option>Assigned team only</option></select></div>
+      <div><label for="note-priority" class="block text-xs font-bold text-slate-600">Priority</label><select id="note-priority" class="mt-1 w-full rounded-lg border-slate-300 text-sm"><option>Normal</option><option>Important</option><option>Urgent</option></select></div>
+    </div>
+    <label class="mt-3 flex items-center gap-2 text-sm"><input type="checkbox" class="rounded border-slate-300 text-amber-500 focus:ring-amber-500"> Mention assigned administrator</label>
+    <button type="button" class="mt-3 rounded-lg bg-slate-900 px-3 py-2 text-sm font-bold text-white hover:bg-slate-800">Add Note</button>
+    <div class="mt-5 space-y-4 border-t border-slate-100 pt-4">
+      <article><div class="flex justify-between gap-3"><p class="text-sm font-bold">Maya Chen</p><time class="text-xs text-slate-400">Sep 20, 10:20 AM</time></div><p class="mt-1 text-sm text-slate-600">Vendor confirmed inventory and expects shipment tomorrow.</p></article>
+      <article class="border-t border-slate-100 pt-3"><p class="text-xs font-bold text-slate-500">AUDIT · Sep 20, 10:08 AM</p><p class="mt-1 text-sm text-slate-600">Status changed from New to Confirmed by BeeWell Market.</p></article>
+      <article class="border-t border-slate-100 pt-3"><p class="text-xs font-bold text-slate-500">AUDIT · Sep 20, 9:43 AM</p><p class="mt-1 text-sm text-slate-600">Payment captured automatically by the payment workflow.</p></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="calendar-heading" class="rounded-2xl border border-blue-200 bg-white p-5 shadow-sm">
+    <div class="flex items-start justify-between gap-3">
+      <div><h2 id="calendar-heading" class="font-bold">Booking calendar</h2><p class="mt-1 text-sm text-slate-500">Sunday, September 20</p></div>
+      <div class="flex rounded-lg bg-slate-100 p-1 text-xs font-bold"><button type="button" class="rounded-md bg-white px-2 py-1 shadow-sm">Day</button><button type="button" class="px-2 py-1">Week</button><button type="button" class="px-2 py-1">Month</button></div>
+    </div>
+    <div class="mt-4 grid grid-cols-3 gap-2">
+      <div class="rounded-xl bg-blue-50 p-3 text-center"><p class="text-xl font-bold text-blue-700">18</p><p class="text-xs text-slate-500">Today</p></div>
+      <div class="rounded-xl bg-amber-50 p-3 text-center"><p class="text-xl font-bold text-amber-700">4</p><p class="text-xs text-slate-500">Unassigned</p></div>
+      <div class="rounded-xl bg-rose-50 p-3 text-center"><p class="text-xl font-bold text-rose-700">2</p><p class="text-xs text-slate-500">Conflicts</p></div>
+    </div>
+    <div class="mt-4 space-y-2">
+      <div class="flex gap-3 rounded-xl border-l-4 border-blue-500 bg-blue-50 p-3"><time class="text-xs font-bold text-blue-700">9:00</time><div><p class="text-sm font-bold">Virtual Tax Consultation</p><p class="text-xs text-slate-500">BizHive Advisors · Confirmed</p></div></div>
+      <div class="flex gap-3 rounded-xl border-l-4 border-amber-500 bg-amber-50 p-3"><time class="text-xs font-bold text-amber-700">11:30</time><div><p class="text-sm font-bold">Home Appliance Repair</p><p class="text-xs text-rose-600">Provider unassigned</p></div></div>
+      <div class="flex gap-3 rounded-xl border-l-4 border-rose-500 bg-rose-50 p-3"><time class="text-xs font-bold text-rose-700">2:00</time><div><p class="text-sm font-bold">Deep Home Cleaning</p><p class="text-xs text-rose-600">Availability conflict</p></div></div>
+      <div class="flex gap-3 rounded-xl border-l-4 border-emerald-500 bg-emerald-50 p-3"><time class="text-xs font-bold text-emerald-700">4:30</time><div><p class="text-sm font-bold">Signature Facial</p><p class="text-xs text-slate-500">GlowBee Wellness · Confirmed</p></div></div>
+    </div>
+    <a href="/admin/bookings/calendar" class="mt-4 inline-block text-sm font-bold text-blue-700 hover:text-blue-900">Open full booking calendar →</a>
+  </section>
+</div>
+
+<!-- Analytics -->
+<section aria-labelledby="analytics-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div><h2 id="analytics-heading" class="font-bold">Performance analytics</h2><p class="mt-1 text-sm text-slate-500">Operational health across marketplace orders and bookings.</p></div>
+    <div class="flex flex-wrap gap-1 rounded-xl bg-slate-100 p-1 text-xs font-bold">
+      <button type="button" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-white">Today</button>
+      <button type="button" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-white">Last 7 days</button>
+      <button type="button" class="rounded-lg bg-white px-3 py-2 text-slate-950 shadow-sm">Last 30 days</button>
+      <button type="button" class="rounded-lg px-3 py-2 text-slate-600 hover:bg-white">This quarter</button>
+    </div>
+  </div>
+  <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+    <div class="rounded-xl bg-amber-50 p-4"><p class="text-xs font-semibold text-slate-500">Order volume</p><p class="mt-1 text-xl font-bold">1,932</p><div class="mt-3 flex h-10 items-end gap-1" aria-label="Order volume increased"><span class="h-4 w-full rounded-t bg-amber-200"></span><span class="h-6 w-full rounded-t bg-amber-300"></span><span class="h-5 w-full rounded-t bg-amber-300"></span><span class="h-8 w-full rounded-t bg-amber-400"></span><span class="h-10 w-full rounded-t bg-amber-500"></span></div></div>
+    <div class="rounded-xl bg-blue-50 p-4"><p class="text-xs font-semibold text-slate-500">Booking volume</p><p class="mt-1 text-xl font-bold">914</p><div class="mt-3 flex h-10 items-end gap-1"><span class="h-5 w-full rounded-t bg-blue-200"></span><span class="h-4 w-full rounded-t bg-blue-300"></span><span class="h-7 w-full rounded-t bg-blue-300"></span><span class="h-8 w-full rounded-t bg-blue-400"></span><span class="h-10 w-full rounded-t bg-blue-500"></span></div></div>
+    <div class="rounded-xl bg-emerald-50 p-4"><p class="text-xs font-semibold text-slate-500">Gross sales</p><p class="mt-1 text-xl font-bold">$428.8K</p><p class="mt-3 text-xs font-bold text-emerald-700">↑ 15.1%</p></div>
+    <div class="rounded-xl bg-slate-50 p-4"><p class="text-xs font-semibold text-slate-500">Average order</p><p class="mt-1 text-xl font-bold">$148.62</p><p class="mt-3 text-xs text-slate-500">Average booking: $154.30</p></div>
+    <div class="rounded-xl bg-slate-50 p-4"><p class="text-xs font-semibold text-slate-500">Completion rate</p><p class="mt-1 text-xl font-bold">94.6%</p><div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-200"><div class="h-full w-[94.6%] bg-emerald-500"></div></div></div>
+    <div class="rounded-xl bg-rose-50 p-4"><p class="text-xs font-semibold text-slate-500">Cancellation rate</p><p class="mt-1 text-xl font-bold">3.2%</p><div class="mt-3 h-2 overflow-hidden rounded-full bg-rose-100"><div class="h-full w-[32%] bg-rose-500"></div></div></div>
+    <div class="rounded-xl bg-orange-50 p-4"><p class="text-xs font-semibold text-slate-500">Refund rate</p><p class="mt-1 text-xl font-bold">1.8%</p><div class="mt-3 h-2 overflow-hidden rounded-full bg-orange-100"><div class="h-full w-[18%] bg-orange-500"></div></div></div>
+    <div class="rounded-xl bg-emerald-50 p-4"><p class="text-xs font-semibold text-slate-500">On-time fulfillment</p><p class="mt-1 text-xl font-bold">96.1%</p><div class="mt-3 h-2 overflow-hidden rounded-full bg-emerald-100"><div class="h-full w-[96.1%] bg-emerald-500"></div></div></div>
+    <div class="rounded-xl bg-violet-50 p-4"><p class="text-xs font-semibold text-slate-500">No-show rate</p><p class="mt-1 text-xl font-bold">2.4%</p><div class="mt-3 h-2 overflow-hidden rounded-full bg-violet-100"><div class="h-full w-[24%] bg-violet-500"></div></div></div>
+    <div class="rounded-xl bg-amber-50 p-4"><p class="text-xs font-semibold text-slate-500">Active disputes</p><p class="mt-1 text-xl font-bold">9</p><p class="mt-3 text-xs font-bold text-amber-700">3 due within 24 hours</p></div>
+  </div>
+</section>
+
+<!-- Quick Links -->
+<section aria-labelledby="tools-heading" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+  <div><h2 id="tools-heading" class="text-lg font-bold">Sales &amp; Booking Tools</h2><p class="mt-1 text-sm text-slate-500">Quick access to transaction, fulfillment, service, finance, and configuration tools.</p></div>
+
+  <div class="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-5">
+    <div>
+      <h3 class="border-b border-amber-200 pb-2 text-sm font-bold text-amber-800">Transaction Management</h3>
+      <div class="mt-2 space-y-1">
+        <a href="/admin/orders" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-500"><span>All Orders</span><span class="rounded-full bg-amber-100 px-2 text-xs">1,932</span></a>
+        <a href="/admin/bookings" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-blue-50"><span>All Bookings</span><span class="rounded-full bg-blue-100 px-2 text-xs">914</span></a>
+        <a href="/admin/orders/drafts" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Draft Orders</a>
+        <a href="/admin/orders?status=pending" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-slate-50"><span>Pending Transactions</span><span class="rounded-full bg-amber-100 px-2 text-xs">138</span></a>
+        <a href="/admin/orders?status=cancelled" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Cancelled Transactions</a>
+        <a href="/admin/orders/archived" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Archived Transactions</a>
+        <a href="/admin/orders/subscriptions" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Subscription Orders</a>
+        <a href="/admin/bookings/recurring" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Recurring Bookings</a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="border-b border-blue-200 pb-2 text-sm font-bold text-blue-800">Fulfillment &amp; Scheduling</h3>
+      <div class="mt-2 space-y-1">
+        <a href="/admin/fulfillment" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-amber-50"><span>Fulfillment Queue</span><span class="rounded-full bg-amber-100 px-2 text-xs">138</span></a>
+        <a href="/admin/shipping" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Shipping Management</a>
+        <a href="/admin/delivery" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Delivery Management</a>
+        <a href="/admin/orders/pickup" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Pickup Orders</a>
+        <a href="/admin/bookings/calendar" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Booking Calendar</a>
+        <a href="/admin/providers/availability" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Provider Availability</a>
+        <a href="/admin/bookings/assignments" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Staff Assignments</a>
+        <a href="/admin/services/areas" class="block rounded-lg p-2 text-sm font-semibold hover:bg-blue-50">Service Areas</a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="border-b border-rose-200 pb-2 text-sm font-bold text-rose-800">Customer Service</h3>
+      <div class="mt-2 space-y-1">
+        <a href="/admin/messages?party=customer" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-slate-50"><span>Customer Messages</span><span class="rounded-full bg-blue-100 px-2 text-xs">18</span></a>
+        <a href="/admin/messages?party=vendor" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-slate-50"><span>Vendor Messages</span><span class="rounded-full bg-blue-100 px-2 text-xs">7</span></a>
+        <a href="/admin/refunds" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-rose-50"><span>Refund Requests</span><span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">24</span></a>
+        <a href="/admin/returns" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Returns</a>
+        <a href="/admin/cancellations" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Cancellations</a>
+        <a href="/admin/disputes" class="flex items-center justify-between rounded-lg p-2 text-sm font-semibold hover:bg-rose-50"><span>Disputes</span><span class="rounded-full bg-rose-100 px-2 text-xs text-rose-700">9</span></a>
+        <a href="/admin/chargebacks" class="block rounded-lg p-2 text-sm font-semibold hover:bg-rose-50">Chargebacks</a>
+        <a href="/admin/support/tickets" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Support Tickets</a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="border-b border-emerald-200 pb-2 text-sm font-bold text-emerald-800">Finance</h3>
+      <div class="mt-2 space-y-1">
+        <a href="/admin/transactions" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Transactions</a>
+        <a href="/admin/payments" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Payments</a>
+        <a href="/admin/payouts" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Vendor Payouts</a>
+        <a href="/admin/fees" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Marketplace Fees</a>
+        <a href="/admin/reports/taxes" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Tax Reports</a>
+        <a href="/admin/invoices" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Invoices</a>
+        <a href="/admin/receipts" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Receipts</a>
+        <a href="/admin/reports/sales" class="block rounded-lg p-2 text-sm font-semibold hover:bg-emerald-50">Sales Reports</a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="border-b border-slate-300 pb-2 text-sm font-bold text-slate-800">Configuration</h3>
+      <div class="mt-2 space-y-1">
+        <a href="/admin/settings/orders" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Order Settings</a>
+        <a href="/admin/settings/bookings" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Booking Settings</a>
+        <a href="/admin/settings/shipping" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Shipping Settings</a>
+        <a href="/admin/settings/delivery" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Delivery Settings</a>
+        <a href="/admin/settings/cancellations" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Cancellation Rules</a>
+        <a href="/admin/settings/refunds" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Refund Rules</a>
+        <a href="/admin/settings/payments" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Payment Methods</a>
+        <a href="/admin/settings/notifications" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Notification Templates</a>
+        <a href="/admin/settings/workflows" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Status Workflows</a>
+        <a href="/admin/settings/fraud" class="block rounded-lg p-2 text-sm font-semibold hover:bg-slate-50">Fraud Rules</a>
+      </div>
+    </div>
+  </div>
+</section>
+</div> <!-- Mobile Action Bar --> <div class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-3 shadow-[0_-8px_24px_rgba(15,23,42,0.12)] backdrop-blur lg:hidden"> <div class="mx-auto flex max-w-3xl items-center gap-2"> <div class="min-w-0 flex-1"> <p class="truncate text-xs font-bold text-slate-950">ASB-10492 · $167.86</p> <p class="truncate text-xs text-slate-500">Confirmed · Processing</p> </div> <button type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500">Contact</button> <button type="button" class="rounded-lg border border-amber-300 bg-amber-100 px-3 py-2 text-xs font-bold text-amber-900 hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-500">Update Status</button> <a href="/admin/orders/ASB-10492" class="rounded-lg bg-amber-500 px-3 py-2 text-xs font-bold text-slate-950 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500">View Details</a> </div> </div> </main>

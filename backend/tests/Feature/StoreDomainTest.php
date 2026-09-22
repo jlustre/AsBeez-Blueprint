@@ -26,7 +26,29 @@ class StoreDomainTest extends TestCase
     {
         $this->seed(StoreStructureSeeder::class);
 
-        $this->assertSame(8, Category::count());
+        // The roots are the seven markets, pinned because the homepage grid
+        // renders exactly them — an eighth root is a product decision, not an
+        // incidental edit. Everything below stays counted rather than pinned:
+        // the taxonomy is meant to grow, and a magic total turns every new
+        // category into a test edit.
+        $this->assertSame(
+            ['physical-products', 'digital-products', 'professional-services', 'real-estate', 'automotive', 'insurance', 'travel'],
+            Category::whereNull('parent_id')->orderBy('position')->pluck('slug')->all(),
+        );
+        $this->assertGreaterThan(Category::whereNull('parent_id')->count(), Category::count());
+
+        // A fourth level exists, so nothing has quietly flattened the tree.
+        $this->assertSame(3, Category::whereSlug('laptops')->firstOrFail()->level());
+        $this->assertSame(
+            Category::whereSlug('digital-products')->value('id'),
+            Category::whereSlug('digital-templates')->value('parent_id'),
+        );
+
+        // The departments that used to be roots hang off a market now.
+        $this->assertSame(
+            Category::whereSlug('physical-products')->value('id'),
+            Category::whereSlug('electronics')->value('parent_id'),
+        );
         $this->assertSame(9, SocialPlatform::count());
         $this->assertSame(7, PolicyType::count());
         $this->assertSame(14, SettingDefinition::count());
@@ -36,12 +58,17 @@ class StoreDomainTest extends TestCase
     public function test_structure_seeder_is_idempotent(): void
     {
         $this->seed(StoreStructureSeeder::class);
+        $seeded = Category::count();
         Category::whereSlug('electronics')->update(['name' => 'Renamed By Hand']);
 
         $this->seed(StoreStructureSeeder::class);
 
-        $this->assertSame(8, Category::count());
-        $this->assertSame('Electronics', Category::whereSlug('electronics')->value('name'));
+        $this->assertSame($seeded, Category::count());
+        $this->assertSame('Electronics and Computers', Category::whereSlug('electronics')->value('name'));
+        $this->assertSame(
+            Category::whereSlug('digital-products')->value('id'),
+            Category::whereSlug('digital-templates')->value('parent_id'),
+        );
     }
 
     public function test_policy_and_setting_keys_are_clean_snake_case(): void
